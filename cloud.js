@@ -67,32 +67,43 @@ const Cloud = {
     const s = await getDocs(query(collection(db, 'results'), where('uid', '==', Cloud.user.uid), limit(500)));
     return s.docs.map(d => ({ id: d.id, ...d.data(), t: tsMs(d.data().createdAt) })).sort((a, b) => a.t - b.t);
   },
+  /* Pulse: scored results and general posts, newest first */
   async feed(n = 30) {
-    const s = await getDocs(query(collection(db, 'results'), orderBy('createdAt', 'desc'), limit(n)));
-    const list = s.docs.map(d => ({ id: d.id, ...d.data(), t: tsMs(d.data().createdAt) }));
-    if (Cloud.user) await Promise.all(list.map(async p => {
-      const [l, g, f] = await Promise.all(['likes', 'legit', 'flags'].map(k => getDoc(doc(db, 'results', p.id, k, Cloud.user.uid))));
-      p.mine = { likes: l.exists(), legit: g.exists(), flags: f.exists() };
+    const [r, p] = await Promise.all(['results', 'posts'].map(c => getDocs(query(collection(db, c), orderBy('createdAt', 'desc'), limit(n))).catch(() => ({ docs: [] }))));
+    const list = [...r.docs.map(d => ({ id: d.id, col: 'results', ...d.data() })), ...p.docs.map(d => ({ id: d.id, col: 'posts', ...d.data() }))]
+      .map(x => ({ ...x, t: tsMs(x.createdAt) })).sort((a, b) => b.t - a.t).slice(0, n);
+    if (Cloud.user) await Promise.all(list.map(async x => {
+      const kinds = x.col === 'results' ? ['likes', 'legit', 'flags'] : ['likes', 'flags'];
+      const got = await Promise.all(kinds.map(k => getDoc(doc(db, x.col, x.id, k, Cloud.user.uid))));
+      x.mine = Object.fromEntries(kinds.map((k, i) => [k, got[i].exists()]));
     }));
     return list;
   },
+  async savePost(p) {
+    const u = Cloud.user, data = { uid: u.uid, name: (p.name || 'Player').slice(0, 40), city: (p.city || '').slice(0, 40), photo: (p.photo || '').slice(0, 400),
+      text: (p.text || '').slice(0, 1000), tags: (p.tags || []).slice(0, 20).map(t => String(t).slice(0, 40)), mentions: (p.mentions || []).slice(0, 20).map(m => ({ uid: String(m.uid).slice(0, 64), name: String(m.name).slice(0, 40) })),
+      skill: (p.skill || '').slice(0, 60), media: (p.media || []).slice(0, 4), createdAt: serverTimestamp(), likes: 0, comments: 0, flags: 0 };
+    return (await addDoc(collection(db, 'posts'), data)).id;
+  },
+  async people() { const s = await getDocs(query(collection(db, 'users'), limit(500))); return s.docs.map(d => ({ uid: d.id, name: d.data().name || '', city: d.data().city || '', photo: d.data().photo || '' })).filter(x => x.name); },
   /* like / legit / flag: the mark and the counter change together, and the rules check they match */
-  async toggle(kind, id, on) {
-    const b = writeBatch(db), mark = doc(db, 'results', id, kind, Cloud.user.uid);
+  async toggle(kind, id, on, col = 'results') {
+    const b = writeBatch(db), mark = doc(db, col, id, kind, Cloud.user.uid);
     if (on) b.set(mark, { at: serverTimestamp() }); else b.delete(mark);
-    b.update(doc(db, 'results', id), { [kind]: increment(on ? 1 : -1) });
+    b.update(doc(db, col, id), { [kind]: increment(on ? 1 : -1) });
     return b.commit();
   },
-  async comments(id) {
-    const s = await getDocs(query(collection(db, 'results', id, 'comments'), orderBy('at', 'asc'), limit(100)));
+  async comments(id, col = 'results') {
+    const s = await getDocs(query(collection(db, col, id, 'comments'), orderBy('at', 'asc'), limit(100)));
     return s.docs.map(d => ({ id: d.id, ...d.data(), t: tsMs(d.data().at) }));
   },
-  async addComment(id, text, name) {
-    const b = writeBatch(db), c = doc(collection(db, 'results', id, 'comments'));
+  async addComment(id, text, name, col = 'results') {
+    const b = writeBatch(db), c = doc(collection(db, col, id, 'comments'));
     b.set(c, { uid: Cloud.user.uid, name: (name || 'Player').slice(0, 40), text: text.slice(0, 300), at: serverTimestamp() });
-    b.update(doc(db, 'results', id), { comments: increment(1) });
+    b.update(doc(db, col, id), { comments: increment(1) });
     return b.commit();
   },
+  async deletePost(id) { return deleteDoc(doc(db, 'posts', id)); },
   async leaderboard(skill, city) {
     const cons = [where('skill', '==', skill)]; if (city) cons.push(where('city', '==', city));
     const s = await getDocs(query(collection(db, 'best'), ...cons, limit(300)));
@@ -138,8 +149,8 @@ const Cloud = {
       return { users, results, flagged, events, bans };
     },
     async flagged() {
-      const s = await getDocs(query(collection(db, 'results'), where('flags', '>', 0), limit(100)));
-      return s.docs.map(d => ({ id: d.id, ...d.data(), t: tsMs(d.data().createdAt) })).sort((a, b) => b.flags - a.flags);
+      const got = await Promise.all(['results', 'posts'].map(c => getDocs(query(collection(db, c), where('flags', '>', 0), limit(100))).then(s => s.docs.map(d => ({ id: d.id, col: c, ...d.data(), t: tsMs(d.data().createdAt) }))).catch(() => [])));
+      return got.flat().sort((a, b) => b.flags - a.flags);
     },
     async users() {
       const [u, b] = await Promise.all([getDocs(query(collection(db, 'users'), limit(500))), getDocs(collection(db, 'bans'))]);
@@ -151,18 +162,19 @@ const Cloud = {
       return s.docs.map(d => ({ id: d.id, ...d.data(), t: tsMs(d.data().createdAt) })).sort((a, b) => b.t - a.t);
     },
     async removeResult(r) {
+      if (r.col === 'posts') return deleteDoc(doc(db, 'posts', r.id));
       const bref = doc(db, 'best', r.uid + '__' + skillKey(r.skill)), b = await getDoc(bref);
       if (b.exists() && b.data().result === r.id) await deleteDoc(bref);
       await deleteDoc(doc(db, 'results', r.id));
     },
-    async clearFlags(id) {
-      const s = await getDocs(collection(db, 'results', id, 'flags')), b = writeBatch(db);
-      s.docs.forEach(d => b.delete(d.ref)); b.update(doc(db, 'results', id), { flags: 0 });
+    async clearFlags(id, col = 'results') {
+      const s = await getDocs(collection(db, col, id, 'flags')), b = writeBatch(db);
+      s.docs.forEach(d => b.delete(d.ref)); b.update(doc(db, col, id), { flags: 0 });
       return b.commit();
     },
-    async comments(id) { return Cloud.comments(id); },
-    async removeComment(rid, cid) {
-      const b = writeBatch(db); b.delete(doc(db, 'results', rid, 'comments', cid)); b.update(doc(db, 'results', rid), { comments: increment(-1) });
+    async comments(id, col) { return Cloud.comments(id, col); },
+    async removeComment(rid, cid, col = 'results') {
+      const b = writeBatch(db); b.delete(doc(db, col, rid, 'comments', cid)); b.update(doc(db, col, rid), { comments: increment(-1) });
       return b.commit();
     },
     ban(uid, on) { const r = doc(db, 'bans', uid); return on ? setDoc(r, { at: serverTimestamp(), by: Cloud.user.email }) : deleteDoc(r); },
@@ -199,6 +211,17 @@ const Cloud = {
       const x = new XMLHttpRequest(); x.open('POST', `https://api.cloudinary.com/v1_1/${CLOUDINARY.cloud}/video/upload`);
       x.upload.onprogress = e => e.lengthComputable && onProgress && onProgress(e.loaded / e.total);
       x.onload = () => { try { const j = JSON.parse(x.responseText); j.secure_url ? res(j.secure_url) : rej(new Error(j.error?.message || 'Upload failed')); } catch (e) { rej(e); } };
+      x.onerror = () => rej(new Error('Network error'));
+      x.send(fd);
+    });
+  },
+  /* photo or video for a post: Cloudinary picks the type */
+  uploadMedia(file, onProgress) {
+    return new Promise((res, rej) => {
+      const fd = new FormData(); fd.append('file', file); fd.append('upload_preset', CLOUDINARY.preset); fd.append('folder', 'provn/posts');
+      const x = new XMLHttpRequest(); x.open('POST', `https://api.cloudinary.com/v1_1/${CLOUDINARY.cloud}/auto/upload`);
+      x.upload.onprogress = e => e.lengthComputable && onProgress && onProgress(e.loaded / e.total);
+      x.onload = () => { try { const j = JSON.parse(x.responseText); j.secure_url ? res({ url: j.secure_url, type: j.resource_type === 'video' ? 'video' : 'image', w: j.width || 0, h: j.height || 0 }) : rej(new Error(j.error?.message || 'Upload failed')); } catch (e) { rej(e); } };
       x.onerror = () => rej(new Error('Network error'));
       x.send(fd);
     });

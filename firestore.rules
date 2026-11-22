@@ -11,6 +11,32 @@ service cloud.firestore {
         && request.auth.token.email_verified == true;
     }
     function notBanned() { return !exists(/databases/$(database)/documents/bans/$(me())); }
+    function okMedia(u) {
+      return u is string && u.size() < 400
+        && u.matches('https://res[.]cloudinary[.]com/y3geoabc/(image|video)/upload/.*');
+    }
+    function mediaOk(m) {
+      return m is list && m.size() <= 4
+        && (m.size() < 1 || okMedia(m[0].url)) && (m.size() < 2 || okMedia(m[1].url))
+        && (m.size() < 3 || okMedia(m[2].url)) && (m.size() < 4 || okMedia(m[3].url));
+    }
+    function counterOnly(field) {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly([field])
+        && (request.resource.data[field] == resource.data[field] + 1
+            || request.resource.data[field] == resource.data[field] - 1)
+        && request.resource.data[field] >= 0;
+    }
+    // a like / legit / flag counter may only move together with that user's own mark
+    function markMoved(col, id, kind) {
+      let path = /databases/$(database)/documents/$(col)/$(id)/$(kind)/$(me());
+      return counterOnly(kind) && (
+        (request.resource.data[kind] > resource.data[kind] && !exists(path) && existsAfter(path)) ||
+        (request.resource.data[kind] < resource.data[kind] && exists(path) && !existsAfter(path)));
+    }
+    function commentCount(ownerUid) {
+      return (counterOnly('comments') && request.resource.data.comments == resource.data.comments + 1)
+        || (counterOnly('comments') && request.resource.data.comments == resource.data.comments - 1 && ownerUid == me());
+    }
     function okVideo(v) {
       return v is string && v.size() < 400
         && v.matches('https://res[.]cloudinary[.]com/y3geoabc/video/upload/.*');
@@ -36,20 +62,6 @@ service cloud.firestore {
 
     // ---------- results (the Pulse feed) ----------
     match /results/{rid} {
-      function counterOnly(field) {
-        return request.resource.data.diff(resource.data).affectedKeys().hasOnly([field])
-          && (request.resource.data[field] == resource.data[field] + 1
-              || request.resource.data[field] == resource.data[field] - 1)
-          && request.resource.data[field] >= 0;
-      }
-      // a like / legit / flag counter may only move together with that user's own mark
-      function markMoved(kind) {
-        let path = /databases/$(database)/documents/results/$(rid)/$(kind)/$(me());
-        return counterOnly(kind) && (
-          (request.resource.data[kind] > resource.data[kind] && !exists(path) && existsAfter(path)) ||
-          (request.resource.data[kind] < resource.data[kind] && exists(path) && !existsAfter(path)));
-      }
-
       allow read: if signedIn();
       allow create: if signedIn() && notBanned()
         && request.resource.data.keys().hasOnly(['uid','name','city','skill','v','pts','sex','age','createdAt','likes','legit','flags','comments','video','venue','venueName'])
@@ -69,9 +81,8 @@ service cloud.firestore {
             && exists(/databases/$(database)/documents/venues/$(request.resource.data.venue))
             && str(request.resource.data.venueName, 60)));
       allow update: if isAdmin() || signedIn() && (
-        markMoved('likes') || markMoved('legit') || markMoved('flags')
-        || (counterOnly('comments') && request.resource.data.comments == resource.data.comments + 1)
-        || (counterOnly('comments') && request.resource.data.comments == resource.data.comments - 1 && resource.data.uid == me()));
+        markMoved('results', rid, 'likes') || markMoved('results', rid, 'legit') || markMoved('results', rid, 'flags')
+        || commentCount(resource.data.uid));
       allow delete: if signedIn() && (resource.data.uid == me() || isAdmin());
 
       match /likes/{uid} {
@@ -83,6 +94,46 @@ service cloud.firestore {
         allow read: if signedIn();
         allow create: if signedIn() && me() == uid && request.resource.data.keys().hasOnly(['at']) && request.resource.data.at == request.time
           && get(/databases/$(database)/documents/results/$(rid)).data.uid != me();   // no vouching for yourself
+        allow delete: if signedIn() && (me() == uid || isAdmin());
+      }
+      match /flags/{uid} {
+        allow read: if signedIn();
+        allow create: if signedIn() && me() == uid && request.resource.data.keys().hasOnly(['at']) && request.resource.data.at == request.time;
+        allow delete: if signedIn() && (me() == uid || isAdmin());
+      }
+      match /comments/{cid} {
+        allow read: if signedIn();
+        allow create: if signedIn() && notBanned()
+          && request.resource.data.keys().hasOnly(['uid','name','text','at'])
+          && request.resource.data.uid == me()
+          && str(request.resource.data.name, 40)
+          && request.resource.data.text is string && request.resource.data.text.size() > 0 && request.resource.data.text.size() <= 300
+          && request.resource.data.at == request.time;
+        allow delete: if signedIn() && (resource.data.uid == me() || isAdmin());
+      }
+    }
+
+    // ---------- general posts: photos / videos with a caption ----------
+    match /posts/{pid} {
+      allow read: if signedIn();
+      allow create: if signedIn() && notBanned()
+        && request.resource.data.keys().hasOnly(['uid','name','city','photo','text','tags','mentions','skill','media','createdAt','likes','comments','flags'])
+        && request.resource.data.uid == me()
+        && str(request.resource.data.name, 40) && str(request.resource.data.city, 40) && str(request.resource.data.photo, 400)
+        && str(request.resource.data.text, 1000) && str(request.resource.data.skill, 60)
+        && request.resource.data.tags is list && request.resource.data.tags.size() <= 20
+        && request.resource.data.mentions is list && request.resource.data.mentions.size() <= 20
+        && mediaOk(request.resource.data.media)
+        && (request.resource.data.text.size() > 0 || request.resource.data.media.size() > 0)
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.likes == 0 && request.resource.data.comments == 0 && request.resource.data.flags == 0;
+      allow update: if isAdmin() || signedIn() && (
+        markMoved('posts', pid, 'likes') || markMoved('posts', pid, 'flags') || commentCount(resource.data.uid));
+      allow delete: if signedIn() && (resource.data.uid == me() || isAdmin());
+
+      match /likes/{uid} {
+        allow read: if signedIn();
+        allow create: if signedIn() && me() == uid && request.resource.data.keys().hasOnly(['at']) && request.resource.data.at == request.time;
         allow delete: if signedIn() && (me() == uid || isAdmin());
       }
       match /flags/{uid} {
