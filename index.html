@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <meta name="theme-color" content="#2A2E3F">
 <title>Provn</title>
+<script type="importmap">{"imports":{"three":"./lib/three.module.js"}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Chakra+Petch:wght@500;600;700&family=Barlow:wght@500;600;700&family=Barlow+Condensed:ital,wght@0,700;1,700;1,800&display=swap" rel="stylesheet">
@@ -263,7 +264,7 @@ svg{display:block}
 
 /* ================= YOU ================= */
 .prof{display:flex;align-items:center;gap:14px;padding:6px 2px 0}
-.prof .pm{width:96px;height:112px;flex:none}
+.prof .pm{width:118px;height:150px;flex:none}
 .prof .pn2{flex:1;min-width:0}
 .nameIn{width:100%;border:0;outline:0;background:none;font-family:var(--font-display);font-weight:800;font-size:28px;font-style:var(--d-style);text-transform:var(--d-case);letter-spacing:var(--d-track);padding:0;color:var(--text)}
 .nameIn:focus{border-bottom:2px dashed var(--accent)}
@@ -443,6 +444,21 @@ svg{display:block}
 [data-theme="volt"] .mascot .m-bob{animation:pump .5s ease-in-out infinite alternate}
 @keyframes pump{from{transform:translateY(0) skewX(-3deg)}to{transform:translateY(-4px) skewX(3deg)}}
 
+/* 3D player */
+.av3d{position:relative;width:100%;height:100%;cursor:pointer}
+.av3d .av3d-cv{position:absolute;inset:0;width:100%;height:100%;display:none}
+.av3d.live .av3d-cv{display:block}
+.av3d.live>.mascot{display:none}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:4px}
+.pcard{border-radius:var(--r-card);background:var(--bg3);border:var(--card-bd);box-shadow:0 4px 0 var(--ghost-lip);padding:6px 4px 8px;font-size:12px;font-weight:800;text-align:center}
+.pcard.on{background:var(--accent);color:var(--on-accent)}
+.pcard .pth{height:104px;display:grid;place-items:center}
+.pcard img{height:104px;width:auto}
+.pcard .pth .skel{width:60px;height:90px;border-radius:30px}
+.chg{margin-top:8px;height:34px;padding:0 12px;font-size:13px}
+[data-theme="volt"] .chg{font-size:15px}
+.credit{font-size:11px;color:var(--text3);text-align:center;margin-top:12px}
+
 /* ================= CELEBRATE / TOAST / PREVIEW ================= */
 .cele{position:absolute;inset:0;z-index:70;display:grid;place-items:center;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:opacity .25s}
 .cele.on{opacity:1;pointer-events:auto}
@@ -450,7 +466,7 @@ svg{display:block}
 [data-theme="nightfall"] .cele-in{border-radius:8px}
 [data-theme="volt"] .cele-in{border-radius:6px}
 .cele.on .cele-in{transform:none}
-.cele-m{width:140px;height:160px;margin:-74px auto 4px}
+.cele-m{width:170px;height:190px;margin:-100px auto 0}
 .cele.on .cele-m .m-bob{animation:jump .9s cubic-bezier(.34,1.56,.64,1) 2!important}
 @keyframes jump{0%,100%{transform:translateY(0) scale(1)}15%{transform:translateY(4px) scale(1.1,.88)}50%{transform:translateY(-26px) scale(.94,1.08)}}
 .cele.on .cele-m .m-wave{animation:cheer .5s ease-in-out 4}
@@ -524,7 +540,7 @@ svg{display:block}
     </section>
 
     <section class="screen" id="s-you" data-tab="you">
-      <div class="prof"><div class="pm" id="youM"></div><div class="pn2"><input class="nameIn" id="nameIn" maxlength="18" aria-label="Your player name"><p id="youSub"></p></div></div>
+      <div class="prof"><div class="pm" id="youM"></div><div class="pn2"><input class="nameIn" id="nameIn" maxlength="18" aria-label="Your player name"><p id="youSub"></p><button class="btn ghost chg" id="chgPlayer"><span>Change player</span></button></div></div>
       <div class="wgrid" id="wgrid"></div>
       <div class="sec-h"><h3 class="display">Your skills</h3><a id="addSkill">Add skill</a></div>
       <div class="slist" id="slist"></div>
@@ -555,6 +571,14 @@ svg{display:block}
     <button class="btn primary" style="width:100%;margin-top:16px" id="provePost"><span>Post result</span></button>
   </section>
 
+  <section class="sheet" id="sh-player" aria-label="Choose your player">
+    <div class="handle"></div>
+    <h2 class="display">Your player</h2>
+    <p class="lead">Your player moves differently in each theme.</p>
+    <div class="pgrid" id="pgrid"></div>
+    <p class="credit">Characters by Kay Lousberg (KayKit, CC0)</p>
+  </section>
+
   <section class="sheet" id="sh-settings" aria-label="Settings">
     <div class="handle"></div>
     <h2 class="display">Settings</h2>
@@ -563,7 +587,7 @@ svg{display:block}
     <div class="row"><span data-i="you"></span><span class="sp">Account</span><small>Soon</small></div>
     <div class="row"><span data-i="bell"></span><span class="sp">Notifications</span><small>Soon</small></div>
     <div class="row"><span data-i="lock"></span><span class="sp">Privacy</span><small>Soon</small></div>
-    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Layer 2 · 20261122c</small></div>
+    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Layer 2 · 20261122d</small></div>
   </section>
 
   <div class="cele" id="cele"><div class="cele-in"><div class="cele-m" id="celeM"></div><h2 class="display" id="celeT"></h2><div class="big" id="celeB"></div><p id="celeS"></p><button class="btn primary" id="celeOk"><span>Keep going</span></button></div></div>
@@ -792,7 +816,7 @@ function mascot(){return`<svg class="mascot" viewBox="0 0 120 140" aria-hidden="
  </g></svg>`;}
 
 /* ================= CELEBRATION ================= */
-function celebrate(title,big,sub){$('#celeM').innerHTML=mascot();$('#celeT').textContent=title;$('#celeB').textContent=big||'';$('#celeS').textContent=sub||'';$('#cele').classList.add('on');buzz([12,50,12,50,20]);
+function celebrate(title,big,sub){$('#celeM').innerHTML=`<div class="av3d" data-mode="cele">${mascot()}</div>`;$('#celeT').textContent=title;$('#celeB').textContent=big||'';$('#celeS').textContent=sub||'';$('#cele').classList.add('on');buzz([12,50,12,50,20]);
  const cols=['#FF6B3D','#FFD23F','#8B5CFF','#2EF2E0','#FF3D2E','#D6FF1F','#9BE15D'],box=$('#confetti');box.innerHTML='';
  for(let i=0;i<50;i++){const e=document.createElement('i');e.style.left=Math.random()*100+'%';e.style.background=cols[i%cols.length];e.style.setProperty('--d',(1.4+Math.random()*1.3)+'s');e.style.setProperty('--dx',(Math.random()*120-60)+'px');e.style.setProperty('--r',(Math.random()*900-450)+'deg');e.style.animationDelay=Math.random()*.25+'s';if(i%3==0)e.style.borderRadius='50%',e.style.height='9px';box.appendChild(e);}
  setTimeout(()=>box.innerHTML='',3200);}
@@ -905,7 +929,7 @@ function moveSeg(anim){const si=$('#seg .si');if(!si)return;const w=si.offsetWid
 $$('#seg button').forEach((b,k)=>b.onclick=()=>{if(segI===k)return;segI=k;buzz(6);$$('#seg button').forEach((x,j)=>x.classList.toggle('on',j===k));$$('.pane').forEach(p=>p.classList.toggle('on',p.id==='p-'+b.dataset.p));if(b.dataset.p==='ranks')renderRanks();moveSeg(true);});
 
 /* ================= YOU ================= */
-const You={render(){$('#youM').innerHTML=mascot();const ni=$('#nameIn');if(document.activeElement!==ni)ni.value=store.get('name','');ni.placeholder='Your name';
+const You={render(){if(!$('#youM .av3d'))$('#youM').innerHTML=`<div class="av3d" data-mode="you">${mascot()}</div>`;const ni=$('#nameIn');if(document.activeElement!==ni)ni.value=store.get('name','');ni.placeholder='Your name';
  const ms=mySkills();$('#youSub').textContent=`${ms.length} skill${ms.length===1?'':'s'} proven · Mumbai`;
  $('#wgrid').innerHTML=[['body','Body','volt'],['mind','Mind','nightfall']].map(([w,label,t])=>{const sc=worldScore(w),l=lvOf(sc),req=THEMES[t].req[1],u=unlocked(t);
   return `<div class="card wcard ${u?'open':''}"><small>${label} world</small><b>${sc}</b><span class="lv">${LEVELS[l][0]}</span><div class="bar"><i style="width:${Math.min(100,sc/req*100)}%"></i></div><div class="unl"><span data-i="${u?'unlock':'lock'}"></span>${u?`${THEMES[t].name} unlocked`:`${THEMES[t].name} at ${req}`}</div></div>`;}).join('');
@@ -914,6 +938,13 @@ const You={render(){$('#youM').innerHTML=mascot();const ni=$('#nameIn');if(docum
  paintIcons($('#s-you'));$$('#slist .srow').forEach(b=>b.onclick=()=>{go('orbit');setTimeout(()=>Orbit.openSkill(b.dataset.n),280)});
  const fp=$('#firstProve');if(fp)fp.onclick=()=>openProve();}};
 $('#nameIn').addEventListener('input',e=>store.set('name',e.target.value.trim()));
+const thumbCache={};
+function openPicker(){const A=window.Avatar3D;if(!A){toast('3D players are still loading');return;}const cur=A.getChar(),t=document.documentElement.dataset.theme;
+ $('#pgrid').innerHTML=Object.entries(A.CHARS).map(([k,n])=>`<button class="pcard press ${k===cur?'on':''}" data-c="${k}"><span class="pth">${thumbCache[t+k]?`<img src="${thumbCache[t+k]}" alt="">`:'<span class="skel"></span>'}</span>${n}</button>`).join('');
+ $$('#pgrid .pcard').forEach(b=>b.onclick=()=>{buzz(10);A.setChar(b.dataset.c);$$('#pgrid .pcard').forEach(x=>x.classList.toggle('on',x===b));});
+ showSheet('sh-player');
+ (async()=>{for(const k of Object.keys(A.CHARS)){if(!thumbCache[t+k]){try{thumbCache[t+k]=await A.thumb(k)}catch(e){continue}}const b=$(`#pgrid .pcard[data-c="${k}"] .pth`);if(b)b.innerHTML=`<img src="${thumbCache[t+k]}" alt="">`;}})();}
+$('#chgPlayer').onclick=openPicker;
 $('#addSkill').onclick=()=>go('orbit');
 
 /* ================= SKILL PATH =================
@@ -933,7 +964,7 @@ const Path=(()=>{let skill=null,popI=-1;const el=$('#path'),body=$('#pBody'),pop
   const bw=store.get('bw',0);h+=`<div class="card pinfo">Elite reference <b>${fmtPerf(s,s.ref,bw)}${unitShort(s)}</b> = 1000 pts · typical recreational <b>${fmtPerf(s,s.med,bw)}${unitShort(s)}</b> ≈ 250 pts${st.b?` · your best <b>${fmtPerf(s,st.b.v,bw)}${unitShort(s)}</b>`:''}</div>`;
   list.forEach((n,i)=>{if(i%4===0){const l=i/4;h+=`<div class="lvl-h ${st.lv===l?'now':''}"><span></span>Level ${l+1} · ${LEVELS[l][0]} <em>${LEVELS[l][1]}+</em><span></span></div>`;}
    const x=Math.round(Math.sin(i*0.8)*70),stt=i<st.done?'done':i===st.done?'cur':'lock';
-   h+=`<div class="prow" style="--x:${x}px"><button class="pn ${stt} ${popNew&&i===st.done-1?'pop-in':''}" data-n="${i}" aria-label="${esc(n.t)}"><span class="pi"><span data-i="${stt==='done'?'check':n.ic}"></span></span></button>${stt==='cur'?'<span class="ptip">PROVE IT</span>':''}${stt==='cur'?`<div class="pmas" style="left:calc(50% ${x>=0?'- 154':'+ 58'}px)"><div class="mwrap">${mascot()}</div><div class="ptag">${esc(pname())}</div></div>`:''}</div>`;});
+   h+=`<div class="prow" style="--x:${x}px"><button class="pn ${stt} ${popNew&&i===st.done-1?'pop-in':''}" data-n="${i}" aria-label="${esc(n.t)}"><span class="pi"><span data-i="${stt==='done'?'check':n.ic}"></span></span></button>${stt==='cur'?'<span class="ptip">PROVE IT</span>':''}${stt==='cur'?`<div class="pmas" style="left:calc(50% ${x>=0?'- 154':'+ 58'}px)"><div class="mwrap av3d" data-mode="path">${mascot()}</div><div class="ptag">${esc(pname())}</div></div>`:''}</div>`;});
   body.innerHTML=h;body.appendChild(pop);pop.className='pop';popI=-1;paintIcons(body);
   $('#pTitle').textContent=s.name;$('#pCat').textContent=`${s.w==='mind'?'Mind':'Body'} · ${c.n}`;$('#pPts').textContent=st.b?st.b.p:'—';$('#pLv').textContent=st.b?LEVELS[st.lv][0]:'No result';
   body.querySelectorAll('.pn').forEach(b=>b.onclick=e=>{e.stopPropagation();tapNode(+b.dataset.n,b,list,st)});}
@@ -1043,5 +1074,6 @@ setTimeout(()=>$('#splash').classList.add('out'),matchMedia('(prefers-reduced-mo
 setTimeout(()=>$('#splash').remove(),1700);
 setTimeout(()=>$('#orbitHint').style.opacity=0,6000);
 </script>
+<script type="module" src="avatar3d.js"></script>
 </body>
 </html>
