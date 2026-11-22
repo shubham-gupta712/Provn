@@ -1,7 +1,7 @@
 /* Provn cloud: Firebase (provn-96604) sign-in + Firestore, and Cloudinary proof-video uploads.
    If this module fails to load (offline, blocked), the app keeps working on-device. */
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut as fbSignOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut as fbSignOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 import { getFirestore, doc, getDoc, setDoc, collection, query, where, orderBy, limit, getDocs, serverTimestamp, increment, writeBatch, addDoc, deleteDoc, updateDoc, getCountFromServer } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
 const firebaseConfig = {
@@ -18,10 +18,14 @@ const CLOUDINARY = { cloud: 'y3geoabc', preset: 'provn_unsigned' };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
+const adb = getFirestore(app);   // the real signed-in account (admin tools always use this)
+let db = adb;                     // the identity the app is acting as (admin or a test bot)
 const provider = new GoogleAuthProvider();
 provider.setCustomParameters({ prompt: 'select_account' });
 
+const bots = {};
+function botApp(id) { if (!bots[id]) { const a = initializeApp(firebaseConfig, 'provn-' + id); bots[id] = { app: a, auth: getAuth(a), db: getFirestore(a) }; } return bots[id]; }
+const userOf = u => u ? { uid: u.uid, name: u.displayName || '', email: u.email || '', photo: u.photoURL || '', verified: !!u.emailVerified } : null;
 const skillKey = s => s.replace(/[^A-Za-z0-9]+/g, '_');
 const tsMs = t => (t && t.toMillis) ? t.toMillis() : Date.now();
 
@@ -35,7 +39,7 @@ const Cloud = {
       throw e;
     }
   },
-  signOut: () => fbSignOut(auth),
+  signOut: () => Cloud.as !== 'admin' ? Cloud.actAs('admin') : fbSignOut(auth),
 
   async loadProfile() { const s = await getDoc(doc(db, 'users', Cloud.user.uid)); return s.exists() ? s.data() : null; },
   saveProfile(p) {
@@ -147,67 +151,99 @@ const Cloud = {
   async banned() { return (await getDoc(doc(db, 'bans', Cloud.user.uid))).exists(); },
 
   /* ---------- admin only (the rules enforce this too) ---------- */
-  isAdmin() { return !!(Cloud.user && Cloud.user.email === ADMIN_EMAIL && Cloud.user.verified); },
+  isAdmin() { const u = Cloud.adminUser; return !!(u && u.email === ADMIN_EMAIL && u.verified); },
+
+  /* ---------- test bots: two real accounts the admin can act as ---------- */
+  as: 'admin', adminUser: null,
+  BOTS: { bot1: { name: 'Aarav (bot)', sex: 'm', age: 27, city: 'Ahmedabad', char: 'Barbarian', interests: ['5k run', 'Pickleball', 'Push-ups'] },
+          bot2: { name: 'Meera (bot)', sex: 'f', age: 24, city: 'Ahmedabad', char: 'Mage', interests: ['Chess', 'Badminton', "Rubik's cube"] } },
+  async botCreds() { const s = await getDoc(doc(adb, 'private', 'bots')); return s.exists() ? s.data() : {}; },
+  async setupBots() {
+    if (!Cloud.isAdmin()) throw new Error('Admin only');
+    const creds = await Cloud.botCreds();
+    for (const id of Object.keys(Cloud.BOTS)) {
+      if (creds[id]) continue;
+      const B = Cloud.BOTS[id], b = botApp(id), rnd = Math.random().toString(36).slice(2, 10);
+      const email = `provn.${id}.${rnd}@example.com`, pw = 'Pv!' + Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2, 6);
+      const c = await createUserWithEmailAndPassword(b.auth, email, pw);
+      await updateProfile(c.user, { displayName: B.name });
+      creds[id] = { email, pw, uid: c.user.uid, name: B.name };
+      await setDoc(doc(adb, 'private', 'bots'), creds);
+      await setDoc(doc(b.db, 'users', c.user.uid), { name: B.name, sex: B.sex, age: B.age, city: B.city, char: B.char, theme: 'dusk', interests: B.interests, updatedAt: serverTimestamp() }, { merge: true });
+    }
+    return creds;
+  },
+  async actAs(id) {
+    if (!Cloud.isAdmin()) throw new Error('Admin only');
+    if (id === 'admin') { db = adb; Cloud.as = 'admin'; Cloud.user = Cloud.adminUser; }
+    else {
+      const creds = await Cloud.botCreds(); if (!creds[id]) throw new Error('Set up the test bots first');
+      const b = botApp(id); if (!b.auth.currentUser) await signInWithEmailAndPassword(b.auth, creds[id].email, creds[id].pw);
+      db = b.db; Cloud.as = id; Cloud.user = { ...userOf(b.auth.currentUser), name: creds[id].name, bot: id };
+    }
+    localStorage.setItem('provn_as', id);
+    window.dispatchEvent(new CustomEvent('cloud-auth', { detail: Cloud.user }));
+  },
   admin: {
     async stats() {
       const c = q => getCountFromServer(q).then(r => r.data().count).catch(() => '–');
-      const [users, results, flagged, events, bans] = await Promise.all([c(collection(db, 'users')), c(collection(db, 'results')),
-        c(query(collection(db, 'results'), where('flags', '>', 0))), c(collection(db, 'events')), c(collection(db, 'bans'))]);
+      const [users, results, flagged, events, bans] = await Promise.all([c(collection(adb, 'users')), c(collection(adb, 'results')),
+        c(query(collection(adb, 'results'), where('flags', '>', 0))), c(collection(adb, 'events')), c(collection(adb, 'bans'))]);
       return { users, results, flagged, events, bans };
     },
     async flagged() {
-      const got = await Promise.all(['results', 'posts'].map(c => getDocs(query(collection(db, c), where('flags', '>', 0), limit(100))).then(s => s.docs.map(d => ({ id: d.id, col: c, ...d.data(), t: tsMs(d.data().createdAt) }))).catch(() => [])));
+      const got = await Promise.all(['results', 'posts'].map(c => getDocs(query(collection(adb, c), where('flags', '>', 0), limit(100))).then(s => s.docs.map(d => ({ id: d.id, col: c, ...d.data(), t: tsMs(d.data().createdAt) }))).catch(() => [])));
       return got.flat().sort((a, b) => b.flags - a.flags);
     },
     async users() {
-      const [u, b] = await Promise.all([getDocs(query(collection(db, 'users'), limit(500))), getDocs(collection(db, 'bans'))]);
+      const [u, b] = await Promise.all([getDocs(query(collection(adb, 'users'), limit(500))), getDocs(collection(adb, 'bans'))]);
       const banned = new Set(b.docs.map(d => d.id));
       return u.docs.map(d => ({ uid: d.id, ...d.data(), t: tsMs(d.data().updatedAt), banned: banned.has(d.id) })).sort((a, b) => b.t - a.t);
     },
     async results(uid) {
-      const s = await getDocs(query(collection(db, 'results'), where('uid', '==', uid), limit(500)));
+      const s = await getDocs(query(collection(adb, 'results'), where('uid', '==', uid), limit(500)));
       return s.docs.map(d => ({ id: d.id, ...d.data(), t: tsMs(d.data().createdAt) })).sort((a, b) => b.t - a.t);
     },
     async removeResult(r) {
-      if (r.col === 'posts') return deleteDoc(doc(db, 'posts', r.id));
-      const bref = doc(db, 'best', r.uid + '__' + skillKey(r.skill)), b = await getDoc(bref);
+      if (r.col === 'posts') return deleteDoc(doc(adb, 'posts', r.id));
+      const bref = doc(adb, 'best', r.uid + '__' + skillKey(r.skill)), b = await getDoc(bref);
       if (b.exists() && b.data().result === r.id) await deleteDoc(bref);
-      await deleteDoc(doc(db, 'results', r.id));
+      await deleteDoc(doc(adb, 'results', r.id));
     },
     async clearFlags(id, col = 'results') {
-      const s = await getDocs(collection(db, col, id, 'flags')), b = writeBatch(db);
-      s.docs.forEach(d => b.delete(d.ref)); b.update(doc(db, col, id), { flags: 0 });
+      const s = await getDocs(collection(adb, col, id, 'flags')), b = writeBatch(adb);
+      s.docs.forEach(d => b.delete(d.ref)); b.update(doc(adb, col, id), { flags: 0 });
       return b.commit();
     },
     async comments(id, col) { return Cloud.comments(id, col); },
     async removeComment(rid, cid, col = 'results') {
-      const b = writeBatch(db); b.delete(doc(db, col, rid, 'comments', cid)); b.update(doc(db, col, rid), { comments: increment(-1) });
+      const b = writeBatch(adb); b.delete(doc(adb, col, rid, 'comments', cid)); b.update(doc(adb, col, rid), { comments: increment(-1) });
       return b.commit();
     },
-    ban(uid, on) { const r = doc(db, 'bans', uid); return on ? setDoc(r, { at: serverTimestamp(), by: Cloud.user.email }) : deleteDoc(r); },
+    ban(uid, on) { const r = doc(adb, 'bans', uid); return on ? setDoc(r, { at: serverTimestamp(), by: Cloud.user.email }) : deleteDoc(r); },
     saveEvent(e, id) {
       const data = { title: e.title, skill: e.skill || '', date: e.date, time: e.time || '', place: e.place || '', city: e.city || '', spots: e.spots || 0, info: e.info || '', updatedAt: serverTimestamp() };
       if (typeof e.lat === 'number' && typeof e.lng === 'number') { data.lat = e.lat; data.lng = e.lng; }
-      return id ? setDoc(doc(db, 'events', id), data) : addDoc(collection(db, 'events'), data);
+      return id ? setDoc(doc(adb, 'events', id), data) : addDoc(collection(adb, 'events'), data);
     },
     saveVenue(v, id) {
       const data = { name: v.name, kind: v.kind, acts: v.acts.slice(0, 12), addr: v.addr || '', phone: v.phone || '', web: v.web || '', info: v.info || '', lat: v.lat, lng: v.lng, city: v.city || '', updatedAt: serverTimestamp() };
-      return id ? setDoc(doc(db, 'venues', id), data) : addDoc(collection(db, 'venues'), data);
+      return id ? setDoc(doc(adb, 'venues', id), data) : addDoc(collection(adb, 'venues'), data);
     },
-    async allRecords() { const s = await getDocs(query(collection(db, 'records'), limit(1000))); return s.docs.map(d => ({ id: d.id, ...d.data() })); },
+    async allRecords() { const s = await getDocs(query(collection(adb, 'records'), limit(1000))); return s.docs.map(d => ({ id: d.id, ...d.data() })); },
     saveRecord(r) {
       const id = [r.level, r.region, r.sex, skillKey(r.skill)].join('__').replace(/[^A-Za-z0-9_]/g, '_');
-      return setDoc(doc(db, 'records', id), { level: r.level, region: r.region, sex: r.sex, skill: r.skill, v: r.v, holder: r.holder, date: r.date || '', meet: r.meet || '', place: r.place || '', updatedAt: serverTimestamp() });
+      return setDoc(doc(adb, 'records', id), { level: r.level, region: r.region, sex: r.sex, skill: r.skill, v: r.v, holder: r.holder, date: r.date || '', meet: r.meet || '', place: r.place || '', updatedAt: serverTimestamp() });
     },
-    deleteRecord(id) { return deleteDoc(doc(db, 'records', id)); },
-    deleteVenue(id) { return deleteDoc(doc(db, 'venues', id)); },
-    deleteEvent(id) { return deleteDoc(doc(db, 'events', id)); },
-    async going(id) { const s = await getDocs(collection(db, 'events', id, 'going')); return s.docs.map(d => ({ uid: d.id, ...d.data() })); },
+    deleteRecord(id) { return deleteDoc(doc(adb, 'records', id)); },
+    deleteVenue(id) { return deleteDoc(doc(adb, 'venues', id)); },
+    deleteEvent(id) { return deleteDoc(doc(adb, 'events', id)); },
+    async going(id) { const s = await getDocs(collection(adb, 'events', id, 'going')); return s.docs.map(d => ({ uid: d.id, ...d.data() })); },
     setConfig(c) {
       const d = { updatedAt: serverTimestamp() };
       if ('announce' in c) d.announce = (c.announce || '').slice(0, 280);
       if ('maptiler' in c) d.maptiler = (c.maptiler || '').replace(/[^A-Za-z0-9]/g, '').slice(0, 64);
-      return setDoc(doc(db, 'config', 'app'), d, { merge: true });
+      return setDoc(doc(adb, 'config', 'app'), d, { merge: true });
     }
   },
 
@@ -237,9 +273,11 @@ const Cloud = {
 };
 
 getRedirectResult(auth).catch(() => {});
-onAuthStateChanged(auth, u => {
-  Cloud.user = u ? { uid: u.uid, name: u.displayName || '', email: u.email || '', photo: u.photoURL || '', verified: !!u.emailVerified } : null;
-  Cloud.ready = true;
+onAuthStateChanged(auth, async u => {
+  Cloud.adminUser = userOf(u); Cloud.ready = true;
+  const want = localStorage.getItem('provn_as');
+  if (u && want && want !== 'admin' && Cloud.isAdmin()) { try { await Cloud.actAs(want); return; } catch (e) { console.warn('bot', e); } }
+  db = adb; Cloud.as = 'admin'; Cloud.user = Cloud.adminUser; if (!u) localStorage.removeItem('provn_as');
   window.dispatchEvent(new CustomEvent('cloud-auth', { detail: Cloud.user }));
 });
 window.Cloud = Cloud;

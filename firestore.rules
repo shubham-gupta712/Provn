@@ -220,6 +220,11 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // ---------- admin-only settings (test bot logins) ----------
+    match /private/{id} {
+      allow read, write: if isAdmin();
+    }
+
     // ---------- players banned from posting ----------
     match /bans/{uid} {
       allow read: if signedIn();

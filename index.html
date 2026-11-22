@@ -740,6 +740,13 @@ svg{display:block}
 .ip.on{border-color:var(--accent);color:var(--text);background:color-mix(in srgb,var(--accent) 18%,var(--bg3))}
 .int-f{display:flex;align-items:center;gap:12px;margin-top:12px}.int-f small{flex:1;font-weight:800;color:var(--text3)}.int-f .btn{height:48px;padding:0 28px}
 
+/* test bots */
+.adm-as{padding:0 16px 8px}.adm-as small{display:block;font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.adm-as>div{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:4px;border-radius:16px;background:var(--bg2);border:var(--card-bd)}
+.adm-as button{height:38px;border-radius:12px;font-size:13.5px;font-weight:800;color:var(--text2)}.adm-as button.on{background:var(--accent);color:var(--on-accent)}
+.as-bar{position:absolute;z-index:93;left:50%;transform:translateX(-50%);top:calc(var(--safe-t) + 6px);padding:7px 14px;border-radius:18px;background:#111827e6;color:#fff;font-size:12.5px;font-weight:700;white-space:nowrap;box-shadow:0 6px 18px rgba(0,0,0,.35);border:1.5px solid var(--accent)}
+.as-bar[hidden]{display:none}
+
 /* account */
 .acct2{padding:14px;margin-top:18px}
 .ac-row{display:flex;align-items:center;gap:12px}
@@ -1125,7 +1132,7 @@ svg{display:block}
     <div class="row" id="acctRow" style="cursor:pointer"><span data-i="you"></span><span class="sp">Account</span><small id="acctTxt">Sign out</small></div>
     <div class="row"><span data-i="bell"></span><span class="sp">Notifications</span><small>Soon</small></div>
     <div class="row"><span data-i="lock"></span><span class="sp">Privacy</span><small>Soon</small></div>
-    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261123h</small></div>
+    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261123i</small></div>
   </section>
 
   <div class="cele" id="cele"><div class="cele-in"><div class="cele-m" id="celeM"></div><h2 class="display" id="celeT"></h2><div class="big" id="celeB"></div><p id="celeS"></p><button class="btn primary" id="celeOk"><span>Keep going</span></button></div></div>
@@ -1152,9 +1159,11 @@ svg{display:block}
 
   <div class="adm" id="adm" hidden>
     <header class="adm-hd"><div><b class="display">Admin</b><small id="admWho"></small></div><button class="btn ghost" id="admPlayer"><span>Player view</span></button></header>
+    <div class="adm-as" id="admAs"><small>Use the app as</small><div><button data-as="admin">👑 You</button><button data-as="bot1">🤖 Aarav</button><button data-as="bot2">🤖 Meera</button></div></div>
     <nav class="adm-tabs" id="admTabs"><button data-t="overview" class="on">Overview</button><button data-t="mod">Moderation</button><button data-t="users">Players</button><button data-t="events">Events</button><button data-t="records">Records</button><button data-t="test">Test</button></nav>
     <div class="adm-body" id="admBody"></div>
   </div>
+  <button class="as-bar" id="asBar" hidden></button>
   <button class="adm-pill" id="admPill" hidden aria-label="Admin console"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 19.5 6v5.6c0 4.6-3.2 7.9-7.5 9.4-4.3-1.5-7.5-4.8-7.5-9.4V6z"/><path d="m8.8 12.2 2.2 2.2 4.4-4.6"/></svg><b>Admin</b></button>
 
   <div class="onb" id="onb" hidden>
@@ -2135,7 +2144,7 @@ const Sync={busy:false,
    const need=!p||!p.name||!p.sex||!p.age;
    if(need){Gate.hide();p=await Onb.run({...(p||{}),name:(p&&p.name)||store.get('name','')||(u.name||'').split(' ')[0]});
     await Cloud.saveProfile({...cloudProfile(),photo:u.photo||''});}
-   else{store.set('name',p.name);['sex','city'].forEach(k=>{if(typeof p[k]==='string')store.set(k,p[k])});store.set('age',p.age);if(p.bw)store.set('bw',p.bw);if(p.sexAt)store.set('sexAt',p.sexAt);if(Array.isArray(p.interests))store.set('interests',p.interests);
+   else{store.set('name',p.name);['sex','city'].forEach(k=>{if(typeof p[k]==='string')store.set(k,p[k])});store.set('age',p.age);store.set('bw',p.bw||0);store.set('sexAt',p.sexAt||0);store.set('interests',Array.isArray(p.interests)?p.interests:[]);store.set('city',p.city||'');
     if(p.char&&window.Avatar3D&&p.char!==Avatar3D.getChar())Avatar3D.setChar(p.char);}
    /* upload results logged on this phone before accounts existed */
    if(!store.get('acct',false)){for(const s of SKILL_LIST){const list=store.get('res_'+s.name,null);if(!list)continue;
@@ -2214,7 +2223,7 @@ $('#onbBack').onclick=()=>{if(Onb.i>0){Onb.i--;Onb.paint();}};
 
 function renderAcct(){const u=CU()&&Cloud.user,ar=$('#acctTxt');if(ar)ar.textContent=u?'Sign out':'Signed out';
  const c=$('#acctCard');if(!c)return;if(!u){c.innerHTML='';c.hidden=true;return;}c.hidden=false;
- c.innerHTML=`<div class="ac-row">${u.photo?`<img src="${esc(u.photo)}" alt="" referrerpolicy="no-referrer">`:`<span class="ac-av">${esc((u.name||u.email||'?')[0].toUpperCase())}</span>`}<div><small>Signed in with Google</small><b>${esc(u.email||u.name)}</b></div></div><button class="btn ghost ac-out" id="signOutBtn"><span>Sign out</span></button>`;
+ c.innerHTML=`<div class="ac-row">${u.photo?`<img src="${esc(u.photo)}" alt="" referrerpolicy="no-referrer">`:`<span class="ac-av">${esc((u.name||u.email||'?')[0].toUpperCase())}</span>`}<div><small>${u.bot?'Test bot account':'Signed in with Google'}</small><b>${esc(u.bot?u.name:(u.email||u.name))}</b></div></div><button class="btn ghost ac-out" id="signOutBtn"><span>${u.bot?'Switch back to admin':'Sign out'}</span></button>`;
  $('#signOutBtn').onclick=e=>{const b=e.currentTarget;if(!b.dataset.armed){b.dataset.armed=1;b.classList.add('warn');b.firstChild.textContent='Tap again to sign out';setTimeout(()=>{if(b.isConnected){delete b.dataset.armed;b.classList.remove('warn');b.firstChild.textContent='Sign out';}},3000);return;}
   buzz(10);Cloud.signOut();};}
 function clearLocal(){Object.keys(localStorage).filter(k=>k.startsWith('provn_res_')).forEach(k=>localStorage.removeItem(k));['name','sex','age','bw','city','acct'].forEach(k=>localStorage.removeItem('provn_'+k));}
@@ -2293,7 +2302,7 @@ async function renderEvents(){if(!CU()||evBusy)return;evBusy=true;
 const Admin={tab:'overview',
  on:()=>!!(CU()&&Cloud.isAdmin&&Cloud.isAdmin()),
  sync(){const a=this.on();$('#admRow').hidden=!a;$('#admPill').hidden=!a||!$('#adm').hidden;if(!a)$('#adm').hidden=true;},
- open(keep){if(!this.on())return;$('#adm').hidden=false;$('#admPill').hidden=true;$('#admWho').textContent=Cloud.user.email;if(!keep||!$('#admBody').children.length)this.render();},
+ open(keep){if(!this.on())return;paintAs();$('#adm').hidden=false;$('#admPill').hidden=true;$('#admWho').textContent=Cloud.adminUser.email;if(!keep||!$('#admBody').children.length)this.render();},
  player(){$('#adm').hidden=true;$('#admPill').hidden=false;buzz(8);},
  body:()=>$('#admBody'),
  confirm(b,fn){if(b.dataset.armed){fn();return;}b.dataset.armed=1;const t=b.textContent;b.textContent='Tap again';b.classList.add('warn');setTimeout(()=>{if(b.isConnected){delete b.dataset.armed;b.textContent=t;b.classList.remove('warn');}},3000);},
@@ -2408,6 +2417,15 @@ const Admin={tab:'overview',
   $('#tReload').onclick=()=>location.reload();}};
 $$('#admTabs button').forEach(b=>b.onclick=()=>{Admin.tab=b.dataset.t;buzz(6);Admin.render();});
 $('#admPlayer').onclick=()=>Admin.player();
+/* act as a test bot (two real accounts) to see how players interact */
+function paintAs(){const as=window.Cloud&&Cloud.as||'admin';$$('#admAs button').forEach(b=>b.classList.toggle('on',b.dataset.as===as));
+ const bar=$('#asBar');if(as!=='admin'&&CU()){bar.hidden=false;bar.innerHTML=`🤖 You're <b>${esc(Cloud.user.name)}</b> · tap to switch back`;}else bar.hidden=true;}
+$$('#admAs button').forEach(b=>b.onclick=async()=>{const id=b.dataset.as;if(id===Cloud.as){if(id!=='admin')Admin.player();return;}buzz(10);
+ try{if(id!=='admin'){const c=await Cloud.botCreds();if(!c[id]){toast('Creating test bots…');await Cloud.setupBots();}}
+  feedAll=[];Pulse.last=0;toast(id==='admin'?'Back to your own account':`Now using the app as ${Cloud.BOTS[id].name}`);await Cloud.actAs(id);if(id!=='admin')Admin.player();else Admin.render();}
+ catch(e){toast('Could not switch: '+(e.code==='auth/operation-not-allowed'?'turn on Email/Password sign-in in Firebase Authentication':(e.code||e.message)));}});
+$('#asBar').onclick=async()=>{buzz(10);feedAll=[];Pulse.last=0;try{await Cloud.actAs('admin');toast('Back to your own account');}catch(e){toast(e.message);}};
+addEventListener('cloud-auth',()=>{feedAll=[];paintAs();});
 (()=>{const el=$('#admPill');let sx,sy,ox,oy,drag=false,down=false;
  const place=(x,y)=>{const a=$('#app').getBoundingClientRect(),w=el.offsetWidth,h=el.offsetHeight;el.style.left=Math.max(6,Math.min(a.width-w-6,x))+'px';el.style.top=Math.max(6,Math.min(a.height-h-6,y))+'px';};
  const pos=store.get('admPos',null);if(pos)requestAnimationFrame(()=>place(pos.x,pos.y));
