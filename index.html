@@ -460,6 +460,43 @@ svg{display:block}
 .si-rec,.si-pts{padding:14px 16px;margin-bottom:14px}
 .si-rec>small,.si-pts>small{display:block;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--text3)}
 .si-rec>b{display:block;font-size:34px;line-height:1.1;margin:4px 0 8px;color:var(--accent)}
+.wr{border-radius:var(--r-card);border:var(--card-bd);background:var(--bg2);overflow:hidden;margin-bottom:14px;box-shadow:var(--card-sh,none)}
+.wr-top{position:relative;padding:16px 16px 14px;background:var(--cv);color:var(--cvi);overflow:hidden}
+.wr-top::after{content:'';position:absolute;right:-30px;bottom:-40px;width:130px;height:130px;border-radius:50%;background:rgba(255,255,255,.18)}
+.wr-tag{display:inline-flex;align-items:center;gap:6px;padding:5px 10px 5px 8px;border-radius:20px;background:rgba(0,0,0,.14);font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.wr-tag svg{width:15px;height:15px}
+.wr-mark{display:flex;align-items:baseline;gap:8px;margin-top:8px;position:relative;z-index:1}
+.wr-mark b{font-size:64px;line-height:.95;letter-spacing:-.02em}.wr-mark b.sm{font-size:34px;line-height:1.1}
+.wr-mark span{font-size:22px;font-weight:800;opacity:.8}
+.wr-note{position:relative;z-index:1;margin:8px 0 0;font-size:12.5px;font-weight:700;opacity:.75;line-height:1.35}
+.wr-who{display:flex;align-items:center;gap:12px;padding:14px 16px 4px}
+.wr-av{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--cv);color:var(--cvi);font-weight:800;font-size:16px;border:2.5px solid var(--ink);flex:none}
+.wr-who b{display:block;font-size:17px;line-height:1.2}.wr-who small{display:block;font-size:12.5px;font-weight:700;color:var(--text3);margin-top:2px}
+.wr-facts{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 12px 14px}
+.wr-f{display:flex;gap:10px;align-items:flex-start;padding:10px;border-radius:14px;background:var(--bg3)}
+.wr-f.wide{grid-column:span 2}
+.wr-fi{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:var(--bg2);color:var(--accent);flex:none}
+.wr-fi svg{width:18px;height:18px}
+.wr-f small{display:block;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--text3)}
+.wr-f b{display:block;font-size:14px;font-weight:800;line-height:1.3;margin-top:1px}
+.si-note.pad{padding:0 16px 14px}
+.lad{padding:16px;margin-bottom:14px}
+.lad-h{display:block;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--text3)}
+.lad-track{position:relative;height:14px;border-radius:10px;background:var(--bg3);margin:34px 6px 14px}
+.lad-fill{position:absolute;left:0;top:0;bottom:0;border-radius:10px;background:linear-gradient(90deg,#9BE15D,#60A5FA,#FFC23D);transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.lad-dot{position:absolute;top:50%;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;border:2.5px solid var(--ink)}
+.lad-you{position:absolute;top:50%;width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:50%;background:var(--accent);border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.35);animation:pop .5s .2s ease both}
+.lad-you i{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);padding:3px 8px;border-radius:9px;background:var(--accent);color:var(--on-accent);font-style:normal;font-size:12px;font-weight:800;white-space:nowrap}
+@keyframes pop{0%{transform:scale(0)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+.lad-keys{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.lad-keys div{padding:10px 8px;border-radius:14px;background:var(--bg3);text-align:center}
+.lad-keys .k{display:block;width:10px;height:10px;border-radius:50%;margin:0 auto 4px;border:2px solid var(--ink)}
+.lad-keys small{display:block;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text3)}
+.lad-keys b{display:block;font-size:14.5px;font-weight:800;margin-top:2px;line-height:1.2}
+.lad-keys em{display:block;font-style:normal;font-size:12px;font-weight:700;color:var(--text2);margin-top:1px}
+.lad-call{margin:14px 0 10px;font-size:14.5px;font-weight:600;color:var(--text2);line-height:1.45}
+.lad-call b{color:var(--text)}
+.lad-go{width:100%;height:50px}
 .si-row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1.5px solid var(--bg3);font-size:13.5px}
 .si-row span{color:var(--text2);font-weight:600;flex:none}
 .si-row b{text-align:right;font-weight:800}
@@ -528,7 +565,7 @@ svg{display:block}
 .adm-sw2{width:50px;height:30px;border-radius:16px;background:var(--bg3);position:relative;flex:none;border:var(--card-bd)}
 .adm-sw2 i{position:absolute;left:3px;top:50%;width:22px;height:22px;margin-top:-11px;border-radius:50%;background:var(--text3);transition:all .2s}
 .adm-sw2.on{background:var(--accent)}.adm-sw2.on i{left:23px;background:#fff}
-.adm-pill{position:absolute;z-index:60;left:12px;bottom:calc(var(--safe-b) + 96px);display:flex;align-items:center;gap:6px;padding:9px 14px 9px 11px;border-radius:22px;background:var(--ink,#171A25);color:#fff;font-size:13px;font-weight:800;box-shadow:0 6px 18px rgba(0,0,0,.35);border:2px solid var(--accent)}
+.adm-pill{position:absolute;z-index:86;left:10px;top:60%;touch-action:none;user-select:none;display:flex;align-items:center;gap:6px;padding:9px 14px 9px 11px;border-radius:22px;transition:left .25s ease,top .05s linear,opacity .2s;background:var(--ink,#171A25);color:#fff;font-size:13px;font-weight:800;box-shadow:0 6px 18px rgba(0,0,0,.35);border:2px solid var(--accent)}
 .adm-pill svg{width:16px;height:16px}
 .adm-pill[hidden]{display:none}
 .gate-x{position:absolute;right:16px;top:calc(var(--safe-t) + 16px);width:42px;height:42px;border-radius:50%;background:var(--bg2);border:var(--card-bd);font-size:24px;font-weight:800;z-index:2}
@@ -797,7 +834,7 @@ svg{display:block}
     <div class="row" id="acctRow" style="cursor:pointer"><span data-i="you"></span><span class="sp">Account</span><small id="acctTxt">Sign out</small></div>
     <div class="row"><span data-i="bell"></span><span class="sp">Notifications</span><small>Soon</small></div>
     <div class="row"><span data-i="lock"></span><span class="sp">Privacy</span><small>Soon</small></div>
-    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261122c</small></div>
+    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261122d</small></div>
   </section>
 
   <div class="cele" id="cele"><div class="cele-in"><div class="cele-m" id="celeM"></div><h2 class="display" id="celeT"></h2><div class="big" id="celeB"></div><p id="celeS"></p><button class="btn primary" id="celeOk"><span>Keep going</span></button></div></div>
@@ -1493,16 +1530,41 @@ function openSkillInfo(name){const s=SKILLS[name],c=CATS[s.cat],e=eff(s),fem=e.f
  const mark=r&&r[5]?r[5]:`${fmtPerf(s,e.ref,bw)}${unitShort(s)}`;
  const rows=r?[['Holder',r[0]?`${r[0]}${r[1]?` (${r[1]})`:''}`:''],['When',r[2]],['Event',r[3]],['Where',r[4]],['Record keeper',KEEP_S[name]||KEEPER[s.cat]]].filter(x=>x[1]):BENCH.has(name)?[]:[['Record keeper',KEEP_S[name]||KEEPER[s.cat]]];
  $('#siHero').innerHTML=`<span class="si-ic">${iconSvg(s.ic)}</span><div class="av3d" data-mode="hero" data-clip="${heroClip(s)}">${mascot()}</div>`;
+ const recLabel=s.ty==='r'?'Top rating':fem==='estimated'||BENCH.has(name)?(fem?"Women's elite level":'Elite benchmark'):(fem?"Women's world record":'World record');
+ const [mMain,...mRest]=String(mark).split(/\s+[—–]\s+/),mm=mMain.match(/^([~≈]?[\d:.,]+)\s*(.*)$/),mNote=mRest.join(' — ');
+ const holder=r&&r[0]?r[0]:'',nat=r&&r[1]?r[1]:'',ini=holder?holder.split(/\s+/).map(w=>w[0]).filter(ch=>/[A-Za-zÀ-ÿ]/.test(ch)).slice(0,2).join('').toUpperCase():'';
+ const facts=r?[['cal','Year',r[2]],['pin','Where',r[4]],['trophy','Event',r[3]],['shield','Keeper',KEEP_S[name]||KEEPER[s.cat]]].filter(x=>x[2]):BENCH.has(name)?[]:[['shield','Keeper',KEEP_S[name]||KEEPER[s.cat]]];
+ const halves=facts.filter(f=>f[0]==='cal'||f[0]==='shield');facts.sort((x,y)=>(halves.includes(x)?1:0)-(halves.includes(y)?1:0));if(halves.length===1)halves[0].wide=1;
+ const FI={cal:'<rect x="4" y="5.5" width="16" height="14" rx="3"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/>',pin:'<path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>',trophy:'<path d="M7.5 4.5h9v5a4.5 4.5 0 0 1-9 0zM7.5 6.5H4.5a3 3 0 0 0 3 4M16.5 6.5h3a3 3 0 0 1-3 4M12 14v3.5M8.5 20h7M9.5 17.5h5"/>',shield:'<path d="M12 3.5 19 6v5.5c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z"/><path d="m9 12 2 2 4-4"/>'};
+ const fic=k=>`<svg viewBox="0 0 24 24" ${P}>${FI[k]}</svg>`;
+ /* the ladder: casual → national → record, with you on it */
+ const ptsRec=rawPoints(e,e.ref),ptsMed=rawPoints(e,e.med),top=Math.max(1200,ptsRec,b?b.p:0),pc=v=>Math.max(0,Math.min(100,v/top*100));
+ const lv=b?lvOf(b.p):-1,nx=b?LEVELS[lv+1]:LEVELS[1];
+ const natTxt=esc(targetText(s,1000).replace(/^(Under|Hold|Reach|Lift|Send) /,''));
+ const marks=[['Casual',ptsMed,`${fmtPerf(s,e.med,bw)}${unitShort(s)}`,'#9BE15D'],['National',1000,natTxt,'#60A5FA'],[s.ty==='r'?'Top':BENCH.has(name)?'Elite':'Record',ptsRec,`${fmtPerf(s,e.ref,bw)}${unitShort(s)}`,'#FFC23D']];
+ const call=b?(nx?`<b>${b.p} pts</b> · ${LEVELS[lv][0]}. <b>${nx[1]-b.p} pts</b> more to reach ${nx[0]}: ${esc(targetText(s,nx[1]).toLowerCase())}.`:`<b>${b.p} pts</b> · Elite. You're at the top of the scale.`)
+   :`Where would you land? An average casual player scores about <b>${ptsMed}</b>.`;
  $('#siBody').innerHTML=`<small class="si-cat">${s.w==='mind'?'Mind':'Body'} · ${c.n}</small><h2 class="display">${esc(s.name)}</h2><p class="si-desc">${esc(DESC[name]||CAT_DESC[s.cat])}</p>
-  <div class="card si-rec"><small>${s.ty==='r'?'Top rating':fem==='estimated'||BENCH.has(name)?(fem?"Women's elite level":'Elite benchmark'):(fem?"Women's world record":'World record')}</small><b class="display">${esc(mark)}</b>${rows.map(x=>`<div class="si-row"><span>${x[0]}</span><b>${esc(x[1])}</b></div>`).join('')}
-  ${fem==='estimated'?`<p class="si-note">Women's level for this skill is estimated from typical elite differences (men's record: ${fmtPerf(s,s.ref,bw)}${unitShort(s)}). Holder details will be added.</p>`:r?'':BENCH.has(name)?'<p class="si-note">There is no single official world record in this exact format, so the number above is an elite benchmark rather than a record.</p>':'<p class="si-note">Holder, venue and event for this record are being added.</p>'}</div>
-  <div class="card si-pts"><small>How points work</small>
-   <div class="si-row"><span>${s.ty==='r'?'Top of scale':BENCH.has(name)?'Elite benchmark':'World record'}</span><b>${fmtPerf(s,e.ref,bw)}${unitShort(s)} ≈ ${rawPoints(e,e.ref)} pts</b></div>
-   <div class="si-row"><span>National level${profile().age&&s.w==='body'&&ageFactor(profile().age)!==1?' (your age)':''}</span><b>${esc(targetText(s,1000).replace(/^(Under|Hold|Reach|Lift|Send) /,''))} ≈ 1000 pts</b></div>
-   <div class="si-row"><span>Average casual player</span><b>${fmtPerf(s,e.med,bw)}${unitShort(s)} ≈ ${rawPoints(e,e.med)} pts</b></div>
+  <div class="wr">
+   <div class="wr-top"><span class="wr-tag">${fic('trophy')}${recLabel}</span>
+    <div class="wr-mark">${mm?`<b class="display">${esc(mm[1])}</b><span>${esc(mm[2]||(s.unit==='min:sec'?'':s.unit))}</span>`:`<b class="display sm">${esc(mMain)}</b>`}</div>
+    ${mNote?`<p class="wr-note">${esc(mNote.charAt(0).toUpperCase()+mNote.slice(1))}</p>`:''}</div>
+   ${holder?`<div class="wr-who"><span class="wr-av">${esc(ini)}</span><div><b>${esc(holder)}</b><small>${nat?esc(nat):'Record holder'}</small></div></div>`:''}
+   ${facts.length?`<div class="wr-facts">${facts.map(f=>`<div class="wr-f ${f[0]==='trophy'||f[0]==='pin'||f.wide?'wide':''}"><span class="wr-fi">${fic(f[0])}</span><div><small>${f[1]}</small><b>${esc(f[2])}</b></div></div>`).join('')}</div>`:''}
+   ${fem==='estimated'?`<p class="si-note pad">Women's level is estimated from typical elite differences (men's record: ${fmtPerf(s,s.ref,bw)}${unitShort(s)}).</p>`:r?'':BENCH.has(name)?'<p class="si-note pad">No single official record exists in this exact format, so this is an elite benchmark.</p>':'<p class="si-note pad">Holder, venue and event details are being added.</p>'}
+  </div>
+  <div class="card lad">
+   <small class="lad-h">Where do you stand?</small>
+   <div class="lad-track"><div class="lad-fill" style="width:${b?pc(b.p):0}%"></div>
+    ${marks.map(m=>`<span class="lad-dot" style="left:${pc(m[1])}%;background:${m[3]}"></span>`).join('')}
+    ${b?`<span class="lad-you" style="left:${pc(b.p)}%"><i>${b.p}</i></span>`:''}</div>
+   <div class="lad-keys">${marks.map(m=>`<div><span class="k" style="background:${m[3]}"></span><small>${m[0]}</small><b>${m[2]}</b><em>${m[1]} pts</em></div>`).join('')}</div>
+   <p class="lad-call">${call}</p>
+   <button class="btn primary lad-go" id="siLog"><span>${b?'Beat your best':'Log your result'}</span></button>
    <p class="si-note">${scoringNote(s)}</p>
-   ${b?`<div class="si-row you"><span>${esc(pname())}</span><b>${fmtPerf(s,b.v,bw)}${unitShort(s)} = ${b.p} pts</b></div>`:''}</div>
-  <p class="si-note">${(SRC_S[name]||SRC[s.cat]||(r&&SRC_N[s.cat]))?`Source: ${fem==='record'?(s.cat==='wat'?'Swimming World record list (8 Nov 2025)':SRC_S[name]||'World Athletics list via Wikipedia, checked Nov 2026'):SRC_S[name]||SRC[s.cat]||SRC_N[s.cat]}.${fem?'':s.w==='body'?" Men's records.":''}`:BENCH.has(name)?`Benchmark set by Provn from typical elite results; review before launch.`:`Men's open records. This record still needs checking against the federation's live list.`}</p>`;
+  </div>
+  <p class="si-note">${(SRC_S[name]||SRC[s.cat]||(r&&SRC_N[s.cat]))?`Source: ${fem==='record'?(s.cat==='wat'?'Swimming World record list (8 Nov 2025)':SRC_S[name]||'World Athletics list via Wikipedia, checked Nov 2026'):SRC_S[name]||SRC[s.cat]||SRC_N[s.cat]}.${fem?'':s.w==='body'?" Men's records.":''}`:BENCH.has(name)?`Benchmark set by Provn from typical elite results.`:`Men's open records.`}</p>`;
+ $('#siLog').onclick=()=>{buzz(10);hideSheet();setTimeout(()=>openProve(name,Orbit.isOpen()),280);};
  showSheet('sh-skill');}
 
 /* ================= ORBIT =================
@@ -1703,8 +1765,8 @@ const Onb={i:0,d:{},done:null,
   {k:'name',t:"What should we call you?",sub:'This is your player name. Others see it in the feed and rankings.',
    body:d=>`<input class="onb-in" id="oIn" maxlength="24" autocomplete="given-name" value="${esc(d.name||'')}" placeholder="Your name">`,
    ok:d=>(d.name||'').trim().length>0,read(d){d.name=$('#oIn').value.trim();}},
-  {k:'sex',t:'Which records should score you?',sub:"Women's results are scored against women's world records, so 1000 points means the same for everyone.",
-   body:d=>`<div class="onb-opts">${[['m','Men’s records','♂'],['f','Women’s records','♀']].map(([v,l,ic])=>`<button class="onb-opt press ${d.sex===v?'on':''}" data-v="${v}"><span class="oi">${ic}</span><span>${l}</span></button>`).join('')}</div>`,
+  {k:'sex',t:"What's your gender?",sub:"Used to score you fairly: women are scored against women's records and men against men's.",
+   body:d=>`<div class="onb-opts">${[['m','Male','♂'],['f','Female','♀']].map(([v,l,ic])=>`<button class="onb-opt press ${d.sex===v?'on':''}" data-v="${v}"><span class="oi">${ic}</span><span>${l}</span></button>`).join('')}</div>`,
    ok:d=>d.sex==='m'||d.sex==='f',pick:'sex'},
   {k:'age',t:'How old are you?',sub:'Body skills are age graded, so a 50-year-old and a 25-year-old are scored fairly against each other.',
    body:d=>`<div class="onb-unit"><input class="onb-in" id="oIn" inputmode="numeric" maxlength="3" value="${d.age||''}" placeholder="Age"><em>years</em></div>`,
@@ -1912,7 +1974,15 @@ const Admin={tab:'overview',
   $('#tReload').onclick=()=>location.reload();}};
 $$('#admTabs button').forEach(b=>b.onclick=()=>{Admin.tab=b.dataset.t;buzz(6);Admin.render();});
 $('#admPlayer').onclick=()=>Admin.player();
-$('#admPill').onclick=()=>{buzz(8);Admin.open();};
+(()=>{const el=$('#admPill');let sx,sy,ox,oy,drag=false,down=false;
+ const place=(x,y)=>{const a=$('#app').getBoundingClientRect(),w=el.offsetWidth,h=el.offsetHeight;el.style.left=Math.max(6,Math.min(a.width-w-6,x))+'px';el.style.top=Math.max(6,Math.min(a.height-h-6,y))+'px';};
+ const pos=store.get('admPos',null);if(pos)requestAnimationFrame(()=>place(pos.x,pos.y));
+ el.addEventListener('pointerdown',e=>{down=true;drag=false;sx=e.clientX;sy=e.clientY;ox=el.offsetLeft;oy=el.offsetTop;el.setPointerCapture(e.pointerId);el.style.transition='none';});
+ el.addEventListener('pointermove',e=>{if(!down)return;const dx=e.clientX-sx,dy=e.clientY-sy;if(!drag&&Math.hypot(dx,dy)>6)drag=true;if(drag)place(ox+dx,oy+dy);});
+ el.addEventListener('pointerup',e=>{if(!down)return;down=false;el.style.transition='';
+  if(drag){const a=$('#app').getBoundingClientRect(),w=el.offsetWidth,x=el.offsetLeft+w/2<a.width/2?6:a.width-w-6;place(x,el.offsetTop);store.set('admPos',{x,y:el.offsetTop});}
+  else{buzz(8);Admin.open();}});
+ el.addEventListener('pointercancel',()=>{down=false;el.style.transition='';});})();
 $('#admRow').onclick=()=>{hideSheet();Admin.open();};
 Gate.preview=function(){this.show();$('#gIn').disabled=true;$('#gInTxt').textContent='Preview · you are signed in';$('#gateX').hidden=false;};
 $('#gateX').onclick=()=>{$('#gateX').hidden=true;Gate.hide();Gate.ready();Admin.open();};
