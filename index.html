@@ -468,6 +468,19 @@ svg{display:block}
 .banner .bt{cursor:pointer}
 .banner .bi-more{font-size:11px;font-weight:800;opacity:.7;text-decoration:underline;text-underline-offset:2px}
 
+/* profile fields */
+.pdet{padding:12px 14px;margin-top:14px}
+.pdet>small{display:block;font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.pfields{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.prove-pf{margin:12px 0 0;padding:10px 12px;border-radius:var(--r-card);background:var(--bg3);border:2px dashed var(--accent)}
+.prove-pf::before{content:'For fair scoring:';width:100%;font-size:12.5px;font-weight:800;color:var(--text2)}
+.pfields .sx{display:flex;border-radius:var(--r-btn);overflow:hidden;border:var(--btn-bd);background:var(--bg3)}
+.pfields .sx button{height:38px;padding:0 14px;font-size:13.5px;font-weight:800;color:var(--text2)}
+.pfields .sx button.on{background:var(--accent);color:var(--on-accent)}
+.pfields label{display:flex;align-items:center;gap:6px;height:38px;padding:0 10px;border-radius:var(--r-btn);background:var(--bg3);border:var(--btn-bd);font-size:13px;font-weight:700;color:var(--text2)}
+.pfields input{width:44px;border:0;outline:0;background:none;font-size:15px;font-weight:800;color:var(--text)}
+.live small{font-weight:600;color:var(--text3)}
+
 /* 3D player */
 .av3d{position:relative;width:100%;height:100%;cursor:pointer}
 .av3d .av3d-cv{position:absolute;inset:0;width:100%;height:100%;display:none}
@@ -564,6 +577,7 @@ svg{display:block}
 
     <section class="screen" id="s-you" data-tab="you">
       <div class="prof"><div class="pm" id="youM"></div><div class="pn2"><input class="nameIn" id="nameIn" maxlength="18" aria-label="Your player name"><p id="youSub"></p><button class="btn ghost chg" id="chgPlayer"><span>Change player</span></button></div></div>
+      <div class="card pdet"><small>Your details · for fair scoring</small><div class="pfields" data-pf></div></div>
       <div class="wgrid" id="wgrid"></div>
       <div class="sec-h"><h3 class="display">Your skills</h3><a id="addSkill">Add skill</a></div>
       <div class="slist" id="slist"></div>
@@ -588,6 +602,7 @@ svg{display:block}
     <p class="lead" id="proveLead">Log a result. Provn turns it into points.</p>
     <div class="pick" id="provePick"></div>
     <label class="field"><input id="proveVal" aria-label="Result"><span id="proveUnit"></span></label>
+    <div class="pfields prove-pf" id="provePf" data-pf hidden></div>
     <label class="field small" id="bwField" hidden><input id="bwVal" inputmode="decimal" placeholder="70" aria-label="Body weight"><span>kg body weight</span></label>
     <div class="live" id="proveLive"></div>
     <button class="rec press" id="proveRec"><span data-i="video"></span>Record proof video</button>
@@ -616,7 +631,7 @@ svg{display:block}
     <div class="row"><span data-i="you"></span><span class="sp">Account</span><small>Soon</small></div>
     <div class="row"><span data-i="bell"></span><span class="sp">Notifications</span><small>Soon</small></div>
     <div class="row"><span data-i="lock"></span><span class="sp">Privacy</span><small>Soon</small></div>
-    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Layer 2 · 20261122j</small></div>
+    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Layer 2 · 20261122k</small></div>
   </section>
 
   <div class="cele" id="cele"><div class="cele-in"><div class="cele-m" id="celeM"></div><h2 class="display" id="celeT"></h2><div class="big" id="celeB"></div><p id="celeS"></p><button class="btn primary" id="celeOk"><span>Keep going</span></button></div></div>
@@ -820,14 +835,78 @@ SKILL_ROWS.forEach(r=>{const o=r[7]||{},s={name:r[0],cat:r[1],ty:r[2],unit:r[3],
 function ratioOf(s,x){if(s.ty==='t'||s.ty==='tl')return x>0?s.ref/x:0;return (x-s.x0)/(s.ref-s.x0);}
 function interp(bp,x,inv){const a=inv?1:0,b=inv?0:1;if(x<=bp[0][a])return bp[0][b];for(let i=1;i<bp.length;i++)if(x<=bp[i][a]){const p=bp[i-1],q=bp[i];return p[b]+(q[b]-p[b])*(x-p[a])/(q[a]-p[a]);}
  const p=bp[bp.length-2],q=bp[bp.length-1];return q[b]+(q[b]-p[b])*(x-q[a])/(q[a]-p[a]);}
-function pointsOf(s,x){let p;
- if(s.wa){const[a,b,c,m]=s.wa,v=s.unit.startsWith('m ')?x:x;const d=m==='t'?b-x:v-b;p=d>0?a*Math.pow(d,c):0;}
+function rawPoints(s,x){let p;
+ if(s.wa){const[a,b,c,m]=s.wa;const d=m==='t'?b-x:x-b;p=d>0?a*Math.pow(d,c):0;}
  else if(s.bp)p=interp(s.bp,x);
  else{const r=ratioOf(s,x);p=r>0?1200*Math.pow(r,s.k):0;}
  return Math.max(0,Math.min(1400,Math.round(p)));}
-function perfFor(s,p){if(s.wa){const[a,b,c,m]=s.wa,d=Math.pow(p/a,1/c);return m==='t'?b-d:b+d;}
+function rawPerf(s,p){if(s.wa){const[a,b,c,m]=s.wa,d=Math.pow(p/a,1/c);return m==='t'?b-d:b+d;}
  if(s.bp)return interp(s.bp,p,true);
  const r=Math.pow(p/1200,1/s.k);if(s.ty==='t'||s.ty==='tl')return s.ref/r;return s.x0+r*(s.ref-s.x0);}
+
+/* ================= SEX, AGE, BODY WEIGHT =================
+   Sex: Body skills use women's world records for women. Verified women's records (athletics, swimming) come from the
+   same checked lists; other Body skills use typical elite sex ratios (marked "estimated"). Mind skills are open to all.
+   Age: Body skills are age-graded, in the style of World Masters Athletics age grading: a result is converted to its
+   open-age equivalent before scoring, so a 55-year-old and a 25-year-old are compared fairly. Ratings are not age-graded.
+   Body weight: lifts are scored per kg of body weight (already), using the weight in your profile. */
+const profile=()=>({sex:store.get('sex',''),age:+store.get('age',0)||0,bw:+store.get('bw',0)||0});
+/* women's records: name -> [record, typical recreational result, holder, country, date, event, place] */
+const WREC={
+ '60m':[6.92,11.5,'Irina Privalova','RUS','11 Feb 1993','Indoor meeting','Madrid, Spain'],'100m sprint':[10.49,17.5,'Florence Griffith Joyner','USA','16 Jul 1988','US Olympic Trials','Indianapolis, USA'],
+ '200m':[21.34,36,'Florence Griffith Joyner','USA','29 Sep 1988','Olympic Games','Seoul, South Korea'],'400m':[47.60,90,'Marita Koch','GDR','6 Oct 1985','World Cup','Canberra, Australia'],
+ '800m':[113.28,215,'Jarmila Kratochvílová','TCH','26 Jul 1983','','Munich, Germany'],'1000m':[148.98,290,'Svetlana Masterkova','RUS','23 Aug 1996','Memorial Van Damme','Brussels, Belgium'],
+ '1500m':[228.68,480,'Faith Kipyegon','KEN','5 Jul 2025','Prefontaine Classic','Eugene, USA'],'1 mile':[246.91,540,'Faith Kipyegon','KEN','26 Jun 2025','Breaking4','Paris, France'],
+ '3000m':[486.11,1020,'Wang Junxia','CHN','13 Sep 1993','Chinese National Games','Beijing, China'],'5k run':[838.06,2100,'Beatrice Chebet','KEN','5 Jul 2025','Prefontaine Classic (5000 m)','Eugene, USA'],
+ '10k run':[1734.14,4200,'Beatrice Chebet','KEN','25 May 2024','Prefontaine Classic (10,000 m)','Eugene, USA'],'One hour run':[18.93,8.5,'Sifan Hassan','NED','4 Sep 2020','Diamond League','Brussels, Belgium'],
+ 'Half marathon':[3915,9000,'Agnes Ngetich','KEN','20 Sep 2026','World Road Running Championships (women-only)','Copenhagen, Denmark'],
+ 'Marathon':[8141,18600,'Tigst Assefa','ETH','26 Apr 2026','London Marathon (women-only)','London, UK'],'100 km ultra':[23591,57600,'Tomoe Abe','JPN','25 Jun 2000','Lake Saroma Ultramarathon','Yūbetsu, Japan'],
+ '110m hurdles':[12.09,20,'Masai Russell','USA','27 Aug 2026','Weltklasse Zürich (100 m hurdles)','Zurich, Switzerland'],'400m hurdles':[50.37,85,'Sydney McLaughlin-Levrone','USA','8 Aug 2024','Olympic Games','Saint-Denis, France'],
+ '3000m steeplechase':[524.32,1200,'Beatrice Chepkoech','KEN','20 Jul 2018','Herculis','Monaco'],'High jump':[210,110,'Yaroslava Mahuchikh','UKR','7 Jul 2024','Meeting de Paris','Paris, France'],
+ 'Pole vault':[506,200,'Yelena Isinbayeva','RUS','28 Aug 2009','Weltklasse Zürich','Zurich, Switzerland'],'Long jump':[752,330,'Galina Chistyakova','URS','11 Jun 1988','Brothers Znamensky Memorial','Leningrad, USSR'],
+ 'Triple jump':[15.74,7.5,'Yulimar Rojas','VEN','20 Mar 2022','World Indoor Championships','Belgrade, Serbia'],'Shot put':[22.63,8,'Natalya Lisovskaya','URS','7 Jun 1987','Brothers Znamensky Memorial','Moscow, USSR'],
+ 'Discus':[76.80,20,'Gabriele Reinsch','GDR','9 Jul 1988','East Germany–Italy match','Neubrandenburg, Germany'],'Hammer':[82.98,20,'Anita Włodarczyk','POL','28 Aug 2016','Kamila Skolimowska Memorial','Warsaw, Poland'],
+ 'Javelin':[72.28,22,'Barbora Špotáková','CZE','13 Sep 2008','World Athletics Final','Stuttgart, Germany'],'20 km race walk':[5019,9600,'Elena Lashmanova','RUS','9 Jun 2018','Russian Race Walking Championships','Cheboksary, Russia'],
+ '50m freestyle':[23.61,50,'Sarah Sjöström','SWE','30 Jul 2023','World Championships','Fukuoka, Japan'],'100m freestyle':[51.71,110,'Sarah Sjöström','SWE','23 Jul 2017','World Championships','Budapest, Hungary'],
+ '200m freestyle':[112.23,231,'Ariarne Titmus','AUS','12 Jun 2024','Australian Olympic Trials','Brisbane, Australia'],'400m freestyle':[234.18,495,'Summer McIntosh','CAN','7 Jun 2025','Canadian Trials','Victoria, Canada'],
+ '800m freestyle':[484.12,1056,'Katie Ledecky','USA','3 May 2025','','Fort Lauderdale, USA'],'1500m freestyle':[920.48,2046,'Katie Ledecky','USA','16 May 2018','','Indianapolis, USA'],
+ '50m backstroke':[26.86,60,'Kaylee McKeown','AUS','20 Oct 2023','World Cup','Budapest, Hungary'],'100m backstroke':[57.13,132,'Regan Smith','USA','18 Jun 2024','US Olympic Trials','Indianapolis, USA'],
+ '200m backstroke':[123.14,286,'Kaylee McKeown','AUS','10 Mar 2023','','Sydney, Australia'],'50m breaststroke':[29.16,66,'Rūta Meilutytė','LTU','30 Jul 2023','World Championships','Fukuoka, Japan'],
+ '100m breaststroke':[64.13,143,'Lilly King','USA','25 Jul 2017','World Championships','Budapest, Hungary'],'200m breaststroke':[137.55,319,'Evgeniia Chikunova','RUS','21 Apr 2023','','Kazan, Russia'],
+ '50m butterfly':[24.43,60,'Sarah Sjöström','SWE','5 Jul 2014','','Borås, Sweden'],'100m butterfly':[54.60,138,'Gretchen Walsh','USA','3 May 2025','','Fort Lauderdale, USA'],
+ '200m butterfly':[121.81,308,'Liu Zige','CHN','21 Oct 2009','','Jinan, China'],'200m IM':[125.70,297,'Summer McIntosh','CAN','9 Jun 2025','Canadian Trials','Victoria, Canada'],
+ '400m IM':[263.65,638,'Summer McIntosh','CAN','11 Jun 2025','Canadian Trials','Victoria, Canada'],
+ 'HYROX':[3265,5900,'Joanna Wietrzyk','AUS','16 Apr 2026','HYROX Warsaw Major (Elite 15)','Warsaw, Poland'],'Static apnea':[562,75,'Heike Schwerdtner','GER','4 May 2025','Stockholm Apnea AIDA STA Wars','Stockholm, Sweden'],
+ 'Speed climbing':[5.99,24,'Emma Hunt','USA','','IFSC competition',''],'Rope speed sprint':[111,52,'Xihui Feng','CHN','2025','IJRU World Championships','Kawasaki, Japan']
+};
+/* typical elite women/men ratio for Body skills without a verified women's record (time: >1 slower; amount: <1) */
+function sexRatio(s){const n=s.name;
+ if(s.ty==='r'||s.w==='mind')return 1;
+ if(['prc','flx','cmb','rak'].includes(s.cat))return 1;
+ if(s.ty==='bw')return /Bench|Overhead/.test(n)?.62:/total/i.test(n)?.78:.8;
+ if(s.cat==='str'){if(s.ty==='th')return 1;return /Pull|Muscle/.test(n)?.45:/Push/.test(n)?.7:/Dips/.test(n)?.6:.9;}
+ if(s.cat==='bal')return /serve/.test(n)?.84:/Bowling speed/.test(n)?.82:1;
+ if(s.ty==='t')return s.cat==='wat'?1.10:s.cat==='fit'?1.12:1.11;
+ if(s.ty==='th')return .85;
+ if(/Triple unders/.test(n))return .62;if(/Vertical/.test(n))return .75;if(/rope|unders|Skipping/i.test(n))return .93;
+ if(/FTP|Cycling hour/.test(n))return .87;return .85;}
+const FEM={};
+function eff(s,ctx){const pr=ctx||profile();if(pr.sex!=='f'||s.w==='mind')return s;if(FEM[s.name])return FEM[s.name];
+ const w=WREC[s.name];let o;
+ if(w)o={...s,ref:w[0],med:w[1],wa:null,fem:'record',wrec:w};
+ else{const f=sexRatio(s);if(f===1){FEM[s.name]=s;return s;}o={...s,ref:s.ref*f,med:s.med*f,wa:null,fem:'estimated'};}
+ o.k=Math.log(250/1200)/Math.log(ratioOf(o,o.med));return FEM[s.name]=o;}
+/* age grading factor: share of open-age performance typically achievable at this age (body skills only) */
+function ageFactor(age){if(!age)return 1;if(age<=12)return .78;if(age<20)return [.82,.86,.9,.93,.95,.97,.99][age-13]||1;if(age<=34)return 1;
+ if(age<=50)return 1-.006*(age-34);if(age<=70)return .904-.009*(age-50);return Math.max(.4,.724-.015*(age-70));}
+function grade(s,x,ctx){const pr=ctx||profile();if(s.w==='mind'||s.ty==='r')return x;const A=ageFactor(pr.age);if(A===1)return x;return (s.ty==='t'||s.ty==='tl')?x*A:x/A;}
+function ungrade(s,x,ctx){const pr=ctx||profile();if(s.w==='mind'||s.ty==='r')return x;const A=ageFactor(pr.age);if(A===1)return x;return (s.ty==='t'||s.ty==='tl')?x/A:x*A;}
+/* public scoring: sex-specific records + age grading */
+function pointsOf(s,x,ctx){const e=eff(s,ctx);return rawPoints(e,grade(e,x,ctx));}
+function perfFor(s,p,ctx){const e=eff(s,ctx);return ungrade(e,rawPerf(e,p),ctx);}
+const scoringNote=s=>{const pr=profile();if(s.w==='mind')return 'Mind skills are scored the same for everyone.';const bits=[];
+ if(pr.sex==='f')bits.push(eff(s).fem==='record'?"women's world record":"women's scale (estimated from typical elite differences)");else bits.push(pr.sex==='m'?"men's world record":"men's/open record (set your sex in You)");
+ if(pr.age&&ageFactor(pr.age)!==1)bits.push(`age-graded for ${pr.age}`);else if(!pr.age)bits.push('no age set');return 'Scored with '+bits.join(', ')+'.';};
 const LEVELS=[['Beginner',0],['Intermediate',300],['Advanced',500],['Pro',700],['Master',850],['Elite',1000]];
 const lvOf=p=>{let i=0;LEVELS.forEach((l,k)=>{if(p>=l[1])i=k});return i};
 const isTime=s=>s.ty==='t'||s.ty==='th';
@@ -962,19 +1041,19 @@ function openProve(name,fromPath){proveFromPath=!!fromPath;$('#provePick').hidde
  setupProve();showSheet('sh-prove');}
 function setupProve(){const s=SKILLS[proveSkill],inp=$('#proveVal');inp.value='';
  inp.inputMode=isTime(s)?'text':'decimal';inp.placeholder=isTime(s)?(s.unit==='h:mm:ss'?'0:00:00':s.unit==='sec'?'0.00':'0:00'):(s.ty==='bw'?'0':'0');
- $('#proveUnit').textContent=s.ty==='bw'?'kg lifted':isTime(s)?s.unit:s.unit;$('#bwField').hidden=s.ty!=='bw';$('#bwVal').value=store.get('bw','')||'';
+ $('#proveUnit').textContent=s.ty==='bw'?'kg lifted':isTime(s)?s.unit:s.unit;const pr=profile();$('#provePf').hidden=!(s.w==='body'&&s.ty!=='r'&&(!pr.sex||!pr.age||(s.ty==='bw'&&!pr.bw)));if(!$('#provePf').hidden)renderPF();$('#bwField').hidden=s.ty!=='bw'||!$('#provePf').hidden;$('#bwVal').value=pr.bw||'';
  $('#proveLead').textContent=`${CATS[s.cat].n} · ${s.w==='mind'?'Mind':'Body'} world${s.ty==='r'?' · enter your current rating; synced ratings come later':''}`;livePreview();}
 function readVal(){const s=SKILLS[proveSkill],raw=$('#proveVal').value;let x=isTime(s)?parseTime(raw):parseFloat(raw);
- if(s.ty==='bw'){const bw=parseFloat($('#bwVal').value);if(!(bw>0))return {err:'Add your body weight'};x=x/bw;}return {x};}
+ if(s.ty==='bw'){const bw=parseFloat($('#bwVal').value)||profile().bw;if(!(bw>0))return {err:'Add your body weight'};x=x/bw;}return {x};}
 function livePreview(){const s=SKILLS[proveSkill],r=readVal(),el=$('#proveLive');
- if(r.err||!(r.x>0)&&!(s.ty==='n'&&s.x0<0&&r.x>=0)){const b=bestOf(s.name);el.innerHTML=r.err&&$('#proveVal').value?r.err:(b?`Your best: ${fmtPerf(s,b.v,store.get('bw',0))}${unitShort(s)} · <b>${b.p} pts</b>`:`World record: ${fmtPerf(s,s.ref)}${unitShort(s)} ≈ ${pointsOf(s,s.ref)} pts`);return;}
- const p=pointsOf(s,r.x),l=lvOf(p),nx=LEVELS[l+1];el.innerHTML=`≈ <b>${p} pts</b> · ${LEVELS[l][0]}${nx?`<br>${nx[0]} at ${nx[1]} pts: ${targetText(s,nx[1])}`:''}`;}
+ if(r.err||!(r.x>0)&&!(s.ty==='n'&&s.x0<0&&r.x>=0)){const b=bestOf(s.name);el.innerHTML=r.err&&$('#proveVal').value?r.err:(b?`Your best: ${fmtPerf(s,b.v,store.get('bw',0))}${unitShort(s)} · <b>${b.p} pts</b>`:`${eff(s).fem==='estimated'?'Top level':'World record'}: ${fmtPerf(s,eff(s).ref)}${unitShort(s)} ≈ ${rawPoints(eff(s),eff(s).ref)} pts<br><small>${scoringNote(s)}</small>`);return;}
+ const p=pointsOf(s,r.x),l=lvOf(p),nx=LEVELS[l+1];el.innerHTML=`≈ <b>${p} pts</b> · ${LEVELS[l][0]}${nx?`<br>${nx[0]} at ${nx[1]} pts: ${targetText(s,nx[1])}`:''}<br><small>${scoringNote(s)}</small>`;}
 $('#proveVal').addEventListener('input',livePreview);$('#bwVal').addEventListener('input',livePreview);
 $('#proveTab').onclick=()=>{buzz(14);const inSkill=Orbit.isOpen()&&Path.skill();openProve(inSkill||null,!!inSkill)};
 $('#proveRec').onclick=()=>toast('Camera arrives with the app build');
 $('#provePost').onclick=()=>{const s=SKILLS[proveSkill],r=readVal();
  if(r.err){toast(r.err);return;}if(!(r.x>0)&&!(s.x0<0&&r.x>=0)){toast('Enter your result first');$('#proveVal').focus();return;}
- if(s.ty==='bw')store.set('bw',parseFloat($('#bwVal').value));
+ {const v=parseFloat($('#bwVal').value);if(s.ty==='bw'&&v>0)store.set('bw',v);}
  const before={nightfall:unlocked('nightfall'),volt:unlocked('volt')},old=bestOf(s.name),oldLv=old?lvOf(old.p):-1;
  const list=resultsOf(s.name);list.push({v:r.x,t:Date.now()});store.set('res_'+s.name,list);
  const p=pointsOf(s,r.x),nb=bestOf(s.name),lv=lvOf(nb.p),pb=!old||p>old.p;
@@ -990,14 +1069,14 @@ $('#provePost').onclick=()=>{const s=SKILLS[proveSkill],r=readVal();
 
 /* ================= PULSE ================= */
 const POSTS=[
- {n:'Riya Sharma',i:'R',skill:'5k run',v:1308,when:'12 min ago',top:'Top 18% in Mumbai',likes:48,com:6,legit:11},
- {n:'Kabir Rao',i:'K',skill:"Rubik's cube",v:14.62,when:'1 h ago',top:'Top 9% in India',likes:77,com:12,legit:20},
- {n:'Arjun Mehta',i:'A',skill:'Deadlift',v:2.0,bw:80,when:'3 h ago',top:'160 kg at 80 kg body weight',likes:31,com:4,legit:8}];
+ {n:'Riya Sharma',i:'R',ctx:{sex:'f',age:27},skill:'5k run',v:1308,when:'12 min ago',top:'Top 18% in Mumbai',likes:48,com:6,legit:11},
+ {n:'Kabir Rao',i:'K',ctx:{sex:'m',age:22},skill:"Rubik's cube",v:14.62,when:'1 h ago',top:'Top 9% in India',likes:77,com:12,legit:20},
+ {n:'Arjun Mehta',i:'A',ctx:{sex:'m',age:29},skill:'Deadlift',v:2.0,bw:80,when:'3 h ago',top:'160 kg at 80 kg body weight',likes:31,com:4,legit:8}];
 const Pulse={ready:false,show(){if(this.ready)return;this.ready=true;
  const cols=Object.values(CATS).map(c=>c.col);
  $('#rings').innerHTML=['Riya','Arjun','Kabir','Meera','Dev','Sana','Ishaan'].map((n,k)=>`<div class="ring ${k>3?'seen':''}"><div class="rv"><span style="background:${cols[k*2%cols.length]}">${n[0]}</span></div>${n}</div>`).join('');
  $('#feed').innerHTML=[0,1].map(()=>`<div class="card post"><div class="post-h"><div class="skel" style="width:38px;height:38px;border-radius:50%"></div><div style="flex:1"><div class="skel" style="width:55%;height:12px"></div><div class="skel" style="width:35%;height:10px;margin-top:7px"></div></div></div><div class="skel" style="width:45%;height:40px;margin-top:16px"></div><div class="skel" style="height:160px;margin-top:14px"></div></div>`).join('');
- setTimeout(()=>{$('#feed').innerHTML=POSTS.map((p,k)=>{const s=SKILLS[p.skill],c=CATS[s.cat],pts=pointsOf(s,p.v),l=lvOf(pts),nx=LEVELS[l+1],pct=nx?Math.round((pts-LEVELS[l][1])/(nx[1]-LEVELS[l][1])*100):100;
+ setTimeout(()=>{$('#feed').innerHTML=POSTS.map((p,k)=>{const s=SKILLS[p.skill],c=CATS[s.cat],pts=pointsOf(s,p.v,p.ctx),l=lvOf(pts),nx=LEVELS[l+1],pct=nx?Math.round((pts-LEVELS[l][1])/(nx[1]-LEVELS[l][1])*100):100;
   return `<article class="card post" style="animation:fadeUp .4s ${k*70}ms ease both">
    <div class="post-h"><div class="av" style="background:${c.col}">${p.i}</div><div style="flex:1;min-width:0"><b>${p.n}</b><small>${p.skill} · ${s.w==='mind'?'Mind':'Body'} · ${p.when}</small></div><span class="chip">${LEVELS[l][0]}</span></div>
    <div class="metric"><span class="num display">${fmtPerf(s,p.v,p.bw)}</span><span class="unit">${s.ty==='bw'?'deadlift':unitShort(s)||s.unit}</span><span class="pts"><b>${pts}</b><small>pts</small></span></div>
@@ -1017,16 +1096,16 @@ const EVENTS=[['6','Dec','Pickleball Open','Andheri · 14 spots left'],['13','De
 $('#events').innerHTML=EVENTS.map(e=>`<div class="card ev"><div class="date"><b class="display">${e[0]}</b><small>${e[1]}</small></div><div class="info"><b>${e[2]}</b><small>${e[3]}</small></div><button class="btn ghost reg"><span>Register</span></button></div>`).join('');
 $$('#events .reg').forEach(b=>b.onclick=()=>{buzz(10);toast('Registration opens with Phase 2')});
 function renderRanks(){const s=SKILLS['5k run'],me=bestOf('5k run');
- const R=[['Riya S',1182,'R'],['Dev P',1198,'D'],['Sana K',1211,'S'],['Ishaan T',1235,'I'],['Meera J',1249,'M']];if(me)R.push([pname(),me.v,pname()[0].toUpperCase(),1]);R.sort((a,b)=>a[1]-b[1]);
+ const F={sex:'f',age:28},M={sex:'m',age:28};const R=[['Riya S',1182,'R',0,F],['Dev P',1198,'D',0,M],['Sana K',1211,'S',0,F],['Ishaan T',1235,'I',0,M],['Meera J',1249,'M',0,F]];if(me)R.push([pname(),me.v,pname()[0].toUpperCase(),1,null]);R.sort((a,b)=>a[1]-b[1]);
  const top=R.slice(0,3),cols=['#FF8A5B','#FFC23D','#9BE15D'];
- $('#podium').innerHTML=[1,0,2].map(k=>`<div class="card pod ${k===0?'p1':''}"><div class="av" style="background:${cols[k]}">${esc(top[k][2])}</div><b>${esc(top[k][0])}</b><small>${fmtTime(top[k][1])} · ${pointsOf(s,top[k][1])}</small><div class="rk display">${k+1}</div></div>`).join('');
- $('#ranks').innerHTML=R.slice(3).map((r,k)=>`<div class="card rank ${r[3]?'me':''}"><span class="n">${k+4}</span><div class="av" style="width:32px;height:32px;font-size:12px;background:${cols[(k+1)%3]}">${esc(r[2])}</div><span class="nm">${esc(r[0])}</span><span class="val">${fmtTime(r[1])}<small>${pointsOf(s,r[1])} pts</small></span></div>`).join('');}
+ $('#podium').innerHTML=[1,0,2].map(k=>`<div class="card pod ${k===0?'p1':''}"><div class="av" style="background:${cols[k]}">${esc(top[k][2])}</div><b>${esc(top[k][0])}</b><small>${fmtTime(top[k][1])} · ${pointsOf(s,top[k][1],top[k][4])}</small><div class="rk display">${k+1}</div></div>`).join('');
+ $('#ranks').innerHTML=R.slice(3).map((r,k)=>`<div class="card rank ${r[3]?'me':''}"><span class="n">${k+4}</span><div class="av" style="width:32px;height:32px;font-size:12px;background:${cols[(k+1)%3]}">${esc(r[2])}</div><span class="nm">${esc(r[0])}</span><span class="val">${fmtTime(r[1])}<small>${pointsOf(s,r[1],r[4])} pts</small></span></div>`).join('');}
 let segI=0;
 function moveSeg(anim){const si=$('#seg .si');if(!si)return;const w=si.offsetWidth;if(!anim)si.style.transition='none';si.style.transform=`translateX(${segI*(w)}px)${document.documentElement.dataset.theme==='volt'?' skewX(-10deg)':''}`;if(!anim){si.offsetWidth;si.style.transition='';}}
 $$('#seg button').forEach((b,k)=>b.onclick=()=>{if(segI===k)return;segI=k;buzz(6);$$('#seg button').forEach((x,j)=>x.classList.toggle('on',j===k));$$('.pane').forEach(p=>p.classList.toggle('on',p.id==='p-'+b.dataset.p));if(b.dataset.p==='ranks')renderRanks();moveSeg(true);});
 
 /* ================= YOU ================= */
-const You={render(){if(!$('#youM .av3d'))$('#youM').innerHTML=`<div class="av3d" data-mode="you">${mascot()}</div>`;const ni=$('#nameIn');if(document.activeElement!==ni)ni.value=store.get('name','');ni.placeholder='Your name';
+const You={render(){const ae=document.activeElement;if(!(ae&&ae.closest&&ae.closest('[data-pf] input')))renderPF();if(!$('#youM .av3d'))$('#youM').innerHTML=`<div class="av3d" data-mode="you">${mascot()}</div>`;const ni=$('#nameIn');if(document.activeElement!==ni)ni.value=store.get('name','');ni.placeholder='Your name';
  const ms=mySkills();$('#youSub').textContent=`${ms.length} skill${ms.length===1?'':'s'} proven · Mumbai`;
  $('#wgrid').innerHTML=[['body','Body','volt'],['mind','Mind','nightfall']].map(([w,label,t])=>{const sc=worldScore(w),l=lvOf(sc),req=THEMES[t].req[1],u=unlocked(t);
   return `<div class="card wcard ${u?'open':''}"><small>${label} world</small><b>${sc}</b><span class="lv">${LEVELS[l][0]}</span><div class="bar"><i style="width:${Math.min(100,sc/req*100)}%"></i></div><div class="unl"><span data-i="${u?'unlock':'lock'}"></span>${u?`${THEMES[t].name} unlocked`:`${THEMES[t].name} at ${req}`}</div></div>`;}).join('');
@@ -1035,6 +1114,11 @@ const You={render(){if(!$('#youM .av3d'))$('#youM').innerHTML=`<div class="av3d"
  paintIcons($('#s-you'));$$('#slist .srow').forEach(b=>b.onclick=()=>{go('orbit');setTimeout(()=>Orbit.openSkill(b.dataset.n),280)});
  const fp=$('#firstProve');if(fp)fp.onclick=()=>openProve();}};
 $('#nameIn').addEventListener('input',e=>store.set('name',e.target.value.trim()));
+function renderPF(){const pr=profile();$$('[data-pf]').forEach(el=>{el.innerHTML=`<span class="sx"><button data-sx="m" class="${pr.sex==='m'?'on':''}">Male</button><button data-sx="f" class="${pr.sex==='f'?'on':''}">Female</button></span><label>Age <input inputmode="numeric" maxlength="3" data-age value="${pr.age||''}" placeholder="—"></label><label>Weight <input inputmode="decimal" maxlength="5" data-bw value="${pr.bw||''}" placeholder="—"> kg</label>`;
+ el.querySelectorAll('[data-sx]').forEach(b=>b.onclick=()=>{buzz(6);store.set('sex',b.dataset.sx);renderPF();onProfile();});
+ el.querySelector('[data-age]').oninput=e=>{const v=parseInt(e.target.value);store.set('age',v>4&&v<110?v:0);onProfile();};
+ el.querySelector('[data-bw]').oninput=e=>{const v=parseFloat(e.target.value);store.set('bw',v>20&&v<300?v:0);$('#bwVal').value=v||'';onProfile();};});}
+function onProfile(){if(openSheet&&openSheet.id==='sh-prove')livePreview();if(cur==='you'){clearTimeout(onProfile.t);onProfile.t=setTimeout(()=>You.render(),350);}}
 const thumbCache={};
 function openPicker(){const A=window.Avatar3D;if(!A){toast('3D players are still loading');return;}const cur=A.getChar(),t=document.documentElement.dataset.theme;
  $('#pgrid').innerHTML=Object.entries(A.CHARS).map(([k,n])=>`<button class="pcard press ${k===cur?'on':''}" data-c="${k}"><span class="pth">${thumbCache[t+k]?`<img src="${thumbCache[t+k]}" alt="">`:'<span class="skel"></span>'}</span>${n}</button>`).join('');
@@ -1058,7 +1142,7 @@ const Path=(()=>{let skill=null,popI=-1;const el=$('#path'),body=$('#pBody'),pop
   const since=res.filter(r=>lvOf(pointsOf(s,r.v))>=lv).length,after=res.length-res.findIndex(r=>lvOf(pointsOf(s,r.v))>=lv);
   const done=Math.min(LEVELS.length*4-1,lv*4+Math.min(2,after));return{lv,done,b,since};}
  function render(popNew){const s=SKILLS[skill],st=state(s),list=steps(s),c=CATS[s.cat];let h='';
-  const bw=store.get('bw',0);h+=`<div class="card pinfo">World record <b>${fmtPerf(s,s.ref,bw)}${unitShort(s)}</b> ≈ ${pointsOf(s,s.ref)} pts · an average casual player gets about <b>${fmtPerf(s,s.med,bw)}${unitShort(s)}</b> ≈ ${pointsOf(s,s.med)} pts${st.b?` · your best <b>${fmtPerf(s,st.b.v,bw)}${unitShort(s)}</b>`:''}</div>`;
+  const bw=store.get('bw',0),e=eff(s);h+=`<div class="card pinfo">${e.fem==='estimated'?'Top level':'World record'} <b>${fmtPerf(s,e.ref,bw)}${unitShort(s)}</b> ≈ ${rawPoints(e,e.ref)} pts · an average casual player gets about <b>${fmtPerf(s,e.med,bw)}${unitShort(s)}</b> ≈ ${rawPoints(e,e.med)} pts · ${scoringNote(s)}${st.b?` · your best <b>${fmtPerf(s,st.b.v,bw)}${unitShort(s)}</b>`:''}</div>`;
   list.forEach((n,i)=>{if(i%4===0){const l=i/4;h+=`<div class="lvl-h ${st.lv===l?'now':''}"><span></span>Level ${l+1} · ${LEVELS[l][0]} <em>${LEVELS[l][1]}+</em><span></span></div>`;}
    const x=Math.round(Math.sin(i*0.8)*70),stt=i<st.done?'done':i===st.done?'cur':'lock';
    h+=`<div class="prow" style="--x:${x}px"><button class="pn ${stt} ${popNew&&i===st.done-1?'pop-in':''}" data-n="${i}" aria-label="${esc(n.t)}"><span class="pi"><span data-i="${stt==='done'?'check':n.ic}"></span></span></button>${stt==='cur'?'<span class="ptip">YOUR TURN</span>':''}${stt==='cur'?`<div class="pmas" style="left:calc(50% ${x>=0?'- 154':'+ 58'}px)"><div class="mwrap av3d" data-mode="path">${mascot()}</div><div class="ptag">${esc(pname())}</div></div>`:''}</div>`;});
@@ -1182,20 +1266,22 @@ function heroClip(s){const n=s.name.toLowerCase();
  if(s.cat==='pow')return /shot|discus|javelin|hammer/.test(n)?'Throw':'Jump_Full_Long';
  if(s.cat==='str'||s.cat==='fit')return 'PickUp';if(s.cat==='wat')return 'Spawn_Air';if(['rak','bal','prc','cmb'].includes(s.cat))return 'Throw';
  if(s.cat==='flx')return 'Idle_B';if(s.cat==='stg')return 'Interact';return 'Use_Item';}
-function openSkillInfo(name){const s=SKILLS[name],c=CATS[s.cat],r=REC[name],b=bestOf(name),bw=store.get('bw',0),el=$('#sh-skill');
+function openSkillInfo(name){const s=SKILLS[name],c=CATS[s.cat],e=eff(s),fem=e.fem,b=bestOf(name),bw=store.get('bw',0),el=$('#sh-skill');
+ const r=fem==='record'?[e.wrec[2],e.wrec[3],e.wrec[4],e.wrec[5],e.wrec[6]]:fem==='estimated'?null:REC[name];
  el.style.setProperty('--cv',c.col);el.style.setProperty('--cvi',c.ink);
- const mark=r&&r[5]?r[5]:`${fmtPerf(s,s.ref,bw)}${unitShort(s)}`;
+ const mark=r&&r[5]?r[5]:`${fmtPerf(s,e.ref,bw)}${unitShort(s)}`;
  const rows=r?[['Holder',r[0]?`${r[0]}${r[1]?` (${r[1]})`:''}`:''],['When',r[2]],['Event',r[3]],['Where',r[4]],['Record keeper',KEEP_S[name]||KEEPER[s.cat]]].filter(x=>x[1]):BENCH.has(name)?[]:[['Record keeper',KEEP_S[name]||KEEPER[s.cat]]];
  $('#siHero').innerHTML=`<span class="si-ic">${iconSvg(s.ic)}</span><div class="av3d" data-mode="hero" data-clip="${heroClip(s)}">${mascot()}</div>`;
  $('#siBody').innerHTML=`<small class="si-cat">${s.w==='mind'?'Mind':'Body'} · ${c.n}</small><h2 class="display">${esc(s.name)}</h2><p class="si-desc">${esc(DESC[name]||CAT_DESC[s.cat])}</p>
-  <div class="card si-rec"><small>${s.ty==='r'?'Top rating':BENCH.has(name)?'Elite benchmark':'World record'}</small><b class="display">${esc(mark)}</b>${rows.map(x=>`<div class="si-row"><span>${x[0]}</span><b>${esc(x[1])}</b></div>`).join('')}
-  ${r?'':BENCH.has(name)?'<p class="si-note">There is no single official world record in this exact format, so the number above is an elite benchmark rather than a record.</p>':'<p class="si-note">Holder, venue and event for this record are being added.</p>'}</div>
+  <div class="card si-rec"><small>${s.ty==='r'?'Top rating':fem==='estimated'||BENCH.has(name)?(fem?"Women's elite level":'Elite benchmark'):(fem?"Women's world record":'World record')}</small><b class="display">${esc(mark)}</b>${rows.map(x=>`<div class="si-row"><span>${x[0]}</span><b>${esc(x[1])}</b></div>`).join('')}
+  ${fem==='estimated'?`<p class="si-note">Women's level for this skill is estimated from typical elite differences (men's record: ${fmtPerf(s,s.ref,bw)}${unitShort(s)}). Holder details will be added.</p>`:r?'':BENCH.has(name)?'<p class="si-note">There is no single official world record in this exact format, so the number above is an elite benchmark rather than a record.</p>':'<p class="si-note">Holder, venue and event for this record are being added.</p>'}</div>
   <div class="card si-pts"><small>How points work</small>
-   <div class="si-row"><span>${s.ty==='r'?'Top of scale':BENCH.has(name)?'Elite benchmark':'World record'}</span><b>${fmtPerf(s,s.ref,bw)}${unitShort(s)} ≈ ${pointsOf(s,s.ref)} pts</b></div>
-   <div class="si-row"><span>National level</span><b>${esc(targetText(s,1000).replace(/^(Under|Hold|Reach|Lift|Send) /,''))} ≈ 1000 pts</b></div>
-   <div class="si-row"><span>Average casual player</span><b>${fmtPerf(s,s.med,bw)}${unitShort(s)} ≈ ${pointsOf(s,s.med)} pts</b></div>
+   <div class="si-row"><span>${s.ty==='r'?'Top of scale':BENCH.has(name)?'Elite benchmark':'World record'}</span><b>${fmtPerf(s,e.ref,bw)}${unitShort(s)} ≈ ${rawPoints(e,e.ref)} pts</b></div>
+   <div class="si-row"><span>National level${profile().age&&s.w==='body'&&ageFactor(profile().age)!==1?' (your age)':''}</span><b>${esc(targetText(s,1000).replace(/^(Under|Hold|Reach|Lift|Send) /,''))} ≈ 1000 pts</b></div>
+   <div class="si-row"><span>Average casual player</span><b>${fmtPerf(s,e.med,bw)}${unitShort(s)} ≈ ${rawPoints(e,e.med)} pts</b></div>
+   <p class="si-note">${scoringNote(s)}</p>
    ${b?`<div class="si-row you"><span>${esc(pname())}</span><b>${fmtPerf(s,b.v,bw)}${unitShort(s)} = ${b.p} pts</b></div>`:''}</div>
-  <p class="si-note">${(SRC_S[name]||SRC[s.cat]||(r&&SRC_N[s.cat]))?`Source: ${SRC_S[name]||SRC[s.cat]||SRC_N[s.cat]}. Men's open records.`:BENCH.has(name)?`Benchmark set by Provn from typical elite results; review before launch.`:`Men's open records. This record still needs checking against the federation's live list.`}</p>`;
+  <p class="si-note">${(SRC_S[name]||SRC[s.cat]||(r&&SRC_N[s.cat]))?`Source: ${fem==='record'?(s.cat==='wat'?'Swimming World record list (8 Nov 2025)':SRC_S[name]||'World Athletics list via Wikipedia, checked Nov 2026'):SRC_S[name]||SRC[s.cat]||SRC_N[s.cat]}.${fem?'':s.w==='body'?" Men's records.":''}`:BENCH.has(name)?`Benchmark set by Provn from typical elite results; review before launch.`:`Men's open records. This record still needs checking against the federation's live list.`}</p>`;
  showSheet('sh-skill');}
 
 /* ================= ORBIT =================
