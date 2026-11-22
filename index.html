@@ -697,11 +697,16 @@ svg{display:block}
 .sc-p{text-align:right;position:relative;z-index:1}.sc-p b{display:block;font-family:var(--f-display);font-size:28px;line-height:1}.sc-p small{font-size:11.5px;font-weight:800;opacity:.75}
 .sc-bar{grid-column:1/-1;height:8px;border-radius:6px;background:rgba(0,0,0,.18);overflow:hidden;margin-top:6px}.sc-bar i{display:block;height:100%;background:currentColor;border-radius:6px}
 .sc-n{grid-column:1/-1;font-size:12px;font-weight:800;opacity:.8}
-.pm-wrap{margin:12px -14px 0;position:relative}
+.pm-wrap{margin:12px 0 0;position:relative;border-radius:16px;overflow:hidden}
+.cmt-q{display:flex;align-items:center;gap:10px;width:100%;margin:4px 0 6px;padding:9px 12px;border-radius:14px;background:var(--bg3);color:var(--text3);font-size:13.5px;font-weight:600;text-align:left}
+.cmt-q .sv{width:24px;height:24px;font-size:11px}
+.viewer{position:absolute;inset:0;z-index:97;background:rgba(0,0,0,.94);display:grid;place-items:center;animation:fadeUp .2s ease both}
+.viewer[hidden]{display:none}.viewer img{max-width:100%;max-height:100%;object-fit:contain}
+.viewer button{position:absolute;right:14px;top:calc(var(--safe-t) + 12px);width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;font-size:24px;font-weight:800}
 .pmc{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;background:#000}.pmc::-webkit-scrollbar{display:none}
-.pm-i{flex:0 0 100%;scroll-snap-align:center;position:relative;display:grid;place-items:center;max-height:560px;background:#000}
-.pm-i img{width:100%;max-height:560px;object-fit:contain;display:block}
-.pm-i video{width:100%;max-height:560px;display:block;background:#000}
+.pm-i{flex:0 0 100%;scroll-snap-align:center;position:relative;display:grid;place-items:center;aspect-ratio:4/3;background:#000;overflow:hidden}
+.pm-i img{width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in}
+.pm-i video{width:100%;height:100%;object-fit:contain;display:block;background:#000}
 .pm-i .burst{position:absolute;width:96px;height:96px;color:#fff;opacity:0;transform:scale(.4);pointer-events:none}.pm-i .burst svg{width:100%;height:100%}.pm-i .burst.go{animation:burst 700ms ease forwards}
 .pm-dots{position:absolute;left:0;right:0;bottom:10px;display:flex;justify-content:center;gap:5px;pointer-events:none}.pm-dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5)}.pm-dots i.on{background:#fff}
 .post.v2 .acts{margin-top:8px}.act em{font-style:normal;font-size:12px;font-weight:800}
@@ -1132,7 +1137,7 @@ svg{display:block}
     <div class="row" id="acctRow" style="cursor:pointer"><span data-i="you"></span><span class="sp">Account</span><small id="acctTxt">Sign out</small></div>
     <div class="row"><span data-i="bell"></span><span class="sp">Notifications</span><small>Soon</small></div>
     <div class="row"><span data-i="lock"></span><span class="sp">Privacy</span><small>Soon</small></div>
-    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261123j</small></div>
+    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261123k</small></div>
   </section>
 
   <div class="cele" id="cele"><div class="cele-in"><div class="cele-m" id="celeM"></div><h2 class="display" id="celeT"></h2><div class="big" id="celeB"></div><p id="celeS"></p><button class="btn primary" id="celeOk"><span>Keep going</span></button></div></div>
@@ -1163,6 +1168,7 @@ svg{display:block}
     <nav class="adm-tabs" id="admTabs"><button data-t="overview" class="on">Overview</button><button data-t="mod">Moderation</button><button data-t="users">Players</button><button data-t="events">Events</button><button data-t="records">Records</button><button data-t="test">Test</button></nav>
     <div class="adm-body" id="admBody"></div>
   </div>
+  <div class="viewer" id="viewer" hidden><img alt=""><button aria-label="Close">×</button></div>
   <button class="as-bar" id="asBar" hidden></button>
   <button class="adm-pill" id="admPill" hidden aria-label="Admin console"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 19.5 6v5.6c0 4.6-3.2 7.9-7.5 9.4-4.3-1.5-7.5-4.8-7.5-9.4V6z"/><path d="m8.8 12.2 2.2 2.2 4.4-4.6"/></svg><b>Admin</b></button>
 
@@ -1634,7 +1640,8 @@ function postHTML(p,k){const m=p.mine||{},isRes=p.col==='results',s=SKILLS[p.ski
     <span style="flex:1"></span>
     ${me?`<button class="act press del-b" aria-label="Delete"><span data-i="trash"></span></button>`:`<button class="act flag press ${m.flags?'on':''}" aria-label="Report"><span data-i="flag"></span></button>`}
     <button class="act press share-b" aria-label="Share"><span data-i="share"></span></button>
-   </div></article>`;}
+   </div>
+   <button class="cmt-q cmt-b"><span class="sv">${esc((store.get('name','')||'?')[0].toUpperCase())}</span>${p.com?`View ${p.com} comment${p.com>1?'s':''} · add yours`:'Add a comment…'}</button></article>`;}
 let annCache=null,feedTag='',feedAll=[];
 async function annShow(){if(!CU())return;try{if(annCache===null)annCache=(await Cloud.config()).announce||'';}catch(e){annCache='';}
  $('#announce').innerHTML=annCache?`<div class="card announce"><span data-i="bell"></span><p>${esc(annCache)}</p></div>`:'';paintIcons($('#announce'));}
@@ -1665,7 +1672,9 @@ const Pulse={ready:false,last:0,
    (async()=>{try{if(p.col==='posts')await Cloud.deletePost(p.id);else{await Cloud.deleteResult(p.id);const k='res_'+p.skill,l=store.get(k,[]);store.set(k,l.filter(x=>x.cloud!==p.id));You.render();}feedAll=feedAll.filter(x=>x!==p);this.paint();toast('Deleted');}catch(e){toast('Could not delete: '+(e.code||e.message));}})();});
   $$('#feed .tg').forEach(a=>a.onclick=()=>{buzz(6);feedTag=a.dataset.tag;this.paint();$('#s-pulse').scrollTo({top:0,behavior:'smooth'});});
   $$('#feed .pmc').forEach(pm=>{const dots=pm.parentNode.querySelectorAll('.pm-dots i');if(dots.length)pm.onscroll=()=>{const i=Math.round(pm.scrollLeft/pm.clientWidth);dots.forEach((d,j)=>d.classList.toggle('on',j===i));};
-   pm.querySelectorAll('.pm-i.img').forEach(it=>{let last=0;it.onclick=()=>{const now=Date.now();if(now-last<320){const b=pm.closest('.post').querySelector('.like');if(!b.classList.contains('liked'))b.click();const h=it.querySelector('.burst');h.classList.remove('go');h.offsetWidth;h.classList.add('go');}last=now;};});});
+   pm.querySelectorAll('.pm-i.img').forEach(it=>{let last=0,t;it.onclick=()=>{const now=Date.now();clearTimeout(t);
+    if(now-last<320){const b=pm.closest('.post').querySelector('.like');if(!b.classList.contains('liked'))b.click();const h=it.querySelector('.burst');h.classList.remove('go');h.offsetWidth;h.classList.add('go');}
+    else t=setTimeout(()=>{const src=it.querySelector('img').src.replace('/upload/w_1080,c_limit,q_auto,f_auto/','/upload/q_auto,f_auto/');$('#viewer img').src=src;$('#viewer').hidden=false;},330);last=now;};});});
   /* only one video plays at a time; videos pause when scrolled away */
   const vids=$$('#feed video');vids.forEach(v=>v.onplay=()=>vids.forEach(o=>{if(o!==v)o.pause();}));
   if(!this.io){this.io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting&&!e.target.paused)e.target.pause();}),{threshold:.25});}
@@ -2417,6 +2426,7 @@ const Admin={tab:'overview',
   $('#tReload').onclick=()=>location.reload();}};
 $$('#admTabs button').forEach(b=>b.onclick=()=>{Admin.tab=b.dataset.t;buzz(6);Admin.render();});
 $('#admPlayer').onclick=()=>Admin.player();
+$('#viewer').onclick=()=>{$('#viewer').hidden=true;$('#viewer img').src='';};
 /* act as a test bot (two real accounts) to see how players interact */
 function paintAs(){const as=window.Cloud&&Cloud.as||'admin';$$('#admAs button').forEach(b=>b.classList.toggle('on',b.dataset.as===as));
  const bar=$('#asBar');if(as!=='admin'&&CU()){bar.hidden=false;bar.innerHTML=`🤖 You're <b>${esc(Cloud.user.name)}</b> · tap to switch back`;}else bar.hidden=true;}
@@ -2553,7 +2563,7 @@ $('#intSave').onclick=()=>{store.set('interests',[...intSel]);hideSheet();buzz(1
 $('#intEdit').onclick=openInterests;
 
 /* auto-update: GitHub Pages lets phones keep an old copy for ~10 min; check the live version and reload if it's newer */
-const APP_V='20261123j';
+const APP_V='20261123k';
 async function checkUpdate(){try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});const j=await r.json();
  if(j.v&&j.v!==APP_V&&sessionStorage.getItem('provn_upd')!==j.v){sessionStorage.setItem('provn_upd',j.v);toast('Updating Provn…');setTimeout(()=>location.replace(location.pathname+'?v='+j.v+location.hash),600);}}catch(e){}}
 checkUpdate();document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkUpdate();});
@@ -2566,8 +2576,8 @@ setTimeout(()=>$('#splash').classList.add('out'),matchMedia('(prefers-reduced-mo
 setTimeout(()=>$('#splash').remove(),1700);
 setTimeout(()=>$('#orbitHint').style.opacity=0,6000);
 </script>
-<script type="module" src="avatar3d.js?v=20261123j"></script>
-<script type="module" src="cloud.js?v=20261123j"></script>
-<script src="map.js?v=20261123j" defer></script>
+<script type="module" src="avatar3d.js?v=20261123k"></script>
+<script type="module" src="cloud.js?v=20261123k"></script>
+<script src="map.js?v=20261123k" defer></script>
 </body>
 </html>
