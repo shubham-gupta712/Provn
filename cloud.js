@@ -54,6 +54,7 @@ const Cloud = {
     const u = Cloud.user, data = { uid: u.uid, name: (r.name || 'Player').slice(0, 40), city: (r.city || '').slice(0, 40), skill: r.skill, v: r.v, pts: Math.max(0, Math.min(1400, Math.round(r.pts) || 0)),
       sex: r.sex || '', age: Math.round(r.age || 0), createdAt: serverTimestamp(), likes: 0, legit: 0, flags: 0, comments: 0 };
     if (r.video) data.video = r.video;
+    if (r.venue) { data.venue = String(r.venue).slice(0, 40); data.venueName = String(r.venueName || '').slice(0, 60); }
     const ref = await addDoc(collection(db, 'results'), data);
     const bref = doc(db, 'best', u.uid + '__' + skillKey(r.skill)), b = await getDoc(bref);
     if (!b.exists() || (b.data().pts || 0) < data.pts) {
@@ -95,6 +96,17 @@ const Cloud = {
     const cons = [where('skill', '==', skill)]; if (city) cons.push(where('city', '==', city));
     const s = await getDocs(query(collection(db, 'best'), ...cons, limit(300)));
     return s.docs.map(d => d.data()).sort((a, b) => b.pts - a.pts);
+  },
+  /* every player's best for one skill (filtered into city / state / country on the phone) */
+  async rankings(skill) {
+    const s = await getDocs(query(collection(db, 'best'), where('skill', '==', skill), limit(1000)));
+    return s.docs.map(d => d.data());
+  },
+  /* best per player for one skill at one Provn venue */
+  async venueBoard(skill, venue) {
+    const s = await getDocs(query(collection(db, 'results'), where('skill', '==', skill), where('venue', '==', venue), limit(500)));
+    const by = {}; s.docs.forEach(d => { const r = d.data(); if (!by[r.uid] || by[r.uid].pts < r.pts) by[r.uid] = r; });
+    return Object.values(by).sort((a, b) => b.pts - a.pts);
   },
   async deleteResult(id) { return deleteDoc(doc(db, 'results', id)); },
 

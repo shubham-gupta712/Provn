@@ -565,8 +565,20 @@ svg{display:block}
 .adm-sw2{width:50px;height:30px;border-radius:16px;background:var(--bg3);position:relative;flex:none;border:var(--card-bd)}
 .adm-sw2 i{position:absolute;left:3px;top:50%;width:22px;height:22px;margin-top:-11px;border-radius:50%;background:var(--text3);transition:all .2s}
 .adm-sw2.on{background:var(--accent)}.adm-sw2.on i{left:23px;background:#fff}
-.adm-pill{position:absolute;z-index:94;left:10px;top:60%;touch-action:none;user-select:none;display:flex;align-items:center;gap:6px;padding:9px 14px 9px 11px;border-radius:22px;transition:left .25s ease,top .05s linear,opacity .2s;background:var(--ink,#171A25);color:#fff;font-size:13px;font-weight:800;box-shadow:0 6px 18px rgba(0,0,0,.35);border:2px solid var(--accent)}
-.adm-pill svg{width:16px;height:16px}
+.adm-pill{position:absolute;z-index:94;left:10px;top:60%;touch-action:none;user-select:none;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;color:#fff;
+ background:radial-gradient(circle at 32% 26%,#fff 0,#ffd2bf 9%,var(--accent) 38%,#c2361d 72%,#5a1208 100%);
+ box-shadow:inset -6px -8px 14px rgba(0,0,0,.35),inset 4px 5px 10px rgba(255,255,255,.25),0 8px 22px rgba(0,0,0,.45),0 0 22px color-mix(in srgb,var(--accent) 55%,transparent);
+ transition:left .25s ease,top .05s linear,transform .15s;animation:orbFloat 3.2s ease-in-out infinite}
+.adm-pill:active{transform:scale(.92)}
+.adm-pill svg{width:25px;height:25px;position:relative;z-index:1;filter:drop-shadow(0 1px 2px rgba(0,0,0,.45))}
+.adm-pill .orb-ring{position:absolute;inset:-5px;border-radius:50%;border:2px solid transparent;border-top-color:color-mix(in srgb,var(--accent) 80%,#fff);border-right-color:color-mix(in srgb,var(--accent) 35%,transparent);animation:orbSpin 2.6s linear infinite}
+.adm-pill::after{content:'';position:absolute;left:14px;top:9px;width:18px;height:10px;border-radius:50%;background:rgba(255,255,255,.55);filter:blur(2px);transform:rotate(-25deg)}
+@keyframes orbSpin{to{transform:rotate(360deg)}}
+@keyframes orbFloat{0%,100%{translate:0 0}50%{translate:0 -3px}}
+[data-theme="nightfall"] .adm-pill{background:radial-gradient(circle at 32% 26%,#e8e2ff 0,#b49cff 10%,#8B5CFF 40%,#3a1e8a 75%,#120a30 100%)}
+[data-theme="volt"] .adm-pill{background:radial-gradient(circle at 32% 26%,#fff 0,#f4ffb0 10%,#D6FF1F 38%,#7d9a00 74%,#1f2600 100%);color:#0D0E12}
+.pb-ic{width:1.15em;height:1.15em;vertical-align:-.2em}
+.mc-a .pb-ic,.mx-ic .pb-ic{width:62%;height:62%}
 .adm-pill[hidden]{display:none}
 .gate-x{position:absolute;right:16px;top:calc(var(--safe-t) + 16px);width:42px;height:42px;border-radius:50%;background:var(--bg2);border:var(--card-bd);font-size:24px;font-weight:800;z-index:2}
 
@@ -674,6 +686,36 @@ svg{display:block}
 .mx-load b{font-size:15px;font-weight:700;color:#ffffffc0}
 .mx-spin{width:58px;height:58px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#4f9be8,#1d5fae 55%,#0c2f66);box-shadow:0 0 30px rgba(90,160,255,.5);animation:mxsp 1.6s ease-in-out infinite}
 @keyframes mxsp{50%{transform:scale(.88)}}
+
+/* rankings */
+.rk-sum{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:12px}
+.rs{display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 2px 8px;border-radius:16px;background:var(--bg2);border:var(--card-bd);color:var(--text3)}
+.rs span svg{width:18px;height:18px}.rs b{font-family:var(--f-display);font-size:18px;color:var(--text2);line-height:1.1}.rs small{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.rs.on{color:var(--accent)}.rs.on b{color:var(--text)}
+.tier{padding:14px;margin-top:12px;scroll-margin-top:90px}
+.tier header{display:flex;align-items:center;gap:11px;margin-bottom:8px}
+.tr-ic{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--bg3);color:var(--accent);flex:none}.tr-ic svg{width:20px;height:20px}
+.tier header>div{flex:1;min-width:0}.tier header b{display:block;font-family:var(--f-display);font-size:19px;line-height:1.1}.tier header small{display:block;font-size:12px;font-weight:700;color:var(--text3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tr-pos{text-align:right;font-family:var(--f-display);font-size:22px;color:var(--accent);line-height:1}.tr-pos small{display:block;font-family:inherit;font-size:11px;font-weight:800;color:var(--text3)}
+.tr-r{display:flex;align-items:center;gap:10px;padding:8px 6px;border-top:1.5px solid var(--bg3)}
+.tr-r.me{background:color-mix(in srgb,var(--accent) 14%,transparent);border-radius:12px;border-top-color:transparent}
+.md{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:12.5px;font-weight:900;background:var(--bg3);color:var(--text2);flex:none}
+.md.m0{background:#FFC23D;color:#3b2600}.md.m1{background:#CBD5E1;color:#1f2937}.md.m2{background:#E39B62;color:#3a1d06}
+.tr-r .nm{flex:1;min-width:0;font-weight:800;font-size:14.5px}.tr-r .nm em{font-style:normal;font-size:10.5px;padding:1px 6px;border-radius:6px;background:var(--accent);color:var(--on-accent);margin-left:4px;vertical-align:1px}
+.tr-r .nm small{display:block;font-size:11.5px;font-weight:600;color:var(--text3)}
+.tr-r .val{text-align:right;font-weight:800;font-size:14px}.tr-r .val small{display:block;font-size:11.5px;color:var(--text3);font-weight:700}
+.tr-gap{text-align:center;color:var(--text3);font-weight:900;letter-spacing:.2em;padding:2px 0}
+.tr-empty{margin:6px 2px 2px;font-size:13.5px;font-weight:600;color:var(--text2);line-height:1.45}
+.tr-cmp{margin-top:10px}.tr-cmp p{margin:8px 0 0;font-size:13px;font-weight:600;color:var(--text2)}.tr-cmp p b{color:var(--text)}
+.tr-bar{position:relative;height:10px;border-radius:8px;background:var(--bg3)}.tr-bar i{position:absolute;left:0;top:0;bottom:0;border-radius:8px;background:var(--accent)}
+.tr-bar b{position:absolute;top:50%;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:#fff;border:3px solid var(--accent)}
+.tr-wr{margin-top:10px;padding:10px 12px;border-radius:14px;background:var(--bg3);display:grid;grid-template-columns:1fr auto;gap:2px 8px;font-size:13px}
+.tr-wr span{font-weight:700;color:var(--text3)}.tr-wr b{font-weight:800}.tr-wr small{grid-column:span 2;font-size:12px;font-weight:600;color:var(--text2)}
+.tr-pick{display:flex;gap:6px;overflow-x:auto;margin:0 -2px 6px;padding:2px;scrollbar-width:none}.tr-pick::-webkit-scrollbar{display:none}
+.tr-pick button{flex:none;padding:6px 11px;border-radius:14px;background:var(--bg3);font-size:12.5px;font-weight:800;color:var(--text2)}.tr-pick button.on{background:var(--accent);color:var(--on-accent)}
+.tr-go{width:100%;margin-top:12px;height:46px}
+.field.venue{display:flex;align-items:center;gap:10px;margin-top:12px}.field.venue .vl{font-size:13px;font-weight:800;color:var(--text3);flex:none}
+.field.venue select{flex:1;min-width:0;background:transparent;border:0;outline:0;font:inherit;font-weight:800;font-size:15px;color:var(--text)}
 
 /* sign-in gate */
 .gate{position:absolute;inset:0;z-index:90;background:var(--bg);display:flex;flex-direction:column;padding:calc(var(--safe-t) + 40px) 24px calc(var(--safe-b) + 26px);transition:opacity .35s ease,transform .35s ease}
@@ -864,9 +906,9 @@ svg{display:block}
         <div id="events"></div>
       </div>
       <div class="pane" id="p-ranks">
-        <div class="rk-ctl"><select id="rkSkill" aria-label="Skill"></select><span class="rk-sc" id="rkScope"><button data-sc="world" class="on">World</button><button data-sc="city" id="rkCity">My city</button></span></div>
-        <div class="podium" id="podium"></div>
-        <div id="ranks"></div>
+        <div class="rk-ctl"><select id="rkSkill" aria-label="Skill"></select></div>
+        <div class="rk-sum" id="rkSum"></div>
+        <div id="rkTiers"></div>
       </div>
       <div class="pane" id="p-map">
         <div class="card mapcard" id="openMap">
@@ -912,6 +954,7 @@ svg{display:block}
     <div class="pfields prove-pf" id="provePf" data-pf hidden></div>
     <label class="field small" id="bwField" hidden><input id="bwVal" inputmode="decimal" placeholder="70" aria-label="Body weight"><span>kg body weight</span></label>
     <div class="live" id="proveLive"></div>
+    <label class="field venue" id="proveVenueF" hidden><span class="vl">Where?</span><select id="proveVenue" aria-label="Venue"></select></label>
     <input type="file" id="vidIn" accept="video/*" capture="environment" hidden>
     <button class="rec press" id="proveRec"><span data-i="video"></span>Record proof video</button>
     <button class="btn primary" style="width:100%;margin-top:16px" id="provePost"><span>Post result</span></button>
@@ -947,7 +990,7 @@ svg{display:block}
     <div class="row" id="acctRow" style="cursor:pointer"><span data-i="you"></span><span class="sp">Account</span><small id="acctTxt">Sign out</small></div>
     <div class="row"><span data-i="bell"></span><span class="sp">Notifications</span><small>Soon</small></div>
     <div class="row"><span data-i="lock"></span><span class="sp">Privacy</span><small>Soon</small></div>
-    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261123a</small></div>
+    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261123b</small></div>
   </section>
 
   <div class="cele" id="cele"><div class="cele-in"><div class="cele-m" id="celeM"></div><h2 class="display" id="celeT"></h2><div class="big" id="celeB"></div><p id="celeS"></p><button class="btn primary" id="celeOk"><span>Keep going</span></button></div></div>
@@ -970,7 +1013,7 @@ svg{display:block}
     <nav class="adm-tabs" id="admTabs"><button data-t="overview" class="on">Overview</button><button data-t="mod">Moderation</button><button data-t="users">Players</button><button data-t="events">Events</button><button data-t="test">Test</button></nav>
     <div class="adm-body" id="admBody"></div>
   </div>
-  <button class="adm-pill press" id="admPill" hidden><span data-i="you"></span>Admin</button>
+  <button class="adm-pill" id="admPill" hidden aria-label="Admin console"><i class="orb-ring"></i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 19.5 6v5.6c0 4.6-3.2 7.9-7.5 9.4-4.3-1.5-7.5-4.8-7.5-9.4V6z"/><path d="m8.8 12.2 2.2 2.2 4.4-4.6"/></svg></button>
 
   <div class="onb" id="onb" hidden>
     <div class="onb-h"><button class="onb-back press" id="onbBack" aria-label="Back"><span data-i="back"></span></button><div class="onb-bar"><i id="onbBar"></i></div><span class="onb-n" id="onbN"></span></div>
@@ -1398,7 +1441,8 @@ $('#provePost').onclick=async()=>{const s=SKILLS[proveSkill],r=readVal(),btn=$('
  const entry={v:r.x,t:Date.now()};
  if(CU()){btn.disabled=true;const lab=btn.firstChild;
   try{if(pendingVid){entry.video=await Cloud.uploadVideo(pendingVid,f=>lab.textContent=`Uploading video ${Math.round(f*100)}%`);}
-   lab.textContent='Saving…';entry.cloud=await Cloud.saveResult({skill:s.name,v:r.x,pts:p,name:store.get('name',''),city:store.get('city',''),sex:profile().sex,age:profile().age,video:entry.video});}
+   lab.textContent='Saving…';const vs=$('#proveVenue'),vid=$('#proveVenueF').hidden?'':vs.value;if(vid)store.set('lastVenue',vid);
+   entry.cloud=await Cloud.saveResult({skill:s.name,v:r.x,pts:p,name:store.get('name',''),city:store.get('city',''),sex:profile().sex,age:profile().age,video:entry.video,venue:vid,venueName:vid?vs.selectedOptions[0].textContent:''});}
   catch(e){toast('Saved on this phone only: '+(e.code||e.message));}
   btn.disabled=false;lab.textContent='Post result';}
  resetVid();
@@ -1455,28 +1499,88 @@ const Pulse={ready:false,last:0,
    last=now;};});}};
 
 /* ================= ARENA ================= */
-let rkScope='world';
-async function renderRanks(){const sel=$('#rkSkill');if(!sel.options.length){const mine=mySkills().map(x=>x.s.name);
+/* ================= RANKINGS: venue → city → state → national → global ================= */
+const STATES={Gujarat:'Ahmedabad,Surat,Vadodara,Rajkot,Bhavnagar,Jamnagar,Junagadh,Gandhinagar,Anand,Nadiad,Bharuch,Vapi,Valsad,Porbandar,Bhuj,Morbi,Mehsana,Palanpur',
+ Maharashtra:'Mumbai,Pune,Nagpur,Thane,Nashik,Aurangabad,Solapur,Navi Mumbai,Bhiwandi,Amravati,Kolhapur,Satara,Sangli,Ahmednagar,Latur,Nanded,Jalgaon,Akola,Lonavala,Alibag,Ratnagiri',
+ Delhi:'Delhi,New Delhi',Karnataka:'Bengaluru,Mysuru,Hubballi,Mangaluru,Belagavi,Gulbarga,Davanagere',Telangana:'Hyderabad,Warangal',
+ 'Tamil Nadu':'Chennai,Coimbatore,Madurai,Tiruchirappalli,Salem,Erode,Tirunelveli,Vellore,Ooty,Kodaikanal','West Bengal':'Kolkata,Howrah,Durgapur,Asansol,Siliguri,Darjeeling',
+ Rajasthan:'Jaipur,Jodhpur,Kota,Bikaner,Ajmer,Udaipur,Mount Abu,Pushkar','Uttar Pradesh':'Lucknow,Kanpur,Ghaziabad,Agra,Meerut,Varanasi,Prayagraj,Bareilly,Moradabad,Aligarh,Saharanpur,Gorakhpur,Noida,Firozabad,Jhansi,Ayodhya,Mathura,Vrindavan',
+ 'Madhya Pradesh':'Indore,Bhopal,Jabalpur,Gwalior,Ujjain','Andhra Pradesh':'Visakhapatnam,Vijayawada,Guntur,Nellore,Kakinada,Tirupati',Bihar:'Patna,Gaya',
+ Haryana:'Faridabad,Gurugram,Panipat,Rohtak,Karnal,Sonipat,Hisar,Panchkula,Kurukshetra',Punjab:'Ludhiana,Amritsar,Jalandhar,Mohali,Bathinda,Patiala,Zirakpur',
+ 'Jammu and Kashmir':'Srinagar,Jammu',Jharkhand:'Dhanbad,Ranchi,Jamshedpur,Bokaro',Chhattisgarh:'Raipur,Bhilai',Assam:'Guwahati',Chandigarh:'Chandigarh',
+ Kerala:'Thiruvananthapuram,Kochi,Kozhikode,Thrissur,Kannur',Odisha:'Bhubaneswar,Cuttack',Uttarakhand:'Dehradun,Rishikesh,Haridwar,Nainital','Himachal Pradesh':'Shimla,Manali',
+ Goa:'Panaji,Margao,Vasco da Gama',Puducherry:'Puducherry','Dadra and Nagar Haveli and Daman and Diu':'Silvassa,Daman,Diu',Meghalaya:'Shillong',Manipur:'Imphal',Mizoram:'Aizawl',
+ Tripura:'Agartala','Arunachal Pradesh':'Itanagar',Nagaland:'Kohima',Sikkim:'Gangtok','Andaman and Nicobar Islands':'Port Blair',Ladakh:'Leh'};
+const ABROAD={'United Arab Emirates':'Dubai,Abu Dhabi,Sharjah',Qatar:'Doha','Saudi Arabia':'Riyadh',Oman:'Muscat',Singapore:'Singapore',Malaysia:'Kuala Lumpur',Thailand:'Bangkok',Indonesia:'Jakarta',Philippines:'Manila','Hong Kong':'Hong Kong',
+ Japan:'Tokyo,Osaka','South Korea':'Seoul',China:'Beijing,Shanghai',Australia:'Sydney,Melbourne,Brisbane,Perth','New Zealand':'Auckland','United Kingdom':'London,Manchester,Birmingham,Edinburgh',Ireland:'Dublin',France:'Paris',
+ Germany:'Berlin,Munich',Netherlands:'Amsterdam',Spain:'Madrid,Barcelona',Italy:'Rome,Milan',Switzerland:'Zurich,Geneva',Austria:'Vienna',Sweden:'Stockholm',Norway:'Oslo',Denmark:'Copenhagen',Finland:'Helsinki',Portugal:'Lisbon',
+ Czechia:'Prague',Poland:'Warsaw',Turkey:'Istanbul',Russia:'Moscow',Egypt:'Cairo',Kenya:'Nairobi',Nigeria:'Lagos','South Africa':'Johannesburg,Cape Town',
+ 'United States':'New York,Los Angeles,San Francisco,Chicago,Boston,Seattle,Austin,Houston,Dallas,Miami,Atlanta,Washington',Canada:'Toronto,Vancouver,Montreal',Mexico:'Mexico City',Brazil:'São Paulo,Rio de Janeiro',
+ Argentina:'Buenos Aires',Nepal:'Kathmandu','Sri Lanka':'Colombo',Bangladesh:'Dhaka',Pakistan:'Karachi,Lahore,Islamabad'};
+const PLACE={};Object.entries(STATES).forEach(([st,c])=>c.split(',').forEach(x=>PLACE[x.toLowerCase()]={state:st,country:'India'}));
+Object.entries(ABROAD).forEach(([co,c])=>c.split(',').forEach(x=>PLACE[x.toLowerCase()]={state:'',country:co}));
+const placeOf=city=>PLACE[(city||'').trim().toLowerCase()]||{state:'',country:''};
+
+let venueCache=null;
+async function provnVenues(){if(venueCache)return venueCache;if(!CU()||!Cloud.venues)return [];try{venueCache=(await Cloud.venues()).sort((a,b)=>a.name.localeCompare(b.name));}catch(e){venueCache=[];}return venueCache;}
+
+let rkVenue=store.get('rkVenue','');
+async function renderRanks(){const sel=$('#rkSkill');
+ if(!sel.options.length){const mine=mySkills().map(x=>x.s.name);
   const list=[...new Set([...mine,'5k run','Pickleball',"Rubik's cube",'Chess','Push-ups','Deadlift','Typing','100m sprint',...SKILL_LIST.map(x=>x.name).sort()])];sel.innerHTML=list.map(n=>`<option>${esc(n)}</option>`).join('');}
- const name=sel.value,s=SKILLS[name],city=store.get('city','');$('#rkCity').textContent=city?`In ${city}`:'My city';$$('#rkScope button').forEach(b=>b.classList.toggle('on',b.dataset.sc===rkScope));
- const cols=['#FF8A5B','#FFC23D','#9BE15D','#60A5FA','#C084FC'];let rows=[];
  if(!CU())return;
- {$('#ranks').innerHTML='<div class="skel" style="height:56px;margin-top:10px"></div>';$('#podium').innerHTML='';
-  if(rkScope==='city'&&!city){$('#ranks').innerHTML='<div class="card empty">Add your city on the You tab to see local rankings.</div>';return;}
-  try{rows=(await Cloud.leaderboard(name,rkScope==='city'?city:'')).map(r=>({n:r.name||'Player',v:r.v,p:r.pts,me:r.uid===Cloud.user.uid}));}catch(e){$('#ranks').innerHTML=`<div class="card empty">Could not load rankings (${esc(e.code||e.message)})</div>`;return;}
-  if(!rows.length){$('#ranks').innerHTML=`<div class="card empty">No one has logged ${esc(name)} yet. Be the first!</div>`;return;}}
- const top=rows.slice(0,3),fp=v=>`${fmtPerf(s,v,0)}`;
- $('#podium').innerHTML=[1,0,2].filter(k=>top[k]).map(k=>`<div class="card pod ${k===0?'p1':''}"><div class="av" style="background:${cols[k]}">${esc(top[k].n[0].toUpperCase())}</div><b>${esc(top[k].n)}</b><small>${fp(top[k].v)} · ${top[k].p}</small><div class="rk display">${k+1}</div></div>`).join('');
- $('#ranks').innerHTML=rows.slice(3,50).map((r,k)=>`<div class="card rank ${r.me?'me':''}"><span class="n">${k+4}</span><div class="av" style="width:32px;height:32px;font-size:12px;background:${cols[(k+3)%5]}">${esc(r.n[0].toUpperCase())}</div><span class="nm">${esc(r.n)}</span><span class="val">${fp(r.v)}<small>${r.p} pts</small></span></div>`).join('');}
+ const name=sel.value,s=SKILLS[name],me=Cloud.user.uid,city=store.get('city',''),pl=placeOf(city),fp=v=>fmtPerf(s,v,0)+(unitShort(s)?' '+unitShort(s):'');
+ $('#rkTiers').innerHTML='<div class="skel" style="height:120px;margin-top:12px"></div><div class="skel" style="height:120px;margin-top:12px"></div>';$('#rkSum').innerHTML='';
+ let all=[],venues=[];
+ try{[all,venues]=await Promise.all([Cloud.rankings(name),provnVenues()]);}catch(e){$('#rkTiers').innerHTML=`<div class="card empty">Could not load rankings (${esc(e.code||e.message)})</div>`;return;}
+ if(sel.value!==name)return;
+ all=all.map(r=>({...r,...placeOf(r.city)})).sort((a,b)=>b.pts-a.pts);
+ const mine=all.find(r=>r.uid===me)||(bestOf(name)?{uid:me,name:pname(),v:bestOf(name).v,pts:bestOf(name).p,city}:null);
+ /* local: Provn-approved venues (pick one) */
+ const vInCity=venues.filter(v=>!city||!v.city||v.city.toLowerCase()===city.toLowerCase());
+ if(!vInCity.find(v=>v.id===rkVenue))rkVenue=vInCity[0]?.id||'';
+ let local=null;if(rkVenue){try{local=await Cloud.venueBoard(name,rkVenue);}catch(e){local=[];console.warn(e);}}
+ const tiers=[
+  {k:'local',ic:'pin',t:'Local',sub:vInCity.length?'At Provn-approved venues':'Provn-approved venues',rows:local,
+   pick:vInCity.length>1?vInCity:null,empty:!vInCity.length?`No Provn-approved venues${city?' in '+esc(city):''} yet. Results you log at one will be ranked here.`:`No one has logged ${esc(name)} at ${esc(vInCity.find(v=>v.id===rkVenue)?.name||'this venue')} yet. Pick the venue when you log a result.`},
+  {k:'city',ic:'city',t:city?esc(city):'City',sub:'Every Provn player in your city',rows:city?all.filter(r=>(r.city||'').toLowerCase()===city.toLowerCase()):null,empty:city?`No one in ${esc(city)} has logged ${esc(name)} yet.`:'Add your city on the You tab to see city rankings.'},
+  {k:'state',ic:'state',t:pl.state||'State',sub:'Top players in your state',rows:pl.state?all.filter(r=>r.state===pl.state):null,empty:pl.state?`No one in ${esc(pl.state)} has logged ${esc(name)} yet.`:city?`We couldn't match ${esc(city)} to a state yet.`:'Add your city to see state rankings.'},
+  {k:'nat',ic:'flag',t:pl.country||'National',sub:'Top players in your country',rows:pl.country?all.filter(r=>r.country===pl.country):null,empty:pl.country?`No one in ${esc(pl.country)} has logged ${esc(name)} yet.`:'Add your city to see national rankings.'},
+  {k:'glob',ic:'globe',t:'Global',sub:'Every Provn player worldwide',rows:all,empty:`No one has logged ${esc(name)} yet. Be the first!`}];
+ const IC={pin:'<path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>',city:'<path d="M3.5 20.5h17M5.5 20.5V9l5-3v14.5M10.5 20.5V4.5l8 3.5v12.5M13.5 10h2M13.5 13h2M13.5 16h2M7.5 12h1M7.5 15h1"/>',state:'<path d="M4 6.5 9 4l6 2.5 5-2.5v13.5L15 20l-6-2.5L4 20z"/><path d="M9 4v13.5M15 6.5V20"/>',flag:'<path d="M5 21V4M5 4.5h11l-2 4 2 4H5"/>',globe:'<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.8 2.6 2.8 14.4 0 17M12 3.5c-2.8 2.6-2.8 14.4 0 17"/>'};
+ const icon=k=>`<svg viewBox="0 0 24 24" ${P}>${IC[k]}</svg>`;
+ const medal=i=>i<3?`<i class="md m${i}">${i+1}</i>`:`<i class="md">${i+1}</i>`;
+ const row=(r,i)=>`<div class="tr-r ${r.uid===me?'me':''}">${medal(i)}<span class="nm">${esc(r.name||'Player')}${r.uid===me?' <em>You</em>':''}<small>${esc(r.city||'')}</small></span><span class="val">${fp(r.v)}<small>${r.pts} pts</small></span></div>`;
+ const sum=[];
+ $('#rkTiers').innerHTML=tiers.map(T=>{
+  const rows=T.rows,has=rows&&rows.length,pos=has?rows.findIndex(r=>r.uid===me):-1,you=pos>=0?rows[pos]:null;
+  sum.push({k:T.k,t:T.k==='local'?'Local':T.k==='city'?'City':T.k==='state'?'State':T.k==='nat'?'National':'Global',ic:T.ic,r:pos>=0?`#${pos+1}`:'–',of:has?rows.length:0});
+  let cmp='';
+  if(has&&you){const top=rows[0],next=pos>0?rows[pos-1]:null,pct=Math.max(4,Math.round(you.pts/Math.max(1,top.pts)*100));
+   cmp=`<div class="tr-cmp"><div class="tr-bar"><i style="width:${pct}%"></i><b style="left:${pct}%"></b></div><p>${pos===0?`<b>You're #1</b>${rows[1]?` · ${you.pts-rows[1].pts} pts ahead of ${esc(rows[1].name)}`:''}`:`<b>#${pos+1} of ${rows.length}</b> · ${next.pts-you.pts+1} pts to pass ${esc(next.name)} · ${top.pts-you.pts} pts behind #1`}</p></div>`;}
+  else if(has&&!mine)cmp=`<div class="tr-cmp"><p>Log a result to see where you stand.</p></div>`;
+  else if(has&&mine&&!you)cmp=`<div class="tr-cmp"><p>Your best isn't ranked here${T.k==='local'?' (it wasn\'t logged at this venue)':''}.</p></div>`;
+  const glob=T.k==='glob'?`<div class="tr-wr"><span>${BENCH.has(name)?'Elite benchmark':'World record'}</span><b>${fp(eff(s).ref)} · ${rawPoints(eff(s),eff(s).ref)} pts</b>${mine?`<small>You're at ${Math.round(mine.pts/12)}% of the record scale</small>`:''}</div>`:'';
+  const picker=T.pick?`<div class="tr-pick">${T.pick.map(v=>`<button class="${v.id===rkVenue?'on':''}" data-v="${v.id}">${esc(v.name)}</button>`).join('')}</div>`:'';
+  return `<section class="card tier t-${T.k}"><header><span class="tr-ic">${icon(T.ic)}</span><div><b>${T.t}</b><small>${T.k==='local'&&rkVenue?esc(vInCity.find(v=>v.id===rkVenue)?.name||T.sub):T.sub}</small></div><span class="tr-pos">${pos>=0?`#${pos+1}<small>of ${rows.length}</small>`:has?`<small>${rows.length} ranked</small>`:''}</span></header>
+   ${picker}${has?rows.slice(0,5).map(row).join('')+(pos>=5?`<div class="tr-gap">···</div>${row(you,pos)}`:''):`<p class="tr-empty">${T.empty}</p>`}${cmp}${glob}
+   ${!mine&&T.k==='glob'?`<button class="btn primary tr-go" id="rkLog"><span>Log a ${esc(name)} result</span></button>`:''}</section>`;}).join('');
+ $('#rkSum').innerHTML=sum.map(x=>`<button class="rs ${x.r!=='–'?'on':''}" data-k="${x.k}"><span>${icon(x.ic)}</span><b>${x.r}</b><small>${x.t}</small></button>`).join('');
+ $$('#rkSum .rs').forEach(b=>b.onclick=()=>{buzz(6);const el=$('#rkTiers .t-'+b.dataset.k);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});});
+ $$('#rkTiers .tr-pick button').forEach(b=>b.onclick=()=>{buzz(6);rkVenue=b.dataset.v;store.set('rkVenue',rkVenue);renderRanks();});
+ const lg=$('#rkLog');if(lg)lg.onclick=()=>openProve(name,false);}
 $('#rkSkill').onchange=()=>renderRanks();
+/* log sheet: optional Provn venue, so the result counts in Local rankings */
+const _openProve=openProve;openProve=function(name,fromPath){_openProve(name,fromPath);const f=$('#proveVenueF');f.hidden=true;
+ provnVenues().then(vs=>{const city=(store.get('city','')||'').toLowerCase(),list=vs.filter(v=>!city||!v.city||v.city.toLowerCase()===city);if(!list.length)return;
+  const last=store.get('lastVenue','');$('#proveVenue').innerHTML='<option value="">Not at a Provn venue</option>'+list.map(v=>`<option value="${v.id}" ${v.id===last?'selected':''}>${esc(v.name)}</option>`).join('');f.hidden=false;});};
 /* ---- explore map (lazy) ---- */
 function openMap(o){if(!window.ProvnMap){toast('Map is loading…');return;}buzz(10);ProvnMap.open(o||{});}
 $('#openMap').onclick=()=>openMap();
 function renderMapPane(){const P=window.ProvnMap;if(!P)return;
- $('#mcActs').innerHTML=[{k:'events',n:'Tournaments',e:'🏆',col:'#FFC23D'},...P.ACTS.filter(a=>a.k!=='multi')].map(a=>`<button class="mc-a press" data-k="${a.k}"><span style="background:${a.col}">${a.e}</span>${a.n}</button>`).join('');
+ $('#mcActs').innerHTML=[{k:'events',n:'Tournaments',e:'🏆',col:'#FFC23D'},...P.ACTS.filter(a=>a.k!=='multi')].map(a=>`<button class="mc-a press" data-k="${a.k}"><span style="background:${a.col}">${a.e||P.ico(a)}</span>${a.n}</button>`).join('');
  $$('#mcActs .mc-a').forEach(b=>b.onclick=()=>openMap({filter:b.dataset.k}));
  const n=P.cached();$('#mcStats').innerHTML=n?`<span><b>${n}</b>places mapped</span><span><b>1</b>city</span>`:'';}
-$$('#rkScope button').forEach(b=>b.onclick=()=>{rkScope=b.dataset.sc;buzz(6);renderRanks();});
 let segI=0;
 function moveSeg(anim){const si=$('#seg .si');if(!si)return;const w=si.offsetWidth;if(!anim)si.style.transition='none';si.style.transform=`translateX(${segI*(w)}px)${document.documentElement.dataset.theme==='volt'?' skewX(-10deg)':''}`;if(!anim){si.offsetWidth;si.style.transition='';}}
 $$('#seg button').forEach((b,k)=>b.onclick=()=>{if(b.dataset.p==='map')renderMapPane();if(segI===k)return;segI=k;buzz(6);$$('#seg button').forEach((x,j)=>x.classList.toggle('on',j===k));$$('.pane').forEach(p=>p.classList.toggle('on',p.id==='p-'+b.dataset.p));if(b.dataset.p==='ranks')renderRanks();moveSeg(true);});

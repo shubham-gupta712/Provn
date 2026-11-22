@@ -8,7 +8,7 @@
     { k: 'cricket', n: 'Cricket', e: '🏏', sp: ['cricket', 'cricket_nets'], col: '#9BE15D', skill: 'Bowling speed' },
     { k: 'football', n: 'Football', e: '⚽', sp: ['soccer', 'football', 'futsal', 'american_football'], col: '#34D399', skill: 'Football juggling' },
     { k: 'badminton', n: 'Badminton', e: '🏸', sp: ['badminton'], col: '#60A5FA', skill: 'Badminton' },
-    { k: 'pickleball', n: 'Pickleball', e: '🥒', sp: ['pickleball'], col: '#A3E635', skill: 'Pickleball' },
+    { k: 'pickleball', n: 'Pickleball', e: '', svg: 1, sp: ['pickleball'], col: '#A3E635', skill: 'Pickleball' },
     { k: 'tennis', n: 'Tennis', e: '🎾', sp: ['tennis'], col: '#FACC15', skill: 'Tennis' },
     { k: 'tt', n: 'Table tennis', e: '🏓', sp: ['table_tennis'], col: '#F472B6', skill: 'Table tennis' },
     { k: 'basketball', n: 'Basketball', e: '🏀', sp: ['basketball'], col: '#FB923C', skill: 'Basketball 3-pointers' },
@@ -23,6 +23,9 @@
     { k: 'multi', n: 'Multi-sport', e: '🏟️', col: '#CBD5E1' }
   ];
   const A = Object.fromEntries(ACTS.map(a => [a.k, a]));
+  /* pickleball has no emoji, so it gets its own drawn ball (perforated, tennis-yellow) */
+  const PB_SVG = '<svg class="pb-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5" fill="#E7F536" stroke="#171A25" stroke-width="1.6"/><g fill="#171A25" opacity=".78"><circle cx="12" cy="6.6" r="1.25"/><circle cx="7.4" cy="9.6" r="1.25"/><circle cx="16.6" cy="9.6" r="1.25"/><circle cx="12" cy="12" r="1.25"/><circle cx="8.6" cy="15.3" r="1.25"/><circle cx="15.4" cy="15.3" r="1.25"/><circle cx="12" cy="18.1" r="1.1"/></g></svg>';
+  const ico = a => a.svg ? PB_SVG : a.e;
   const TYPE = { pitch: 'Court / ground', sports_centre: 'Sports centre', stadium: 'Stadium', fitness_centre: 'Gym', swimming_pool: 'Pool', track: 'Track', sports_hall: 'Sports hall', ice_rink: 'Rink', club: 'Club', academy: 'Academy', community: 'Community' };
   const OVERPASS = ['https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter', 'https://maps.mail.ru/osm/tools/overpass/api/interpreter'];
   const CACHE = 'osm_' + CITY.name.toLowerCase(), CACHE_MS = 3 * 864e5;
@@ -125,11 +128,11 @@
       <div class="mx-load" id="mxLoad"><div class="mx-spin"></div><b>Spinning up the globe…</b></div>`;
     $('#app').appendChild(root);
     $m('#mxChips').innerHTML = [{ k: 'all', n: 'All', e: '✨' }, { k: 'events', n: 'Tournaments', e: '🏆' }, ...ACTS.filter(a => a.k !== 'multi')]
-      .map(a => `<button class="mx-chip ${a.k === filter ? 'on' : ''}" data-k="${a.k}"><span>${a.e}</span>${a.n}</button>`).join('');
+      .map(a => `<button class="mx-chip ${a.k === filter ? 'on' : ''}" data-k="${a.k}"><span>${ico(a)}</span>${a.n}</button>`).join('');
     $$m('.mx-chip').forEach(b => b.onclick = () => { buzz(6); setFilter(b.dataset.k); });
     $m('#mxBack').onclick = () => close();
     const q = $m('#mxQ');
-    q.oninput = () => { query = q.value.trim().toLowerCase(); $m('#mxQx').hidden = !q.value; deselect(); data(); refresh(); };
+    let qT; q.oninput = () => { query = q.value.trim().toLowerCase(); $m('#mxQx').hidden = !q.value; deselect(); data(); refresh(); clearTimeout(qT); qT = setTimeout(() => { const m = query && shown(); if (m && m.length) fit(m.map(v => [v.lng, v.lat])); }, 700); };
     q.onkeydown = e => { if (e.key === 'Enter') { q.blur(); const l = list(); if (l[0]) select(l[0].id, true); } };
     $m('#mxQx').onclick = () => { q.value = ''; q.oninput(); };
     $m('#mxLayer').onclick = () => { buzz(6); setLayer(layer === 'sat' ? 'street' : 'sat'); };
@@ -145,7 +148,7 @@
     filter = k; $$m('.mx-chip').forEach(b => b.classList.toggle('on', b.dataset.k === k));
     deselect(); data(); refresh();
     const s = shown();
-    if (k === 'events' && events.length) fit(events.map(e => [e.lng, e.lat]));
+    if (k === 'events' && events.length) { if (events.length === 1) selectEvent(events[0].id); else fit(events.map(e => [e.lng, e.lat])); }
     else if (k !== 'all' && s.length) fit(s.map(v => [v.lng, v.lat]));
   }
   function fit(pts) {
@@ -172,7 +175,7 @@
   }
   function card(v) {
     const a = A[v.acts[0]];
-    return `<button class="mx-card" data-id="${esc(v.id)}"><span class="mx-ic" style="background:${a.col}">${a.e}</span><span class="mx-ct"><b>${esc(v.name)}${v.src === 'provn' ? ' <i class="mx-ver">✓</i>' : ''}</b><small>${esc(v.type)}${v.area ? ' · ' + esc(v.area) : ''} · ${fmtKm(v.d)}</small><span class="mx-tags">${v.acts.slice(0, 3).map(k => `<em>${A[k].e} ${A[k].n}</em>`).join('')}</span></span></button>`;
+    return `<button class="mx-card" data-id="${esc(v.id)}"><span class="mx-ic" style="background:${a.col}">${ico(a)}</span><span class="mx-ct"><b>${esc(v.name)}${v.src === 'provn' ? ' <i class="mx-ver">✓</i>' : ''}</b><small>${esc(v.type)}${v.area ? ' · ' + esc(v.area) : ''} · ${fmtKm(v.d)}</small><span class="mx-tags">${v.acts.slice(0, 3).map(k => `<em>${ico(A[k])} ${A[k].n}</em>`).join('')}</span></span></button>`;
   }
   function evCard(e) {
     const d = dist(ref(), [e.lng, e.lat]);
@@ -189,9 +192,10 @@
     const evs = (filter === 'all' || filter === 'events') && !query ? events.slice().sort((a, b) => (b.live - a.live) || a.date.localeCompare(b.date)) : [];
     const l = list().slice(0, 40), total = filter === 'events' ? evs.length : list().length;
     $m('#mxCount').textContent = filter === 'events' ? `${evs.length} tournament${evs.length === 1 ? '' : 's'} coming up` : query ? `${total} match${total === 1 ? '' : 'es'} for “${$m('#mxQ').value.trim()}”` : `${total} place${total === 1 ? '' : 's'} in view`;
-    $m('#mxSub').textContent = filter === 'events' ? (evs.some(e => e.live) ? 'Live and upcoming near you' : 'Upcoming near you') : `${A[filter]?.n || 'All sports'} · ${CITY.name}`;
-    const html = evs.map(evCard).join('') + l.map(card).join('');
-    $m('#mxCards').innerHTML = html || `<div class="mx-empty">${filter === 'events' ? 'No tournaments on the map yet. They show up here once they are announced.' : query ? 'Nothing matches in Ahmedabad yet. Try another sport or name.' : 'Nothing here. Zoom out or move the map.'}${osmFailed && filter !== 'events' ? '<button class="mx-retry" id="mxRetry">Load more places from OpenStreetMap</button>' : ''}</div>`;
+    $m('#mxSub2') && ($m('#mxSub2').textContent = '');
+    $m('#mxSub').textContent = (filter === 'events' ? (evs.some(e => e.live) ? 'Live and upcoming · ' : 'Upcoming · ') : `${A[filter]?.n || 'All sports'} · `) + 'tap a pin for details';
+    const html = total ? '' : null;
+    $m('#mxCards').innerHTML = html !== null ? (osmFailed && filter !== 'events' ? '<div class="mx-empty"><button class="mx-retry" id="mxRetry">Load more places from OpenStreetMap</button></div>' : '') : `<div class="mx-empty">${filter === 'events' ? 'No tournaments on the map yet. They show up here once they are announced.' : query ? 'Nothing matches in Ahmedabad yet. Try another sport or name.' : 'Nothing here. Zoom out or move the map.'}${osmFailed && filter !== 'events' ? '<button class="mx-retry" id="mxRetry">Load more places from OpenStreetMap</button>' : ''}</div>`;
     const rt = $m('#mxRetry'); if (rt) rt.onclick = () => { buzz(8); reloadOsm(); };
     $m('#mxCards').scrollLeft = 0;
     $$m('.mx-card[data-id]').forEach(b => b.onclick = () => select(b.dataset.id, true));
@@ -203,15 +207,15 @@
     const v = venues.find(x => x.id === id); if (!v) return;
     buzz(8); sel = v; const a = A[v.acts[0]], d = dist(ref(), [v.lng, v.lat]);
     if (selMarker) selMarker.remove();
-    const el = document.createElement('div'); el.className = 'mx-pin'; el.innerHTML = `<span style="background:${a.col}"><b>${a.e}</b></span>`;
+    const el = document.createElement('div'); el.className = 'mx-pin'; el.innerHTML = `<span style="background:${a.col}"><b>${ico(a)}</b></span>`;
     selMarker = new maplibregl.Marker({ element: el, anchor: 'bottom' }).setLngLat([v.lng, v.lat]).addTo(map);
     if (fly) map.flyTo({ center: [v.lng, v.lat], zoom: Math.max(map.getZoom(), 15.5), pitch: is3d ? 55 : 0, duration: 1500, offset: [0, -90] });
     const here = events.filter(e => dist([e.lng, e.lat], [v.lng, v.lat]) < 0.4);
     const sk = v.acts.map(k => A[k].skill).filter(n => n && SKILLS[n]);
     const D = $m('#mxDetail');
     D.innerHTML = `<button class="mx-x press" id="mxDx" aria-label="Back to list">×</button>
-      <div class="mx-dt"><span class="mx-ic big" style="background:${a.col}">${a.e}</span><div><b class="display">${esc(v.name)}</b><small>${esc(v.type)} · ${fmtKm(d)} away${v.src === 'provn' ? ' · <i class="mx-ver">✓ Verified by Provn</i>' : ''}</small></div></div>${v.approx ? `<p class="mx-approx">${v.area ? `Pin shows the ${esc(v.area)} area.` : 'Pin position is approximate.'} Directions search for the exact place.</p>` : ''}
-      <div class="mx-tags big">${v.acts.map(k => `<em>${A[k].e} ${A[k].n}</em>`).join('')}</div>
+      <div class="mx-dt"><span class="mx-ic big" style="background:${a.col}">${ico(a)}</span><div><b class="display">${esc(v.name)}</b><small>${esc(v.type)} · ${fmtKm(d)} away${v.src === 'provn' ? ' · <i class="mx-ver">✓ Verified by Provn</i>' : ''}</small></div></div>${v.approx ? `<p class="mx-approx">${v.area ? `Pin shows the ${esc(v.area)} area.` : 'Pin position is approximate.'} Directions search for the exact place.</p>` : ''}
+      <div class="mx-tags big">${v.acts.map(k => `<em>${ico(A[k])} ${A[k].n}</em>`).join('')}</div>
       ${v.addr ? `<p class="mx-p">📍 ${esc(v.addr)}</p>` : ''}${v.hours ? `<p class="mx-p">🕒 ${esc(v.hours)}</p>` : ''}${v.access && v.access !== 'yes' ? `<p class="mx-p">🔒 Access: ${esc(v.access)}</p>` : ''}${v.info ? `<p class="mx-p">${esc(v.info)}</p>` : ''}
       ${here.length ? `<div class="mx-here">${here.map(e => `<div><b>🏆 ${esc(e.title)}</b><small>${e.live ? '<i class="mx-live">LIVE TODAY</i>' : fdate(e.date)}${e.time ? ' · ' + esc(e.time) : ''}</small></div>`).join('')}</div>` : ''}
       <div class="mx-row">
@@ -269,7 +273,8 @@
       g.fillStyle = look.glow ? look.ink : a.col; g.fill(); g.shadowBlur = 0;
       g.lineWidth = look.lw; g.strokeStyle = look.glow ? a.col : look.ink; g.stroke();
       g.fillStyle = look.glow ? a.col + '33' : look.inner; g.beginPath(); g.arc(cx, cy, 8.6, 0, 7); g.fill();
-      g.font = '11.5px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(a.e, cx, cy + 0.5);
+      if (a.svg) { g.fillStyle = '#E7F536'; g.strokeStyle = '#171A25'; g.lineWidth = 1.2; g.beginPath(); g.arc(cx, cy, 7, 0, 7); g.fill(); g.stroke(); g.fillStyle = 'rgba(23,26,37,.8)'; [[0, -3.6], [-3.3, -1.4], [3.3, -1.4], [0, 0.6], [-2.4, 3.2], [2.4, 3.2]].forEach(([x, y]) => { g.beginPath(); g.arc(cx + x, cy + y, 0.95, 0, 7); g.fill(); }); }
+      else { g.font = '11.5px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(a.e, cx, cy + 0.5); }
       if (kind) { g.fillStyle = '#FF6B3D'; g.strokeStyle = look.ink; g.lineWidth = 2; g.beginPath(); g.arc(cx + r - 1, cy - r + 2, 4.6, 0, 7); g.fill(); g.stroke(); }
       map.addImage(id, g.getImageData(0, 0, W * dpr, H * dpr), { pixelRatio: dpr });
     }));
@@ -319,7 +324,7 @@
     F.innerHTML = `<div class="mx-fi"><h3 class="display">${v.docId ? 'Edit venue' : 'New venue'}</h3><small class="mx-p">${v.lat.toFixed(5)}, ${v.lng.toFixed(5)}</small>
       <label>Name<input id="vfN" maxlength="60" value="${esc(v.name || '')}" placeholder="e.g. Sardar Patel Pickleball Courts"></label>
       <label>Kind<select id="vfK">${['pitch', 'sports_centre', 'stadium', 'academy', 'club', 'community', 'fitness_centre', 'swimming_pool', 'track'].map(k => `<option value="${k}" ${v.kind === k ? 'selected' : ''}>${TYPE[k]}</option>`).join('')}</select></label>
-      <label>Activities</label><div class="mx-fchips">${ACTS.filter(a => a.k !== 'multi').map(a => `<button data-k="${a.k}" class="${cur.has(a.k) ? 'on' : ''}">${a.e} ${a.n}</button>`).join('')}</div>
+      <label>Activities</label><div class="mx-fchips">${ACTS.filter(a => a.k !== 'multi').map(a => `<button data-k="${a.k}" class="${cur.has(a.k) ? 'on' : ''}">${ico(a)} ${a.n}</button>`).join('')}</div>
       <label>Address<input id="vfA" maxlength="120" value="${esc(v.addr || '')}" placeholder="Street, area"></label>
       <div class="mx-two"><label>Phone<input id="vfP" maxlength="20" value="${esc(v.phone || '')}"></label><label>Website<input id="vfW" maxlength="120" value="${esc(v.web || '')}"></label></div>
       <label>About<input id="vfI" maxlength="200" value="${esc(v.info || '')}" placeholder="Courts, timings, how to join"></label>
@@ -410,5 +415,5 @@
     if (pickReturn) { const r = pickReturn; pickReturn = null; r(null); }
     if (!fromPop && history.state && history.state.map) history.back();
   }
-  window.ProvnMap = { _map: () => map, open, close, ACTS, CITY, stats: () => ({ venues: venues.length, events: events.length }), cached: () => (store.get(CACHE, null)?.list || []).length };
+  window.ProvnMap = { ico, _map: () => map, open, close, ACTS, CITY, stats: () => ({ venues: venues.length, events: events.length }), cached: () => (store.get(CACHE, null)?.list || []).length };
 })();

@@ -51,7 +51,7 @@ service cloud.firestore {
 
       allow read: if signedIn();
       allow create: if signedIn() && notBanned()
-        && request.resource.data.keys().hasOnly(['uid','name','city','skill','v','pts','sex','age','createdAt','likes','legit','flags','comments','video'])
+        && request.resource.data.keys().hasOnly(['uid','name','city','skill','v','pts','sex','age','createdAt','likes','legit','flags','comments','video','venue','venueName'])
         && request.resource.data.uid == me()
         && str(request.resource.data.name, 40)
         && str(request.resource.data.city, 40)
@@ -63,7 +63,10 @@ service cloud.firestore {
         && request.resource.data.createdAt == request.time
         && request.resource.data.likes == 0 && request.resource.data.legit == 0
         && request.resource.data.flags == 0 && request.resource.data.comments == 0
-        && (!('video' in request.resource.data) || okVideo(request.resource.data.video));
+        && (!('video' in request.resource.data) || okVideo(request.resource.data.video))
+        && (!('venue' in request.resource.data) || (str(request.resource.data.venue, 40)
+            && exists(/databases/$(database)/documents/venues/$(request.resource.data.venue))
+            && str(request.resource.data.venueName, 60)));
       allow update: if isAdmin() || signedIn() && (
         markMoved('likes') || markMoved('legit') || markMoved('flags')
         || (counterOnly('comments') && request.resource.data.comments == resource.data.comments + 1)
