@@ -113,8 +113,6 @@
         <button class="mx-b press" id="mxLayer" aria-label="Map style"><svg viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/></svg></button>
         <button class="mx-b press on" id="mx3d" aria-label="3D view"><b>3D</b></button>
         <button class="mx-b press" id="mxMe" aria-label="My location"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3"/><circle cx="12" cy="12" r="7"/></svg></button>
-        <button class="mx-b press" id="mxGlobe" aria-label="See the globe"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg></button>
-        <button class="mx-b press" id="mxAdd" hidden aria-label="Add a venue"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
       </div>
       <div class="mx-cross" id="mxCross" hidden><i></i></div>
       <div class="mx-drawer" id="mxDrawer">
@@ -137,9 +135,7 @@
     $m('#mxLayer').onclick = () => { buzz(6); setLayer(layer === 'sat' ? 'street' : 'sat'); };
     $m('#mx3d').onclick = () => { buzz(6); is3d = !is3d; $m('#mx3d').classList.toggle('on', is3d); map.easeTo({ pitch: is3d ? 55 : 0, bearing: is3d ? map.getBearing() : 0, duration: 800 }); };
     $m('#mxMe').onclick = locate;
-    $m('#mxGlobe').onclick = () => { buzz(8); deselect(); map.flyTo({ center: CITY.center, zoom: 1.6, pitch: 0, bearing: 0, duration: 2600 }); };
     $m('#mxCity').onclick = () => { buzz(6); deselect(); flyCity(1800); };
-    $m('#mxAdd').onclick = () => pick((lat, lng) => venueForm({ lat, lng }));
     $m('#mxPickNo').onclick = () => endPick(false);
     $m('#mxPickOk').onclick = () => endPick(true);
     addEventListener('popstate', () => { if (root.classList.contains('on') && !(history.state && history.state.map)) close(true); });
@@ -184,8 +180,7 @@
   }
   function data() {
     if (!ready) return; const s = shown();
-    clearClusters();
-    map.getSource('v').setData({ type: 'FeatureCollection', features: s.map(v => ({ type: 'Feature', geometry: { type: 'Point', coordinates: [v.lng, v.lat] }, properties: { id: v.id, name: v.name, col: A[v.acts[0]].col, pv: v.src === 'provn' ? 1 : 0 } })) });
+    map.getSource('v').setData({ type: 'FeatureCollection', features: s.map(v => ({ type: 'Feature', geometry: { type: 'Point', coordinates: [v.lng, v.lat] }, properties: { id: v.id, icon: `pin-${v.acts[0]}${v.src === 'osm' ? '' : 'v'}`, rank: v.src === 'provn' ? 0 : v.src === 'guide' ? 1 : v.named ? 2 : 3 } })) });
   }
   function refresh() {
     if (!ready) return;
@@ -258,27 +253,29 @@
     if (back) refresh();
   }
 
-  /* ---------- cluster bubbles (HTML, so no map fonts are needed) ---------- */
-  let cm = {}, cmOn = {};
-  function clusters() {
-    const next = {};
-    for (const f of map.querySourceFeatures('v')) {
-      const p = f.properties; if (!p.cluster) continue;
-      const id = p.cluster_id; if (next[id]) continue;
-      let m = cm[id];
-      if (!m) {
-        const el = document.createElement('button'); el.className = 'mx-cl';
-        const n = p.point_count, sz = n < 10 ? 34 : n < 50 ? 42 : n < 150 ? 50 : 58;
-        el.style.width = el.style.height = sz + 'px'; el.textContent = p.point_count_abbreviated;
-        el.onclick = async ev => { ev.stopPropagation(); buzz(6); const z = await map.getSource('v').getClusterExpansionZoom(id); map.easeTo({ center: f.geometry.coordinates, zoom: z + 0.3, duration: 700 }); };
-        m = cm[id] = new maplibregl.Marker({ element: el }).setLngLat(f.geometry.coordinates);
-      }
-      next[id] = m; if (!cmOn[id]) m.addTo(map);
-    }
-    for (const id in cmOn) if (!next[id]) cmOn[id].remove();
-    cmOn = next;
+  /* ---------- pins: drawn once per sport in the app's look ---------- */
+  function makePins() {
+    const t = document.documentElement.dataset.theme || 'dusk', dpr = 2, W = 34, H = 44;
+    const look = { dusk: { ink: '#171A25', lw: 3, inner: '#fff' }, nightfall: { ink: '#0b0b14', lw: 2, inner: '#14141f', glow: true }, volt: { ink: '#0D0E12', lw: 3.5, inner: '#fff', sharp: true } }[t] || { ink: '#171A25', lw: 3, inner: '#fff' };
+    ACTS.forEach(a => ['', 'v'].forEach(kind => {
+      const id = `pin-${a.k}${kind}`; if (map.hasImage(id)) map.removeImage(id);
+      const c = document.createElement('canvas'); c.width = W * dpr; c.height = H * dpr; const g = c.getContext('2d'); g.scale(dpr, dpr);
+      const cx = W / 2, cy = 16, r = 13;
+      g.fillStyle = 'rgba(0,0,0,.28)'; g.beginPath(); g.ellipse(cx, H - 3, 6, 2.4, 0, 0, 7); g.fill();
+      g.beginPath();
+      if (look.sharp) { g.moveTo(cx - r, cy - r + 3); g.lineTo(cx + r, cy - r); g.lineTo(cx + r, cy + r - 3); g.lineTo(cx + 3, cy + r); g.lineTo(cx, H - 5); g.lineTo(cx - 3, cy + r); g.lineTo(cx - r, cy + r); g.closePath(); }
+      else { g.arc(cx, cy, r, Math.PI * 0.78, Math.PI * 2.22); g.quadraticCurveTo(cx + r * 0.35, cy + r * 1.1, cx, H - 5); g.quadraticCurveTo(cx - r * 0.35, cy + r * 1.1, cx - r * Math.cos(Math.PI * 0.22), cy + r * Math.sin(Math.PI * 0.22)); g.closePath(); }
+      if (look.glow) { g.shadowColor = a.col; g.shadowBlur = 8; }
+      g.fillStyle = look.glow ? look.ink : a.col; g.fill(); g.shadowBlur = 0;
+      g.lineWidth = look.lw; g.strokeStyle = look.glow ? a.col : look.ink; g.stroke();
+      g.fillStyle = look.glow ? a.col + '33' : look.inner; g.beginPath(); g.arc(cx, cy, 8.6, 0, 7); g.fill();
+      g.font = '11.5px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(a.e, cx, cy + 0.5);
+      if (kind) { g.fillStyle = '#FF6B3D'; g.strokeStyle = look.ink; g.lineWidth = 2; g.beginPath(); g.arc(cx + r - 1, cy - r + 2, 4.6, 0, 7); g.fill(); g.stroke(); }
+      map.addImage(id, g.getImageData(0, 0, W * dpr, H * dpr), { pixelRatio: dpr });
+    }));
+    pinTheme = t;
   }
-  function clearClusters() { for (const id in cmOn) cmOn[id].remove(); cm = {}; cmOn = {}; }
+  let pinTheme = '';
 
   /* ---------- markers for tournaments ---------- */
   function drawEvents() {
@@ -353,7 +350,7 @@
           roads: { type: 'raster', tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}'], tileSize: 256, maxzoom: 19 },
           lbl: { type: 'raster', tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'], tileSize: 256, maxzoom: 19 },
           street: MT ? { type: 'raster', tiles: [`https://api.maptiler.com/maps/streets-v2/256/{z}/{x}/{y}@2x.png?key=${MT}`], tileSize: 256, maxzoom: 20, attribution: '© MapTiler © OpenStreetMap contributors' } : { type: 'raster', tiles: ['a', 'b', 'c', 'd'].map(s => `https://${s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png`), tileSize: 256, maxzoom: 20, attribution: '© OpenStreetMap contributors © CARTO' },
-          v: { type: 'geojson', data: { type: 'FeatureCollection', features: [] }, cluster: true, clusterRadius: 44, clusterMaxZoom: 14 }
+          v: { type: 'geojson', data: { type: 'FeatureCollection', features: [] } }
         },
         layers: [
           { id: 'bg', type: 'background', paint: { 'background-color': '#0b1430' } },
@@ -361,12 +358,12 @@
           { id: 'roads', type: 'raster', source: 'roads', minzoom: 11, paint: { 'raster-opacity': 0.85 } },
           { id: 'street', type: 'raster', source: 'street', layout: { visibility: 'none' } },
           { id: 'lbl', type: 'raster', source: 'lbl' },
-          { id: 'vp', type: 'circle', source: 'v', filter: ['!', ['has', 'point_count']], paint: { 'circle-color': ['get', 'col'], 'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, 6, 16, 10], 'circle-stroke-color': ['case', ['==', ['get', 'pv'], 1], '#FF6B3D', '#171A25'], 'circle-stroke-width': ['case', ['==', ['get', 'pv'], 1], 3.5, 2.5] } },
+          { id: 'vp', type: 'symbol', source: 'v', layout: { 'icon-image': ['get', 'icon'], 'icon-anchor': 'bottom', 'icon-size': ['interpolate', ['linear'], ['zoom'], 3, 0.5, 10, 0.72, 14, 0.9, 17, 1.05], 'icon-allow-overlap': ['step', ['zoom'], false, 15.5, true], 'icon-padding': 1, 'symbol-sort-key': ['get', 'rank'], 'symbol-z-order': 'source' } }
         ]
       }
     });
     map.on('load', async () => {
-      ready = true;
+      makePins(); ready = true;
       if (MT) { try { map.setTerrain({ source: 'dem', exaggeration: 1.3 }); } catch (e) { console.warn('terrain', e); } } $m('#mxLoad').classList.add('out');
       if (pickReturn) { map.jumpTo({ center: CITY.center, zoom: 13, pitch: 0 }); startPick(); }
       /* gentle spin, then dive into the city like Google Earth */
@@ -380,8 +377,8 @@
       if (osmFailed) toast('OpenStreetMap places did not load. Showing the Provn list.');
     });
     map.on('moveend', () => { if (!sel && !pickCb) refresh(); });
-    map.on('render', () => { if (ready && map.isSourceLoaded('v')) clusters(); });
     map.on('click', 'vp', e => select(e.features[0].properties.id, true));
+    map.on('contextmenu', e => { if (typeof Admin !== 'undefined' && Admin.on() && !pickCb) { buzz(20); venueForm({ lat: +e.lngLat.lat.toFixed(6), lng: +e.lngLat.lng.toFixed(6) }); } });
     ['vp'].forEach(l => { map.on('mouseenter', l, () => map.getCanvas().style.cursor = 'pointer'); map.on('mouseleave', l, () => map.getCanvas().style.cursor = ''); });
     map.on('error', e => console.warn('map', e.error?.message || e));
   }
@@ -399,12 +396,11 @@
   async function open(opts = {}) {
     if (!root) build();
     root.classList.add('on'); history.pushState({ map: 1 }, '');
-    $m('#mxAdd').hidden = !(typeof Admin !== 'undefined' && Admin.on());
     if (opts.filter) { filter = opts.filter; $$m('.mx-chip').forEach(b => b.classList.toggle('on', b.dataset.k === filter)); }
     try { await lib(); } catch (e) { toast(e.message); close(); return; }
     if (opts.pick) pickReturn = opts.pick;
     if (!map) { try { if (window.Cloud && Cloud.user) MT = (await Promise.race([Cloud.config(), new Promise(r => setTimeout(() => r({}), 2500))])).maptiler || ''; } catch (e) { } initMap(); }
-    else { map.resize(); if (opts.refresh) { events = await loadEvents(); drawEvents(); } refresh(); if (opts.filter) setFilter(opts.filter); }
+    else { map.resize(); if (ready && pinTheme !== (document.documentElement.dataset.theme || 'dusk')) { makePins(); data(); } if (opts.refresh) { events = await loadEvents(); drawEvents(); } refresh(); if (opts.filter) setFilter(opts.filter); }
     if (opts.pick && ready) startPick();
   }
   function close(fromPop) {
