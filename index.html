@@ -565,17 +565,8 @@ svg{display:block}
 .adm-sw2{width:50px;height:30px;border-radius:16px;background:var(--bg3);position:relative;flex:none;border:var(--card-bd)}
 .adm-sw2 i{position:absolute;left:3px;top:50%;width:22px;height:22px;margin-top:-11px;border-radius:50%;background:var(--text3);transition:all .2s}
 .adm-sw2.on{background:var(--accent)}.adm-sw2.on i{left:23px;background:#fff}
-.adm-pill{position:absolute;z-index:94;left:10px;top:60%;touch-action:none;user-select:none;width:64px;height:64px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;color:#fff;
- background:radial-gradient(circle at 32% 26%,rgba(255,255,255,.55) 0,rgba(255,255,255,.12) 22%,color-mix(in srgb,var(--accent) 42%,transparent) 55%,color-mix(in srgb,var(--accent) 65%,rgba(0,0,0,.4)) 100%);
- -webkit-backdrop-filter:blur(8px) saturate(1.4);backdrop-filter:blur(8px) saturate(1.4);border:1.5px solid rgba(255,255,255,.4);
- box-shadow:inset -5px -7px 12px rgba(0,0,0,.22),inset 3px 4px 8px rgba(255,255,255,.3),0 8px 20px rgba(0,0,0,.35);transition:left .25s ease,top .05s linear,transform .15s}
-.adm-pill:active{transform:scale(.92)}
-.adm-pill svg{width:21px;height:21px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.45))}
-.adm-pill b{font-size:10.5px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;text-shadow:0 1px 3px rgba(0,0,0,.5)}
-[data-theme="volt"] .adm-pill{color:#0D0E12}[data-theme="volt"] .adm-pill b{text-shadow:none}
 .pb-ic{width:1.15em;height:1.15em;vertical-align:-.2em}
 .mc-a .pb-ic,.mx-ic .pb-ic{width:62%;height:62%}
-.adm-pill[hidden]{display:none}
 .gate-x{position:absolute;right:16px;top:calc(var(--safe-t) + 16px);width:42px;height:42px;border-radius:50%;background:var(--bg2);border:var(--card-bd);font-size:24px;font-weight:800;z-index:2}
 
 /* map card in Arena */
@@ -758,6 +749,7 @@ svg{display:block}
 .as-btn[hidden]{display:none}
 .as-pop{position:absolute;z-index:95;right:14px;top:calc(var(--safe-t) + 58px);width:210px;padding:8px;border-radius:18px;background:var(--bg2);border:var(--card-bd);box-shadow:0 14px 40px rgba(0,0,0,.45);animation:fadeUp .18s ease both}
 .as-pop[hidden]{display:none}
+#asCon{margin-top:6px;border-top:1.5px solid var(--bg3);border-radius:0 0 12px 12px;padding-top:10px}
 .as-pop small{display:block;padding:4px 8px 6px;font-size:11.5px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.06em}
 .as-pop button{display:flex;align-items:center;gap:10px;width:100%;padding:8px;border-radius:12px;font-size:14.5px;text-align:left}
 .as-pop button.on{background:var(--bg3)}.as-pop button.on::after{content:'✓';margin-left:auto;color:var(--accent);font-weight:900}
@@ -1273,14 +1265,13 @@ svg{display:block}
   </div>
 
   <div class="adm" id="adm" hidden>
-    <header class="adm-hd"><div><b class="display">Admin</b><small id="admWho"></small></div><button class="btn ghost" id="admPlayer"><span>Player view</span></button></header>
+    <header class="adm-hd"><div><b class="display">Admin</b><small id="admWho"></small></div><button class="btn ghost" id="admPlayer"><span>Close</span></button></header>
     <div class="adm-as" id="admAs"><small>Use the app as</small><div><button data-as="admin">👑 You</button><button data-as="bot1">🤖 Aarav</button><button data-as="bot2">🤖 Meera</button></div></div>
     <nav class="adm-tabs" id="admTabs"><button data-t="overview" class="on">Overview</button><button data-t="mod">Moderation</button><button data-t="users">Players</button><button data-t="events">Events</button><button data-t="records">Records</button><button data-t="test">Test</button></nav>
     <div class="adm-body" id="admBody"></div>
   </div>
   <div class="viewer" id="viewer" hidden><img alt=""><button aria-label="Close">×</button></div>
-  <div class="as-pop" id="asPop" hidden><small>Use the app as</small><button data-as="admin"><span class="as-av ad">👑</span><b>You (admin)</b></button><button data-as="bot1"><span class="as-av">A</span><b>Aarav (bot)</b></button><button data-as="bot2"><span class="as-av f">M</span><b>Meera (bot)</b></button></div>
-  <button class="adm-pill" id="admPill" hidden aria-label="Admin console"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 19.5 6v5.6c0 4.6-3.2 7.9-7.5 9.4-4.3-1.5-7.5-4.8-7.5-9.4V6z"/><path d="m8.8 12.2 2.2 2.2 4.4-4.6"/></svg><b>Admin</b></button>
+  <div class="as-pop" id="asPop" hidden><small>Use the app as</small><button data-as="admin"><span class="as-av ad">👑</span><b>You (admin)</b></button><button data-as="bot1"><span class="as-av">A</span><b>Aarav (bot)</b></button><button data-as="bot2"><span class="as-av f">M</span><b>Meera (bot)</b></button><button id="asCon"><span class="as-av ad">🛡️</span><b>Admin console</b></button></div>
 
   <div class="onb" id="onb" hidden>
     <div class="onb-h"><button class="onb-back press" id="onbBack" aria-label="Back"><span data-i="back"></span></button><div class="onb-bar"><i id="onbBar"></i></div><span class="onb-n" id="onbN"></span></div>
@@ -2441,9 +2432,9 @@ async function renderEvents(){if(!CU()||evBusy)return;evBusy=true;
 /* ================= ADMIN CONSOLE ================= */
 const Admin={tab:'overview',
  on:()=>!!(CU()&&Cloud.isAdmin&&Cloud.isAdmin()),
- sync(){const a=this.on();$('#admRow').hidden=!a;$('#admPill').hidden=!a||!$('#adm').hidden;if(!a)$('#adm').hidden=true;},
- open(keep){if(!this.on())return;paintAs();$('#adm').hidden=false;$('#admPill').hidden=true;$('#admWho').textContent=Cloud.adminUser.email;if(!keep||!$('#admBody').children.length)this.render();},
- player(){$('#adm').hidden=true;$('#admPill').hidden=false;buzz(8);},
+ sync(){const a=this.on();$('#admRow').hidden=!a;if(!a)$('#adm').hidden=true;},
+ open(keep){if(!this.on())return;paintAs();$('#adm').hidden=false;$('#admWho').textContent=Cloud.adminUser.email;if(!keep||!$('#admBody').children.length)this.render();},
+ player(){$('#adm').hidden=true;buzz(8);},
  body:()=>$('#admBody'),
  confirm(b,fn){if(b.dataset.armed){fn();return;}b.dataset.armed=1;const t=b.textContent;b.textContent='Tap again';b.classList.add('warn');setTimeout(()=>{if(b.isConnected){delete b.dataset.armed;b.textContent=t;b.classList.remove('warn');}},3000);},
  err(e){toast('Admin: '+(e.code||e.message));console.warn(e);},
@@ -2570,18 +2561,10 @@ async function switchAs(id,fromConsole){if(id===Cloud.as){if(fromConsole&&id!=='
  catch(e){toast('Could not switch: '+(e.code==='auth/operation-not-allowed'?'turn on Email/Password sign-in in Firebase Authentication':(e.code||e.message)));}}
 $$('#admAs button').forEach(b=>b.onclick=()=>switchAs(b.dataset.as,true));
 $('#asBtn').onclick=e=>{e.stopPropagation();buzz(6);paintAs();$('#asPop').hidden=!$('#asPop').hidden;};
-$$('#asPop button').forEach(b=>b.onclick=()=>{$('#asPop').hidden=true;switchAs(b.dataset.as);});
+$$('#asPop button[data-as]').forEach(b=>b.onclick=()=>{$('#asPop').hidden=true;switchAs(b.dataset.as);});
+$('#asCon').onclick=()=>{$('#asPop').hidden=true;hideSheet();Admin.open();};
 document.addEventListener('pointerdown',e=>{if(!$('#asPop').hidden&&!e.target.closest('#asPop,#asBtn'))$('#asPop').hidden=true;});
 addEventListener('cloud-auth',()=>{feedAll=[];myGraph=null;paintAs();});
-(()=>{const el=$('#admPill');let sx,sy,ox,oy,drag=false,down=false;
- const place=(x,y)=>{const a=$('#app').getBoundingClientRect(),w=el.offsetWidth,h=el.offsetHeight;el.style.left=Math.max(6,Math.min(a.width-w-6,x))+'px';el.style.top=Math.max(6,Math.min(a.height-h-6,y))+'px';};
- const pos=store.get('admPos',null);if(pos)requestAnimationFrame(()=>place(pos.x,pos.y));
- el.addEventListener('pointerdown',e=>{down=true;drag=false;sx=e.clientX;sy=e.clientY;ox=el.offsetLeft;oy=el.offsetTop;el.setPointerCapture(e.pointerId);el.style.transition='none';});
- el.addEventListener('pointermove',e=>{if(!down)return;const dx=e.clientX-sx,dy=e.clientY-sy;if(!drag&&Math.hypot(dx,dy)>6)drag=true;if(drag)place(ox+dx,oy+dy);});
- el.addEventListener('pointerup',e=>{if(!down)return;down=false;el.style.transition='';
-  if(drag){const a=$('#app').getBoundingClientRect(),w=el.offsetWidth,x=el.offsetLeft+w/2<a.width/2?6:a.width-w-6;place(x,el.offsetTop);store.set('admPos',{x,y:el.offsetTop});}
-  else{buzz(8);Admin.open();}});
- el.addEventListener('pointercancel',()=>{down=false;el.style.transition='';});})();
 $('#admRow').onclick=()=>{hideSheet();Admin.open();};
 Gate.preview=function(){this.show();$('#gIn').disabled=true;$('#gInTxt').textContent='Preview · you are signed in';$('#gateX').hidden=false;};
 $('#gateX').onclick=()=>{$('#gateX').hidden=true;Gate.hide();Gate.ready();Admin.open();};
@@ -2674,7 +2657,7 @@ addEventListener('cloud-auth',e=>{if(e.detail)setTimeout(openPostLink,800);});
  $('#gateBg').innerHTML=pick.map((s,i)=>{const c=CATS[s.cat],[x,y,sz]=spots[i%spots.length];return `<span class="gb" style="left:${x}%;top:${y}%;width:${sz+6}px;height:${sz+6}px;background:${c.col};--c:${c.col};--d:${(4+r()*4).toFixed(1)}s;--x:${(r()*16-8).toFixed(0)}px;--y:${(r()*16-8).toFixed(0)}px;animation-delay:-${(r()*4).toFixed(1)}s">${iconSvg(s.ic)}</span>`;}).join('');})();
 /* swipe left/right to move between tabs, with the screens following your finger */
 (()=>{const main=$('#s-pulse').parentNode;let sx=0,sy=0,dx=0,mode=null,cur0=null,nb=null,dir=0,W=0;
- const blocked=t=>t.closest('input,textarea,select,video,button.adm-pill,.pmc,.tr-pick,.mx-chips,.onb-chips,.rk-ctl,.sugg,.csugg,.path:not([hidden])')||(()=>{for(let e=t;e&&e!==main;e=e.parentElement){const cs=getComputedStyle(e);if((cs.overflowX==='auto'||cs.overflowX==='scroll')&&e.scrollWidth>e.clientWidth+4)return true;}return false;})();
+ const blocked=t=>t.closest('input,textarea,select,video,.pmc,.tr-pick,.mx-chips,.onb-chips,.rk-ctl,.sugg,.csugg,.path:not([hidden])')||(()=>{for(let e=t;e&&e!==main;e=e.parentElement){const cs=getComputedStyle(e);if((cs.overflowX==='auto'||cs.overflowX==='scroll')&&e.scrollWidth>e.clientWidth+4)return true;}return false;})();
  main.addEventListener('touchstart',e=>{if(e.touches.length!==1||$('.sheet.on')||(typeof Orbit!=='undefined'&&Orbit.isOpen()))return;const t=e.touches[0];W=main.clientWidth;
   if(cur==='orbit'&&t.clientX>28&&t.clientX<W-28){mode='no';return;}if(blocked(e.target)){mode='no';return;}sx=t.clientX;sy=t.clientY;dx=0;mode=null;},{passive:true});
  main.addEventListener('touchmove',e=>{if(mode==='no'||!e.touches.length)return;const t=e.touches[0],ddx=t.clientX-sx,ddy=t.clientY-sy;
@@ -2710,7 +2693,7 @@ $('#intSave').onclick=()=>{store.set('interests',[...intSel]);hideSheet();buzz(1
 $('#intEdit').onclick=openInterests;
 
 /* auto-update: GitHub Pages lets phones keep an old copy for ~10 min; check the live version and reload if it's newer */
-const APP_V='20261123p';
+const APP_V='20261123q';
 async function checkUpdate(){try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});const j=await r.json();
  if(j.v&&j.v!==APP_V&&sessionStorage.getItem('provn_upd')!==j.v){sessionStorage.setItem('provn_upd',j.v);toast('Updating Provn…');setTimeout(()=>location.replace(location.pathname+'?v='+j.v+location.hash),600);}}catch(e){}}
 checkUpdate();document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkUpdate();});
@@ -2816,8 +2799,8 @@ setTimeout(()=>$('#splash').classList.add('out'),matchMedia('(prefers-reduced-mo
 setTimeout(()=>$('#splash').remove(),1700);
 setTimeout(()=>$('#orbitHint').style.opacity=0,6000);
 </script>
-<script type="module" src="avatar3d.js?v=20261123p"></script>
-<script type="module" src="cloud.js?v=20261123p"></script>
-<script src="map.js?v=20261123p" defer></script>
+<script type="module" src="avatar3d.js?v=20261123q"></script>
+<script type="module" src="cloud.js?v=20261123q"></script>
+<script src="map.js?v=20261123q" defer></script>
 </body>
 </html>
