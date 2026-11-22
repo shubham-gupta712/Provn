@@ -27,7 +27,7 @@
   const OVERPASS = ['https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter', 'https://maps.mail.ru/osm/tools/overpass/api/interpreter'];
   const CACHE = 'osm_' + CITY.name.toLowerCase(), CACHE_MS = 3 * 864e5;
 
-  let map, root, venues = [], events = [], filter = 'all', query = '', sel = null, me = null, layer = 'sat', is3d = true, pickCb = null, evMarkers = [], selMarker = null, meMarker = null, ready = false;
+  let osmFailed = false, MT = '', map, root, venues = [], events = [], filter = 'all', query = '', sel = null, me = null, layer = 'sat', is3d = true, pickCb = null, evMarkers = [], selMarker = null, meMarker = null, ready = false;
   const $m = s => root.querySelector(s), $$m = s => [...root.querySelectorAll(s)];
 
   /* ---------- data ---------- */
@@ -49,10 +49,10 @@
     const c = store.get(CACHE, null);
     if (!force && c && Date.now() - c.t < CACHE_MS && c.list?.length) return c.list;
     const bb = CITY.bbox.join(',');
-    const q = `[out:json][timeout:30];(nwr["leisure"~"^(pitch|sports_centre|stadium|fitness_centre|swimming_pool|track|sports_hall|ice_rink)$"](${bb});nwr["club"="sport"](${bb});nwr["sport"]["name"]["leisure"!~"."]["amenity"!~"school|college|university"](${bb}););out center tags 2500;`;
+    const q = `[out:json][timeout:60][bbox:${bb}];(nwr["leisure"~"^(pitch|sports_centre|stadium|fitness_centre|swimming_pool|track|sports_hall|ice_rink)$"];nwr["club"="sport"];);out center tags;`;
     for (const url of OVERPASS) {
       try {
-        const ac = new AbortController(), to = setTimeout(() => ac.abort(), 35000);
+        const ac = new AbortController(), to = setTimeout(() => ac.abort(), 65000);
         const r = await fetch(url, { method: 'POST', body: 'data=' + encodeURIComponent(q), headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, signal: ac.signal });
         clearTimeout(to);
         if (!r.ok) continue;
@@ -62,7 +62,16 @@
         if (list.length) { try { store.set(CACHE, { t: Date.now(), list }); } catch (e) { } return list; }
       } catch (e) { console.warn('overpass', url, e); }
     }
+    osmFailed = !c?.list?.length;
     return c?.list || [];
+  }
+  async function loadGuide() {
+    try {
+      const j = await (await fetch('data/' + CITY.name.toLowerCase() + '.json', { cache: 'no-cache' })).json();
+      const t = new Date().toISOString().slice(0, 10);
+      return { venues: j.venues.map((v, i) => ({ ...v, id: 'g/' + i, src: 'guide', named: true, type: TYPE[v.kind] || 'Venue', acts: v.acts.filter(k => A[k]) })),
+               events: j.events.filter(e => e.date >= t).map(e => ({ ...e, src: 'guide', live: e.date === t, going: null, mine: false })) };
+    } catch (e) { console.warn('guide', e); return { venues: [], events: [] }; }
   }
   async function loadCurated() {
     if (!(window.Cloud && Cloud.user && Cloud.venues)) return [];
@@ -74,6 +83,13 @@
     try { const t = new Date().toISOString().slice(0, 10); return (await Cloud.events()).filter(e => !e.past && e.lat != null).map(e => ({ ...e, live: e.date === t })); }
     catch (e) { return []; }
   }
+
+  let guide = { venues: [], events: [] };
+  function merge(cur, gv, osm) {
+    const key = v => v.name.toLowerCase().replace(/[^a-z0-9]/g, ''), seen = new Set();
+    return [...cur, ...gv, ...osm].filter(v => { const k = key(v); if (v.named && seen.has(k)) return false; seen.add(k); return true; });
+  }
+  async function reloadOsm() { store.set(CACHE, null); $m('#mxCount').textContent = 'Finding courts and grounds…'; const osm = await loadOsm(true); venues = merge(venues.filter(v => v.src === 'provn'), guide.venues, osm); data(); refresh(); if (osmFailed) toast('Still could not reach OpenStreetMap. Try again later.'); }
 
   /* ---------- helpers ---------- */
   const dist = (a, b) => { const R = 6371, dLa = (b[1] - a[1]) * Math.PI / 180, dLo = (b[0] - a[0]) * Math.PI / 180, x = Math.sin(dLa / 2) ** 2 + Math.cos(a[1] * Math.PI / 180) * Math.cos(b[1] * Math.PI / 180) * Math.sin(dLo / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(x)); };
@@ -154,16 +170,17 @@
   function list() {
     const r = ref(), s = shown();
     let l = query ? s : (() => { const b = map.getBounds(); return s.filter(v => b.contains([v.lng, v.lat])); })();
-    l = l.map(v => ({ ...v, d: dist(r, [v.lng, v.lat]) })).sort((a, b) => (b.src === 'provn') - (a.src === 'provn') || (b.named - a.named) || a.d - b.d);
+    const rank = v => v.src === 'provn' ? 2 : v.src === 'guide' ? 1 : 0;
+    l = l.map(v => ({ ...v, d: dist(r, [v.lng, v.lat]) })).sort((a, b) => rank(b) - rank(a) || (b.named - a.named) || a.d - b.d);
     return l;
   }
   function card(v) {
     const a = A[v.acts[0]];
-    return `<button class="mx-card" data-id="${esc(v.id)}"><span class="mx-ic" style="background:${a.col}">${a.e}</span><span class="mx-ct"><b>${esc(v.name)}${v.src === 'provn' ? ' <i class="mx-ver">✓</i>' : ''}</b><small>${esc(v.type)} · ${fmtKm(v.d)}</small><span class="mx-tags">${v.acts.slice(0, 3).map(k => `<em>${A[k].e} ${A[k].n}</em>`).join('')}</span></span></button>`;
+    return `<button class="mx-card" data-id="${esc(v.id)}"><span class="mx-ic" style="background:${a.col}">${a.e}</span><span class="mx-ct"><b>${esc(v.name)}${v.src === 'provn' ? ' <i class="mx-ver">✓</i>' : ''}</b><small>${esc(v.type)}${v.area ? ' · ' + esc(v.area) : ''} · ${fmtKm(v.d)}</small><span class="mx-tags">${v.acts.slice(0, 3).map(k => `<em>${A[k].e} ${A[k].n}</em>`).join('')}</span></span></button>`;
   }
   function evCard(e) {
     const d = dist(ref(), [e.lng, e.lat]);
-    return `<button class="mx-card ev" data-ev="${esc(e.id)}"><span class="mx-ic" style="background:#FFC23D">🏆</span><span class="mx-ct"><b>${esc(e.title)}</b><small>${e.live ? '<i class="mx-live">LIVE TODAY</i>' : fdate(e.date)}${e.time ? ' · ' + esc(e.time) : ''} · ${fmtKm(d)}</small><span class="mx-tags"><em>${esc(e.place || e.city || '')}</em>${e.spots ? `<em>${Math.max(0, e.spots - e.going)} spots left</em>` : ''}</span></span></button>`;
+    return `<button class="mx-card ev" data-ev="${esc(e.id)}"><span class="mx-ic" style="background:#FFC23D">🏆</span><span class="mx-ct"><b>${esc(e.title)}</b><small>${e.live ? '<i class="mx-live">LIVE TODAY</i>' : fdate(e.date)}${e.time ? ' · ' + esc(e.time) : ''} · ${fmtKm(d)}</small><span class="mx-tags"><em>${esc(e.place || e.city || '')}</em>${e.spots && e.going != null ? `<em>${Math.max(0, e.spots - e.going)} spots left</em>` : ''}</span></span></button>`;
   }
   function data() {
     if (!ready) return; const s = shown();
@@ -179,7 +196,8 @@
     $m('#mxCount').textContent = filter === 'events' ? `${evs.length} tournament${evs.length === 1 ? '' : 's'} coming up` : query ? `${total} match${total === 1 ? '' : 'es'} for “${$m('#mxQ').value.trim()}”` : `${total} place${total === 1 ? '' : 's'} in view`;
     $m('#mxSub').textContent = filter === 'events' ? (evs.some(e => e.live) ? 'Live and upcoming near you' : 'Upcoming near you') : `${A[filter]?.n || 'All sports'} · ${CITY.name}`;
     const html = evs.map(evCard).join('') + l.map(card).join('');
-    $m('#mxCards').innerHTML = html || `<div class="mx-empty">${filter === 'events' ? 'No tournaments on the map yet. They show up here once they are announced.' : query ? 'Nothing matches. Try another sport or name.' : 'Nothing here. Zoom out or move the map.'}</div>`;
+    $m('#mxCards').innerHTML = html || `<div class="mx-empty">${filter === 'events' ? 'No tournaments on the map yet. They show up here once they are announced.' : query ? 'Nothing matches in Ahmedabad yet. Try another sport or name.' : 'Nothing here. Zoom out or move the map.'}${osmFailed && filter !== 'events' ? '<button class="mx-retry" id="mxRetry">Load more places from OpenStreetMap</button>' : ''}</div>`;
+    const rt = $m('#mxRetry'); if (rt) rt.onclick = () => { buzz(8); reloadOsm(); };
     $m('#mxCards').scrollLeft = 0;
     $$m('.mx-card[data-id]').forEach(b => b.onclick = () => select(b.dataset.id, true));
     $$m('.mx-card[data-ev]').forEach(b => b.onclick = () => selectEvent(b.dataset.ev));
@@ -197,17 +215,17 @@
     const sk = v.acts.map(k => A[k].skill).filter(n => n && SKILLS[n]);
     const D = $m('#mxDetail');
     D.innerHTML = `<button class="mx-x press" id="mxDx" aria-label="Back to list">×</button>
-      <div class="mx-dt"><span class="mx-ic big" style="background:${a.col}">${a.e}</span><div><b class="display">${esc(v.name)}</b><small>${esc(v.type)} · ${fmtKm(d)} away${v.src === 'provn' ? ' · <i class="mx-ver">✓ Verified by Provn</i>' : ''}</small></div></div>
+      <div class="mx-dt"><span class="mx-ic big" style="background:${a.col}">${a.e}</span><div><b class="display">${esc(v.name)}</b><small>${esc(v.type)} · ${fmtKm(d)} away${v.src === 'provn' ? ' · <i class="mx-ver">✓ Verified by Provn</i>' : ''}</small></div></div>${v.approx ? `<p class="mx-approx">${v.area ? `Pin shows the ${esc(v.area)} area.` : 'Pin position is approximate.'} Directions search for the exact place.</p>` : ''}
       <div class="mx-tags big">${v.acts.map(k => `<em>${A[k].e} ${A[k].n}</em>`).join('')}</div>
       ${v.addr ? `<p class="mx-p">📍 ${esc(v.addr)}</p>` : ''}${v.hours ? `<p class="mx-p">🕒 ${esc(v.hours)}</p>` : ''}${v.access && v.access !== 'yes' ? `<p class="mx-p">🔒 Access: ${esc(v.access)}</p>` : ''}${v.info ? `<p class="mx-p">${esc(v.info)}</p>` : ''}
       ${here.length ? `<div class="mx-here">${here.map(e => `<div><b>🏆 ${esc(e.title)}</b><small>${e.live ? '<i class="mx-live">LIVE TODAY</i>' : fdate(e.date)}${e.time ? ' · ' + esc(e.time) : ''}</small></div>`).join('')}</div>` : ''}
       <div class="mx-row">
-        <a class="btn primary" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=${v.lat},${v.lng}"><span>Directions</span></a>
+        <a class="btn primary" target="_blank" rel="noopener" href="${v.approx ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(v.name + ', ' + (v.addr || CITY.name)) : `https://www.google.com/maps/dir/?api=1&destination=${v.lat},${v.lng}`}"><span>Directions</span></a>
         ${v.phone ? `<a class="btn ghost" href="tel:${esc(v.phone.replace(/\s/g, ''))}"><span>Call</span></a>` : ''}
-        ${v.web ? `<a class="btn ghost" target="_blank" rel="noopener" href="${esc(/^https?:/.test(v.web) ? v.web : 'https://' + v.web)}"><span>Website</span></a>` : ''}
+        ${v.web ? `<a class="btn ghost" target="_blank" rel="noopener" href="${esc(/^https?:/.test(v.web) ? v.web : 'https://' + v.web)}"><span>${v.src === 'guide' ? 'More info' : 'Website'}</span></a>` : ''}
       </div>
       ${sk.length ? `<button class="btn ghost mx-log" id="mxLog"><span>Log a ${esc(sk[0])} result</span></button>` : ''}
-      <p class="mx-src">${v.src === 'osm' ? 'Place data © OpenStreetMap contributors' : 'Added by the Provn team'}</p>
+      <p class="mx-src">${v.src === 'osm' ? 'Place data © OpenStreetMap contributors' : v.src === 'guide' ? 'From public listings, checked Nov 2026. Details can change, so confirm before you go.' : 'Added by the Provn team'}</p>
       ${typeof Admin !== 'undefined' && Admin.on() && v.src === 'provn' ? `<div class="mx-row"><button class="btn ghost" id="mxEdit"><span>Edit venue</span></button><button class="btn ghost" id="mxDel"><span>Delete</span></button></div>` : ''}`;
     D.hidden = false; $m('#mxCards').hidden = true; $m('#mxDrawer').classList.add('det');
     $m('#mxCount').textContent = ''; $m('#mxSub').textContent = '';
@@ -220,17 +238,19 @@
     const e = events.find(x => x.id === id); if (!e) return;
     map.flyTo({ center: [e.lng, e.lat], zoom: 15, pitch: is3d ? 55 : 0, duration: 1500, offset: [0, -90] });
     const near = venues.filter(v => dist([e.lng, e.lat], [v.lng, v.lat]) < 0.15).sort((a, b) => dist([e.lng, e.lat], [a.lng, a.lat]) - dist([e.lng, e.lat], [b.lng, b.lat]))[0];
-    if (near) { setTimeout(() => select(near.id, false), 50); return; }
+    if (near && e.src !== 'guide') { setTimeout(() => select(near.id, false), 50); return; }
     buzz(8); sel = { id: 'ev/' + id };
     const D = $m('#mxDetail');
     D.innerHTML = `<button class="mx-x press" id="mxDx" aria-label="Back to list">×</button>
       <div class="mx-dt"><span class="mx-ic big" style="background:#FFC23D">🏆</span><div><b class="display">${esc(e.title)}</b><small>${e.live ? '<i class="mx-live">LIVE TODAY</i>' : fdate(e.date)}${e.time ? ' · ' + esc(e.time) : ''} · ${fmtKm(dist(ref(), [e.lng, e.lat]))} away</small></div></div>
       ${e.place || e.city ? `<p class="mx-p">📍 ${esc([e.place, e.city].filter(Boolean).join(', '))}</p>` : ''}${e.info ? `<p class="mx-p">${esc(e.info)}</p>` : ''}
-      <p class="mx-p">${e.going} going${e.spots ? ` · ${Math.max(0, e.spots - e.going)} spots left` : ''}</p>
-      <div class="mx-row"><a class="btn ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=${e.lat},${e.lng}"><span>Directions</span></a><button class="btn primary" id="mxReg"><span>${e.mine ? 'Going ✓' : 'Register'}</span></button></div>`;
+      ${e.going != null ? `<p class="mx-p">${e.going} going${e.spots ? ` · ${Math.max(0, e.spots - e.going)} spots left` : ''}</p>` : ''}
+      <div class="mx-row"><a class="btn ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=${e.lat},${e.lng}"><span>Directions</span></a>${e.src === 'guide' ? `<a class="btn primary" target="_blank" rel="noopener" href="${esc(e.web)}"><span>Official site</span></a>` : `<button class="btn primary" id="mxReg"><span>${e.mine ? 'Going ✓' : 'Register'}</span></button>`}</div>
+      ${e.skill && SKILLS[e.skill] ? `<button class="btn ghost mx-log" id="mxLog2"><span>Log a ${esc(e.skill)} result</span></button>` : ''}`;
+    const l2 = $m('#mxLog2'); if (l2) l2.onclick = () => { close(); setTimeout(() => openProve(e.skill, false), 350); };
     D.hidden = false; $m('#mxCards').hidden = true; $m('#mxDrawer').classList.add('det'); $m('#mxCount').textContent = ''; $m('#mxSub').textContent = '';
     $m('#mxDx').onclick = () => deselect(true);
-    $m('#mxReg').onclick = async () => { try { await Cloud.setGoing(e.id, !e.mine, store.get('name', '')); e.mine = !e.mine; e.going += e.mine ? 1 : -1; toast(e.mine ? `You're going to ${e.title}!` : 'Registration cancelled'); selectEvent(id); renderEvents && renderEvents(); } catch (er) { toast('Could not register: ' + (er.code || er.message)); } };
+    if ($m('#mxReg')) $m('#mxReg').onclick = async () => { try { await Cloud.setGoing(e.id, !e.mine, store.get('name', '')); e.mine = !e.mine; e.going += e.mine ? 1 : -1; toast(e.mine ? `You're going to ${e.title}!` : 'Registration cancelled'); selectEvent(id); renderEvents && renderEvents(); } catch (er) { toast('Could not register: ' + (er.code || er.message)); } };
   }
   function deselect(back) {
     if (!sel) return; sel = null; if (selMarker) { selMarker.remove(); selMarker = null; }
@@ -320,17 +340,19 @@
 
   /* ---------- map ---------- */
   function initMap() {
-    const sat = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+    const sat = MT ? `https://api.maptiler.com/tiles/satellite-v2/{z}/{x}/{y}.jpg?key=${MT}` : 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+    const satAttr = MT ? '© MapTiler © OpenStreetMap contributors' : 'Imagery © Esri, Maxar, Earthstar Geographics';
     map = new maplibregl.Map({
       container: $m('#mxMap'), center: [CITY.center[0] - 40, 18], zoom: 1.3, pitch: 0, maxPitch: 72, attributionControl: { compact: true },
       style: {
         version: 8, projection: { type: 'globe' },
         sky: { 'sky-color': '#0b1430', 'horizon-color': '#3a5ba0', 'fog-color': '#0b1430', 'atmosphere-blend': ['interpolate', ['linear'], ['zoom'], 0, 1, 6, 1, 9, 0] },
         sources: {
-          sat: { type: 'raster', tiles: [sat], tileSize: 256, maxzoom: 19, attribution: 'Imagery © Esri, Maxar, Earthstar Geographics' },
+          sat: { type: 'raster', tiles: [sat], tileSize: MT ? 512 : 256, maxzoom: 20, attribution: satAttr },
+          ...(MT ? { dem: { type: 'raster-dem', url: `https://api.maptiler.com/tiles/terrain-rgb-v2/tiles.json?key=${MT}`, tileSize: 256 } } : {}),
           roads: { type: 'raster', tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}'], tileSize: 256, maxzoom: 19 },
           lbl: { type: 'raster', tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'], tileSize: 256, maxzoom: 19 },
-          street: { type: 'raster', tiles: ['a', 'b', 'c', 'd'].map(s => `https://${s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png`), tileSize: 256, maxzoom: 20, attribution: '© OpenStreetMap contributors © CARTO' },
+          street: MT ? { type: 'raster', tiles: [`https://api.maptiler.com/maps/streets-v2/256/{z}/{x}/{y}@2x.png?key=${MT}`], tileSize: 256, maxzoom: 20, attribution: '© MapTiler © OpenStreetMap contributors' } : { type: 'raster', tiles: ['a', 'b', 'c', 'd'].map(s => `https://${s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png`), tileSize: 256, maxzoom: 20, attribution: '© OpenStreetMap contributors © CARTO' },
           v: { type: 'geojson', data: { type: 'FeatureCollection', features: [] }, cluster: true, clusterRadius: 44, clusterMaxZoom: 14 }
         },
         layers: [
@@ -344,14 +366,18 @@
       }
     });
     map.on('load', async () => {
-      ready = true; $m('#mxLoad').classList.add('out');
+      ready = true;
+      if (MT) { try { map.setTerrain({ source: 'dem', exaggeration: 1.3 }); } catch (e) { console.warn('terrain', e); } } $m('#mxLoad').classList.add('out');
       if (pickReturn) { map.jumpTo({ center: CITY.center, zoom: 13, pitch: 0 }); startPick(); }
       /* gentle spin, then dive into the city like Google Earth */
       else map.easeTo({ center: [CITY.center[0] - 10, 20], duration: 1400, easing: t => t });
       if (!pickReturn) setTimeout(() => { if (!sel && !pickCb) flyCity(4200); }, 1450);
-      const [osm, cur, evs] = await Promise.all([loadOsm(), loadCurated(), loadEvents()]);
-      venues = [...cur, ...osm]; events = evs; drawEvents(); data(); refresh();
-      if (!venues.length) toast('Could not load places right now. Check your connection.');
+      $m('#mxCount').textContent = 'Finding courts and grounds…';
+      const [g, cur, evs] = await Promise.all([loadGuide(), loadCurated(), loadEvents()]);
+      guide = g; venues = merge(cur, g.venues, []); events = [...evs, ...g.events]; drawEvents(); data(); refresh();
+      const osm = await loadOsm();
+      venues = merge(cur, g.venues, osm); data(); refresh();
+      if (osmFailed) toast('OpenStreetMap places did not load. Showing the Provn list.');
     });
     map.on('moveend', () => { if (!sel && !pickCb) refresh(); });
     map.on('render', () => { if (ready && map.isSourceLoaded('v')) clusters(); });
@@ -377,7 +403,7 @@
     if (opts.filter) { filter = opts.filter; $$m('.mx-chip').forEach(b => b.classList.toggle('on', b.dataset.k === filter)); }
     try { await lib(); } catch (e) { toast(e.message); close(); return; }
     if (opts.pick) pickReturn = opts.pick;
-    if (!map) initMap();
+    if (!map) { try { if (window.Cloud && Cloud.user) MT = (await Promise.race([Cloud.config(), new Promise(r => setTimeout(() => r({}), 2500))])).maptiler || ''; } catch (e) { } initMap(); }
     else { map.resize(); if (opts.refresh) { events = await loadEvents(); drawEvents(); } refresh(); if (opts.filter) setFilter(opts.filter); }
     if (opts.pick && ready) startPick();
   }

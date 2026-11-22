@@ -595,7 +595,8 @@ svg{display:block}
 .mx .mx-map{position:absolute!important;inset:0;width:100%;height:100%;background:radial-gradient(ellipse at 50% 45%,#0f1d44 0%,#05070f 70%)}
 .mx-map::before{content:'';position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(1.3px 1.3px at 10% 20%,#fff9,transparent),radial-gradient(1px 1px at 25% 70%,#fff7,transparent),radial-gradient(1.2px 1.2px at 80% 15%,#fffa,transparent),radial-gradient(1px 1px at 65% 85%,#fff6,transparent),radial-gradient(1.5px 1.5px at 90% 60%,#fff8,transparent),radial-gradient(1px 1px at 45% 35%,#fff5,transparent),radial-gradient(1px 1px at 5% 90%,#fff7,transparent)}
 .mx .maplibregl-canvas{outline:0}
-.mx .maplibregl-ctrl-attrib{font-size:10px;margin-bottom:calc(var(--mx-dh,190px) + 6px)!important}
+.mx .maplibregl-ctrl-bottom-right{top:calc(var(--safe-t) + 112px);bottom:auto;right:auto;left:4px}
+.mx .maplibregl-ctrl-attrib{font-size:10px}
 .mx-top{position:absolute;left:12px;right:12px;top:calc(var(--safe-t) + 12px);display:flex;gap:8px;z-index:3}
 .mx-b{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:rgba(18,22,40,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;border:1.5px solid rgba(255,255,255,.18);flex:none;box-shadow:0 4px 14px rgba(0,0,0,.35)}
 .mx-b svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
@@ -633,6 +634,8 @@ svg{display:block}
 .mx-tags.big{margin:12px 0 4px}.mx-tags.big em{font-size:13px;padding:5px 10px}
 .mx-ver{font-style:normal;color:var(--accent);font-weight:900}
 .mx-live{font-style:normal;color:#fff;background:#EF4444;padding:1px 6px;border-radius:6px;font-size:10.5px;font-weight:900;letter-spacing:.05em}
+.mx-approx{margin:10px 0 0;padding:8px 10px;border-radius:12px;background:var(--bg3);font-size:12px;font-weight:700;color:var(--text3)}
+.mx-retry{display:block;margin:10px auto 0;padding:9px 14px;border-radius:14px;background:var(--accent);color:var(--on-accent);font-size:13px;font-weight:800}
 .mx-empty{flex:1;margin:0 0 4px;padding:16px;border-radius:18px;background:var(--bg2);color:var(--text2);font-size:14px;font-weight:600;text-align:center}
 .mx-detail{position:relative;margin:0 12px;padding:16px;border-radius:24px;background:var(--bg2);border:var(--card-bd);box-shadow:0 10px 30px rgba(0,0,0,.45);max-height:58vh;overflow-y:auto;animation:fadeUp .25s ease both}
 .mx-x{position:absolute;right:12px;top:12px;width:34px;height:34px;border-radius:50%;background:var(--bg3);font-size:20px;font-weight:800;color:var(--text2)}
@@ -944,7 +947,7 @@ svg{display:block}
     <div class="row" id="acctRow" style="cursor:pointer"><span data-i="you"></span><span class="sp">Account</span><small id="acctTxt">Sign out</small></div>
     <div class="row"><span data-i="bell"></span><span class="sp">Notifications</span><small>Soon</small></div>
     <div class="row"><span data-i="lock"></span><span class="sp">Privacy</span><small>Soon</small></div>
-    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261122e</small></div>
+    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261122f</small></div>
   </section>
 
   <div class="cele" id="cele"><div class="cele-in"><div class="cele-m" id="celeM"></div><h2 class="display" id="celeT"></h2><div class="big" id="celeB"></div><p id="celeS"></p><button class="btn primary" id="celeOk"><span>Keep going</span></button></div></div>
@@ -2030,8 +2033,11 @@ const Admin={tab:'overview',
    <h3 class="adm-h3">Announcement</h3><p class="adm-p">Shown at the top of everyone's Pulse feed.</p>
    <textarea id="admAnn" maxlength="280" placeholder="e.g. Sunday 5k time trial at Marine Drive, register in Arena!">${esc(cfg.announce||'')}</textarea>
    <div class="adm-row"><button class="btn primary" id="admAnnSave"><span>Publish</span></button><button class="btn ghost" id="admAnnClr"><span>Clear</span></button></div>
+   <h3 class="adm-h3">Map imagery</h3><p class="adm-p">Paste your MapTiler API key to switch the globe to MapTiler satellite imagery with 3D terrain.</p>
+   <div class="adm-row tight"><input class="adm-in" id="admMT" style="margin:0" maxlength="64" placeholder="MapTiler key" value="${esc(cfg.maptiler||'')}" autocomplete="off" spellcheck="false"><button class="adm-b on" id="admMTSave">Save</button></div>
    <h3 class="adm-h3">Latest posts</h3><div id="admFeed">${feed.length?feed.map(r=>this.res(r,`<button class="adm-b" data-a="cmt">Comments</button><button class="adm-b red" data-a="del">Remove</button>`)).join(''):'<p class="adm-p">No posts yet.</p>'}</div>`;
   const save=async t=>{try{await Cloud.admin.setConfig({announce:t});annCache=null;toast(t?'Announcement published':'Announcement cleared');Pulse.refresh(true);}catch(e){this.err(e)}};
+  $('#admMTSave').onclick=async()=>{try{await Cloud.admin.setConfig({maptiler:$('#admMT').value.trim()});toast('Saved · reload the app to see the new imagery');}catch(e){this.err(e)}};
   $('#admAnnSave').onclick=()=>save($('#admAnn').value.trim());$('#admAnnClr').onclick=()=>{$('#admAnn').value='';save('');};
   this.wireRes(feed,B,()=>this.render());},
  async t_mod(B){const list=await Cloud.admin.flagged();

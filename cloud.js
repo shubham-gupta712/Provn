@@ -164,7 +164,12 @@ const Cloud = {
     deleteVenue(id) { return deleteDoc(doc(db, 'venues', id)); },
     deleteEvent(id) { return deleteDoc(doc(db, 'events', id)); },
     async going(id) { const s = await getDocs(collection(db, 'events', id, 'going')); return s.docs.map(d => ({ uid: d.id, ...d.data() })); },
-    setConfig(c) { return setDoc(doc(db, 'config', 'app'), { announce: (c.announce || '').slice(0, 280), updatedAt: serverTimestamp() }); }
+    setConfig(c) {
+      const d = { updatedAt: serverTimestamp() };
+      if ('announce' in c) d.announce = (c.announce || '').slice(0, 280);
+      if ('maptiler' in c) d.maptiler = (c.maptiler || '').replace(/[^A-Za-z0-9]/g, '').slice(0, 64);
+      return setDoc(doc(db, 'config', 'app'), d, { merge: true });
+    }
   },
 
   /* proof video straight from the phone to Cloudinary (unsigned preset) */

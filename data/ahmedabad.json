@@ -1,0 +1,652 @@
+{
+"city": "Ahmedabad",
+"updated": "2026-11-22",
+"note": "Collected from public listings (Lyfskills, Pickleheads, District, Playo, news). Pins marked approx sit at the area centre.",
+"venues": [
+{
+"name": "Narendra Modi Stadium",
+"acts": [
+"cricket"
+],
+"kind": "stadium",
+"lat": 23.0917,
+"lng": 72.5975,
+"addr": "Motera, Ahmedabad",
+"info": "World's largest cricket stadium.",
+"web": "",
+"approx": false,
+"area": ""
+},
+{
+"name": "Sardar Patel Stadium · The Sports Club of Gujarat",
+"acts": [
+"racket",
+"pickleball",
+"chess",
+"multi"
+],
+"kind": "club",
+"lat": 23.036,
+"lng": 72.5585,
+"addr": "Sardar Patel Stadium, Navrangpura, Ahmedabad 380014",
+"info": "Members club with indoor pickleball courts; hosts Gujarat State Chess Association rating tournaments.",
+"web": "",
+"approx": true,
+"area": ""
+},
+{
+"name": "Veer Savarkar Sports Complex",
+"acts": [
+"chess",
+"badminton",
+"multi"
+],
+"kind": "sports_centre",
+"lat": 23.059,
+"lng": 72.556,
+"addr": "Naranpura, Ahmedabad",
+"info": "Hosted the 4th Gujarat International Open Grandmasters chess tournament (June 2026).",
+"web": "",
+"approx": true,
+"area": ""
+},
+{
+"name": "Karnavati Club",
+"acts": [
+"chess",
+"multi"
+],
+"kind": "club",
+"lat": 23.019,
+"lng": 72.5075,
+"addr": "Sarkhej–Gandhinagar Highway, opp. Shalby Hospital, Mumatpura, Ahmedabad 380058",
+"info": "Hosts the Karnavati Club All India Open FIDE rating chess tournament.",
+"web": "",
+"approx": true,
+"area": ""
+},
+{
+"name": "Sabarmati Riverfront Sports Park",
+"acts": [
+"running",
+"multi"
+],
+"kind": "sports_centre",
+"lat": 23.017,
+"lng": 72.5705,
+"addr": "Opposite Atal Bridge, Paldi, Ahmedabad",
+"info": "Start and finish of the Adani Ahmedabad Marathon.",
+"web": "https://ahmedabadmarathon.com",
+"approx": true,
+"area": ""
+},
+{
+"name": "Sabarmati Riverfront runners",
+"acts": [
+"running"
+],
+"kind": "community",
+"lat": 23.03,
+"lng": 72.576,
+"addr": "Sabarmati Riverfront promenade, Ahmedabad",
+"info": "The riverfront promenade is the city’s main meeting point for run clubs and morning runners.",
+"web": "",
+"approx": true,
+"area": ""
+},
+{
+"name": "Adani Sportsline Pickleball Courts",
+"acts": [
+"pickleball"
+],
+"kind": "pitch",
+"lat": 23.023,
+"lng": 72.5745,
+"addr": "Sabarmati Riverfront Promenade, Ahmedabad",
+"info": "Public courts listed by Pickleball Plus.",
+"web": "https://pickleballplusapp.com/in/pickleball-courts/gj/ahmedabad",
+"approx": true,
+"area": ""
+},
+{
+"name": "Gujarat University Tennis Stadium",
+"acts": [
+"tennis"
+],
+"kind": "stadium",
+"lat": 23.037,
+"lng": 72.545,
+"addr": "Gujarat University, Navrangpura, Ahmedabad",
+"info": "Hosted Tennis Premier League Season 7.",
+"web": "",
+"approx": true,
+"area": ""
+},
+{
+"name": "Ahmedabad University Sports Complex",
+"acts": [
+"badminton",
+"tt",
+"racket",
+"cricket"
+],
+"kind": "sports_centre",
+"lat": 23.0383,
+"lng": 72.5517,
+"addr": "Navrangpura, Ahmedabad 380009",
+"info": "Hosts the Ahmedabad University Cup and Battle of Racquets.",
+"web": "",
+"approx": true,
+"area": ""
+},
+{
+"name": "Gujarat State Chess Association · Rifle Club",
+"acts": [
+"chess"
+],
+"kind": "community",
+"lat": 23.0335,
+"lng": 72.576,
+"addr": "Rifle Club, near Bhavan's College, Khanpur, Ahmedabad 380001",
+"info": "State chess body; runs school, state selection and rating tournaments.",
+"web": "https://www.gsca.in",
+"approx": true,
+"area": ""
+},
+{
+"name": "Tirth Chess Club",
+"acts": [
+"chess"
+],
+"kind": "club",
+"lat": 23.06,
+"lng": 72.5795,
+"addr": "Opposite Gandhi Ashram, near Dandi Bridge, Ahmedabad",
+"info": "Chess club and coaching for all levels.",
+"web": "",
+"approx": true,
+"area": ""
+},
+{
+"name": "Orient Club",
+"acts": [
+"chess",
+"multi"
+],
+"kind": "club",
+"lat": 23.0255,
+"lng": 72.564,
+"addr": "Near Gujarat College, Ellisbridge, Ahmedabad",
+"info": "Venue for GSCA state selection chess events.",
+"web": "",
+"approx": true,
+"area": ""
+},
+{
+"name": "Gujarat Polo Club Ground",
+"acts": [
+"multi"
+],
+"kind": "pitch",
+"lat": 22.996,
+"lng": 72.46,
+"addr": "Shela, Ahmedabad",
+"info": "Home of the Ahmedabad Polo Tournament.",
+"web": "",
+"approx": true,
+"area": ""
+},
+{
+"name": "Tyro Turfs",
+"acts": [
+"cricket",
+"football",
+"pickleball",
+"volleyball"
+],
+"kind": "pitch",
+"lat": 22.995,
+"lng": 72.5,
+"addr": "Makarba, Ahmedabad",
+"info": "Shaded turf, open 6 AM – 12 AM.",
+"web": "https://discover.lyfskills.com/facilities/4011",
+"approx": true,
+"area": "Makarba"
+},
+{
+"name": "Skye Box Cricket & Football Turf",
+"acts": [
+"cricket",
+"football",
+"pickleball"
+],
+"kind": "pitch",
+"lat": 23.014,
+"lng": 72.496,
+"addr": "Near Doggy Hotel, opp. Blescene Cafe, Mumatpura, Ahmedabad 380058",
+"info": "Open 24 hours; floodlights; hosts tournaments.",
+"web": "https://discover.lyfskills.com/facilities/4093",
+"approx": true,
+"area": "Mumatpura"
+},
+{
+"name": "Gally Box Cricket and Cafe",
+"acts": [
+"cricket",
+"pickleball"
+],
+"kind": "pitch",
+"lat": 23.014,
+"lng": 72.496,
+"addr": "Mumatpura, Ahmedabad",
+"info": "",
+"web": "https://discover.lyfskills.com/facilities/4093",
+"approx": true,
+"area": "Mumatpura"
+},
+{
+"name": "1 Turf Ahmedabad Box Cricket & Volleyball",
+"acts": [
+"cricket",
+"volleyball",
+"pickleball"
+],
+"kind": "pitch",
+"lat": 23.059,
+"lng": 72.476,
+"addr": "Shilaj, Ahmedabad",
+"info": "",
+"web": "https://discover.lyfskills.com/facilities/4030",
+"approx": true,
+"area": "Shilaj"
+},
+{
+"name": "Unicorn Cricket Club",
+"acts": [
+"cricket"
+],
+"kind": "club",
+"lat": 23.033,
+"lng": 72.465,
+"addr": "Bopal, Ahmedabad",
+"info": "",
+"web": "https://discover.lyfskills.com/facilities/4030",
+"approx": true,
+"area": "Bopal"
+},
+{
+"name": "Jay Ambe Cricket Ground",
+"acts": [
+"cricket"
+],
+"kind": "pitch",
+"lat": 23.05,
+"lng": 72.505,
+"addr": "Thaltej, Ahmedabad",
+"info": "",
+"web": "https://discover.lyfskills.com/facilities/3999",
+"approx": true,
+"area": "Thaltej"
+},
+{
+"name": "Knock Outt Box Cricket & Pickleball",
+"acts": [
+"cricket",
+"pickleball"
+],
+"kind": "pitch",
+"lat": 22.999,
+"lng": 72.464,
+"addr": "Shela, Ahmedabad",
+"info": "Weekend tournaments in both sports.",
+"web": "https://discover.lyfskills.com/facilities/4035",
+"approx": true,
+"area": "Shela"
+},
+{
+"name": "Shootout Arena",
+"acts": [
+"pickleball",
+"cricket"
+],
+"kind": "pitch",
+"lat": 22.999,
+"lng": 72.464,
+"addr": "Shela, Ahmedabad",
+"info": "Pickleball courts, box cricket and a café.",
+"web": "https://discover.lyfskills.com/facilities/4035",
+"approx": true,
+"area": "Shela"
+},
+{
+"name": "Rapid 360 Box Cricket and Open Ground",
+"acts": [
+"cricket"
+],
+"kind": "pitch",
+"lat": 23.056,
+"lng": 72.56,
+"addr": "Naranpura, Ahmedabad",
+"info": "",
+"web": "https://discover.lyfskills.com/facilities/4114",
+"approx": true,
+"area": "Naranpura"
+},
+{
+"name": "SB Box Cricket",
+"acts": [
+"cricket",
+"pickleball"
+],
+"kind": "pitch",
+"lat": 23.1,
+"lng": 72.54,
+"addr": "B/h Aaryan City, Gota, Ahmedabad 382481",
+"info": "",
+"web": "https://discover.lyfskills.com/facilities/4086",
+"approx": true,
+"area": "Gota"
+},
+{
+"name": "Aqua Spin & Smash Pickleball",
+"acts": [
+"pickleball"
+],
+"kind": "pitch",
+"lat": 23.05,
+"lng": 72.505,
+"addr": "Takhshila Apartment, Thaltej, Ahmedabad 380059",
+"info": "3 outdoor lit courts, pay to play.",
+"web": "https://www.pickleheads.com/courts/in/gujarat/ahmedabad/aqua-spin-and-smash-pickleball",
+"approx": true,
+"area": "Thaltej"
+},
+{
+"name": "Ballers Pickleball",
+"acts": [
+"pickleball"
+],
+"kind": "pitch",
+"lat": 23.045,
+"lng": 72.498,
+"addr": "Sindhu Bhavan Road, Ahmedabad",
+"info": "Indoor and outdoor courts, book on Hudle.",
+"web": "https://thegodofsports.com/blogs/news/top-11-pickleball-courts-in-ahmedabad",
+"approx": true,
+"area": "Sindhu Bhavan Road"
+},
+{
+"name": "Hot Shot Pickleball Arena",
+"acts": [
+"pickleball"
+],
+"kind": "pitch",
+"lat": 23.076,
+"lng": 72.506,
+"addr": "Science City Road, Ahmedabad",
+"info": "",
+"web": "https://thegodofsports.com/top-11-pickleball-courts-in-ahmedabad/",
+"approx": true,
+"area": "Science City Road"
+},
+{
+"name": "Dinkers Pickleball Academy & Club",
+"acts": [
+"pickleball"
+],
+"kind": "academy",
+"lat": 23.05,
+"lng": 72.505,
+"addr": "Thaltej, Ahmedabad",
+"info": "Courts and coaching.",
+"web": "https://thegodofsports.com/top-11-pickleball-courts-in-ahmedabad/",
+"approx": true,
+"area": "Thaltej"
+},
+{
+"name": "Casa Padel",
+"acts": [
+"racket",
+"pickleball"
+],
+"kind": "pitch",
+"lat": 23.014,
+"lng": 72.496,
+"addr": "Mumatpura, Ahmedabad",
+"info": "2 padel courts and 2 pickleball courts.",
+"web": "https://discover.lyfskills.com/facilities/4123",
+"approx": true,
+"area": "Mumatpura"
+},
+{
+"name": "The Pickle King",
+"acts": [
+"pickleball"
+],
+"kind": "pitch",
+"lat": 23.029,
+"lng": 72.516,
+"addr": "Satellite, Ahmedabad",
+"info": "",
+"web": "https://discover.lyfskills.com/facilities/4024",
+"approx": true,
+"area": "Satellite"
+},
+{
+"name": "Pickleball Legends",
+"acts": [
+"pickleball"
+],
+"kind": "pitch",
+"lat": 23.166,
+"lng": 72.582,
+"addr": "Adalaj, Ahmedabad",
+"info": "",
+"web": "https://playo.co/amp/venues/adalaj-ahmedabad/pickleball-legends-adalaj-ahmedabad",
+"approx": true,
+"area": "Adalaj"
+},
+{
+"name": "Ahmedabad Youth Badminton Academy",
+"acts": [
+"badminton"
+],
+"kind": "academy",
+"lat": 23.033,
+"lng": 72.465,
+"addr": "Bopal, Ahmedabad",
+"info": "",
+"web": "https://www.district.in/play/ahmedabad-youth-badminton-academy-bopal-ahmedabad-slots-booking",
+"approx": true,
+"area": "Bopal"
+},
+{
+"name": "Ahmedabad Sports Academy · Satellite",
+"acts": [
+"swimming",
+"badminton"
+],
+"kind": "academy",
+"lat": 23.023,
+"lng": 72.526,
+"addr": "Jodhpur, Ahmedabad",
+"info": "",
+"web": "https://www.district.in/play/aangan-badminton-academy-ahmedabad-sports-academy-satellite-ahmedabad-slots-booking",
+"approx": true,
+"area": "Jodhpur"
+},
+{
+"name": "Next Level Badminton Academy",
+"acts": [
+"badminton"
+],
+"kind": "academy",
+"lat": 22.999,
+"lng": 72.464,
+"addr": "Shela, Ahmedabad",
+"info": "",
+"web": "https://playsport.com/nextlevelbadmintonacademy_ag_03ab76fe",
+"approx": true,
+"area": "Shela"
+},
+{
+"name": "DK Badminton Academy",
+"acts": [
+"badminton"
+],
+"kind": "academy",
+"lat": 23.11,
+"lng": 72.585,
+"addr": "Chandkheda, Ahmedabad",
+"info": "",
+"web": "https://discover.lyfskills.com/facilities/4043",
+"approx": true,
+"area": "Chandkheda"
+},
+{
+"name": "Nisarg Pandya Badminton Academy",
+"acts": [
+"badminton"
+],
+"kind": "academy",
+"lat": 23.017,
+"lng": 72.564,
+"addr": "Railway Officers Club, near Gandhigram metro station, Ellisbridge, Ahmedabad 380006",
+"info": "",
+"web": "https://discover.lyfskills.com/listing/26687",
+"approx": true,
+"area": ""
+},
+{
+"name": "Shuttle Empire Badminton Academy",
+"acts": [
+"badminton"
+],
+"kind": "academy",
+"lat": 23.05,
+"lng": 72.505,
+"addr": "Thaltej, Ahmedabad",
+"info": "",
+"web": "https://discover.lyfskills.com/facilities/4073",
+"approx": true,
+"area": "Thaltej"
+},
+{
+"name": "Ageta Sports Academy",
+"acts": [
+"badminton"
+],
+"kind": "academy",
+"lat": 23.05,
+"lng": 72.54,
+"addr": "Memnagar, Ahmedabad",
+"info": "",
+"web": "https://discover.lyfskills.com/facilities/4124",
+"approx": true,
+"area": "Memnagar"
+},
+{
+"name": "7 Star Sports Badminton Academy",
+"acts": [
+"badminton"
+],
+"kind": "academy",
+"lat": 22.996,
+"lng": 72.604,
+"addr": "Maninagar, Ahmedabad",
+"info": "",
+"web": "https://discover.lyfskills.com/listing/26687",
+"approx": true,
+"area": "Maninagar"
+},
+{
+"name": "Ashok Club",
+"acts": [
+"badminton"
+],
+"kind": "club",
+"lat": 23.011,
+"lng": 72.562,
+"addr": "Paldi, Ahmedabad",
+"info": "",
+"web": "https://discover.lyfskills.com/listing/26687",
+"approx": true,
+"area": "Paldi"
+},
+{
+"name": "TSG Sports Arena @ Elite Sports Academy",
+"acts": [
+"badminton",
+"tennis"
+],
+"kind": "academy",
+"lat": 23.099,
+"lng": 72.598,
+"addr": "Motera, Ahmedabad",
+"info": "",
+"web": "https://discover.lyfskills.com/facilities/4033",
+"approx": true,
+"area": "Motera"
+},
+{
+"name": "Evolution Tennis Academy",
+"acts": [
+"tennis"
+],
+"kind": "academy",
+"lat": 23.099,
+"lng": 72.598,
+"addr": "Motera, Ahmedabad",
+"info": "",
+"web": "https://discover.lyfskills.com/facilities/4033",
+"approx": true,
+"area": "Motera"
+},
+{
+"name": "Neon Sports Academy",
+"acts": [
+"badminton",
+"tennis",
+"cricket"
+],
+"kind": "academy",
+"lat": 23.059,
+"lng": 72.476,
+"addr": "Shilaj, Ahmedabad",
+"info": "Clay tennis courts, badminton and box cricket.",
+"web": "https://discover.lyfskills.com/facilities/4072",
+"approx": true,
+"area": "Shilaj"
+},
+{
+"name": "C. N. Lawn Tennis Court",
+"acts": [
+"tennis"
+],
+"kind": "pitch",
+"lat": 23.0215,
+"lng": 72.553,
+"addr": "Ambawadi, Ahmedabad",
+"info": "",
+"web": "https://discover.lyfskills.com/facilities/4124",
+"approx": true,
+"area": "Ambawadi"
+}
+],
+"events": [
+{
+"id": "g-aam-2026",
+"title": "Adani Ahmedabad Marathon 2026",
+"skill": "Marathon",
+"date": "2026-11-29",
+"time": "Reporting 3:00 am",
+"place": "Sabarmati Riverfront Sports Park, Paldi",
+"city": "Ahmedabad",
+"lat": 23.017,
+"lng": 72.5705,
+"spots": 0,
+"info": "10th edition · Full marathon, half marathon, 10K and 5K. On the World Athletics Global Calendar.",
+"web": "https://ahmedabadmarathon.com"
+}
+]
+}
