@@ -67,7 +67,9 @@ class Mount {
     try {
       this.r = new THREE.WebGLRenderer({ canvas: this.canvas, alpha: true, antialias: true, powerPreference: 'low-power' });
     } catch (e) { this.canvas.remove(); this.dead = true; return; }
-    this.r.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+    this.r.setPixelRatio(Math.min(devicePixelRatio || 1, 2)); this.r.setClearColor(0x000000, 0);
+    /* phones allow only a few 3D views at once; if this one is dropped, fall back to the drawn mascot (never a black box) and rebuild later */
+    this.canvas.addEventListener('webglcontextlost', e => { e.preventDefault(); this.release(); }, { once: true });
     this.r.toneMapping = THREE.ACESFilmicToneMapping; this.r.outputColorSpace = THREE.SRGBColorSpace;
     this.scene = new THREE.Scene(); this.cam = new THREE.PerspectiveCamera(28, 1, .1, 100);
     this.io = new IntersectionObserver(es => { this.visible = es[0].isIntersecting; }); this.io.observe(el);
@@ -116,15 +118,19 @@ class Mount {
   }
   tick(dt) {
     if (!this.el.isConnected) { this.dispose(); return; }
+    /* hidden views (sign-in screen after sign-in, closed sheets) give their 3D slot back */
+    if (!this.el.offsetParent) { this.hid = (this.hid || 0) + dt; if (this.hid > 2) this.release(); return; } else this.hid = 0;
     if (!this.ready || !this.visible || document.hidden) return;
     const w = this.el.clientWidth, h = this.el.clientHeight; if (w && (w !== this.w || h !== this.hgt)) { this.w = w; this.hgt = h; this.frame(); }
     this.mixer.update(dt); if (this.prop && this.prop.userData.spin) { this.prop.rotation.x += dt * 1.6; this.prop.rotation.y += dt * 2.1; }
     this.r.render(this.scene, this.cam);
   }
   dispose() { this.dead = true; mounts.delete(this); try { this.io.disconnect(); this.r.dispose(); this.r.forceContextLoss(); } catch (e) {} }
+  release() { if (this.dead) return; this.dispose(); this.el.classList.remove('live'); this.canvas.remove(); delete this.el.dataset.m; }
 }
 
-function scan(root = document) { root.querySelectorAll('.av3d:not([data-m])').forEach(el => { el.dataset.m = '1'; new Mount(el); }); }
+function scan(root = document) { root.querySelectorAll('.av3d:not([data-m])').forEach(el => { if (!el.offsetParent) return; el.dataset.m = '1'; new Mount(el); }); }
+setInterval(() => scan(), 1500);
 let lastT = performance.now();
 (function loop(now) { now = now || performance.now(); const dt = Math.min(.05, (now - lastT) / 1000); lastT = now; mounts.forEach(m => m.tick(dt)); requestAnimationFrame(loop); })();
 new MutationObserver(() => scan()).observe(document.getElementById('app'), { childList: true, subtree: true });

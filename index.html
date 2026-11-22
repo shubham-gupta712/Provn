@@ -698,7 +698,7 @@ svg{display:block}
 .sc-bar{grid-column:1/-1;height:8px;border-radius:6px;background:rgba(0,0,0,.18);overflow:hidden;margin-top:6px}.sc-bar i{display:block;height:100%;background:currentColor;border-radius:6px}
 .sc-n{grid-column:1/-1;font-size:12px;font-weight:800;opacity:.8}
 .pm-wrap{margin:12px -14px 0;position:relative}
-.pm{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;background:#000}.pm::-webkit-scrollbar{display:none}
+.pmc{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;background:#000}.pmc::-webkit-scrollbar{display:none}
 .pm-i{flex:0 0 100%;scroll-snap-align:center;position:relative;display:grid;place-items:center;max-height:560px;background:#000}
 .pm-i img{width:100%;max-height:560px;object-fit:contain;display:block}
 .pm-i video{width:100%;max-height:560px;display:block;background:#000}
@@ -732,13 +732,14 @@ svg{display:block}
 .pinfo header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .pinfo header b{display:block;font-family:var(--f-display);font-size:19px}.pinfo header small{display:block;font-size:12px;font-weight:700;color:var(--text3)}
 .pinfo header .btn{height:38px;padding:0 16px;font-size:14px}
-.pi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.pi{display:flex;gap:9px;align-items:center;padding:10px;border-radius:14px;background:var(--bg3);min-width:0}
-.pi.wide{grid-column:1/-1}
-.pi-ic{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:var(--bg2);font-size:16px;flex:none}
+.pi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.pi{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:12px 6px;border-radius:16px;background:var(--bg3);min-width:0;text-align:center}
+.pi>div{min-width:0;width:100%}
+.pi.wide{grid-column:1/-1;flex-direction:row;justify-content:flex-start;gap:12px;padding:12px;text-align:left}
+.pi-ic{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:var(--bg2);font-size:17px;flex:none}
 .pi small{display:block;font-size:10.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--text3)}
-.pi b{display:block;font-size:15px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pi b i{font-style:normal;color:var(--text3);font-weight:700}
-.pi b em{font-style:normal;font-size:12px;font-weight:700;color:var(--text3);margin-left:6px}
+.pi b{display:block;font-size:16px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}.pi b i{font-style:normal;color:var(--text3);font-weight:700}
+.pi.wide b{white-space:normal}.pi b em{font-style:normal;font-size:12.5px;font-weight:700;color:var(--text3);margin-left:6px}
 .pe-f{display:block;margin-top:14px}.pe-f>span{display:block;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
 .pe-f input{width:100%;height:50px;padding:0 14px;border-radius:14px;background:var(--bg3);border:var(--card-bd);font:inherit;font-size:16px;font-weight:700;color:var(--text);outline:0}
 .pe-f input:focus{border-color:var(--accent)}
@@ -1081,7 +1082,7 @@ svg{display:block}
     <div class="row" id="acctRow" style="cursor:pointer"><span data-i="you"></span><span class="sp">Account</span><small id="acctTxt">Sign out</small></div>
     <div class="row"><span data-i="bell"></span><span class="sp">Notifications</span><small>Soon</small></div>
     <div class="row"><span data-i="lock"></span><span class="sp">Privacy</span><small>Soon</small></div>
-    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261123d</small></div>
+    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261123e</small></div>
   </section>
 
   <div class="cele" id="cele"><div class="cele-in"><div class="cele-m" id="celeM"></div><h2 class="display" id="celeT"></h2><div class="big" id="celeB"></div><p id="celeS"></p><button class="btn primary" id="celeOk"><span>Keep going</span></button></div></div>
@@ -1556,7 +1557,7 @@ $('#provePost').onclick=async()=>{const s=SKILLS[proveSkill],r=readVal(),btn=$('
 const linkify=(t,p)=>esc(t).replace(/(^|\s)#([\p{L}\p{N}_]{2,40})/gu,'$1<a class="tg" data-tag="$2">#$2</a>').replace(/(^|\s)@([\p{L}\p{N}_.]{2,40})/gu,(m,a,n)=>`${a}<a class="mn">@${n}</a>`);
 function avatar(p,col){return p.photo?`<img class="av" src="${esc(p.photo)}" alt="" referrerpolicy="no-referrer" loading="lazy">`:`<div class="av" style="background:${col}">${esc((p.n||'?')[0].toUpperCase())}</div>`;}
 function mediaHTML(list,k){if(!list.length)return '';
- return `<div class="pm-wrap"><div class="pm ${list.length>1?'multi':''}" data-k="${k}">${list.map(m=>m.type==='video'
+ return `<div class="pm-wrap"><div class="pmc ${list.length>1?'multi':''}" data-k="${k}">${list.map(m=>m.type==='video'
   ?`<div class="pm-i"><video src="${esc(m.url)}" poster="${esc(Cloud.thumb(m.url))}" controls playsinline preload="metadata"></video></div>`
   :`<div class="pm-i img"><img src="${esc(m.url.replace('/upload/','/upload/w_1080,c_limit,q_auto,f_auto/'))}" alt="" loading="lazy"><span class="burst"><span data-i="heartFull"></span></span></div>`).join('')}</div>${list.length>1?`<div class="pm-dots">${list.map((_,i)=>`<i class="${i?'':'on'}"></i>`).join('')}</div>`:''}</div>`;}
 function postHTML(p,k){const m=p.mine||{},isRes=p.col==='results',s=SKILLS[p.skill],c=s?CATS[s.cat]:null,me=CU()&&p.uid===Cloud.user.uid;
@@ -1604,7 +1605,7 @@ const Pulse={ready:false,last:0,
   $$('#feed .del-b').forEach(b=>b.onclick=()=>{const p=this.find(b.closest('.post'));if(!p)return;if(!b.dataset.armed){b.dataset.armed=1;b.classList.add('warn');toast('Tap again to delete this post');setTimeout(()=>{delete b.dataset.armed;b.classList.remove('warn');},3000);return;}
    (async()=>{try{if(p.col==='posts')await Cloud.deletePost(p.id);else{await Cloud.deleteResult(p.id);const k='res_'+p.skill,l=store.get(k,[]);store.set(k,l.filter(x=>x.cloud!==p.id));You.render();}feedAll=feedAll.filter(x=>x!==p);this.paint();toast('Deleted');}catch(e){toast('Could not delete: '+(e.code||e.message));}})();});
   $$('#feed .tg').forEach(a=>a.onclick=()=>{buzz(6);feedTag=a.dataset.tag;this.paint();$('#s-pulse').scrollTo({top:0,behavior:'smooth'});});
-  $$('#feed .pm').forEach(pm=>{const dots=pm.parentNode.querySelectorAll('.pm-dots i');if(dots.length)pm.onscroll=()=>{const i=Math.round(pm.scrollLeft/pm.clientWidth);dots.forEach((d,j)=>d.classList.toggle('on',j===i));};
+  $$('#feed .pmc').forEach(pm=>{const dots=pm.parentNode.querySelectorAll('.pm-dots i');if(dots.length)pm.onscroll=()=>{const i=Math.round(pm.scrollLeft/pm.clientWidth);dots.forEach((d,j)=>d.classList.toggle('on',j===i));};
    pm.querySelectorAll('.pm-i.img').forEach(it=>{let last=0;it.onclick=()=>{const now=Date.now();if(now-last<320){const b=pm.closest('.post').querySelector('.like');if(!b.classList.contains('liked'))b.click();const h=it.querySelector('.burst');h.classList.remove('go');h.offsetWidth;h.classList.add('go');}last=now;};});});
   /* only one video plays at a time; videos pause when scrolled away */
   const vids=$$('#feed video');vids.forEach(v=>v.onplay=()=>vids.forEach(o=>{if(o!==v)o.pause();}));
