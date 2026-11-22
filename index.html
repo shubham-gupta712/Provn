@@ -754,6 +754,35 @@ svg{display:block}
 .as-bar{position:absolute;z-index:93;left:50%;transform:translateX(-50%);top:calc(var(--safe-t) + 6px);padding:7px 14px;border-radius:18px;background:#111827e6;color:#fff;font-size:12.5px;font-weight:700;white-space:nowrap;box-shadow:0 6px 18px rgba(0,0,0,.35);border:1.5px solid var(--accent)}
 .as-bar[hidden]{display:none}
 
+/* people */
+.social{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:10px;margin-top:14px}
+.sc{display:flex;flex-direction:column;align-items:center;padding:8px 4px;border-radius:14px;background:var(--bg3)}
+.sc b{font-family:var(--f-display);font-size:22px;line-height:1.1}.sc small{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text3)}
+.sc-find{grid-column:1/-1;height:44px;gap:8px;margin-top:2px}.sc-find svg{width:18px;height:18px}
+.ph-u{cursor:pointer;background:none;padding:0;border:0;color:inherit;font:inherit;text-align:left}
+.u-h{display:flex;align-items:center;gap:14px;margin-top:6px}
+.u-av{width:64px;height:64px;border-radius:50%;object-fit:cover;display:grid;place-items:center;background:var(--accent);color:var(--on-accent);font-size:26px;font-weight:900;border:3px solid var(--ink);flex:none}
+.u-h b{display:block;font-size:24px;line-height:1.1}.u-h small{display:block;font-size:13px;font-weight:700;color:var(--text3);margin-top:3px}
+.u-fy{font-style:normal;padding:1px 7px;border-radius:7px;background:var(--bg3);color:var(--text2)}
+.u-st{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:14px}
+.u-st>*{display:flex;flex-direction:column;align-items:center;padding:8px 2px;border-radius:14px;background:var(--bg3)}
+.u-st b{font-family:var(--f-display);font-size:20px;line-height:1.1}.u-st small{font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--text3)}
+.u-act{margin-top:12px}.u-act .fbtn{width:100%;height:46px}
+.u-sec{margin:18px 0 6px;font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--text3)}
+.u-best{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1.5px solid var(--bg3)}
+.u-best .ic{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:#171A25;border:2px solid var(--ink);flex:none}.u-best .ic svg{width:16px;height:16px}
+.u-best .nm{flex:1;font-weight:800;font-size:14.5px}.u-best .nm small,.u-best .val small{display:block;font-size:11.5px;font-weight:700;color:var(--text3)}.u-best .val{text-align:right;font-weight:800}
+.ug{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.ug-i{position:relative;aspect-ratio:1;border-radius:10px;background:var(--bg3) center/cover;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:6px;text-align:center}
+.ug-i i{font-style:normal;color:#fff;font-size:20px;text-shadow:0 1px 4px #000}.ug-i em{position:absolute;right:5px;bottom:5px;font-style:normal;font-size:11px;font-weight:900;padding:1px 6px;border-radius:7px;background:var(--accent);color:var(--on-accent)}
+.ug-i.txt b{font-family:var(--f-display);font-size:18px}.ug-i.txt small{font-size:11.5px;font-weight:700;color:var(--text2);line-height:1.3}
+.ppl-list{margin-top:10px;max-height:60vh;overflow-y:auto}
+.pp{display:flex;align-items:center;gap:12px;padding:10px 2px;border-bottom:1.5px solid var(--bg3);cursor:pointer}
+.pp-av{width:42px;height:42px;border-radius:50%;object-fit:cover;display:grid;place-items:center;background:var(--accent);color:var(--on-accent);font-weight:900;flex:none}
+.pp>div{flex:1;min-width:0}.pp b{display:block;font-size:15px}.pp small{display:block;font-size:12.5px;color:var(--text3);font-weight:600}
+.pp .fbtn{height:36px;padding:0 14px;font-size:13px;flex:none}
+.tr-r{cursor:pointer}
+
 /* account */
 .acct2{padding:14px;margin-top:18px}
 .ac-row{display:flex;align-items:center;gap:12px}
@@ -1043,6 +1072,7 @@ svg{display:block}
 
     <section class="screen" id="s-you" data-tab="you">
       <div class="prof"><div class="pm" id="youM"></div><div class="pn2"><input class="nameIn" id="nameIn" maxlength="18" aria-label="Your player name" readonly><p id="youSub"></p><button class="btn ghost chg" id="chgPlayer"><span>Change player</span></button></div></div>
+      <div class="card social" id="social"></div>
       <div class="card pinfo" id="youInfo"></div>
       <div class="wgrid" id="wgrid"></div>
       <div class="sec-h"><h3 class="display">Your interests</h3><a id="intEdit">Edit</a></div>
@@ -1095,6 +1125,18 @@ svg{display:block}
     <button class="btn primary" style="width:100%;margin-top:16px" id="upPost"><span>Post</span></button>
   </section>
 
+  <section class="sheet" id="sh-user" aria-label="Player profile">
+    <div class="handle"></div>
+    <div id="uBody"></div>
+  </section>
+
+  <section class="sheet" id="sh-ppl" aria-label="Players">
+    <div class="handle"></div>
+    <h2 class="display" id="pplT">Players</h2>
+    <label class="up-act" style="margin-top:10px"><span data-i="search"></span><input id="pplQ" placeholder="Search by name or city" autocomplete="off"></label>
+    <div id="pplList" class="ppl-list"></div>
+  </section>
+
   <section class="sheet" id="sh-int" aria-label="Your interests">
     <div class="handle"></div>
     <h2 class="display">Your interests</h2>
@@ -1139,7 +1181,7 @@ svg{display:block}
     <div class="row" id="acctRow" style="cursor:pointer"><span data-i="you"></span><span class="sp">Account</span><small id="acctTxt">Sign out</small></div>
     <div class="row"><span data-i="bell"></span><span class="sp">Notifications</span><small>Soon</small></div>
     <div class="row"><span data-i="lock"></span><span class="sp">Privacy</span><small>Soon</small></div>
-    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261123n</small></div>
+    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261123o</small></div>
   </section>
 
   <div class="cele" id="cele"><div class="cele-in"><div class="cele-m" id="celeM"></div><h2 class="display" id="celeT"></h2><div class="big" id="celeB"></div><p id="celeS"></p><button class="btn primary" id="celeOk"><span>Keep going</span></button></div></div>
@@ -1630,7 +1672,7 @@ function mediaHTML(list,k){if(!list.length)return '';
   ?`<div class="pm-i"><span class="pm-blur" style="background-image:url('${esc(Cloud.thumb(m.url))}')"></span><video src="${esc(m.url)}" poster="${esc(Cloud.thumb(m.url))}" controls playsinline preload="metadata"></video></div>`
   :(()=>{const src=esc(m.url.replace('/upload/','/upload/w_1080,c_limit,q_auto,f_auto/'));return `<div class="pm-i img"><span class="pm-blur" style="background-image:url('${src}')"></span><img src="${src}" alt="" loading="lazy"><span class="burst"><span data-i="heartFull"></span></span></div>`;})()).join('')}</div>${list.length>1?`<div class="pm-dots">${list.map((_,i)=>`<i class="${i?'':'on'}"></i>`).join('')}</div>`:''}</div>`;}
 function postHTML(p,k){const m=p.mine||{},isRes=p.col==='results',s=SKILLS[p.skill],c=s?CATS[s.cat]:null,me=CU()&&p.uid===Cloud.user.uid;
- const head=`<div class="post-h">${avatar(p,c?c.col:'var(--accent)')}<div class="ph-t"><b>${esc(p.n)}</b><small>${[p.top,p.when].filter(Boolean).map(esc).join(' · ')}</small></div>${p.skill?`<span class="chip act-chip">${s?`<span class="ac-ic" style="background:${c.col}">${iconSvg(s.ic)}</span>`:''}${esc(p.skill)}</span>`:''}</div>`;
+ const head=`<div class="post-h"><button class="ph-u" data-u="${p.uid||''}" data-n="${esc(p.n)}">${avatar(p,c?c.col:'var(--accent)')}</button><div class="ph-t"><b class="ph-u" data-u="${p.uid||''}" data-n="${esc(p.n)}">${esc(p.n)}</b><small>${[p.top,p.when].filter(Boolean).map(esc).join(' · ')}</small></div>${p.skill?`<span class="chip act-chip">${s?`<span class="ac-ic" style="background:${c.col}">${iconSvg(s.ic)}</span>`:''}${esc(p.skill)}</span>`:''}</div>`;
  let score='';
  if(isRes&&s){const pts=p.pts,l=lvOf(pts),nx=LEVELS[l+1],pct=nx?Math.round((pts-LEVELS[l][1])/(nx[1]-LEVELS[l][1])*100):100;
   score=`<div class="score" style="--sc:${c.col};--sci:${c.ink}"><div class="sc-m"><b class="display">${fmtPerf(s,p.v,0)}</b><span>${unitShort(s)||s.unit}</span></div><div class="sc-p"><b>${pts}</b><small>pts · ${LEVELS[l][0]}</small></div><div class="sc-bar"><i style="width:${pct}%"></i></div><small class="sc-n">${nx?pct+'% to '+nx[0]:'Max level'}${p.venueName?' · at '+esc(p.venueName):''}</small></div>`;}
@@ -1674,6 +1716,8 @@ const Pulse={ready:false,last:0,
   $$('#feed .share-b').forEach(b=>b.onclick=()=>{const p=this.find(b.closest('.post'));if(p)sharePost(p);});
   $$('#feed .del-b').forEach(b=>b.onclick=()=>{const p=this.find(b.closest('.post'));if(!p)return;if(!b.dataset.armed){b.dataset.armed=1;b.classList.add('warn');toast('Tap again to delete this post');setTimeout(()=>{delete b.dataset.armed;b.classList.remove('warn');},3000);return;}
    (async()=>{try{if(p.col==='posts')await Cloud.deletePost(p.id);else{await Cloud.deleteResult(p.id);const k='res_'+p.skill,l=store.get(k,[]);store.set(k,l.filter(x=>x.cloud!==p.id));You.render();}feedAll=feedAll.filter(x=>x!==p);this.paint();toast('Deleted');}catch(e){toast('Could not delete: '+(e.code||e.message));}})();});
+  $$('#feed .ph-u').forEach(a=>a.onclick=()=>openUser(a.dataset.u,a.dataset.n));
+  $$('#feed .mn').forEach(a=>a.onclick=()=>{const p=this.find(a.closest('.post')),nm=a.textContent.slice(1).replace(/_/g,' ').toLowerCase(),m=(p&&p.mentions||[]).find(x=>x.name.toLowerCase()===nm||x.name.toLowerCase().startsWith(nm));if(m)openUser(m.uid,m.name);else toast('Player not found');});
   $$('#feed .tg').forEach(a=>a.onclick=()=>{buzz(6);feedTag=a.dataset.tag;this.paint();$('#s-pulse').scrollTo({top:0,behavior:'smooth'});});
   $$('#feed .pmc').forEach(pm=>{const dots=pm.parentNode.querySelectorAll('.pm-dots i');if(dots.length)pm.onscroll=()=>{const i=Math.round(pm.scrollLeft/pm.clientWidth);dots.forEach((d,j)=>d.classList.toggle('on',j===i));};
    pm.querySelectorAll('.pm-i.img').forEach(it=>{let last=0,t;it.onclick=()=>{const now=Date.now();clearTimeout(t);
@@ -1751,7 +1795,7 @@ async function renderRanks(){const sel=$('#rkSkill');
  const IC={pin:'<path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>',city:'<path d="M3.5 20.5h17M5.5 20.5V9l5-3v14.5M10.5 20.5V4.5l8 3.5v12.5M13.5 10h2M13.5 13h2M13.5 16h2M7.5 12h1M7.5 15h1"/>',state:'<path d="M4 6.5 9 4l6 2.5 5-2.5v13.5L15 20l-6-2.5L4 20z"/><path d="M9 4v13.5M15 6.5V20"/>',flag:'<path d="M5 21V4M5 4.5h11l-2 4 2 4H5"/>',globe:'<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.8 2.6 2.8 14.4 0 17M12 3.5c-2.8 2.6-2.8 14.4 0 17"/>'};
  const icon=k=>`<svg viewBox="0 0 24 24" ${P}>${IC[k]}</svg>`;
  const medal=i=>i<3?`<i class="md m${i}">${i+1}</i>`:`<i class="md">${i+1}</i>`;
- const row=(r,i)=>`<div class="tr-r ${r.uid===me?'me':''}">${medal(i)}<span class="nm">${esc(r.name||'Player')}${r.uid===me?' <em>You</em>':''}<small>${esc(r.city||'')}</small></span><span class="val">${fp(r.v)}<small>${r.pts} pts</small></span></div>`;
+ const row=(r,i)=>`<div class="tr-r ${r.uid===me?'me':''}" data-u="${r.uid}" data-n="${esc(r.name||'')}">${medal(i)}<span class="nm">${esc(r.name||'Player')}${r.uid===me?' <em>You</em>':''}<small>${esc(r.city||'')}</small></span><span class="val">${fp(r.v)}<small>${r.pts} pts</small></span></div>`;
  const sum=[];
  $('#rkTiers').innerHTML=tiers.map(T=>{
   const rows=T.rows,has=rows&&rows.length,pos=has?rows.findIndex(r=>r.uid===me):-1,you=pos>=0?rows[pos]:null;
@@ -1767,6 +1811,7 @@ async function renderRanks(){const sel=$('#rkSkill');
    ${!mine&&T.k==='glob'?`<button class="btn primary tr-go" id="rkLog"><span>Log a ${esc(name)} result</span></button>`:''}</section>`;}).join('');
  $('#rkSum').innerHTML=sum.map(x=>`<button class="rs ${x.r!=='–'?'on':''}" data-k="${x.k}"><span>${icon(x.ic)}</span><b>${x.r}</b><small>${x.t}</small></button>`).join('');
  $$('#rkSum .rs').forEach(b=>b.onclick=()=>{buzz(6);const el=$('#rkTiers .t-'+b.dataset.k);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});});
+ $$('#rkTiers .tr-r').forEach(r=>r.onclick=()=>openUser(r.dataset.u,r.dataset.n));
  $$('#rkTiers .tr-pick button').forEach(b=>b.onclick=()=>{buzz(6);rkVenue=b.dataset.v;store.set('rkVenue',rkVenue);renderRanks();});
  const lg=$('#rkLog');if(lg)lg.onclick=()=>openProve(name,false);}
 $('#rkSkill').onchange=()=>renderRanks();
@@ -1792,7 +1837,7 @@ const You={render(){const ae=document.activeElement;if(!(ae&&ae.closest&&ae.clos
   return `<div class="card wcard ${u?'open':''}"><small>${label} world</small><b>${sc}</b><span class="lv">${LEVELS[l][0]}</span><div class="bar"><i style="width:${Math.min(100,sc/req*100)}%"></i></div><div class="unl"><span data-i="${u?'unlock':'lock'}"></span>${u?`${THEMES[t].name} unlocked`:`${THEMES[t].name} at ${req}`}</div></div>`;}).join('');
  $('#slist').innerHTML=ms.length?ms.map(({s,b})=>{const c=CATS[s.cat];return `<button class="card srow press" data-n="${esc(s.name)}" style="width:100%;text-align:left;--cv:${c.col};--cvi:${c.ink}"><span class="si">${iconSvg(s.ic)}</span><span class="sn"><b>${esc(s.name)}</b><small>${LEVELS[lvOf(b.p)][0]} · best ${fmtPerf(s,b.v,store.get('bw',0))}${unitShort(s)}</small></span><span class="sp"><b>${b.p}</b><small>pts</small></span></button>`}).join(''):
   `<div class="card empty">No results yet.<br><button class="btn primary" id="firstProve"><span>Log your first result</span></button></div>`;
- renderInterests();paintIcons($('#s-you'));$$('#slist .srow').forEach(b=>b.onclick=()=>{go('orbit');setTimeout(()=>Orbit.openSkill(b.dataset.n),280)});
+ renderInterests();renderSocial();paintIcons($('#s-you'));$$('#slist .srow').forEach(b=>b.onclick=()=>{go('orbit');setTimeout(()=>Orbit.openSkill(b.dataset.n),280)});
  const fp=$('#firstProve');if(fp)fp.onclick=()=>openProve();}};
 $('#nameIn').addEventListener('click',()=>openPEdit());
 function renderPF(){const pr=profile();$$('[data-pf]').forEach(el=>{el.innerHTML=`<span class="sx"><button data-sx="m" class="${pr.sex==='m'?'on':''}">Male</button><button data-sx="f" class="${pr.sex==='f'?'on':''}">Female</button></span><label>Age <input inputmode="numeric" maxlength="3" data-age value="${pr.age||''}" placeholder="—"></label><label>Weight <input inputmode="decimal" maxlength="5" data-bw value="${pr.bw||''}" placeholder="—"> kg</label>${el.id==='provePf'?'':`<label class="cityL">City <input maxlength="30" data-city value="${esc(store.get('city',''))}" placeholder="—"></label>`}`;
@@ -2439,7 +2484,7 @@ $$('#admAs button').forEach(b=>b.onclick=async()=>{const id=b.dataset.as;if(id==
   feedAll=[];Pulse.last=0;toast(id==='admin'?'Back to your own account':`Now using the app as ${Cloud.BOTS[id].name}`);await Cloud.actAs(id);if(id!=='admin')Admin.player();else Admin.render();}
  catch(e){toast('Could not switch: '+(e.code==='auth/operation-not-allowed'?'turn on Email/Password sign-in in Firebase Authentication':(e.code||e.message)));}});
 $('#asBar').onclick=async()=>{buzz(10);feedAll=[];Pulse.last=0;try{await Cloud.actAs('admin');toast('Back to your own account');}catch(e){toast(e.message);}};
-addEventListener('cloud-auth',()=>{feedAll=[];paintAs();});
+addEventListener('cloud-auth',()=>{feedAll=[];myGraph=null;paintAs();});
 (()=>{const el=$('#admPill');let sx,sy,ox,oy,drag=false,down=false;
  const place=(x,y)=>{const a=$('#app').getBoundingClientRect(),w=el.offsetWidth,h=el.offsetHeight;el.style.left=Math.max(6,Math.min(a.width-w-6,x))+'px';el.style.top=Math.max(6,Math.min(a.height-h-6,y))+'px';};
  const pos=store.get('admPos',null);if(pos)requestAnimationFrame(()=>place(pos.x,pos.y));
@@ -2567,10 +2612,53 @@ $('#intSave').onclick=()=>{store.set('interests',[...intSel]);hideSheet();buzz(1
 $('#intEdit').onclick=openInterests;
 
 /* auto-update: GitHub Pages lets phones keep an old copy for ~10 min; check the live version and reload if it's newer */
-const APP_V='20261123n';
+const APP_V='20261123o';
 async function checkUpdate(){try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});const j=await r.json();
  if(j.v&&j.v!==APP_V&&sessionStorage.getItem('provn_upd')!==j.v){sessionStorage.setItem('provn_upd',j.v);toast('Updating Provn…');setTimeout(()=>location.replace(location.pathname+'?v='+j.v+location.hash),600);}}catch(e){}}
 checkUpdate();document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkUpdate();});
+/* ================= PEOPLE: profiles, follows, friends ================= */
+let myGraph=null;
+async function loadMyGraph(force){if(!CU())return null;if(myGraph&&!force)return myGraph;try{myGraph=await Cloud.graph(Cloud.user.uid);}catch(e){console.warn(e);myGraph={followers:[],following:[],friends:[]};}return myGraph;}
+const iFollow=uid=>!!(myGraph&&myGraph.following.some(x=>x.uid===uid));
+const followsMe=uid=>!!(myGraph&&myGraph.followers.some(x=>x.uid===uid));
+function avHTML(name,photo,cls){return photo?`<img class="${cls}" src="${esc(photo)}" alt="" referrerpolicy="no-referrer">`:`<span class="${cls}">${esc((name||'?')[0].toUpperCase())}</span>`;}
+function followBtn(uid,name){const f=iFollow(uid),m=f&&followsMe(uid);return `<button class="btn ${f?'ghost':'primary'} fbtn" data-fu="${uid}" data-fn="${esc(name||'')}"><span>${m?'Friends ✓':f?'Following':followsMe(uid)?'Follow back':'Follow'}</span></button>`;}
+function wireFollow(root,after){$$('.fbtn',root).forEach(b=>b.onclick=async e=>{e.stopPropagation();const uid=b.dataset.fu,on=!iFollow(uid);b.disabled=true;buzz(on?12:6);
+ try{await Cloud.follow(uid,b.dataset.fn,on);await loadMyGraph(true);toast(on?(followsMe(uid)?`You and ${b.dataset.fn} are now friends`:`Following ${b.dataset.fn}`):`Unfollowed ${b.dataset.fn}`);}catch(er){toast('Could not '+(on?'follow':'unfollow')+': '+(er.code||er.message));}
+ b.disabled=false;renderSocial();after&&after();});}
+/* my counts on the You tab */
+async function renderSocial(){const el=$('#social');if(!el||!CU())return;const g=await loadMyGraph();
+ el.innerHTML=`<button class="sc" data-l="friends"><b>${g.friends.length}</b><small>Friends</small></button><button class="sc" data-l="followers"><b>${g.followers.length}</b><small>Followers</small></button><button class="sc" data-l="following"><b>${g.following.length}</b><small>Following</small></button><button class="btn primary sc-find" id="findPpl"><span data-i="search"></span><span>Find players</span></button>`;
+ paintIcons(el);$$('#social .sc').forEach(b=>b.onclick=()=>openPeople(b.dataset.l,Cloud.user.uid,null));$('#findPpl').onclick=()=>openPeople('find');}
+/* someone's profile */
+async function openUser(uid,name){if(!uid)return;if(CU()&&uid===Cloud.user.uid){hideSheet();go('you');return;}buzz(8);
+ $('#uBody').innerHTML=`<div class="u-h"><span class="u-av skel"></span><div><b class="display">${esc(name||'Player')}</b><small>Loading…</small></div></div><div class="skel" style="height:120px;margin-top:14px"></div>`;showSheet('sh-user');
+ try{const [info,g]=await Promise.all([Cloud.userInfo(uid),Cloud.graph(uid),loadMyGraph()]);const p=info.profile,nm=p.name||name||'Player',pl=placeOf(p.city);
+  const posts=info.items,ints=(p.interests||[]).filter(n=>SKILLS[n]);
+  const tiles=posts.slice(0,12).map(x=>{const m=(x.media||(x.video?[{type:'video',url:x.video}]:[]))[0],s=SKILLS[x.skill];
+   if(m)return `<button class="ug-i" data-src="${esc(m.type==='image'?m.url:'')}" style="background-image:url('${esc(m.type==='video'?Cloud.thumb(m.url):m.url.replace('/upload/','/upload/w_300,h_300,c_fill,q_auto,f_auto/'))}')">${m.type==='video'?'<i>▶</i>':''}${x.col==='results'&&s?`<em>${x.pts}</em>`:''}</button>`;
+   return `<div class="ug-i txt">${x.col==='results'&&s?`<b>${fmtPerf(s,x.v,0)}</b><small>${esc(x.skill)}</small>`:`<small>${esc((x.text||'').slice(0,60))}</small>`}</div>`;}).join('');
+  $('#uBody').innerHTML=`<div class="u-h">${avHTML(nm,p.photo,'u-av')}<div><b class="display">${esc(nm)}</b><small>${[p.city,pl.state].filter(Boolean).map(esc).join(', ')||'Provn player'}${followsMe(uid)?' · <i class="u-fy">Follows you</i>':''}</small></div></div>
+   <div class="u-st"><div><b>${posts.length}</b><small>Posts</small></div><button data-l="followers"><b>${g.followers.length}</b><small>Followers</small></button><button data-l="following"><b>${g.following.length}</b><small>Following</small></button><button data-l="friends"><b>${g.friends.length}</b><small>Friends</small></button></div>
+   <div class="u-act">${followBtn(uid,nm)}</div>
+   ${ints.length?`<h4 class="u-sec">Interests</h4><div class="int-chips">${ints.map(n=>{const s=SKILLS[n],c=CATS[s.cat];return `<span class="int-c"><span class="ic" style="background:${c.col}">${iconSvg(s.ic)}</span>${esc(n)}</span>`;}).join('')}</div>`:''}
+   ${info.best.length?`<h4 class="u-sec">Best results</h4>${info.best.slice(0,5).map(b=>{const s=SKILLS[b.skill];if(!s)return '';const c=CATS[s.cat];return `<div class="u-best"><span class="ic" style="background:${c.col}">${iconSvg(s.ic)}</span><span class="nm">${esc(b.skill)}<small>${LEVELS[lvOf(b.pts)][0]}</small></span><span class="val">${fmtPerf(s,b.v,0)}<small>${b.pts} pts</small></span></div>`;}).join('')}`:''}
+   <h4 class="u-sec">Posts</h4>${tiles?`<div class="ug">${tiles}</div>`:'<p class="note">No posts yet.</p>'}`;
+  wireFollow($('#uBody'),()=>openUser(uid,nm));
+  $$('#uBody .u-st button').forEach(b=>b.onclick=()=>openPeople(b.dataset.l,uid,nm,g));
+  $$('#uBody .ug-i[data-src]').forEach(t=>t.onclick=()=>{if(!t.dataset.src)return;$('#viewer img').src=t.dataset.src.replace('/upload/','/upload/q_auto,f_auto/');$('#viewer').hidden=false;});}
+ catch(e){$('#uBody').innerHTML=`<p class="note">Could not load this profile (${esc(e.code||e.message)}).</p>`;}}
+/* lists: followers / following / friends / find players */
+async function openPeople(kind,uid,name,g){$('#pplT').textContent=kind==='find'?'Find players':`${name?name+'’s ':'Your '}${kind}`;$('#pplQ').value='';$('#pplList').innerHTML='<div class="skel" style="height:56px"></div>';showSheet('sh-ppl');
+ let list=[];try{await loadMyGraph();
+  if(kind==='find'){const me=Cloud.user.uid,city=(store.get('city','')||'').toLowerCase(),mine=new Set(myInterests());
+   list=(await Cloud.people()).filter(p=>p.uid!==me).map(p=>({...p,score:((p.city||'').toLowerCase()===city?2:0)+(p.interests||[]).filter(x=>mine.has(x)).length})).sort((a,b)=>b.score-a.score||a.name.localeCompare(b.name));}
+  else{const gg=g||(uid===Cloud.user.uid?myGraph:await Cloud.graph(uid));list=gg[kind]||[];}}catch(e){$('#pplList').innerHTML=`<p class="note">Could not load (${esc(e.code||e.message)})</p>`;return;}
+ const paint=()=>{const q=$('#pplQ').value.trim().toLowerCase(),l=list.filter(p=>!q||(p.name||'').toLowerCase().includes(q)||(p.city||'').toLowerCase().includes(q));
+  $('#pplList').innerHTML=l.length?l.map(p=>`<div class="pp" data-u="${p.uid}" data-n="${esc(p.name||'')}">${avHTML(p.name,p.photo,'pp-av')}<div><b>${esc(p.name||'Player')}</b><small>${esc(p.city||'')}${followsMe(p.uid)&&p.uid!==Cloud.user.uid?' · follows you':''}</small></div>${p.uid!==Cloud.user.uid?followBtn(p.uid,p.name):''}</div>`).join(''):`<p class="note">${kind==='find'?'No players found.':kind==='friends'?'No friends yet. Friends are people you follow who follow you back.':'Nobody here yet.'}</p>`;
+  $$('#pplList .pp').forEach(r=>r.onclick=()=>openUser(r.dataset.u,r.dataset.n));wireFollow($('#pplList'),paint);};
+ $('#pplQ').oninput=paint;paint();}
+
 /* ================= BOOT ================= */
 paintIcons();
 applyTheme(theme);
@@ -2580,8 +2668,8 @@ setTimeout(()=>$('#splash').classList.add('out'),matchMedia('(prefers-reduced-mo
 setTimeout(()=>$('#splash').remove(),1700);
 setTimeout(()=>$('#orbitHint').style.opacity=0,6000);
 </script>
-<script type="module" src="avatar3d.js?v=20261123n"></script>
-<script type="module" src="cloud.js?v=20261123n"></script>
-<script src="map.js?v=20261123n" defer></script>
+<script type="module" src="avatar3d.js?v=20261123o"></script>
+<script type="module" src="cloud.js?v=20261123o"></script>
+<script src="map.js?v=20261123o" defer></script>
 </body>
 </html>

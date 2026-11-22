@@ -154,6 +154,18 @@ service cloud.firestore {
       }
     }
 
+    // ---------- follows (A follows B); friends = follow each other ----------
+    match /follows/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn() && notBanned()
+        && request.resource.data.keys().hasOnly(['from','to','fromName','toName','at'])
+        && request.resource.data.from == me() && request.resource.data.to != me()
+        && id == me() + '__' + request.resource.data.to
+        && str(request.resource.data.fromName, 40) && str(request.resource.data.toName, 40)
+        && request.resource.data.at == request.time;
+      allow delete: if signedIn() && (resource.data.from == me() || isAdmin());
+    }
+
     // ---------- best result per player per skill (Arena rankings) ----------
     match /best/{id} {
       allow read: if signedIn();

@@ -90,7 +90,24 @@ const Cloud = {
       skill: (p.skill || '').slice(0, 60), media: (p.media || []).slice(0, 4), createdAt: serverTimestamp(), likes: 0, comments: 0, flags: 0 };
     return (await addDoc(collection(db, 'posts'), data)).id;
   },
-  async people() { const s = await getDocs(query(collection(db, 'users'), limit(500))); return s.docs.map(d => ({ uid: d.id, name: d.data().name || '', city: d.data().city || '', photo: d.data().photo || '' })).filter(x => x.name); },
+  /* ---------- follows: friends = people who follow each other ---------- */
+  async follow(uid, name, on) {
+    const me = Cloud.user, ref = doc(db, 'follows', me.uid + '__' + uid);
+    return on ? setDoc(ref, { from: me.uid, to: uid, fromName: (me.name || 'Player').slice(0, 40), toName: (name || 'Player').slice(0, 40), at: serverTimestamp() }) : deleteDoc(ref);
+  },
+  async graph(uid) {
+    const [a, b] = await Promise.all([getDocs(query(collection(db, 'follows'), where('to', '==', uid), limit(1000))), getDocs(query(collection(db, 'follows'), where('from', '==', uid), limit(1000)))]);
+    const followers = a.docs.map(d => ({ uid: d.data().from, name: d.data().fromName })), following = b.docs.map(d => ({ uid: d.data().to, name: d.data().toName }));
+    const fs = new Set(following.map(x => x.uid)), friends = followers.filter(x => fs.has(x.uid));
+    return { followers, following, friends };
+  },
+  async userInfo(uid) {
+    const [u, best, posts, res] = await Promise.all([getDoc(doc(db, 'users', uid)), getDocs(query(collection(db, 'best'), where('uid', '==', uid), limit(200))),
+      getDocs(query(collection(db, 'posts'), where('uid', '==', uid), limit(40))), getDocs(query(collection(db, 'results'), where('uid', '==', uid), limit(40)))]);
+    const items = [...posts.docs.map(d => ({ id: d.id, col: 'posts', ...d.data() })), ...res.docs.map(d => ({ id: d.id, col: 'results', ...d.data() }))].map(x => ({ ...x, t: tsMs(x.createdAt) })).sort((a, b) => b.t - a.t);
+    return { profile: u.exists() ? { uid, ...u.data() } : { uid }, best: best.docs.map(d => d.data()).sort((a, b) => b.pts - a.pts), items };
+  },
+  async people() { const s = await getDocs(query(collection(db, 'users'), limit(500))); return s.docs.map(d => ({ uid: d.id, name: d.data().name || '', city: d.data().city || '', photo: d.data().photo || '', interests: d.data().interests || [] })).filter(x => x.name); },
   /* like / legit / flag: the mark and the counter change together, and the rules check they match */
   async toggle(kind, id, on, col = 'results') {
     const b = writeBatch(db), mark = doc(db, col, id, kind, Cloud.user.uid);
