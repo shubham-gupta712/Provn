@@ -444,6 +444,30 @@ svg{display:block}
 [data-theme="volt"] .mascot .m-bob{animation:pump .5s ease-in-out infinite alternate}
 @keyframes pump{from{transform:translateY(0) skewX(-3deg)}to{transform:translateY(-4px) skewX(3deg)}}
 
+/* skill info sheet */
+.sheet.si{padding-top:0;max-height:94%}
+.si-hero{position:relative;height:300px;margin:0 -18px;border-radius:22px 22px 0 0;overflow:hidden;background:radial-gradient(circle at 50% 85%,rgba(255,255,255,.35),transparent 60%),linear-gradient(160deg,var(--cv),color-mix(in srgb,var(--cv) 55%,#000))}
+[data-theme="nightfall"] .si-hero{background:radial-gradient(circle at 50% 80%,color-mix(in srgb,var(--cv) 35%,transparent),transparent 65%),#07070C;border-bottom:1px solid var(--cv)}
+[data-theme="volt"] .si-hero{border-radius:4px 4px 0 0;background:repeating-linear-gradient(-55deg,transparent 0 22px,rgba(0,0,0,.08) 22px 30px),var(--cv);border-bottom:3px solid #0D0E12}
+.si-hero::after{content:'';position:absolute;left:10%;right:10%;bottom:34px;height:2px;background:rgba(255,255,255,.35)}
+.si-hero .av3d{position:absolute;left:50%;bottom:10px;width:220px;height:280px;transform:translateX(-50%)}
+.si-ic{position:absolute;right:-30px;top:-20px;width:200px;height:200px;opacity:.16;color:#000}
+.si-ic svg{width:100%;height:100%}
+.si-h{position:absolute;top:8px;left:50%;margin:0;transform:translateX(-50%);background:#fff;opacity:.8;z-index:2}
+.si-cat{display:block;margin-top:16px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--text3)}
+.sheet.si h2{margin:2px 0 6px}
+.si-desc{margin:0 0 14px;color:var(--text2);font-size:14.5px;font-weight:600;line-height:1.45}
+.si-rec,.si-pts{padding:14px 16px;margin-bottom:14px}
+.si-rec>small,.si-pts>small{display:block;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--text3)}
+.si-rec>b{display:block;font-size:34px;line-height:1.1;margin:4px 0 8px;color:var(--accent)}
+.si-row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1.5px solid var(--bg3);font-size:13.5px}
+.si-row span{color:var(--text2);font-weight:600;flex:none}
+.si-row b{text-align:right;font-weight:800}
+.si-row.you b{color:var(--accent)}
+.si-note{font-size:12px;color:var(--text3);font-weight:600;margin:6px 0 0;line-height:1.4}
+.banner .bt{cursor:pointer}
+.banner .bi-more{font-size:11px;font-weight:800;opacity:.7;text-decoration:underline;text-underline-offset:2px}
+
 /* 3D player */
 .av3d{position:relative;width:100%;height:100%;cursor:pointer}
 .av3d .av3d-cv{position:absolute;inset:0;width:100%;height:100%;display:none}
@@ -515,7 +539,7 @@ svg{display:block}
       <label class="search" id="search"><span data-i="search"></span><input id="q" placeholder="Search a skill" aria-label="Search skills" autocomplete="off"></label>
       <p class="orbit-hint" id="orbitHint">Drag to explore · tap a skill</p>
       <div class="path" id="path">
-        <div class="banner" id="pBanner"><button class="bk press" id="pBack" aria-label="Back"><span data-i="back"></span></button><div class="bt"><small id="pCat"></small><b id="pTitle"></b></div><div class="bp"><b id="pPts"></b><small id="pLv"></small></div></div>
+        <div class="banner" id="pBanner"><button class="bk press" id="pBack" aria-label="Back"><span data-i="back"></span></button><div class="bt" id="pInfo"><small id="pCat"></small><b id="pTitle"></b><span class="bi-more">About this skill</span></div><div class="bp"><b id="pPts"></b><small id="pLv"></small></div></div>
         <div class="pbody" id="pBody"></div>
       </div>
     </section>
@@ -570,6 +594,12 @@ svg{display:block}
     <button class="btn primary" style="width:100%;margin-top:16px" id="provePost"><span>Post result</span></button>
   </section>
 
+  <section class="sheet si" id="sh-skill" aria-label="About this skill">
+    <div class="si-hero" id="siHero"></div>
+    <div class="handle si-h"></div>
+    <div id="siBody"></div>
+  </section>
+
   <section class="sheet" id="sh-player" aria-label="Choose your player">
     <div class="handle"></div>
     <h2 class="display">Your player</h2>
@@ -586,7 +616,7 @@ svg{display:block}
     <div class="row"><span data-i="you"></span><span class="sp">Account</span><small>Soon</small></div>
     <div class="row"><span data-i="bell"></span><span class="sp">Notifications</span><small>Soon</small></div>
     <div class="row"><span data-i="lock"></span><span class="sp">Privacy</span><small>Soon</small></div>
-    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Layer 2 · 20261122g</small></div>
+    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Layer 2 · 20261122h</small></div>
   </section>
 
   <div class="cele" id="cele"><div class="cele-in"><div class="cele-m" id="celeM"></div><h2 class="display" id="celeT"></h2><div class="big" id="celeB"></div><p id="celeS"></p><button class="btn primary" id="celeOk"><span>Keep going</span></button></div></div>
@@ -749,7 +779,7 @@ const SKILL_ROWS=[
 /* More events from the catalog's federation lists (WA, World Aquatics, WCA, memory sports, ISSF, World Archery, IJRU, CrossFit, Memoriad).
    Values marked ≈ in the review list are approximate until checked against each federation's record table. */
 SKILL_ROWS.push(
- ['60m','end','t','sec',6.34,10.5,'bolt'],['800m','end','t','min:sec',100.91,190,'shoe'],['1000m','end','t','min:sec',131.96,250,'shoe'],['3000m','end','t','min:sec',440.67,900,'shoe'],
+ ['60m','end','t','sec',6.34,10.5,'bolt'],['800m','end','t','min:sec',100.91,190,'shoe'],['1000m','end','t','min:sec',131.96,250,'shoe'],['3000m','end','t','min:sec',437.55,900,'shoe'],
  ['3000m steeplechase','end','t','min:sec',472.11,1050,'jump'],['110m hurdles','end','t','sec',12.80,20,'jump',{wa:[5.74352,28.5,1.92,'t']}],['400m hurdles','end','t','sec',45.94,75,'jump'],
  ['One hour run','end','n','km',21.33,10,'watch'],['20 km race walk','end','t','h:mm:ss',4596,9000,'shoe'],['100 km ultra','end','t','h:mm:ss',21941,50400,'medal'],
  ['Cycling hour','end','n','km',56.792,30,'bike'],['Rowing 500m','end','t','min:sec',74,120,'row'],
@@ -762,7 +792,7 @@ SKILL_ROWS.push(
  ['Powerlifting total','str','bw','× body weight',8.0,3.5,'barbell'],['Muscle-ups','str','n','reps',40,3,'pullup'],['Sit-ups','str','n','in 1 min',80,35,'pushup'],
  ['50m backstroke','wat','t','sec',23.55,55,'swim'],['200m backstroke','wat','t','min:sec',111.92,260,'swim'],['50m breaststroke','wat','t','sec',25.95,60,'breast'],['200m breaststroke','wat','t','min:sec',125.48,290,'breast'],
  ['50m butterfly','wat','t','sec',22.27,55,'fly'],['200m butterfly','wat','t','min:sec',110.34,280,'fly'],['200m freestyle','wat','t','min:sec',102.0,210,'swim'],['400m freestyle','wat','t','min:sec',220.07,450,'swim'],
- ['800m freestyle','wat','t','min:sec',452.12,960,'swim'],['1500m freestyle','wat','t','min:sec',871.02,1860,'swim'],['200m IM','wat','t','min:sec',114.0,270,'swim'],['400m IM','wat','t','min:sec',242.5,580,'swim'],
+ ['800m freestyle','wat','t','min:sec',452.12,960,'swim'],['1500m freestyle','wat','t','min:sec',871.02,1860,'swim'],['200m IM','wat','t','min:sec',112.69,270,'swim'],['400m IM','wat','t','min:sec',242.5,580,'swim'],
  ['Static apnea','wat','th','min:sec',695,90,'swim'],
  ['10m air pistol','prc','n','pts of 600',594,520,'bull',{x0:400}],['50m rifle 3 positions','prc','n','pts of 600',597,540,'bull',{x0:400}],['25m rapid fire pistol','prc','n','pts of 600',597,520,'bull',{x0:400}],
  ['Trap','prc','n','hits of 125',125,90,'bull',{x0:50}],['Skeet','prc','n','hits of 125',125,90,'bull',{x0:50}],
@@ -808,7 +838,7 @@ function fmtTime(sec){if(!(sec>0))return '—';const h=Math.floor(sec/3600),m=Ma
  if(m)return `${m}:${x%1&&sec<600?x.toFixed(1).padStart(4,'0'):pad(Math.floor(x))}`;
  return sec<60&&sec%1?x.toFixed(2):Math.round(x)+'';}
 function fmtPerf(s,x,bw){if(isTime(s))return fmtTime(x);if(s.ty==='bw')return bw?`${Math.round(x*bw)} kg`:`${x.toFixed(2)}× BW`;
- if(s.ty==='r')return s.ref<20?x.toFixed(2):Math.round(x)+'';if(s.name==='Bouldering')return 'V'+Math.max(0,Math.round(x));return (x<30&&x%1)?x.toFixed(1):Math.round(x)+'';}
+ if(s.ty==='r')return s.ref<20?x.toFixed(2):Math.round(x)+'';if(s.name==='Bouldering')return 'V'+Math.max(0,Math.round(x));if(/^m( |$)/.test(s.unit))return x.toFixed(2);return (x<30&&x%1)?x.toFixed(1):Math.round(x)+'';}
 function unitShort(s){if(isTime(s))return '';if(s.ty==='bw')return '';return ' '+s.unit;}
 function targetText(s,p){const bw=store.get('bw',0),x=perfFor(s,p);
  if(s.ty==='t')return `Under ${fmtTime(x)}`;if(s.ty==='th')return `Hold ${fmtTime(x)}`;if(s.ty==='tl')return `Under ${Math.round(x)} ${s.unit}`;
@@ -1028,7 +1058,7 @@ const Path=(()=>{let skill=null,popI=-1;const el=$('#path'),body=$('#pBody'),pop
   const since=res.filter(r=>lvOf(pointsOf(s,r.v))>=lv).length,after=res.length-res.findIndex(r=>lvOf(pointsOf(s,r.v))>=lv);
   const done=Math.min(LEVELS.length*4-1,lv*4+Math.min(2,after));return{lv,done,b,since};}
  function render(popNew){const s=SKILLS[skill],st=state(s),list=steps(s),c=CATS[s.cat];let h='';
-  const bw=store.get('bw',0);h+=`<div class="card pinfo">World record <b>${fmtPerf(s,s.ref,bw)}${unitShort(s)}</b> ≈ ${pointsOf(s,s.ref)} pts · typical recreational <b>${fmtPerf(s,s.med,bw)}${unitShort(s)}</b> ≈ ${pointsOf(s,s.med)} pts${st.b?` · your best <b>${fmtPerf(s,st.b.v,bw)}${unitShort(s)}</b>`:''}</div>`;
+  const bw=store.get('bw',0);h+=`<div class="card pinfo">World record <b>${fmtPerf(s,s.ref,bw)}${unitShort(s)}</b> ≈ ${pointsOf(s,s.ref)} pts · an average casual player gets about <b>${fmtPerf(s,s.med,bw)}${unitShort(s)}</b> ≈ ${pointsOf(s,s.med)} pts${st.b?` · your best <b>${fmtPerf(s,st.b.v,bw)}${unitShort(s)}</b>`:''}</div>`;
   list.forEach((n,i)=>{if(i%4===0){const l=i/4;h+=`<div class="lvl-h ${st.lv===l?'now':''}"><span></span>Level ${l+1} · ${LEVELS[l][0]} <em>${LEVELS[l][1]}+</em><span></span></div>`;}
    const x=Math.round(Math.sin(i*0.8)*70),stt=i<st.done?'done':i===st.done?'cur':'lock';
    h+=`<div class="prow" style="--x:${x}px"><button class="pn ${stt} ${popNew&&i===st.done-1?'pop-in':''}" data-n="${i}" aria-label="${esc(n.t)}"><span class="pi"><span data-i="${stt==='done'?'check':n.ic}"></span></span></button>${stt==='cur'?'<span class="ptip">YOUR TURN</span>':''}${stt==='cur'?`<div class="pmas" style="left:calc(50% ${x>=0?'- 154':'+ 58'}px)"><div class="mwrap av3d" data-mode="path">${mascot()}</div><div class="ptag">${esc(pname())}</div></div>`:''}</div>`;});
@@ -1048,8 +1078,77 @@ const Path=(()=>{let skill=null,popI=-1;const el=$('#path'),body=$('#pBody'),pop
  function setColors(s){const c=CATS[s.cat];el.style.setProperty('--cv',c.col);el.style.setProperty('--cvd',mixHex(c.col,c.ink,.4));el.style.setProperty('--cvi',c.ink);}
  function scrollToCur(){const c=body.querySelector('.pn.cur');if(!c)return;el.scrollTo({top:Math.max(0,c.parentElement.offsetTop-el.clientHeight*0.42),behavior:'smooth'});}
  $('#pBack').onclick=e=>{e.stopPropagation();Orbit.close()};
+ $('#pInfo').onclick=e=>{e.stopPropagation();buzz(8);openSkillInfo(skill)};
+ $('.banner .bp').onclick=e=>{e.stopPropagation();openSkillInfo(skill)};
  return{show(n){skill=n;setColors(SKILLS[n]);render();el.scrollTop=0;el.classList.add('on');setTimeout(scrollToCur,450);},
   hide(){hidePop();el.classList.remove('on');skill=null},skill:()=>skill,refresh(p){render(p);setTimeout(scrollToCur,300);}};})();
+
+/* ================= SKILL INFO =================
+   Record details come from the Cross-Genre Skill Records Catalog (marked C) or well-documented records (as of mid-2026).
+   Records change: each needs a check against the federation's live list before launch. Unknown fields are left out, never guessed. */
+const KEEPER={end:'World Athletics',pow:'World Athletics',wat:'World Aquatics',cub:'World Cube Association',mem:'World Memory Sports Council / IAM',prc:'ISSF / World Archery / WSSA',
+ fit:'CrossFit (community benchmark)',stg:'FIDE',key:'Memoriad',str:'IPF / IWF',rak:'DUPR / UTR / Provn',cmb:'Provn rating',bal:'Provn',flx:'Provn',rfx:'Human Benchmark style test',puz:'World Puzzle Federation'};
+const REC={
+ '100m sprint':['Usain Bolt','JAM','16 Aug 2009','World Championships','Berlin, Germany'],'200m':['Usain Bolt','JAM','20 Aug 2009','World Championships','Berlin, Germany'],
+ '400m':['Wayde van Niekerk','RSA','14 Aug 2016','Olympic Games','Rio de Janeiro, Brazil'],'800m':['David Rudisha','KEN','9 Aug 2012','Olympic Games','London, UK'],
+ '1000m':['Noah Ngeny','KEN','5 Sep 1999','Rieti Meeting','Rieti, Italy'],'1500m':['Hicham El Guerrouj','MAR','14 Jul 1998','Golden Gala','Rome, Italy'],
+ '1 mile':['Hicham El Guerrouj','MAR','7 Jul 1999','Golden Gala','Rome, Italy'],'3000m':['Jakob Ingebrigtsen','NOR','25 Aug 2024','Silesia Diamond League','Chorzów, Poland','7:17.55'],
+ '5k run':['Joshua Cheptegei','UGA','14 Aug 2020','Herculis (5000 m track)','Monaco'],'10k run':['Joshua Cheptegei','UGA','7 Oct 2020','Valencia World Record Day (10,000 m track)','Valencia, Spain'],
+ 'Half marathon':['Jacob Kiplimo','UGA','16 Feb 2025','eDreams Barcelona Half Marathon','Barcelona, Spain'],'Marathon':['Kelvin Kiptum','KEN','8 Oct 2023','Chicago Marathon','Chicago, USA'],
+ '60m':['Christian Coleman','USA','18 Feb 2018','USA Indoor Championships','Albuquerque, USA'],'110m hurdles':['Aries Merritt','USA','7 Sep 2012','Memorial Van Damme','Brussels, Belgium'],
+ '400m hurdles':['Karsten Warholm','NOR','3 Aug 2021','Olympic Games','Tokyo, Japan'],'3000m steeplechase':['Lamecha Girma','ETH','9 Jun 2023','Meeting de Paris (Diamond League)','Paris, France'],
+ 'One hour run':['Mo Farah','GBR','4 Sep 2020','Memorial Van Damme','Brussels, Belgium'],'20 km race walk':['Yusuke Suzuki','JPN','15 Mar 2015','Asian Race Walking Championships','Nomi, Japan'],
+ '100 km ultra':['Aleksandr Sorokin','LTU','24 Apr 2022','Centurion Running Track 100 Mile','Vilnius, Lithuania'],'Cycling hour':['Filippo Ganna','ITA','8 Oct 2022','UCI Hour Record attempt','Grenchen, Switzerland'],
+ 'High jump':['Javier Sotomayor','CUB','27 Jul 1993','Salamanca meeting','Salamanca, Spain'],'Long jump':['Mike Powell','USA','30 Aug 1991','World Championships','Tokyo, Japan'],
+ 'Triple jump':['Jonathan Edwards','GBR','7 Aug 1995','World Championships','Gothenburg, Sweden'],'Shot put':['Ryan Crouser','USA','27 May 2023','Los Angeles Grand Prix','Los Angeles, USA'],
+ 'Discus':['Mykolas Alekna','LTU','13 Apr 2025','Oklahoma Throws Series','Ramona, USA'],'Hammer':['Yuriy Sedykh','URS','30 Aug 1986','European Championships','Stuttgart, Germany'],
+ 'Javelin':['Jan Železný','CZE','25 May 1996','Jena meeting','Jena, Germany'],'Pole vault':['Armand Duplantis','SWE','15 Sep 2025','World Championships','Tokyo, Japan','6.30 m — he raises this often, check the live record'],
+ '50m freestyle':['César Cielo','BRA','18 Dec 2009','Brazilian Championships','São Paulo, Brazil'],'100m freestyle':['Pan Zhanle','CHN','31 Jul 2024','Olympic Games','Paris, France'],
+ '200m freestyle':['Paul Biedermann','GER','28 Jul 2009','World Championships','Rome, Italy'],'400m freestyle':['Paul Biedermann','GER','26 Jul 2009','World Championships','Rome, Italy'],
+ '800m freestyle':['Zhang Lin','CHN','29 Jul 2009','World Championships','Rome, Italy'],'1500m freestyle':['Sun Yang','CHN','4 Aug 2012','Olympic Games','London, UK'],
+ '50m backstroke':['Kliment Kolesnikov','RUS','22 Apr 2023','Russian Championships','Kazan, Russia'],'100m backstroke':['Thomas Ceccon','ITA','20 Jun 2022','World Championships','Budapest, Hungary'],
+ '200m backstroke':['Aaron Peirsol','USA','31 Jul 2009','World Championships','Rome, Italy'],'50m breaststroke':['Adam Peaty','GBR','25 Jul 2017','World Championships','Budapest, Hungary'],
+ '100m breaststroke':['Adam Peaty','GBR','21 Jul 2019','World Championships','Gwangju, South Korea'],'200m breaststroke':['Qin Haiyang','CHN','28 Jul 2023','World Championships','Fukuoka, Japan'],
+ '50m butterfly':['Andriy Govorov','UKR','1 Jul 2018','Sette Colli Trophy','Rome, Italy'],'100m butterfly':['Caeleb Dressel','USA','31 Jul 2021','Olympic Games','Tokyo, Japan'],
+ '200m butterfly':['Kristóf Milák','HUN','21 Jun 2022','World Championships','Budapest, Hungary'],'400m IM':['Léon Marchand','FRA','23 Jul 2023','World Championships','Fukuoka, Japan'],
+ 'Static apnea':['Stéphane Mifsud','FRA','8 Jun 2009','Static apnea record attempt','Hyères, France'],
+ "Rubik's cube":['Xuanyi Geng','CHN','2026','WCA competition','','2.51 s single (C)'],'2x2 cube':['','','','WCA competition','','0.39 s single (C)'],'Blindfolded cube':['','','','WCA competition','','11.56 s single (C)'],
+ 'Speed cards':['Shijir-Erdene Bat-Enkh','MGL','2018','Memory championship','','12.74 s (C)'],'Speed numbers':['','','','World Memory Sports Council event','','642 digits (C)'],'Hour numbers':['','','','World Memory Sports Council event','','4,620 digits (C)'],
+ 'Speed climbing':['Zhao Yicheng','CHN','','IFSC competition','','4.54 s (C)'],'Murph':['Alec Blenis','USA','2021','Live-streamed attempt (weighted, unpartitioned)','','32:41 (C)'],
+ 'Mental addition':['Aaryan Shukla','IND','2024','Memoriad record','','78.0 s (C)'],'10m air rifle':['Sheng Lihao','CHN','2023','ISSF competition (qualification)','','637.9 (C)'],
+ 'Barebow archery':['Oliver Hicks','','2022','World Archery event (50 m)','','673/720 (C)'],'Sport stacking 3-3-3':['','','','WSSA (G5 timer)','','1.392 s (C)'],'Sport stacking 3-6-3':['','','','WSSA (G5 timer)','','1.751 s (C)'],
+ 'Sport stacking cycle':['','','','WSSA (G5 timer)','','4.739 s (C)'],'Chess':['Magnus Carlsen','NOR','Nov 2026','FIDE rating list (current #1)','','2823 classical (C)'],
+ 'Cycling FTP':null
+};
+const DESC={'5k run':'Run 5 km as fast as you can on a road or track.','Marathon':'The classic 42.195 km road race.','100m sprint':'Flat-out sprint over 100 metres.','Deadlift':'Lift a loaded barbell from the floor to standing. Scored against your body weight.',
+ 'Push-ups':'As many full push-ups as you can in one minute.','Pull-ups':'Strict pull-ups from a dead hang, chin over the bar.','Plank':'Hold a straight forearm plank as long as you can.',"Rubik's cube":'Solve a scrambled 3×3 cube as fast as you can.',
+ 'Chess':'Your chess rating from FIDE or an online platform.','Pickleball':'Your DUPR rating, the global pickleball rating.','Tennis':'Your UTR rating.','Typing':'Typing speed in words per minute over a timed test.',
+ 'Reaction time':'How fast you react to a visual signal, in milliseconds.','Skipping':'Jump rope skips in one minute.','Sudoku':'Time to solve a standard 9×9 sudoku.','Abstract images':'Memory sports event: memorise and recall the order of abstract images in 5 minutes.',
+ 'Speed cards':'Memorise a shuffled 52-card deck as fast as possible, then recall it.','Bouldering':'The hardest boulder problem you have sent, on the V scale.','HYROX':'Fitness race: 8 × 1 km runs, each followed by a workout station.'};
+const CAT_DESC={end:'Endurance: go the distance as fast as you can.',str:'Strength: move the most weight or reps with good form.',pow:'Power: jump, throw or explode as far, high or fast as you can.',rak:'Racket sport, rated from match results.',
+ wat:'Swimming or water event, timed in a pool or open water.',cmb:'Combat sport, rated from bouts.',bal:'Ball skill, counted or measured.',flx:'Balance and flexibility, held or measured.',prc:'Precision: hit the target, score the most.',
+ fit:'CrossFit-style benchmark workout, done as prescribed (Rx).',stg:'Strategy game, rated from games played.',cub:'Speedcubing: solve a twisty puzzle as fast as you can.',puz:'Puzzle solving, timed.',mem:'Memory sports: memorise as much as you can, then recall it.',
+ rfx:'Reflex and attention test.',key:'Speed calculation or keyboard skill.'};
+function heroClip(s){const n=s.name.toLowerCase();
+ if(s.cat==='end')return /walk/.test(n)?'Mx_Walk':/cycl|row|ftp/.test(n)?'Running_A':'Mx_Run';
+ if(s.cat==='pow')return /shot|discus|javelin|hammer/.test(n)?'Throw':'Jump_Full_Long';
+ if(s.cat==='str'||s.cat==='fit')return 'PickUp';if(s.cat==='wat')return 'Spawn_Air';if(['rak','bal','prc','cmb'].includes(s.cat))return 'Throw';
+ if(s.cat==='flx')return 'Idle_B';if(s.cat==='stg')return 'Interact';return 'Use_Item';}
+function openSkillInfo(name){const s=SKILLS[name],c=CATS[s.cat],r=REC[name],b=bestOf(name),bw=store.get('bw',0),el=$('#sh-skill');
+ el.style.setProperty('--cv',c.col);el.style.setProperty('--cvi',c.ink);
+ const mark=r&&r[5]?r[5]:`${fmtPerf(s,s.ref,bw)}${unitShort(s)}`;
+ const rows=r?[['Holder',r[0]?`${r[0]}${r[1]?` (${r[1]})`:''}`:''],['When',r[2]],['Event',r[3]],['Where',r[4]],['Record keeper',KEEPER[s.cat]]].filter(x=>x[1]):[['Record keeper',KEEPER[s.cat]]];
+ $('#siHero').innerHTML=`<span class="si-ic">${iconSvg(s.ic)}</span><div class="av3d" data-mode="hero" data-clip="${heroClip(s)}">${mascot()}</div>`;
+ $('#siBody').innerHTML=`<small class="si-cat">${s.w==='mind'?'Mind':'Body'} · ${c.n}</small><h2 class="display">${esc(s.name)}</h2><p class="si-desc">${esc(DESC[name]||CAT_DESC[s.cat])}</p>
+  <div class="card si-rec"><small>${s.ty==='r'?'Top rating':'World record'}</small><b class="display">${esc(mark)}</b>${rows.map(x=>`<div class="si-row"><span>${x[0]}</span><b>${esc(x[1])}</b></div>`).join('')}
+  ${r?'':'<p class="si-note">Holder, venue and event for this record are being added.</p>'}</div>
+  <div class="card si-pts"><small>How points work</small>
+   <div class="si-row"><span>World record</span><b>${fmtPerf(s,s.ref,bw)}${unitShort(s)} ≈ ${pointsOf(s,s.ref)} pts</b></div>
+   <div class="si-row"><span>National level</span><b>${esc(targetText(s,1000).replace(/^(Under|Hold|Reach|Lift|Send) /,''))} ≈ 1000 pts</b></div>
+   <div class="si-row"><span>Average casual player</span><b>${fmtPerf(s,s.med,bw)}${unitShort(s)} ≈ ${pointsOf(s,s.med)} pts</b></div>
+   ${b?`<div class="si-row you"><span>${esc(pname())}</span><b>${fmtPerf(s,b.v,bw)}${unitShort(s)} = ${b.p} pts</b></div>`:''}</div>
+  <p class="si-note">Records are men's open records and need checking against the federation's live list before launch.</p>`;
+ showSheet('sh-skill');}
 
 /* ================= ORBIT =================
    One endless field: every skill once, Body and Mind mixed. The field wraps in every direction.

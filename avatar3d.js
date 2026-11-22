@@ -82,7 +82,7 @@ class Mount {
     this.model = SkeletonUtils.clone(g.scene); this.clips = clips;
     this.model.traverse(o => { if (o.isMesh) o.frustumCulled = false; });
     const box = new THREE.Box3().setFromObject(this.model); this.h = box.max.y - box.min.y || 2;
-    this.model.rotation.y = this.mode === 'path' ? .5 : -.35;
+    this.model.rotation.y = this.mode === 'path' ? .5 : this.mode === 'hero' ? -.6 : -.35;
     this.scene.add(this.model);
     this.hand = null; this.model.traverse(o => { if (o.name === 'handslot.r' || o.name === 'handslotr') this.hand = o; });
     const sh = new THREE.Mesh(new THREE.CircleGeometry(this.h * .26, 32), new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: .22, depthWrite: false }));
@@ -107,7 +107,8 @@ class Mount {
   }
   play(kind, instant) {
     if (!this.mixer) return; const set = SETS[this.t] || SETS.dusk; if (kind === 'idle' && this.mode === 'path') kind = 'walk';
-    const clip = this.clips[set[kind]] || this.clips[set.idle] || this.clips.Idle_A; if (!clip) return;
+    const heroClip = this.mode === 'hero' && (kind === 'idle' || kind === 'walk') ? this.clips[this.el.dataset.clip] : null; if (heroClip) kind = 'walk';
+    const clip = heroClip || this.clips[set[kind]] || this.clips[set.idle] || this.clips.Idle_A; if (!clip) return;
     const a = this.mixer.clipAction(clip); if (a === this.cur && (kind === 'idle' || kind === 'walk')) return;
     a.reset(); const loop = kind === 'idle' || kind === 'walk'; a.setLoop(loop ? THREE.LoopRepeat : THREE.LoopOnce, loop ? Infinity : 1); a.clampWhenFinished = false;
     if (this.cur && !instant) { a.crossFadeFrom(this.cur, .25, false); } a.play(); this.cur = a;
