@@ -468,6 +468,72 @@ svg{display:block}
 .banner .bt{cursor:pointer}
 .banner .bi-more{font-size:11px;font-weight:800;opacity:.7;text-decoration:underline;text-underline-offset:2px}
 
+/* sign-in gate */
+.gate{position:absolute;inset:0;z-index:90;background:var(--bg);display:flex;flex-direction:column;padding:calc(var(--safe-t) + 40px) 24px calc(var(--safe-b) + 26px);transition:opacity .35s ease,transform .35s ease}
+.gate[hidden]{display:none}
+.gate.out{opacity:0;transform:scale(1.04);pointer-events:none}
+.gate-wm{font-size:54px}
+.gate-tag{margin-top:6px;color:var(--text2);font-size:18px;font-weight:700}
+.gate-av{flex:1;min-height:180px;display:grid;place-items:center}
+.gate-av .av3d{width:min(78vw,320px);height:100%;max-height:360px}
+.gate-pts{display:flex;justify-content:space-between;margin-bottom:18px}
+.gate-pts span{display:flex;flex-direction:column;align-items:center;flex:1;color:var(--text3);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.gate-pts b{font-family:var(--f-display);font-size:26px;color:var(--text);letter-spacing:0;text-transform:none}
+.gate-btn{width:100%;height:58px;font-size:18px;gap:12px}
+.gate-btn[disabled]{opacity:.7}
+.g-ic{width:30px;height:30px;border-radius:50%;background:#fff;display:grid;place-items:center;flex:none}
+.g-ic svg{width:18px;height:18px}
+.gate-fine{margin-top:12px;text-align:center;color:var(--text3);font-size:12px;font-weight:600}
+/* onboarding */
+.onb{position:absolute;inset:0;z-index:91;background:var(--bg);display:flex;flex-direction:column;padding:calc(var(--safe-t) + 14px) 20px calc(var(--safe-b) + 20px)}
+.onb[hidden]{display:none}
+.onb-h{display:flex;align-items:center;gap:12px;height:44px}
+.onb-back{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--bg2);border:var(--card-bd)}
+.onb-back svg{width:20px;height:20px}.onb-back.hid{visibility:hidden}
+.onb-bar{flex:1;height:10px;border-radius:9px;background:var(--bg3);overflow:hidden}
+.onb-bar i{display:block;height:100%;width:0;background:var(--accent);border-radius:9px;transition:width .35s ease}
+.onb-n{font-size:13px;font-weight:800;color:var(--text3);min-width:34px;text-align:right}
+.onb-body{flex:1;overflow-y:auto;padding-top:26px;animation:fadeUp .35s ease both}
+.onb-body h2{font-size:32px;line-height:1.08}
+.onb-body .sub{margin-top:8px;color:var(--text2);font-size:15px;font-weight:600;line-height:1.45}
+.onb-in{margin-top:24px;width:100%;height:62px;padding:0 18px;border-radius:var(--r-btn);background:var(--bg2);border:var(--card-bd);font-size:24px;font-weight:800;outline:0;color:var(--text)}
+.onb-in:focus{border-color:var(--accent)}
+.onb-unit{position:relative}.onb-unit em{position:absolute;right:18px;top:50%;margin-top:12px;transform:translateY(-50%);font-style:normal;font-weight:800;color:var(--text3);font-size:18px}
+.onb-opts{display:grid;gap:12px;margin-top:24px}
+.onb-opt{display:flex;align-items:center;gap:14px;padding:18px;border-radius:var(--r-card);background:var(--bg2);border:var(--card-bd);text-align:left;font-size:19px;font-weight:800}
+.onb-opt small{display:block;font-size:13px;font-weight:600;color:var(--text2);margin-top:2px}
+.onb-opt.on{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent) inset}
+.onb-opt .oi{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--bg3);font-size:22px;flex:none}
+.onb-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.onb-chips button{padding:9px 14px;border-radius:20px;background:var(--bg2);border:var(--card-bd);font-size:14px;font-weight:700}
+.onb-chips button.on{background:var(--accent);color:var(--on-accent)}
+.onb-stage{height:230px;margin-top:10px}.onb-stage .av3d{height:100%}
+.onb .pgrid{margin-top:8px}
+.onb-f{display:flex;gap:10px;padding-top:12px}
+.onb-f .btn{flex:1;height:56px;font-size:17px}
+.onb-f .ghost-btn{flex:0 0 auto;padding:0 20px;background:transparent;color:var(--text2);box-shadow:none;border:0}
+.onb-f .btn[disabled]{opacity:.45}
+.onb-done{text-align:center;padding-top:20px}
+.onb-done .onb-stage{height:300px}
+/* search suggestions */
+.search .qwrap{position:relative;flex:1;min-width:0;display:flex;align-items:center;height:100%}
+.search .qwrap input{width:100%;position:relative;z-index:1}
+.search .ghost{position:absolute;left:0;top:50%;transform:translateY(-50%);font-size:15px;font-weight:600;white-space:pre;color:var(--text3);pointer-events:none;overflow:hidden;max-width:100%}
+.search .ghost i{font-style:normal;color:transparent}
+.qx{width:26px;height:26px;border-radius:50%;background:var(--bg3);color:var(--text2);font-size:18px;line-height:1;font-weight:800;flex:none}
+.sugg{position:absolute;z-index:6;left:16px;right:16px;top:calc(var(--safe-t) + 118px);max-height:min(56vh,420px);overflow-y:auto;border-radius:var(--r-card);background:var(--bg2);border:var(--card-bd);box-shadow:0 14px 34px rgba(0,0,0,.28);padding:6px;animation:fadeUp .18s ease both}
+.sugg[hidden]{display:none}
+.sugg .sh{padding:8px 10px 4px;font-size:11.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--text3)}
+.sugg button{display:flex;align-items:center;gap:12px;width:100%;padding:9px 10px;border-radius:12px;text-align:left}
+.sugg button.act,.sugg button:active{background:var(--bg3)}
+.sugg .si{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;flex:none;color:#1a1a1a;border:2px solid var(--ink)}
+.sugg .si svg{width:19px;height:19px}
+.sugg .nm{flex:1;min-width:0;font-size:15.5px;font-weight:700;color:var(--text2)}
+.sugg .nm b{color:var(--text);font-weight:800}
+.sugg .nm small{display:block;font-size:12px;font-weight:600;color:var(--text3);margin-top:1px}
+.sugg .pt{font-size:12.5px;font-weight:800;color:var(--accent)}
+.sugg .none{padding:16px 12px;color:var(--text3);font-size:14px;font-weight:600}
+
 /* cloud */
 .acct{padding:14px;margin-top:14px}
 .acct-out b{display:block;font-size:20px;margin-bottom:4px}
@@ -574,7 +640,8 @@ svg{display:block}
     <section class="screen" id="s-orbit" data-tab="orbit">
       <canvas id="orbitCv" aria-label="Skills field"></canvas>
       <div class="orbit-fade"></div>
-      <label class="search" id="search"><span data-i="search"></span><input id="q" placeholder="Search a skill" aria-label="Search skills" autocomplete="off"></label>
+      <label class="search" id="search"><span data-i="search"></span><span class="qwrap"><span class="ghost" id="qGhost" aria-hidden="true"></span><input id="q" placeholder="Search a skill" aria-label="Search skills" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="go"></span><button class="qx" id="qX" aria-label="Clear" hidden>×</button></label>
+      <div class="sugg" id="qSugg" role="listbox" hidden></div>
       <p class="orbit-hint" id="orbitHint">Drag to explore · pinch to zoom · tap a skill</p>
       <div class="path" id="path">
         <div class="banner" id="pBanner"><button class="bk press" id="pBack" aria-label="Back"><span data-i="back"></span></button><div class="bt" id="pInfo"><small id="pCat"></small><b id="pTitle"></b><span class="bi-more">About this skill</span></div><div class="bp"><b id="pPts"></b><small id="pLv"></small></div></div>
@@ -602,7 +669,6 @@ svg{display:block}
 
     <section class="screen" id="s-you" data-tab="you">
       <div class="prof"><div class="pm" id="youM"></div><div class="pn2"><input class="nameIn" id="nameIn" maxlength="18" aria-label="Your player name"><p id="youSub"></p><button class="btn ghost chg" id="chgPlayer"><span>Change player</span></button></div></div>
-      <div class="card acct" id="acct"></div>
       <div class="card pdet"><small>Your details · for fair scoring</small><div class="pfields" data-pf></div></div>
       <div class="wgrid" id="wgrid"></div>
       <div class="sec-h"><h3 class="display">Your skills</h3><a id="addSkill">Add skill</a></div>
@@ -662,16 +728,32 @@ svg{display:block}
     <h2 class="display">Settings</h2>
     <p class="lead">Unlock new looks by scoring in each world.</p>
     <div class="themes" id="themes"></div>
-    <div class="row" id="acctRow" style="cursor:pointer"><span data-i="you"></span><span class="sp">Account</span><small id="acctTxt">Sign in</small></div>
+    <div class="row" id="acctRow" style="cursor:pointer"><span data-i="you"></span><span class="sp">Account</span><small id="acctTxt">Sign out</small></div>
     <div class="row"><span data-i="bell"></span><span class="sp">Notifications</span><small>Soon</small></div>
     <div class="row"><span data-i="lock"></span><span class="sp">Privacy</span><small>Soon</small></div>
-    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261122a</small></div>
+    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261122b</small></div>
   </section>
 
   <div class="cele" id="cele"><div class="cele-in"><div class="cele-m" id="celeM"></div><h2 class="display" id="celeT"></h2><div class="big" id="celeB"></div><p id="celeS"></p><button class="btn primary" id="celeOk"><span>Keep going</span></button></div></div>
   <div class="confetti" id="confetti"></div>
   <button class="pv" id="pv"><span data-i="eye"></span><span id="pvTxt"></span></button>
   <div class="toast" id="toast"></div>
+  <div class="gate" id="gate">
+    <div class="gate-top"><div class="wordmark gate-wm">provn<i></i></div><p class="gate-tag">Your skills, in numbers.</p></div>
+    <div class="gate-av"><div class="av3d" data-mode="you" id="gateAv"></div></div>
+    <div class="gate-bot">
+      <div class="gate-pts"><span><b>173</b>skills</span><span><b>1200</b>world record</span><span><b>2</b>worlds</span></div>
+      <button class="btn primary gate-btn" id="gIn" disabled><span class="g-ic"><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5a5.6 5.6 0 0 1-2.4 3.6v3h3.9c2.3-2.1 3.5-5.2 3.5-8.8z"/><path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-2.9l-3.9-3c-1.1.7-2.5 1.2-4.1 1.2-3.1 0-5.8-2.1-6.7-5H1.3v3.1A12 12 0 0 0 12 24z"/><path fill="#FBBC05" d="M5.3 14.3a7.2 7.2 0 0 1 0-4.6V6.6h-4a12 12 0 0 0 0 10.8l4-3.1z"/><path fill="#EA4335" d="M12 4.8c1.8 0 3.3.6 4.6 1.8l3.4-3.4A12 12 0 0 0 1.3 6.6l4 3.1c.9-2.9 3.6-4.9 6.7-4.9z"/></svg></span><span id="gInTxt">Connecting…</span></button>
+      <p class="gate-fine">By continuing you agree to play fair and post only your own results.</p>
+    </div>
+  </div>
+
+  <div class="onb" id="onb" hidden>
+    <div class="onb-h"><button class="onb-back press" id="onbBack" aria-label="Back"><span data-i="back"></span></button><div class="onb-bar"><i id="onbBar"></i></div><span class="onb-n" id="onbN"></span></div>
+    <div class="onb-body" id="onbBody"></div>
+    <div class="onb-f"><button class="btn ghost-btn" id="onbSkip" hidden><span>Skip</span></button><button class="btn primary" id="onbNext"><span>Continue</span></button></div>
+  </div>
+
   <div class="splash" id="splash"><div class="orb"></div><div class="wm wordmark">provn<i></i></div></div>
 </div>
 
@@ -1463,7 +1545,7 @@ const Orbit=(()=>{const cv=$('#orbitCv'),g=cv.getContext('2d'),q=$('#q');
   drag=null;pressed=null;};
  cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',e=>{ptrs.delete(e.pointerId);pinch=null;drag=null;pressed=null});
  cv.addEventListener('wheel',e=>{e.preventDefault();const[x,y]=local(e);setZoom(zoomT*Math.exp(-e.deltaY*.0015),x,y);},{passive:false});
- function open(it){buzz(12);sel={...it};state='open';t0=performance.now();tgt=null;vx=vy=0;$('#search').classList.add('hide');$('#orbitHint').style.opacity=0;
+ function open(it){buzz(12);$('#qSugg').hidden=true;sel={...it};state='open';t0=performance.now();tgt=null;vx=vy=0;$('#search').classList.add('hide');$('#orbitHint').style.opacity=0;
   if(!run)loop(true);setTimeout(()=>Path.show(it.n.s.name),170);history.pushState({skill:1},'');}
  function close(fromPop){if(state==='field')return;Path.hide();$('#search').classList.remove('hide');
   if(sel){state='back';t0=performance.now();}else state='field';loop(cur==='orbit');
@@ -1473,8 +1555,38 @@ const Orbit=(()=>{const cv=$('#orbitCv'),g=cv.getContext('2d'),q=$('#q');
   nodes.forEach(n=>{n.hit=!qs||n.s.name.toLowerCase().includes(qs)||CATS[n.s.cat].n.toLowerCase().includes(qs);
    if(n.hit&&qs){const d=Math.hypot(wrap(n.x+camX,WW),wrap(n.y+camY,WH));if(!best||d<best.d)best={n,d};}});
   if(best)tgt=centreOn(best.n);if(!run)loop(cur==='orbit');}
- q.addEventListener('input',filter);
- q.addEventListener('keydown',e=>{if(e.key==='Enter'&&q.value.trim()){q.blur();setTimeout(()=>{const h=inst.filter(i=>i.n.hit).sort((a,b)=>Math.hypot(a.sx-CXf(),a.sy-CYf())-Math.hypot(b.sx-CXf(),b.sy-CYf()))[0];if(h)open(h);},450);}});
+ /* ---- suggestions + autocomplete ---- */
+ const sg=$('#qSugg'),gh=$('#qGhost'),qx=$('#qX');let sugg=[],act=-1;
+ const ALIAS={'pushup':'Push-ups','push up':'Push-ups','pullup':'Pull-ups','pull up':'Pull-ups','rubik':"Rubik's cube",'cube':"Rubik's cube",'5k':'5k run','10k':'10k run','run':'5k run','swim':'50m freestyle','bench':'Bench press','squat':'Back squat','typing speed':'Typing','wpm':'Typing'};
+ function rank(qs){const out=[];if(!qs)return out;
+  SKILL_LIST.forEach(s=>{const n=s.name.toLowerCase(),c=CATS[s.cat].n.toLowerCase();let sc=0;
+   if(n===qs)sc=100;else if(n.startsWith(qs))sc=80-n.length*.1;else if(n.split(/[\s\-\/]+/).some(w=>w.startsWith(qs)))sc=60-n.length*.1;else if(n.includes(qs))sc=45;
+   else if(c.startsWith(qs)||c.includes(qs))sc=30;
+   else{let i=0;for(const ch of n)if(ch===qs[i])i++;if(i===qs.length&&qs.length>2)sc=12;}
+   if(sc&&bestOf(s.name))sc+=3;if(sc)out.push({s,sc});});
+  Object.entries(ALIAS).forEach(([a,nm])=>{if(a.startsWith(qs)&&SKILLS[nm]&&!out.some(o=>o.s.name===nm))out.push({s:SKILLS[nm],sc:50});});
+  return out.sort((a,b)=>b.sc-a.sc).slice(0,7).map(o=>o.s);}
+ const hl=(name,qs)=>{const i=name.toLowerCase().indexOf(qs);return i<0||!qs?esc(name):esc(name.slice(0,i))+'<b>'+esc(name.slice(i,i+qs.length))+'</b>'+esc(name.slice(i+qs.length));};
+ const row=(s,qs,k)=>{const c=CATS[s.cat],b=bestOf(s.name);return `<button role="option" data-n="${esc(s.name)}" class="${k===act?'act':''}"><span class="si" style="background:${c.col}">${iconSvg(s.ic)}</span><span class="nm">${hl(s.name,qs)}<small>${esc(c.n)} · ${s.w==='mind'?'Mind':'Body'}</small></span>${b?`<span class="pt">${b.p} pts</span>`:''}</button>`;};
+ function paintSugg(){const raw=q.value,qs=raw.trim().toLowerCase();qx.hidden=!raw;
+  if(document.activeElement!==q){sg.hidden=true;gh.innerHTML='';return;}
+  let html='';
+  if(!qs){const mine=mySkills().slice(0,3).map(x=>x.s),pop=SKILL_LIST.filter(s=>s.size&&!mine.includes(s)).sort((a,b)=>b.size-a.size).slice(0,6-mine.length);
+   sugg=[...mine,...pop];html=(mine.length?`<div class="sh">Your skills</div>`+mine.map((s,k)=>row(s,'',k)).join(''):'')+`<div class="sh">Popular</div>`+pop.map((s,k)=>row(s,'',k+mine.length)).join('');}
+  else{sugg=rank(qs);html=sugg.length?sugg.map((s,k)=>row(s,qs,k)).join(''):`<div class="none">No skill matches “${esc(raw.trim())}”. Try a sport, game or category.</div>`;}
+  sg.innerHTML=html;sg.hidden=false;
+  const top=sugg[0];gh.innerHTML=top&&qs&&top.name.toLowerCase().startsWith(raw.toLowerCase())&&raw.length?`<i>${esc(raw)}</i>${esc(top.name.slice(raw.length))}`:'';
+  $$('#qSugg button').forEach(b=>{b.onpointerdown=e=>e.preventDefault();b.onclick=()=>pick(b.dataset.n);});}
+ function pick(name){buzz(10);q.value=name;act=-1;filter();q.blur();sg.hidden=true;gh.innerHTML='';qx.hidden=false;setTimeout(()=>openSkill(name),120);}
+ q.addEventListener('input',()=>{act=-1;filter();paintSugg();});
+ q.addEventListener('focus',()=>{paintSugg();});
+ q.addEventListener('blur',()=>setTimeout(()=>{if(document.activeElement!==q){sg.hidden=true;gh.innerHTML='';}},120));
+ q.addEventListener('keydown',e=>{
+  if((e.key==='Tab'||e.key==='ArrowRight')&&gh.textContent&&q.selectionStart===q.value.length){e.preventDefault();q.value=sugg[0].name;filter();paintSugg();}
+  else if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();act=Math.max(-1,Math.min(sugg.length-1,act+(e.key==='ArrowDown'?1:-1)));paintSugg();}
+  else if(e.key==='Enter'){e.preventDefault();const s=sugg[act>=0?act:0];if(s)pick(s.name);}
+  else if(e.key==='Escape'){q.blur();}});
+ qx.onclick=e=>{e.preventDefault();q.value='';filter();q.focus();paintSugg();};
  document.addEventListener('visibilitychange',()=>loop(cur==='orbit'));
  function openSkill(name){const n=nodes.find(x=>x.s.name===name);if(!n||state!=='field')return;if(!W)resize();const c=centreOn(n);camX=c.x;camY=c.y;
   const CX=CXf(),CY=CYf();open({n,sx:CX,sy:CY,wx:0,wy:0,sc:1.08,rr:n.r*zoom*1.08});}
@@ -1487,29 +1599,93 @@ function cloudProfile(){const pr=profile();return{name:store.get('name','')||'',
 let pushT;function pushProfile(){if(!CU())return;clearTimeout(pushT);pushT=setTimeout(()=>CU().saveProfile(cloudProfile()).catch(e=>console.warn('profile',e)),800);}
 const Sync={busy:false,
  async start(u){if(this.busy)return;this.busy=true;
-  try{const p=await Cloud.loadProfile();
-   if(p){if(p.name)store.set('name',p.name);['sex','city'].forEach(k=>{if(typeof p[k]==='string')store.set(k,p[k])});if(p.age)store.set('age',p.age);if(p.bw)store.set('bw',p.bw);
+  try{let p=await Cloud.loadProfile();
+   const need=!p||!p.name||!p.sex||!p.age;
+   if(need){Gate.hide();p=await Onb.run({...(p||{}),name:(p&&p.name)||store.get('name','')||(u.name||'').split(' ')[0]});
+    await Cloud.saveProfile({...cloudProfile(),photo:u.photo||''});}
+   else{store.set('name',p.name);['sex','city'].forEach(k=>{if(typeof p[k]==='string')store.set(k,p[k])});store.set('age',p.age);if(p.bw)store.set('bw',p.bw);
     if(p.char&&window.Avatar3D&&p.char!==Avatar3D.getChar())Avatar3D.setChar(p.char);}
-   else{if(!store.get('name',''))store.set('name',(u.name||'').split(' ')[0]);await Cloud.saveProfile({...cloudProfile(),photo:u.photo});}
-   /* upload results logged on this phone before signing in (seed samples are never uploaded) */
+   /* upload results logged on this phone before accounts existed */
    if(!store.get('acct',false)){for(const s of SKILL_LIST){const list=store.get('res_'+s.name,null);if(!list)continue;
      for(const r of list){if(r.cloud)continue;try{r.cloud=await Cloud.saveResult({skill:s.name,v:r.v,pts:pointsOf(s,r.v),name:store.get('name',''),city:store.get('city',''),sex:profile().sex,age:profile().age});}catch(e){console.warn(e)}}
      store.set('res_'+s.name,list);}}
    store.set('acct',true);
    const mine=await Cloud.myResults(),by={};mine.forEach(r=>{(by[r.skill]=by[r.skill]||[]).push({v:r.v,t:r.t,cloud:r.id,video:r.video||''})});
    SKILL_LIST.forEach(s=>{if(by[s.name])store.set('res_'+s.name,by[s.name]);else if(store.get('res_'+s.name,null))store.set('res_'+s.name,[]);});
-   toast(`Signed in as ${store.get('name','')||u.name}`);}
+   if(!need)toast(`Welcome back, ${store.get('name','')}`);}
   catch(e){console.warn('sync',e);toast('Could not sync: '+(e.code||e.message));}
-  this.busy=false;You.render();Pulse.refresh(true);if(segI===1)renderRanks();renderAcct();}};
-function renderAcct(){const u=CU()&&Cloud.user,el=$('#acct');
- if(el)el.innerHTML=u?`<div class="acct-in">${u.photo?`<img src="${esc(u.photo)}" alt="" referrerpolicy="no-referrer">`:''}<div><b>${esc(u.email||u.name)}</b><small>Results and videos are saved to your account</small></div></div>`:
-  window.Cloud?`<div class="acct-out"><b class="display">Save your progress</b><small>Sign in to keep your results, post proof videos and appear in rankings.</small><button class="btn primary" id="gIn"><span>Sign in with Google</span></button></div>`:
-  `<div class="acct-out"><small>Online features are loading… results are kept on this phone for now.</small></div>`;
- const g=$('#gIn');if(g)g.onclick=async()=>{buzz(10);try{await Cloud.signIn();}catch(e){toast(e.code==='auth/unauthorized-domain'?'Add this site to Firebase authorized domains':'Sign-in failed: '+(e.code||e.message));}};
- const ar=$('#acctTxt');if(ar)ar.textContent=u?'Sign out':window.Cloud?'Sign in':'Offline';}
-$('#acctRow').onclick=async()=>{if(CU()){await Cloud.signOut();store.set('acct',false);toast('Signed out');}else if(window.Cloud){hideSheet();try{await Cloud.signIn();}catch(e){toast('Sign-in failed: '+(e.code||e.message));}}};
-addEventListener('cloud-ready',renderAcct);
-addEventListener('cloud-auth',e=>{renderAcct();if(e.detail)Sync.start(e.detail);else{Pulse.refresh(true);}});
+  this.busy=false;Gate.hide();renderPF();You.render();Pulse.refresh(true);if(segI===1)renderRanks();renderAcct();}};
+
+/* ---- sign-in gate: the only screen until you're signed in ---- */
+const Gate={el:$('#gate'),
+ show(){this.el.hidden=false;this.el.classList.remove('out');},
+ hide(){this.el.classList.add('out');setTimeout(()=>{if(this.el.classList.contains('out'))this.el.hidden=true;},400);},
+ ready(){const b=$('#gIn');b.disabled=false;$('#gInTxt').textContent='Sign in with Google';},
+ busy(t){$('#gIn').disabled=true;$('#gInTxt').textContent=t;}};
+if(store.get('acct',false))Gate.el.hidden=true,Gate.el.classList.add('out');
+$('#gIn').onclick=async()=>{if(!window.Cloud){location.reload();return;}buzz(10);Gate.busy('Opening Google…');
+ try{await Cloud.signIn();if(!Cloud.user)Gate.ready();else Gate.busy('Signing in…');}
+ catch(e){Gate.ready();toast(e.code==='auth/unauthorized-domain'?'This site is not in Firebase authorized domains yet':e.code==='auth/popup-closed-by-user'?'Sign-in cancelled':'Sign-in failed: '+(e.code||e.message));}};
+setTimeout(()=>{if(!window.Cloud){const b=$('#gIn');b.disabled=false;$('#gInTxt').textContent="Can't connect · tap to retry";}},12000);
+
+/* ---- first-time player setup ---- */
+const CITIES=['Mumbai','Delhi','Bengaluru','Pune','Hyderabad','Chennai','Kolkata','Ahmedabad','Jaipur','Lucknow'];
+const Onb={i:0,d:{},done:null,
+ steps:[
+  {k:'name',t:"What should we call you?",sub:'This is your player name. Others see it in the feed and rankings.',
+   body:d=>`<input class="onb-in" id="oIn" maxlength="24" autocomplete="given-name" value="${esc(d.name||'')}" placeholder="Your name">`,
+   ok:d=>(d.name||'').trim().length>0,read(d){d.name=$('#oIn').value.trim();}},
+  {k:'sex',t:'Which records should score you?',sub:"Women's results are scored against women's world records, so 1000 points means the same for everyone.",
+   body:d=>`<div class="onb-opts">${[['m','Men’s records','♂'],['f','Women’s records','♀']].map(([v,l,ic])=>`<button class="onb-opt press ${d.sex===v?'on':''}" data-v="${v}"><span class="oi">${ic}</span><span>${l}</span></button>`).join('')}</div>`,
+   ok:d=>d.sex==='m'||d.sex==='f',pick:'sex'},
+  {k:'age',t:'How old are you?',sub:'Body skills are age graded, so a 50-year-old and a 25-year-old are scored fairly against each other.',
+   body:d=>`<div class="onb-unit"><input class="onb-in" id="oIn" inputmode="numeric" maxlength="3" value="${d.age||''}" placeholder="Age"><em>years</em></div>`,
+   ok:d=>d.age>=8&&d.age<=100,read(d){d.age=parseInt($('#oIn').value)||0;}},
+  {k:'bw',t:'What do you weigh?',sub:'Strength skills like deadlift and squat are scored relative to body weight. You can change this anytime.',skip:true,
+   body:d=>`<div class="onb-unit"><input class="onb-in" id="oIn" inputmode="decimal" maxlength="5" value="${d.bw||''}" placeholder="Weight"><em>kg</em></div>`,
+   ok:d=>!d.bw||(d.bw>=25&&d.bw<=300),read(d){d.bw=parseFloat($('#oIn').value)||0;}},
+  {k:'city',t:'Where do you play?',sub:'For local rankings and events near you.',skip:true,
+   body:d=>`<input class="onb-in" id="oIn" maxlength="30" value="${esc(d.city||'')}" placeholder="City"><div class="onb-chips">${CITIES.map(c=>`<button class="press ${d.city===c?'on':''}" data-c="${c}">${c}</button>`).join('')}</div>`,
+   ok:()=>true,read(d){d.city=$('#oIn').value.trim();}},
+  {k:'char',t:'Pick your player',sub:'Your player cheers you on across the app. Each look has its own moves.',
+   body:d=>`<div class="onb-stage"><div class="av3d" data-mode="you"></div></div><div class="pgrid" id="oGrid"></div>`,
+   ok:()=>true},
+  {k:'done',t:'',body:d=>`<div class="onb-done"><div class="onb-stage"><div class="av3d" data-mode="cele"></div></div><h2 class="display">You're in, ${esc(d.name)}!</h2><p class="sub">Log your first result and your path starts. Every skill is scored out of 1200, where 1200 is the world record.</p></div>`,ok:()=>true}],
+ run(pre){this.d={name:pre.name||'',sex:pre.sex||store.get('sex','')||'',age:pre.age||store.get('age',0)||0,bw:pre.bw||store.get('bw',0)||0,city:pre.city||store.get('city','')||''};
+  this.i=0;$('#onb').hidden=false;this.paint();return new Promise(r=>this.done=r);},
+ paint(){const st=this.steps[this.i],d=this.d,n=this.steps.length-1;
+  $('#onbBar').style.width=Math.round(this.i/n*100)+'%';$('#onbN').textContent=this.i<n?`${this.i+1}/${n}`:'';
+  $('#onbBack').classList.toggle('hid',this.i===0||this.i===n);
+  $('#onbBody').innerHTML=(st.t?`<h2 class="display">${st.t}</h2><p class="sub">${st.sub}</p>`:'')+st.body(d);
+  $('#onbBody').style.animation='none';$('#onbBody').offsetWidth;$('#onbBody').style.animation='';
+  $('#onbSkip').hidden=!st.skip;$('#onbNext').firstChild.textContent=this.i===n?"Let's go":'Continue';
+  const inp=$('#oIn');if(inp){inp.oninput=()=>{st.read(d);this.valid();};inp.onkeydown=e=>{if(e.key==='Enter')$('#onbNext').click();};setTimeout(()=>inp.focus(),250);}
+  if(st.pick)$$('#onbBody .onb-opt').forEach(b=>b.onclick=()=>{buzz(10);d[st.pick]=b.dataset.v;$$('#onbBody .onb-opt').forEach(x=>x.classList.toggle('on',x===b));this.valid();setTimeout(()=>this.next(),260);});
+  $$('#onbBody .onb-chips button').forEach(b=>b.onclick=()=>{buzz(8);$('#oIn').value=b.dataset.c;d.city=b.dataset.c;$$('#onbBody .onb-chips button').forEach(x=>x.classList.toggle('on',x===b));});
+  if(st.k==='char')this.grid();
+  if(st.k==='done')buzz([10,40,10]);
+  paintIcons($('#onb'));this.valid();},
+ grid(){const A=window.Avatar3D,g=$('#oGrid');if(!A){g.innerHTML='<p class="note">Players are loading…</p>';setTimeout(()=>{if(this.steps[this.i].k==='char')this.grid();},800);return;}
+  const cur=A.getChar(),t=document.documentElement.dataset.theme;
+  g.innerHTML=Object.entries(A.CHARS).map(([k,n])=>`<button class="pcard press ${k===cur?'on':''}" data-c="${k}"><span class="pth">${thumbCache[t+k]?`<img src="${thumbCache[t+k]}" alt="">`:'<span class="skel"></span>'}</span>${n}</button>`).join('');
+  $$('#oGrid .pcard').forEach(b=>b.onclick=()=>{buzz(10);A.setChar(b.dataset.c);$$('#oGrid .pcard').forEach(x=>x.classList.toggle('on',x===b));});
+  (async()=>{for(const k of Object.keys(A.CHARS)){if(!thumbCache[t+k]){try{thumbCache[t+k]=await A.thumb(k)}catch(e){continue}}const b=$(`#oGrid .pcard[data-c="${k}"] .pth`);if(b)b.innerHTML=`<img src="${thumbCache[t+k]}" alt="">`;}})();},
+ valid(){$('#onbNext').disabled=!this.steps[this.i].ok(this.d);},
+ next(){const st=this.steps[this.i];if(st.read&&$('#oIn'))st.read(this.d);if(!st.ok(this.d))return;
+  if(this.i===this.steps.length-1){this.finish();return;}this.i++;this.paint();},
+ finish(){const d=this.d;store.set('name',d.name);store.set('sex',d.sex);store.set('age',d.age);if(d.bw)store.set('bw',d.bw);store.set('city',d.city||'');
+  $('#onb').hidden=true;$('#onbBody').innerHTML='';const r=this.done;this.done=null;r&&r(d);}};
+$('#onbNext').onclick=()=>{buzz(8);Onb.next();};
+$('#onbSkip').onclick=()=>{const st=Onb.steps[Onb.i];Onb.d[st.k]=st.k==='bw'?0:'';Onb.i++;Onb.paint();};
+$('#onbBack').onclick=()=>{if(Onb.i>0){Onb.i--;Onb.paint();}};
+
+function renderAcct(){const u=CU()&&Cloud.user,ar=$('#acctTxt');if(ar)ar.textContent=u?'Sign out':'Signed out';}
+function clearLocal(){Object.keys(localStorage).filter(k=>k.startsWith('provn_res_')).forEach(k=>localStorage.removeItem(k));['name','sex','age','bw','city','acct'].forEach(k=>localStorage.removeItem('provn_'+k));}
+$('#acctRow').onclick=async()=>{if(!CU())return;hideSheet();await Cloud.signOut();};
+addEventListener('cloud-ready',()=>{Gate.ready();renderAcct();});
+addEventListener('cloud-auth',e=>{renderAcct();
+ if(e.detail){Gate.busy('Signing in…');Sync.start(e.detail);}
+ else{clearLocal();renderPF();You.render();Gate.ready();Gate.show();}});
 /* hook profile changes */
 $('#nameIn').addEventListener('input',pushProfile);
 const _onProfile=onProfile;onProfile=function(){_onProfile();pushProfile();};
