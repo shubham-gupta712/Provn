@@ -468,6 +468,31 @@ svg{display:block}
 .banner .bt{cursor:pointer}
 .banner .bi-more{font-size:11px;font-weight:800;opacity:.7;text-decoration:underline;text-underline-offset:2px}
 
+/* cloud */
+.acct{padding:14px;margin-top:14px}
+.acct-out b{display:block;font-size:20px;margin-bottom:4px}
+.acct-out small,.acct-in small{display:block;color:var(--text2);font-size:13px;font-weight:600;line-height:1.4}
+.acct-out .btn{width:100%;margin-top:12px}
+.acct-in{display:flex;align-items:center;gap:12px}
+.acct-in img{width:40px;height:40px;border-radius:50%;border:2px solid var(--ink)}
+.acct-in b{display:block;font-size:14px;word-break:break-all}
+.novid{margin-top:12px;padding:10px;border-radius:12px;background:var(--bg3);color:var(--text3);font-size:12.5px;font-weight:700;text-align:center}
+.media video{display:block}
+.act.flag.on{color:var(--danger)}
+.rec.has{border-style:solid;border-color:var(--good);color:var(--good)}
+.rk-ctl{display:flex;gap:8px;align-items:center;margin-top:18px}
+.rk-ctl select{flex:1;min-width:0;height:42px;padding:0 12px;border-radius:var(--r-btn);background:var(--bg2);color:var(--text);border:var(--card-bd);font:inherit;font-weight:800;font-size:14.5px}
+.rk-sc{display:flex;border-radius:var(--r-btn);overflow:hidden;border:var(--card-bd);background:var(--bg2)}
+.rk-sc button{height:40px;padding:0 12px;font-size:13px;font-weight:800;color:var(--text2);white-space:nowrap}
+.rk-sc button.on{background:var(--accent);color:var(--on-accent)}
+.cmt-list{max-height:46vh;overflow-y:auto;margin:6px 0 12px}
+.cmt{padding:10px 0;border-bottom:1.5px solid var(--bg3);font-size:14px;line-height:1.4}
+.cmt b{margin-right:6px}.cmt small{display:block;color:var(--text3);font-size:11.5px;margin-top:2px}
+.cmt-in{display:flex;gap:8px}
+.cmt-in input{flex:1;min-width:0;height:46px;padding:0 14px;border-radius:var(--r-btn);background:var(--bg3);border:var(--card-bd);font-size:15px;outline:0}
+.cmt-in .btn{height:46px}
+.cityL input{width:90px!important}
+
 /* profile fields */
 .pdet{padding:12px 14px;margin-top:14px}
 .pdet>small{display:block;font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
@@ -543,7 +568,7 @@ svg{display:block}
     <section class="screen" id="s-pulse" data-tab="pulse">
       <div class="rings" id="rings"></div>
       <div id="feed"></div>
-      <p class="note">Preview with sample posts</p>
+      <p class="note" id="feedNote"></p>
     </section>
 
     <section class="screen" id="s-orbit" data-tab="orbit">
@@ -565,7 +590,7 @@ svg{display:block}
         <div id="events"></div>
       </div>
       <div class="pane" id="p-ranks">
-        <div class="sec-h" style="margin-top:18px"><h3 class="display">5k run · Mumbai</h3><a>Change</a></div>
+        <div class="rk-ctl"><select id="rkSkill" aria-label="Skill"></select><span class="rk-sc" id="rkScope"><button data-sc="world" class="on">World</button><button data-sc="city" id="rkCity">My city</button></span></div>
         <div class="podium" id="podium"></div>
         <div id="ranks"></div>
       </div>
@@ -577,6 +602,7 @@ svg{display:block}
 
     <section class="screen" id="s-you" data-tab="you">
       <div class="prof"><div class="pm" id="youM"></div><div class="pn2"><input class="nameIn" id="nameIn" maxlength="18" aria-label="Your player name"><p id="youSub"></p><button class="btn ghost chg" id="chgPlayer"><span>Change player</span></button></div></div>
+      <div class="card acct" id="acct"></div>
       <div class="card pdet"><small>Your details · for fair scoring</small><div class="pfields" data-pf></div></div>
       <div class="wgrid" id="wgrid"></div>
       <div class="sec-h"><h3 class="display">Your skills</h3><a id="addSkill">Add skill</a></div>
@@ -605,6 +631,7 @@ svg{display:block}
     <div class="pfields prove-pf" id="provePf" data-pf hidden></div>
     <label class="field small" id="bwField" hidden><input id="bwVal" inputmode="decimal" placeholder="70" aria-label="Body weight"><span>kg body weight</span></label>
     <div class="live" id="proveLive"></div>
+    <input type="file" id="vidIn" accept="video/*" capture="environment" hidden>
     <button class="rec press" id="proveRec"><span data-i="video"></span>Record proof video</button>
     <button class="btn primary" style="width:100%;margin-top:16px" id="provePost"><span>Post result</span></button>
   </section>
@@ -613,6 +640,13 @@ svg{display:block}
     <div class="si-hero" id="siHero"></div>
     <div class="handle si-h"></div>
     <div id="siBody"></div>
+  </section>
+
+  <section class="sheet" id="sh-cmt" aria-label="Comments">
+    <div class="handle"></div>
+    <h2 class="display">Comments</h2>
+    <div id="cmtList" class="cmt-list"></div>
+    <div class="cmt-in"><input id="cmtIn" maxlength="300" placeholder="Say something kind or useful" aria-label="Comment"><button class="btn primary" id="cmtSend"><span>Send</span></button></div>
   </section>
 
   <section class="sheet" id="sh-player" aria-label="Choose your player">
@@ -628,10 +662,10 @@ svg{display:block}
     <h2 class="display">Settings</h2>
     <p class="lead">Unlock new looks by scoring in each world.</p>
     <div class="themes" id="themes"></div>
-    <div class="row"><span data-i="you"></span><span class="sp">Account</span><small>Soon</small></div>
+    <div class="row" id="acctRow" style="cursor:pointer"><span data-i="you"></span><span class="sp">Account</span><small id="acctTxt">Sign in</small></div>
     <div class="row"><span data-i="bell"></span><span class="sp">Notifications</span><small>Soon</small></div>
     <div class="row"><span data-i="lock"></span><span class="sp">Privacy</span><small>Soon</small></div>
-    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Layer 2 · 20261122l</small></div>
+    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261122a</small></div>
   </section>
 
   <div class="cele" id="cele"><div class="cele-in"><div class="cele-m" id="celeM"></div><h2 class="display" id="celeT"></h2><div class="big" id="celeB"></div><p id="celeS"></p><button class="btn primary" id="celeOk"><span>Keep going</span></button></div></div>
@@ -669,6 +703,7 @@ const ICONS={
  star:`<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.2l2.6 5.5 6 .7-4.4 4.1 1.2 5.9L12 16.5l-5.4 2.9 1.2-5.9-4.4-4.1 6-.7z"/></svg>`,
  target:`<svg viewBox="0 0 24 24" ${P} stroke-width="2.6"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".7" fill="currentColor"/></svg>`,
  chest:`<svg viewBox="0 0 24 24" ${P} stroke-width="2.4"><path d="M4 10.5h16V19H4zM4 10.5C4 7 6 5 9 5h6c3 0 5 2 5 5.5M10.5 10.5v3h3v-3"/></svg>`,
+ flag:`<svg viewBox="0 0 24 24" ${P}><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg>`,
  check:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5.5 12.5 4.2 4.2 8.8-9.2"/></svg>`
 };
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
@@ -926,7 +961,7 @@ function targetText(s,p){const bw=store.get('bw',0),x=perfFor(s,p);
 
 /* results */
 const SEED={'5k run':[{v:1386,t:1},{v:1308,t:2}],'Pickleball':[{v:3.4,t:3}],'Typing':[{v:68,t:4}]};
-const resultsOf=n=>store.get('res_'+n,SEED[n]||[]);
+const resultsOf=n=>store.get('res_'+n,store.get('acct',false)?[]:(SEED[n]||[]));
 if(store.get('schema',1)<2){['Pickleball','Tennis'].forEach(n=>{const l=store.get('res_'+n,null);if(l)store.set('res_'+n,l.filter(r=>r.v<20));});store.set('schema',2);}
 function bestOf(n){const s=SKILLS[n];let b=null,bp=-1;resultsOf(n).forEach(r=>{const p=pointsOf(s,r.v);if(p>bp){bp=p;b=r;}});return b?{v:b.v,p:bp}:null;}
 function mySkills(){return SKILL_LIST.filter(s=>resultsOf(s.name).length).map(s=>({s,b:bestOf(s.name)})).sort((a,b)=>b.b.p-a.b.p);}
@@ -948,7 +983,7 @@ function previewTheme(t,ev){stopPreview(true);hideSheet();pvLeft=12;const r=THEM
  upd();$('#pv').classList.add('on');switchWithReveal(t,ev);pvT=setInterval(()=>{pvLeft--;if(pvLeft<=0)stopPreview();else upd();},1000);}
 function stopPreview(silent){if(!pvT)return;clearInterval(pvT);pvT=null;$('#pv').classList.remove('on');if(!silent)switchWithReveal(theme);}
 $('#pv').onclick=()=>stopPreview();
-function setTheme(t,ev){if(!unlocked(t)){previewTheme(t,ev);return;}stopPreview(true);theme=t;store.set('theme',t);renderThemePicker();switchWithReveal(t,ev);}
+function setTheme(t,ev){if(!unlocked(t)){previewTheme(t,ev);return;}stopPreview(true);theme=t;store.set('theme',t);renderThemePicker();typeof pushProfile==='function'&&pushProfile();switchWithReveal(t,ev);}
 function renderThemePicker(){const prev={
   dusk:'<div class="tprev" style="background:#2A2E3F"><i style="width:60%;height:9px;border-radius:5px;background:#F5F2EA"></i><i style="height:28px;border-radius:9px;background:#383D53;border:2px solid #171A25;box-shadow:0 3px 0 #171A25"></i><i style="width:50%;height:16px;border-radius:8px;background:#FF6B3D;border:2px solid #171A25"></i></div>',
   nightfall:'<div class="tprev" style="background:#07070C"><i style="width:60%;height:8px;background:#EDEBFF"></i><i style="height:28px;border-radius:3px;background:#11111A;border:1px solid #2A2A3D;box-shadow:inset 3px 3px 0 -1px #8B5CFF"></i><i style="width:45%;height:15px;border-radius:3px;background:#8B5CFF;box-shadow:0 0 12px #8B5CFF"></i></div>',
@@ -1050,14 +1085,20 @@ function livePreview(){const s=SKILLS[proveSkill],r=readVal(),el=$('#proveLive')
  const p=pointsOf(s,r.x),l=lvOf(p),nx=LEVELS[l+1];el.innerHTML=`≈ <b>${p} pts</b> · ${LEVELS[l][0]}${nx?`<br>${nx[0]} at ${nx[1]} pts: ${targetText(s,nx[1])}`:''}<br><small>${scoringNote(s)}</small>`;}
 $('#proveVal').addEventListener('input',livePreview);$('#bwVal').addEventListener('input',livePreview);
 $('#proveTab').onclick=()=>{buzz(14);const inSkill=Orbit.isOpen()&&Path.skill();openProve(inSkill||null,!!inSkill)};
-$('#proveRec').onclick=()=>toast('Camera arrives with the app build');
-$('#provePost').onclick=()=>{const s=SKILLS[proveSkill],r=readVal();
+$('#provePost').onclick=async()=>{const s=SKILLS[proveSkill],r=readVal(),btn=$('#provePost');if(btn.disabled)return;
  if(r.err){toast(r.err);return;}if(!(r.x>0)&&!(s.x0<0&&r.x>=0)){toast('Enter your result first');$('#proveVal').focus();return;}
  {const v=parseFloat($('#bwVal').value);if(s.ty==='bw'&&v>0)store.set('bw',v);}
- const before={nightfall:unlocked('nightfall'),volt:unlocked('volt')},old=bestOf(s.name),oldLv=old?lvOf(old.p):-1;
- const list=resultsOf(s.name);list.push({v:r.x,t:Date.now()});store.set('res_'+s.name,list);
- const p=pointsOf(s,r.x),nb=bestOf(s.name),lv=lvOf(nb.p),pb=!old||p>old.p;
- hideSheet();buzz([10,40,10]);
+ const before={nightfall:unlocked('nightfall'),volt:unlocked('volt')},old=bestOf(s.name),oldLv=old?lvOf(old.p):-1,p=pointsOf(s,r.x);
+ const entry={v:r.x,t:Date.now()};
+ if(CU()){btn.disabled=true;const lab=btn.firstChild;
+  try{if(pendingVid){entry.video=await Cloud.uploadVideo(pendingVid,f=>lab.textContent=`Uploading video ${Math.round(f*100)}%`);}
+   lab.textContent='Saving…';entry.cloud=await Cloud.saveResult({skill:s.name,v:r.x,pts:p,name:store.get('name',''),city:store.get('city',''),sex:profile().sex,age:profile().age,video:entry.video});}
+  catch(e){toast('Saved on this phone only: '+(e.code||e.message));}
+  btn.disabled=false;lab.textContent='Post result';}
+ resetVid();
+ const list=resultsOf(s.name);list.push(entry);store.set('res_'+s.name,list);
+ const nb=bestOf(s.name),lv=lvOf(nb.p),pb=!old||p>old.p;
+ hideSheet();buzz([10,40,10]);if(CU())Pulse.refresh(true);
  setTimeout(()=>{if(Path.skill()===s.name&&Orbit.isOpen())Path.refresh(true);You.render();
   const msgs=[];
   if(lv>oldLv&&oldLv>=0)msgs.push(()=>celebrate('Level up!',`${p} pts`,`${s.name}: you're now ${LEVELS[lv][0]}.`));
@@ -1072,41 +1113,70 @@ const POSTS=[
  {n:'Riya Sharma',i:'R',ctx:{sex:'f',age:27},skill:'5k run',v:1308,when:'12 min ago',top:'Top 18% in Mumbai',likes:48,com:6,legit:11},
  {n:'Kabir Rao',i:'K',ctx:{sex:'m',age:22},skill:"Rubik's cube",v:14.62,when:'1 h ago',top:'Top 9% in India',likes:77,com:12,legit:20},
  {n:'Arjun Mehta',i:'A',ctx:{sex:'m',age:29},skill:'Deadlift',v:2.0,bw:80,when:'3 h ago',top:'160 kg at 80 kg body weight',likes:31,com:4,legit:8}];
-const Pulse={ready:false,show(){if(this.ready)return;this.ready=true;
- const cols=Object.values(CATS).map(c=>c.col);
- $('#rings').innerHTML=['Riya','Arjun','Kabir','Meera','Dev','Sana','Ishaan'].map((n,k)=>`<div class="ring ${k>3?'seen':''}"><div class="rv"><span style="background:${cols[k*2%cols.length]}">${n[0]}</span></div>${n}</div>`).join('');
- $('#feed').innerHTML=[0,1].map(()=>`<div class="card post"><div class="post-h"><div class="skel" style="width:38px;height:38px;border-radius:50%"></div><div style="flex:1"><div class="skel" style="width:55%;height:12px"></div><div class="skel" style="width:35%;height:10px;margin-top:7px"></div></div></div><div class="skel" style="width:45%;height:40px;margin-top:16px"></div><div class="skel" style="height:160px;margin-top:14px"></div></div>`).join('');
- setTimeout(()=>{$('#feed').innerHTML=POSTS.map((p,k)=>{const s=SKILLS[p.skill],c=CATS[s.cat],pts=pointsOf(s,p.v,p.ctx),l=lvOf(pts),nx=LEVELS[l+1],pct=nx?Math.round((pts-LEVELS[l][1])/(nx[1]-LEVELS[l][1])*100):100;
-  return `<article class="card post" style="animation:fadeUp .4s ${k*70}ms ease both">
-   <div class="post-h"><div class="av" style="background:${c.col}">${p.i}</div><div style="flex:1;min-width:0"><b>${p.n}</b><small>${p.skill} · ${s.w==='mind'?'Mind':'Body'} · ${p.when}</small></div><span class="chip">${LEVELS[l][0]}</span></div>
-   <div class="metric"><span class="num display">${fmtPerf(s,p.v,p.bw)}</span><span class="unit">${s.ty==='bw'?'deadlift':unitShort(s)||s.unit}</span><span class="pts"><b>${pts}</b><small>pts</small></span></div>
-   <div class="lvl-row"><span>${p.top}</span><span>${nx?pct+'% to '+nx[0]:'Max level'}</span></div>
+function postHTML(p,k){const s=SKILLS[p.skill];if(!s)return '';const c=CATS[s.cat],pts=p.pts!=null?p.pts:pointsOf(s,p.v,p.ctx),l=lvOf(pts),nx=LEVELS[l+1],pct=nx?Math.round((pts-LEVELS[l][1])/(nx[1]-LEVELS[l][1])*100):100;
+ const m=p.mine||{},id=p.id||'',vid=p.video||'',init=(p.n||'?')[0].toUpperCase();
+ return `<article class="card post" style="animation:fadeUp .4s ${k*60}ms ease both" data-id="${id}">
+   <div class="post-h"><div class="av" style="background:${c.col}">${esc(init)}</div><div style="flex:1;min-width:0"><b>${esc(p.n)}</b><small>${esc(p.skill)} · ${s.w==='mind'?'Mind':'Body'} · ${p.when}</small></div><span class="chip">${LEVELS[l][0]}</span></div>
+   <div class="metric"><span class="num display">${fmtPerf(s,p.v,p.bw)}</span><span class="unit">${s.ty==='bw'?(p.bw?'deadlift':'× body weight'):unitShort(s)||s.unit}</span><span class="pts"><b>${pts}</b><small>pts</small></span></div>
+   <div class="lvl-row"><span>${esc(p.top||'')}</span><span>${nx?pct+'% to '+nx[0]:'Max level'}</span></div>
    <div class="bar"><i style="width:${pct}%"></i></div>
-   <div class="media" data-k="${k}" style="background:linear-gradient(135deg,${c.col},${c.ink})"><span class="play"><span data-i="play"></span></span><span class="burst"><span data-i="heartFull"></span></span></div>
-   <div class="acts"><button class="act like press" data-k="${k}"><span data-i="heart"></span><span>${p.likes}</span></button><button class="act press"><span data-i="comment"></span>${p.com}</button><button class="act legit press"><span data-i="legit"></span><span>${p.legit}</span></button><span style="flex:1"></span><button class="act press" aria-label="Share"><span data-i="share"></span></button></div>
-  </article>`}).join('');paintIcons($('#feed'));
-  $$('#feed .like').forEach(b=>b.onclick=()=>like(b));
-  $$('#feed .legit').forEach(b=>b.onclick=()=>{const on=b.classList.toggle('on');const s=b.lastChild;s.textContent=+s.textContent+(on?1:-1);buzz(8);});
-  $$('#feed .media').forEach(m=>{let last=0;m.onclick=()=>{const now=Date.now();if(now-last<320){const b=$(`#feed .like[data-k="${m.dataset.k}"]`);if(!b.classList.contains('liked'))like(b);const h=m.querySelector('.burst');h.classList.remove('go');h.offsetWidth;h.classList.add('go');}last=now;};});
- },600);}};
-function like(b){const on=b.classList.toggle('liked');const s=b.lastChild;s.textContent=+s.textContent+(on?1:-1);buzz(on?12:6);}
+   ${id&&!vid?`<div class="novid">No proof video</div>`:`<div class="media" data-k="${k}" ${vid?`data-v="${esc(vid)}"`:''} style="background:${vid?`#000 url('${esc(Cloud.thumb(vid))}') center/cover`:`linear-gradient(135deg,${c.col},${c.ink})`}"><span class="play"><span data-i="play"></span></span><span class="burst"><span data-i="heartFull"></span></span></div>`}
+   <div class="acts"><button class="act like press ${m.likes?'liked':''}" data-k="${k}"><span data-i="heart"></span><span>${p.likes||0}</span></button><button class="act press" ${id?`data-cmt="${id}"`:''}><span data-i="comment"></span><span>${p.com||0}</span></button><button class="act legit press ${m.legit?'on':''}"><span data-i="legit"></span><span>${p.legit||0}</span></button><span style="flex:1"></span>${id?`<button class="act flag press ${m.flags?'on':''}" aria-label="Flag"><span data-i="flag"></span></button>`:''}<button class="act press" aria-label="Share"><span data-i="share"></span></button></div>
+  </article>`;}
+const Pulse={ready:false,last:0,
+ show(){if(!this.ready){this.ready=true;const cols=Object.values(CATS).map(c=>c.col);
+   $('#rings').innerHTML=['Riya','Arjun','Kabir','Meera','Dev','Sana','Ishaan'].map((n,k)=>`<div class="ring ${k>3?'seen':''}"><div class="rv"><span style="background:${cols[k*2%cols.length]}">${n[0]}</span></div>${n}</div>`).join('');}
+  this.refresh();},
+ async refresh(force){if(!force&&this.last&&Date.now()-this.last<30000)return;this.last=Date.now();
+  $('#feed').innerHTML=[0,1].map(()=>`<div class="card post"><div class="post-h"><div class="skel" style="width:38px;height:38px;border-radius:50%"></div><div style="flex:1"><div class="skel" style="width:55%;height:12px"></div><div class="skel" style="width:35%;height:10px;margin-top:7px"></div></div></div><div class="skel" style="width:45%;height:40px;margin-top:16px"></div><div class="skel" style="height:160px;margin-top:14px"></div></div>`).join('');
+  let posts=null;
+  if(CU()){try{const f=await Cloud.feed(30);posts=f.filter(r=>SKILLS[r.skill]).map(r=>({id:r.id,n:r.name||'Player',skill:r.skill,v:r.v,pts:r.pts,ctx:{sex:r.sex,age:r.age},when:ago(r.t),top:r.city||'',likes:r.likes,com:r.comments,legit:r.legit,video:r.video,mine:r.mine,uid:r.uid}));}catch(e){console.warn(e);toast('Feed: '+(e.code||e.message));}}
+  else await new Promise(r=>setTimeout(r,500));
+  const real=posts&&posts.length;if(!real)posts=POSTS;
+  $('#feed').innerHTML=posts.map(postHTML).join('');$('#feedNote').textContent=real?'':CU()?'No posts yet. Log a result with a proof video to start the feed. Showing samples.':'Sample posts · sign in on the You tab to see real players';
+  paintIcons($('#feed'));this.wire(real);},
+ wire(real){
+  const act=async(b,kind)=>{const art=b.closest('.post'),id=art.dataset.id,cls=kind==='likes'?'liked':'on',on=!b.classList.contains(cls);
+   if(real&&id&&!CU()){toast('Sign in first');return;}
+   b.classList.toggle(cls,on);const cnt=b.querySelector('span:last-child');if(cnt&&kind!=='flags')cnt.textContent=+cnt.textContent+(on?1:-1);buzz(on?12:6);
+   if(real&&id){try{await Cloud.toggle(kind,id,on);if(kind==='flags'&&on)toast('Flagged for review. Thanks for keeping Provn honest.');}
+    catch(e){b.classList.toggle(cls,!on);if(cnt&&kind!=='flags')cnt.textContent=+cnt.textContent+(on?-1:1);toast('Could not save: '+(e.code||e.message));}}};
+  $$('#feed .like').forEach(b=>b.onclick=()=>act(b,'likes'));
+  $$('#feed .legit').forEach(b=>b.onclick=()=>act(b,'legit'));
+  $$('#feed .flag').forEach(b=>b.onclick=()=>act(b,'flags'));
+  $$('#feed [data-cmt]').forEach(b=>b.onclick=()=>openComments(b.dataset.cmt));
+  $$('#feed .media').forEach(m=>{let last=0;m.onclick=()=>{const now=Date.now();
+   if(now-last<320){const b=m.closest('.post').querySelector('.like');if(!b.classList.contains('liked'))b.click();const h=m.querySelector('.burst');if(h){h.classList.remove('go');h.offsetWidth;h.classList.add('go');}}
+   else if(m.dataset.v)setTimeout(()=>{if(Date.now()-last>=300&&!m.querySelector('video')){m.innerHTML=`<video src="${m.dataset.v}" controls autoplay playsinline style="width:100%;height:100%;object-fit:contain;background:#000"></video>`;}},330);
+   last=now;};});}};
 
 /* ================= ARENA ================= */
 const EVENTS=[['6','Dec','Pickleball Open','Andheri · 14 spots left'],['13','Dec','Sunday 5k Time Trial','Marine Drive · 120 spots'],['20','Dec','Deadlift Day','Powai · 22 spots left'],['27','Dec','Speedcubing Meet','Bandra · 40 spots']];
 $('#events').innerHTML=EVENTS.map(e=>`<div class="card ev"><div class="date"><b class="display">${e[0]}</b><small>${e[1]}</small></div><div class="info"><b>${e[2]}</b><small>${e[3]}</small></div><button class="btn ghost reg"><span>Register</span></button></div>`).join('');
-$$('#events .reg').forEach(b=>b.onclick=()=>{buzz(10);toast('Registration opens with Phase 2')});
-function renderRanks(){const s=SKILLS['5k run'],me=bestOf('5k run');
- const F={sex:'f',age:28},M={sex:'m',age:28};const R=[['Riya S',1182,'R',0,F],['Dev P',1198,'D',0,M],['Sana K',1211,'S',0,F],['Ishaan T',1235,'I',0,M],['Meera J',1249,'M',0,F]];if(me)R.push([pname(),me.v,pname()[0].toUpperCase(),1,null]);R.sort((a,b)=>a[1]-b[1]);
- const top=R.slice(0,3),cols=['#FF8A5B','#FFC23D','#9BE15D'];
- $('#podium').innerHTML=[1,0,2].map(k=>`<div class="card pod ${k===0?'p1':''}"><div class="av" style="background:${cols[k]}">${esc(top[k][2])}</div><b>${esc(top[k][0])}</b><small>${fmtTime(top[k][1])} · ${pointsOf(s,top[k][1],top[k][4])}</small><div class="rk display">${k+1}</div></div>`).join('');
- $('#ranks').innerHTML=R.slice(3).map((r,k)=>`<div class="card rank ${r[3]?'me':''}"><span class="n">${k+4}</span><div class="av" style="width:32px;height:32px;font-size:12px;background:${cols[(k+1)%3]}">${esc(r[2])}</div><span class="nm">${esc(r[0])}</span><span class="val">${fmtTime(r[1])}<small>${pointsOf(s,r[1],r[4])} pts</small></span></div>`).join('');}
+$$('#events .reg').forEach(b=>b.onclick=()=>{buzz(10);toast('Event registration comes in the next phase')});
+let rkScope='world';
+async function renderRanks(){const sel=$('#rkSkill');if(!sel.options.length){const mine=mySkills().map(x=>x.s.name);
+  const list=[...new Set([...mine,'5k run','Pickleball',"Rubik's cube",'Chess','Push-ups','Deadlift','Typing','100m sprint'])];sel.innerHTML=list.map(n=>`<option>${esc(n)}</option>`).join('');}
+ const name=sel.value,s=SKILLS[name],city=store.get('city','');$('#rkCity').textContent=city?`In ${city}`:'My city';$$('#rkScope button').forEach(b=>b.classList.toggle('on',b.dataset.sc===rkScope));
+ const cols=['#FF8A5B','#FFC23D','#9BE15D','#60A5FA','#C084FC'];let rows=[];
+ if(CU()){$('#ranks').innerHTML='<div class="skel" style="height:56px;margin-top:10px"></div>';$('#podium').innerHTML='';
+  if(rkScope==='city'&&!city){$('#ranks').innerHTML='<div class="card empty">Add your city on the You tab to see local rankings.</div>';return;}
+  try{rows=(await Cloud.leaderboard(name,rkScope==='city'?city:'')).map(r=>({n:r.name||'Player',v:r.v,p:r.pts,me:r.uid===Cloud.user.uid}));}catch(e){$('#ranks').innerHTML=`<div class="card empty">Could not load rankings (${esc(e.code||e.message)})</div>`;return;}
+  if(!rows.length){$('#ranks').innerHTML=`<div class="card empty">No one has logged ${esc(name)} yet. Be the first!</div>`;return;}}
+ else{const F={sex:'f',age:28},M={sex:'m',age:28},me=bestOf('5k run');if(name!=='5k run'){$('#podium').innerHTML='';$('#ranks').innerHTML='<div class="card empty">Sign in to see real rankings for every skill.</div>';return;}
+  rows=[['Riya S',1182,F],['Dev P',1198,M],['Sana K',1211,F],['Ishaan T',1235,M],['Meera J',1249,F]].map(r=>({n:r[0],v:r[1],p:pointsOf(s,r[1],r[2])}));if(me)rows.push({n:pname(),v:me.v,p:me.p,me:true});rows.sort((a,b)=>b.p-a.p);}
+ const top=rows.slice(0,3),fp=v=>`${fmtPerf(s,v,0)}`;
+ $('#podium').innerHTML=[1,0,2].filter(k=>top[k]).map(k=>`<div class="card pod ${k===0?'p1':''}"><div class="av" style="background:${cols[k]}">${esc(top[k].n[0].toUpperCase())}</div><b>${esc(top[k].n)}</b><small>${fp(top[k].v)} · ${top[k].p}</small><div class="rk display">${k+1}</div></div>`).join('');
+ $('#ranks').innerHTML=rows.slice(3,50).map((r,k)=>`<div class="card rank ${r.me?'me':''}"><span class="n">${k+4}</span><div class="av" style="width:32px;height:32px;font-size:12px;background:${cols[(k+3)%5]}">${esc(r.n[0].toUpperCase())}</div><span class="nm">${esc(r.n)}</span><span class="val">${fp(r.v)}<small>${r.p} pts</small></span></div>`).join('');}
+$('#rkSkill').onchange=()=>renderRanks();
+$$('#rkScope button').forEach(b=>b.onclick=()=>{rkScope=b.dataset.sc;buzz(6);renderRanks();});
 let segI=0;
 function moveSeg(anim){const si=$('#seg .si');if(!si)return;const w=si.offsetWidth;if(!anim)si.style.transition='none';si.style.transform=`translateX(${segI*(w)}px)${document.documentElement.dataset.theme==='volt'?' skewX(-10deg)':''}`;if(!anim){si.offsetWidth;si.style.transition='';}}
 $$('#seg button').forEach((b,k)=>b.onclick=()=>{if(segI===k)return;segI=k;buzz(6);$$('#seg button').forEach((x,j)=>x.classList.toggle('on',j===k));$$('.pane').forEach(p=>p.classList.toggle('on',p.id==='p-'+b.dataset.p));if(b.dataset.p==='ranks')renderRanks();moveSeg(true);});
 
 /* ================= YOU ================= */
 const You={render(){const ae=document.activeElement;if(!(ae&&ae.closest&&ae.closest('[data-pf] input')))renderPF();if(!$('#youM .av3d'))$('#youM').innerHTML=`<div class="av3d" data-mode="you">${mascot()}</div>`;const ni=$('#nameIn');if(document.activeElement!==ni)ni.value=store.get('name','');ni.placeholder='Your name';
- const ms=mySkills();$('#youSub').textContent=`${ms.length} skill${ms.length===1?'':'s'} proven · Mumbai`;
+ const ms=mySkills();$('#youSub').textContent=`${ms.length} skill${ms.length===1?'':'s'} proven${store.get('city','')?' · '+esc(store.get('city','')):''}`;renderAcct();
  $('#wgrid').innerHTML=[['body','Body','volt'],['mind','Mind','nightfall']].map(([w,label,t])=>{const sc=worldScore(w),l=lvOf(sc),req=THEMES[t].req[1],u=unlocked(t);
   return `<div class="card wcard ${u?'open':''}"><small>${label} world</small><b>${sc}</b><span class="lv">${LEVELS[l][0]}</span><div class="bar"><i style="width:${Math.min(100,sc/req*100)}%"></i></div><div class="unl"><span data-i="${u?'unlock':'lock'}"></span>${u?`${THEMES[t].name} unlocked`:`${THEMES[t].name} at ${req}`}</div></div>`;}).join('');
  $('#slist').innerHTML=ms.length?ms.map(({s,b})=>{const c=CATS[s.cat];return `<button class="card srow press" data-n="${esc(s.name)}" style="width:100%;text-align:left;--cv:${c.col};--cvi:${c.ink}"><span class="si">${iconSvg(s.ic)}</span><span class="sn"><b>${esc(s.name)}</b><small>${LEVELS[lvOf(b.p)][0]} · best ${fmtPerf(s,b.v,store.get('bw',0))}${unitShort(s)}</small></span><span class="sp"><b>${b.p}</b><small>pts</small></span></button>`}).join(''):
@@ -1114,9 +1184,10 @@ const You={render(){const ae=document.activeElement;if(!(ae&&ae.closest&&ae.clos
  paintIcons($('#s-you'));$$('#slist .srow').forEach(b=>b.onclick=()=>{go('orbit');setTimeout(()=>Orbit.openSkill(b.dataset.n),280)});
  const fp=$('#firstProve');if(fp)fp.onclick=()=>openProve();}};
 $('#nameIn').addEventListener('input',e=>store.set('name',e.target.value.trim()));
-function renderPF(){const pr=profile();$$('[data-pf]').forEach(el=>{el.innerHTML=`<span class="sx"><button data-sx="m" class="${pr.sex==='m'?'on':''}">Male</button><button data-sx="f" class="${pr.sex==='f'?'on':''}">Female</button></span><label>Age <input inputmode="numeric" maxlength="3" data-age value="${pr.age||''}" placeholder="—"></label><label>Weight <input inputmode="decimal" maxlength="5" data-bw value="${pr.bw||''}" placeholder="—"> kg</label>`;
+function renderPF(){const pr=profile();$$('[data-pf]').forEach(el=>{el.innerHTML=`<span class="sx"><button data-sx="m" class="${pr.sex==='m'?'on':''}">Male</button><button data-sx="f" class="${pr.sex==='f'?'on':''}">Female</button></span><label>Age <input inputmode="numeric" maxlength="3" data-age value="${pr.age||''}" placeholder="—"></label><label>Weight <input inputmode="decimal" maxlength="5" data-bw value="${pr.bw||''}" placeholder="—"> kg</label>${el.id==='provePf'?'':`<label class="cityL">City <input maxlength="30" data-city value="${esc(store.get('city',''))}" placeholder="—"></label>`}`;
  el.querySelectorAll('[data-sx]').forEach(b=>b.onclick=()=>{buzz(6);store.set('sex',b.dataset.sx);renderPF();onProfile();});
  el.querySelector('[data-age]').oninput=e=>{const v=parseInt(e.target.value);store.set('age',v>4&&v<110?v:0);onProfile();};
+ const ci=el.querySelector('[data-city]');if(ci)ci.oninput=e=>{store.set('city',e.target.value.trim());onProfile();};
  el.querySelector('[data-bw]').oninput=e=>{const v=parseFloat(e.target.value);store.set('bw',v>20&&v<300?v:0);$('#bwVal').value=v||'';onProfile();};});}
 function onProfile(){if(openSheet&&openSheet.id==='sh-prove')livePreview();if(cur==='you'){clearTimeout(onProfile.t);onProfile.t=setTimeout(()=>You.render(),350);}}
 const thumbCache={};
@@ -1409,6 +1480,57 @@ const Orbit=(()=>{const cv=$('#orbitCv'),g=cv.getContext('2d'),q=$('#q');
   const CX=CXf(),CY=CYf();open({n,sx:CX,sy:CY,wx:0,wy:0,sc:1.08,rr:n.r*zoom*1.08});}
  return{active(on){if(on){resize();recolor();}loop(on)},resize(){resize();if(!run&&W)draw()},recolor,close,openSkill,isOpen:()=>state!=='field'};})();
 
+/* ================= CLOUD: accounts, sync, real feed ================= */
+const CU=()=>window.Cloud&&window.Cloud.user?window.Cloud:null;
+const ago=t=>{const s=(Date.now()-t)/1000;return s<60?'just now':s<3600?Math.floor(s/60)+' min ago':s<86400?Math.floor(s/3600)+' h ago':Math.floor(s/86400)+' d ago';};
+function cloudProfile(){const pr=profile();return{name:store.get('name','')||'',sex:pr.sex||'',age:pr.age||0,bw:pr.bw||0,city:store.get('city','')||'',char:store.get('char','Knight'),theme:store.get('theme','dusk')};}
+let pushT;function pushProfile(){if(!CU())return;clearTimeout(pushT);pushT=setTimeout(()=>CU().saveProfile(cloudProfile()).catch(e=>console.warn('profile',e)),800);}
+const Sync={busy:false,
+ async start(u){if(this.busy)return;this.busy=true;
+  try{const p=await Cloud.loadProfile();
+   if(p){if(p.name)store.set('name',p.name);['sex','city'].forEach(k=>{if(typeof p[k]==='string')store.set(k,p[k])});if(p.age)store.set('age',p.age);if(p.bw)store.set('bw',p.bw);
+    if(p.char&&window.Avatar3D&&p.char!==Avatar3D.getChar())Avatar3D.setChar(p.char);}
+   else{if(!store.get('name',''))store.set('name',(u.name||'').split(' ')[0]);await Cloud.saveProfile({...cloudProfile(),photo:u.photo});}
+   /* upload results logged on this phone before signing in (seed samples are never uploaded) */
+   if(!store.get('acct',false)){for(const s of SKILL_LIST){const list=store.get('res_'+s.name,null);if(!list)continue;
+     for(const r of list){if(r.cloud)continue;try{r.cloud=await Cloud.saveResult({skill:s.name,v:r.v,pts:pointsOf(s,r.v),name:store.get('name',''),city:store.get('city',''),sex:profile().sex,age:profile().age});}catch(e){console.warn(e)}}
+     store.set('res_'+s.name,list);}}
+   store.set('acct',true);
+   const mine=await Cloud.myResults(),by={};mine.forEach(r=>{(by[r.skill]=by[r.skill]||[]).push({v:r.v,t:r.t,cloud:r.id,video:r.video||''})});
+   SKILL_LIST.forEach(s=>{if(by[s.name])store.set('res_'+s.name,by[s.name]);else if(store.get('res_'+s.name,null))store.set('res_'+s.name,[]);});
+   toast(`Signed in as ${store.get('name','')||u.name}`);}
+  catch(e){console.warn('sync',e);toast('Could not sync: '+(e.code||e.message));}
+  this.busy=false;You.render();Pulse.refresh(true);if(segI===1)renderRanks();renderAcct();}};
+function renderAcct(){const u=CU()&&Cloud.user,el=$('#acct');
+ if(el)el.innerHTML=u?`<div class="acct-in">${u.photo?`<img src="${esc(u.photo)}" alt="" referrerpolicy="no-referrer">`:''}<div><b>${esc(u.email||u.name)}</b><small>Results and videos are saved to your account</small></div></div>`:
+  window.Cloud?`<div class="acct-out"><b class="display">Save your progress</b><small>Sign in to keep your results, post proof videos and appear in rankings.</small><button class="btn primary" id="gIn"><span>Sign in with Google</span></button></div>`:
+  `<div class="acct-out"><small>Online features are loading… results are kept on this phone for now.</small></div>`;
+ const g=$('#gIn');if(g)g.onclick=async()=>{buzz(10);try{await Cloud.signIn();}catch(e){toast(e.code==='auth/unauthorized-domain'?'Add this site to Firebase authorized domains':'Sign-in failed: '+(e.code||e.message));}};
+ const ar=$('#acctTxt');if(ar)ar.textContent=u?'Sign out':window.Cloud?'Sign in':'Offline';}
+$('#acctRow').onclick=async()=>{if(CU()){await Cloud.signOut();store.set('acct',false);toast('Signed out');}else if(window.Cloud){hideSheet();try{await Cloud.signIn();}catch(e){toast('Sign-in failed: '+(e.code||e.message));}}};
+addEventListener('cloud-ready',renderAcct);
+addEventListener('cloud-auth',e=>{renderAcct();if(e.detail)Sync.start(e.detail);else{Pulse.refresh(true);}});
+/* hook profile changes */
+$('#nameIn').addEventListener('input',pushProfile);
+const _onProfile=onProfile;onProfile=function(){_onProfile();pushProfile();};
+addEventListener('click',e=>{if(e.target.closest('#pgrid .pcard'))setTimeout(pushProfile,300);});
+
+/* ---- proof video ---- */
+let pendingVid=null;
+$('#vidIn').addEventListener('change',e=>{const f=e.target.files[0];e.target.value='';if(!f)return;
+ if(f.size>95*1024*1024){toast('Video is too big (max ~95 MB)');return;}pendingVid=f;
+ $('#proveRec').innerHTML=`<span data-i="video"></span>Video ready · ${(f.size/1048576).toFixed(1)} MB · tap to change`;paintIcons($('#proveRec'));$('#proveRec').classList.add('has');});
+$('#proveRec').onclick=()=>{if(!CU()){toast('Sign in to attach proof videos');return;}$('#vidIn').click();};
+function resetVid(){pendingVid=null;$('#proveRec').classList.remove('has');$('#proveRec').innerHTML='<span data-i="video"></span>Record proof video';paintIcons($('#proveRec'));}
+
+/* ---- comments ---- */
+let cmtFor=null;
+async function openComments(id){if(!CU()){toast('Sign in to comment');return;}cmtFor=id;$('#cmtList').innerHTML='<div class="skel" style="height:44px"></div>';showSheet('sh-cmt');
+ try{const list=await Cloud.comments(id);$('#cmtList').innerHTML=list.length?list.map(c=>`<div class="cmt"><b>${esc(c.name)}</b><span>${esc(c.text)}</span><small>${ago(c.t)}</small></div>`).join(''):'<p class="note">No comments yet. Be the first.</p>';}
+ catch(e){$('#cmtList').innerHTML=`<p class="note">Could not load comments (${esc(e.code||e.message)})</p>`;}}
+$('#cmtSend').onclick=async()=>{const t=$('#cmtIn').value.trim();if(!t||!cmtFor)return;$('#cmtIn').value='';
+ try{await Cloud.addComment(cmtFor,t,store.get('name',''));openComments(cmtFor);const b=$(`#feed [data-cmt="${cmtFor}"] span:last-child`);if(b)b.textContent=+b.textContent+1;}catch(e){toast('Could not post: '+(e.code||e.message));}};
+
 /* ================= BOOT ================= */
 paintIcons();
 applyTheme(theme);
@@ -1419,5 +1541,6 @@ setTimeout(()=>$('#splash').remove(),1700);
 setTimeout(()=>$('#orbitHint').style.opacity=0,6000);
 </script>
 <script type="module" src="avatar3d.js"></script>
+<script type="module" src="cloud.js"></script>
 </body>
 </html>

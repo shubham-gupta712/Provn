@@ -1,0 +1,118 @@
+rules_version = '2';
+// Provn — Firestore security rules (full file). Firebase project: provn-96604
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function me() { return request.auth.uid; }
+    function str(v, max) { return v is string && v.size() <= max; }
+    function okVideo(v) {
+      return v is string && v.size() < 400
+        && v.matches('https://res[.]cloudinary[.]com/y3geoabc/video/upload/.*');
+    }
+
+    // ---------- player profiles ----------
+    match /users/{uid} {
+      allow read: if signedIn();
+      allow create, update: if signedIn() && me() == uid
+        && request.resource.data.keys().hasOnly(['name','sex','city','char','theme','photo','age','bw','updatedAt'])
+        && (!('name'  in request.resource.data) || str(request.resource.data.name, 40))
+        && (!('sex'   in request.resource.data) || request.resource.data.sex in ['', 'm', 'f'])
+        && (!('city'  in request.resource.data) || str(request.resource.data.city, 40))
+        && (!('char'  in request.resource.data) || str(request.resource.data.char, 40))
+        && (!('theme' in request.resource.data) || request.resource.data.theme in ['dusk', 'nightfall', 'volt'])
+        && (!('photo' in request.resource.data) || str(request.resource.data.photo, 400))
+        && (!('age'   in request.resource.data) || (request.resource.data.age is int && request.resource.data.age >= 0 && request.resource.data.age <= 110))
+        && (!('bw'    in request.resource.data) || (request.resource.data.bw is number && request.resource.data.bw >= 0 && request.resource.data.bw <= 400))
+        && request.resource.data.updatedAt == request.time;
+      allow delete: if signedIn() && me() == uid;
+    }
+
+    // ---------- results (the Pulse feed) ----------
+    match /results/{rid} {
+      function counterOnly(field) {
+        return request.resource.data.diff(resource.data).affectedKeys().hasOnly([field])
+          && (request.resource.data[field] == resource.data[field] + 1
+              || request.resource.data[field] == resource.data[field] - 1)
+          && request.resource.data[field] >= 0;
+      }
+      // a like / legit / flag counter may only move together with that user's own mark
+      function markMoved(kind) {
+        let path = /databases/$(database)/documents/results/$(rid)/$(kind)/$(me());
+        return counterOnly(kind) && (
+          (request.resource.data[kind] > resource.data[kind] && !exists(path) && existsAfter(path)) ||
+          (request.resource.data[kind] < resource.data[kind] && exists(path) && !existsAfter(path)));
+      }
+
+      allow read: if signedIn();
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly(['uid','name','city','skill','v','pts','sex','age','createdAt','likes','legit','flags','comments','video'])
+        && request.resource.data.uid == me()
+        && str(request.resource.data.name, 40)
+        && str(request.resource.data.city, 40)
+        && str(request.resource.data.skill, 60) && request.resource.data.skill.size() > 0
+        && request.resource.data.v is number
+        && request.resource.data.pts is int && request.resource.data.pts >= 0 && request.resource.data.pts <= 1400
+        && request.resource.data.sex in ['', 'm', 'f']
+        && request.resource.data.age is int && request.resource.data.age >= 0 && request.resource.data.age <= 110
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.likes == 0 && request.resource.data.legit == 0
+        && request.resource.data.flags == 0 && request.resource.data.comments == 0
+        && (!('video' in request.resource.data) || okVideo(request.resource.data.video));
+      allow update: if signedIn() && (
+        markMoved('likes') || markMoved('legit') || markMoved('flags')
+        || (counterOnly('comments') && request.resource.data.comments == resource.data.comments + 1)
+        || (counterOnly('comments') && request.resource.data.comments == resource.data.comments - 1 && resource.data.uid == me()));
+      allow delete: if signedIn() && resource.data.uid == me();
+
+      match /likes/{uid} {
+        allow read: if signedIn();
+        allow create: if signedIn() && me() == uid && request.resource.data.keys().hasOnly(['at']) && request.resource.data.at == request.time;
+        allow delete: if signedIn() && me() == uid;
+      }
+      match /legit/{uid} {
+        allow read: if signedIn();
+        allow create: if signedIn() && me() == uid && request.resource.data.keys().hasOnly(['at']) && request.resource.data.at == request.time
+          && get(/databases/$(database)/documents/results/$(rid)).data.uid != me();   // no vouching for yourself
+        allow delete: if signedIn() && me() == uid;
+      }
+      match /flags/{uid} {
+        allow read: if signedIn();
+        allow create: if signedIn() && me() == uid && request.resource.data.keys().hasOnly(['at']) && request.resource.data.at == request.time;
+        allow delete: if signedIn() && me() == uid;
+      }
+      match /comments/{cid} {
+        allow read: if signedIn();
+        allow create: if signedIn()
+          && request.resource.data.keys().hasOnly(['uid','name','text','at'])
+          && request.resource.data.uid == me()
+          && str(request.resource.data.name, 40)
+          && request.resource.data.text is string && request.resource.data.text.size() > 0 && request.resource.data.text.size() <= 300
+          && request.resource.data.at == request.time;
+        allow delete: if signedIn() && resource.data.uid == me();
+      }
+    }
+
+    // ---------- best result per player per skill (Arena rankings) ----------
+    match /best/{id} {
+      allow read: if signedIn();
+      allow create, update: if signedIn()
+        && id.matches(me() + '__.*')
+        && request.resource.data.keys().hasOnly(['uid','name','city','skill','v','pts','sex','age','video','result','updatedAt'])
+        && request.resource.data.uid == me()
+        && str(request.resource.data.name, 40) && str(request.resource.data.city, 40) && str(request.resource.data.skill, 60)
+        && request.resource.data.v is number
+        && request.resource.data.pts is int && request.resource.data.pts >= 0 && request.resource.data.pts <= 1400
+        && request.resource.data.sex in ['', 'm', 'f']
+        && request.resource.data.age is int
+        && (request.resource.data.video == '' || okVideo(request.resource.data.video))
+        && str(request.resource.data.result, 40)
+        && request.resource.data.updatedAt == request.time
+        && exists(/databases/$(database)/documents/results/$(request.resource.data.result));
+      allow delete: if signedIn() && resource.data.uid == me();
+    }
+
+    // everything else is closed
+    match /{document=**} { allow read, write: if false; }
+  }
+}
