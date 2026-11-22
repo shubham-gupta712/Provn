@@ -587,7 +587,7 @@ svg{display:block}
     <div class="row"><span data-i="you"></span><span class="sp">Account</span><small>Soon</small></div>
     <div class="row"><span data-i="bell"></span><span class="sp">Notifications</span><small>Soon</small></div>
     <div class="row"><span data-i="lock"></span><span class="sp">Privacy</span><small>Soon</small></div>
-    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Layer 2 · 20261122d</small></div>
+    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Layer 2 · 20261122e</small></div>
   </section>
 
   <div class="cele" id="cele"><div class="cele-in"><div class="cele-m" id="celeM"></div><h2 class="display" id="celeT"></h2><div class="big" id="celeB"></div><p id="celeS"></p><button class="btn primary" id="celeOk"><span>Keep going</span></button></div></div>
@@ -702,47 +702,71 @@ const CATS={
  rfx:{n:'Reflex',w:'mind',col:'#22D3EE',ink:'#053A47',ic:'react'},
  key:{n:'Calc & keys',w:'mind',col:'#818CF8',ink:'#1A1F63',ic:'keys'}
 };
-/* Each row: name, category, type, unit, elite reference (≈1000 pts), recreational median (≈250 pts), [icon], [zero point], [bubble size]
-   types: t = time, lower is better · th = time held, higher is better · n = number, higher is better
-          tl = number, lower is better · bw = kg lifted ÷ body weight · r = rating
-   Reference values are approximate and meant to be reviewed. */
+/* SKILL TABLE — checked against the Cross-Genre Skill Records Catalog (Nov 2026) where it gives a value.
+   Row: name, category, type, unit, world record (≈1200 pts), recreational result (≈250 pts), icon, options
+   types: t time lower-better · th time held · n number higher-better · tl number lower-better · bw kg lifted ÷ body weight · r rating (banded)
+   options: wa=[a,b,c,'t'|'f'] official World Athletics combined-events formula (men's) · x0 zero point · bp rating bands [[rating,points],…] · size
+   Records are men's open records for now; women's and age tables come when profiles store sex and age. */
+const DUPR=[[1,0],[2,100],[3,300],[4,500],[5,700],[6,850],[7,1000],[8,1200]];
+const UTR=[[1,30],[3,300],[5,500],[8,700],[11,850],[13,1000],[16.5,1200]];
+const ELO=[[400,30],[1000,250],[1200,300],[1600,500],[2000,700],[2300,850],[2500,1000],[2823,1200]];
+const PROVN=[[800,0],[1000,100],[1200,300],[1500,500],[1800,700],[2100,850],[2400,1000],[2700,1200]];
 const SKILL_ROWS=[
- ['100m sprint','end','t','sec',9.58,15.5,'bolt'],['400m','end','t','min:sec',43.03,80,'bolt'],['1 mile','end','t','min:sec',223.1,480,'shoe'],
- ['5k run','end','t','min:sec',755,1800,'shoe',0,46],['10k run','end','t','min:sec',1571,3600,'shoe',0,40],['Half marathon','end','t','h:mm:ss',3451,7800,'medal'],
- ['Marathon','end','t','h:mm:ss',7235,16200,'medal',0,40],['Cycling FTP','end','n','W/kg',6.4,2.5,'bike',0,38],['Rowing 2k','end','t','min:sec',335,510,'row'],
- ['Deadlift','str','bw','× body weight',4.0,1.4,'barbell',0,42],['Squat','str','bw','× body weight',3.5,1.2,'kettle',0,38],['Bench press','str','bw','× body weight',2.5,0.9,'bench',0,38],
- ['Overhead press','str','bw','× body weight',1.6,0.55,'dumb'],['Pull-ups','str','n','reps',40,6,'pullup',0,38],['Push-ups','str','n','reps in 1 min',90,25,'pushup',0,40],
- ['Dips','str','n','reps',60,10,'dumb'],['Plank','str','th','min:sec',600,90,'watch'],['Dead hang','str','th','min:sec',300,60,'pullup'],
- ['Vertical jump','pow','n','cm',115,45,'jump'],['Broad jump','pow','n','cm',370,200,'jump'],['Skipping','pow','n','skips in 1 min',300,90,'rope',0,38],
- ['Burpees','pow','n','reps in 1 min',40,15,'jump'],['Beep test','pow','n','level',16,7,'bolt'],
- ['Pickleball','rak','r','Provn rating',2400,1200,'paddle',800,44],['Badminton','rak','r','Provn rating',2400,1200,'shuttle',800,40],['Tennis','rak','r','Provn rating',2400,1200,'tennis',800,40],
- ['Table tennis','rak','r','Provn rating',2400,1200,'tt',800],['Squash','rak','r','Provn rating',2400,1200,'squash',800],['Padel','rak','r','Provn rating',2400,1200,'padel',800],
- ['50m freestyle','wat','t','sec',20.91,45,'swim',0,40],['100m freestyle','wat','t','min:sec',46.4,100,'swim'],['100m breaststroke','wat','t','min:sec',56.88,130,'breast'],
- ['100m butterfly','wat','t','min:sec',49.45,125,'fly'],['100m backstroke','wat','t','min:sec',51.6,120,'swim'],['Open water 1.5k','wat','t','min:sec',870,1800,'swim'],
- ['Boxing','cmb','r','Provn rating',2400,1200,'glove',800,38],['Wrestling','cmb','r','Provn rating',2400,1200,'glove',800],['Judo','cmb','r','Provn rating',2400,1200,'glove',800],
- ['Karate','cmb','r','Provn rating',2400,1200,'glove',800],['MMA','cmb','r','Provn rating',2400,1200,'glove',800],['Fencing','cmb','r','Provn rating',2400,1200,'bolt',800],
- ['Free throws','bal','n','made of 100',97,60,'ball',0,38],['Football juggling','bal','n','touches',500,20,'ball',0,38],['Bowling speed','bal','n','km/h',161,100,'ball'],['Tennis serve speed','bal','n','km/h',263,140,'tennis'],
+ ['100m sprint','end','t','sec',9.58,15.5,'bolt',{wa:[25.4347,18,1.81,'t'],size:40}],['200m','end','t','sec',19.19,32,'bolt'],
+ ['400m','end','t','min:sec',43.03,80,'bolt',{wa:[1.53775,82,1.81,'t']}],['1500m','end','t','min:sec',206.0,420,'shoe',{wa:[0.03768,480,1.85,'t']}],
+ ['1 mile','end','t','min:sec',223.13,480,'shoe'],['5k run','end','t','min:sec',755,1800,'shoe',{size:46}],['10k run','end','t','min:sec',1571,3600,'shoe',{size:40}],
+ ['Half marathon','end','t','h:mm:ss',3402,7800,'medal'],['Marathon','end','t','h:mm:ss',7235,16200,'medal',{size:40}],
+ ['Cycling FTP','end','n','W/kg',6.4,2.5,'bike',{size:38}],['Rowing 2k','end','t','min:sec',335.8,510,'row'],['Murph','end','t','h:mm:ss',1961,2700,'pullup'],
+ ['Deadlift','str','bw','× body weight',4.0,1.4,'barbell',{size:42}],['Squat','str','bw','× body weight',3.5,1.2,'kettle',{size:38}],['Bench press','str','bw','× body weight',2.5,0.9,'bench',{size:38}],
+ ['Overhead press','str','bw','× body weight',1.6,0.55,'dumb'],['Snatch','str','bw','× body weight',2.3,0.7,'barbell'],['Clean & jerk','str','bw','× body weight',2.9,0.9,'barbell'],
+ ['Pull-ups','str','n','reps',40,6,'pullup',{size:38}],['Push-ups','str','n','reps in 1 min',90,25,'pushup',{size:40}],['Dips','str','n','reps',60,10,'dumb'],
+ ['Plank','str','th','min:sec',600,90,'watch'],['Dead hang','str','th','min:sec',300,60,'pullup'],
+ ['Long jump','pow','n','cm',895,400,'jump',{wa:[0.14354,220,1.4,'f']}],['High jump','pow','n','cm',245,130,'jump',{wa:[0.8465,75,1.42,'f']}],
+ ['Shot put','pow','n','m (7.26 kg)',23.56,9,'bull',{wa:[51.39,1.5,1.05,'f']}],['Vertical jump','pow','n','cm',115,45,'jump'],['Standing broad jump','pow','n','cm',370,200,'jump'],
+ ['Skipping','pow','n','skips in 1 min',300,90,'rope',{size:38}],['Burpees','pow','n','reps in 1 min',40,15,'jump'],['Beep test','pow','n','level',16,7,'bolt'],
+ ['Speed climbing','pow','t','sec (15 m wall)',4.54,18,'mountain'],
+ ['Pickleball','rak','r','DUPR',8,3,'paddle',{bp:DUPR,size:44}],['Tennis','rak','r','UTR',16.5,4,'tennis',{bp:UTR,size:40}],['Badminton','rak','r','Provn rating',2700,1200,'shuttle',{bp:PROVN,size:40}],
+ ['Table tennis','rak','r','Provn rating',2700,1200,'tt',{bp:PROVN}],['Squash','rak','r','Provn rating',2700,1200,'squash',{bp:PROVN}],['Padel','rak','r','Provn rating',2700,1200,'padel',{bp:PROVN}],
+ ['50m freestyle','wat','t','sec',20.91,45,'swim',{size:40}],['100m freestyle','wat','t','min:sec',46.40,100,'swim'],['100m breaststroke','wat','t','min:sec',56.88,130,'breast'],
+ ['100m butterfly','wat','t','min:sec',49.45,125,'fly'],['100m backstroke','wat','t','min:sec',51.60,120,'swim'],['Open water 1.5k','wat','t','min:sec',870,1800,'swim'],
+ ['Boxing','cmb','r','Provn rating',2700,1200,'glove',{bp:PROVN,size:38}],['Wrestling','cmb','r','Provn rating',2700,1200,'glove',{bp:PROVN}],['Judo','cmb','r','Provn rating',2700,1200,'glove',{bp:PROVN}],
+ ['Karate','cmb','r','Provn rating',2700,1200,'glove',{bp:PROVN}],['MMA','cmb','r','Provn rating',2700,1200,'glove',{bp:PROVN}],['Fencing','cmb','r','Provn rating',2700,1200,'bolt',{bp:PROVN}],
+ ['Free throws','bal','n','made of 100',97,60,'ball',{size:38,x0:30}],['Football juggling','bal','n','touches',500,20,'ball',{size:38}],['Bowling speed','bal','n','km/h',161,100,'ball',{x0:50}],['Tennis serve speed','bal','n','km/h',263,140,'tennis',{x0:60}],
  ['Handstand hold','flx','th','min:sec',120,10,'hand'],['L-sit hold','flx','th','sec',60,8,'hand'],['Sit and reach','flx','n','cm',45,25,'hand'],['One-leg balance','flx','th','sec eyes closed',120,15,'hand'],
- ['Bouldering','prc','n','V grade',17,3,'mountain',-1,38],['Archery','prc','n','pts of 720',702,450,'bull'],['Darts','prc','n','3-dart average',110,45,'bull'],['Ten-pin bowling','prc','n','average',240,140,'bull'],
- ['Chess','stg','r','Elo',2850,1200,'pawn',400,46],['Go','stg','r','Elo',3800,1600,'grid',800],['Carrom','stg','r','Provn rating',2400,1200,'carrom',800,38],['Scrabble','stg','r','rating',2200,1100,'grid',600],['Checkers','stg','r','Provn rating',2400,1200,'grid',800],
- ["Rubik's cube",'cub','t','sec',3.05,90,'cube',0,44],['2x2 cube','cub','t','sec',0.9,15,'cube'],['4x4 cube','cub','t','min:sec',15.7,180,'cube'],['One-handed cube','cub','t','sec',6.2,120,'cube'],['Pyraminx','cub','t','sec',1.3,15,'cube'],
- ['Sudoku','puz','t','min:sec',90,900,'sudoku',0,40],['Crossword','puz','t','min:sec',120,900,'grid'],['Jigsaw 500','puz','t','h:mm:ss',1700,10800,'puzzle'],
- ['Speed cards','mem','t','min:sec',12.74,900,'cards'],['Number memory','mem','n','digits in 5 min',616,40,'bulb'],['Pi digits','mem','n','digits',10000,30,'pi'],['Names & faces','mem','n','names in 5 min',100,12,'bulb'],
- ['Reaction time','rfx','tl','ms',120,273,'react',0,40],['Aim trainer','rfx','tl','ms per target',300,550,'bull'],['Sequence memory','rfx','n','level',40,9,'grid'],['Verbal memory','rfx','n','score',300,45,'eye'],['Visual memory','rfx','n','level',20,9,'eye'],
- ['Typing','key','n','WPM',216,41,'keys',0,42],['Mental math','key','n','correct in 2 min',140,35,'calc',0,38],['Morse code','key','n','WPM',75,10,'morse']
+ ['Bouldering','prc','n','V grade',17,3,'mountain',{x0:-1,size:38}],['Archery','prc','n','pts of 720',702,450,'bull',{x0:200}],['10m air rifle','prc','n','pts of 654',637.9,570,'bull',{x0:500}],
+ ['Darts','prc','n','3-dart average',110,45,'bull'],['Ten-pin bowling','prc','n','average',240,140,'bull',{x0:60}],
+ ['Sport stacking 3-6-3','prc','t','sec',1.751,4.0,'cards'],['Sport stacking cycle','prc','t','sec',4.739,12,'cards'],
+ ['Chess','stg','r','Elo',2823,1200,'pawn',{bp:ELO,size:46}],['Go','stg','r','Elo',3800,1600,'grid',{x0:800}],['Carrom','stg','r','Provn rating',2700,1200,'carrom',{bp:PROVN,size:38}],
+ ['Scrabble','stg','r','rating',2200,1100,'grid',{x0:600}],['Checkers','stg','r','Provn rating',2700,1200,'grid',{bp:PROVN}],
+ ["Rubik's cube",'cub','t','sec',2.51,90,'cube',{size:44}],['2x2 cube','cub','t','sec',0.39,15,'cube'],['4x4 cube','cub','t','min:sec',15.7,180,'cube'],
+ ['One-handed cube','cub','t','sec',6.2,120,'cube'],['Pyraminx','cub','t','sec',0.73,15,'cube'],['Blindfolded cube','cub','t','min:sec',11.56,300,'cube'],
+ ['Sudoku','puz','t','min:sec',90,900,'sudoku',{size:40}],['Crossword','puz','t','min:sec',120,900,'grid'],['Jigsaw 500','puz','t','h:mm:ss',1700,10800,'puzzle'],
+ ['Speed cards','mem','t','min:sec',12.74,900,'cards'],['Speed numbers','mem','n','digits in 5 min',642,40,'bulb'],['Pi digits','mem','n','digits',10000,30,'pi'],['Names & faces','mem','n','names in 5 min',100,12,'bulb'],
+ ['Reaction time','rfx','tl','ms',120,273,'react',{size:40}],['Aim trainer','rfx','tl','ms per target',300,550,'bull'],['Sequence memory','rfx','n','level',40,9,'grid'],['Verbal memory','rfx','n','score',300,45,'eye'],['Visual memory','rfx','n','level',20,9,'eye'],
+ ['Typing','key','n','WPM',216,41,'keys',{size:42}],['Mental math','key','n','correct in 2 min',140,35,'calc',{size:38}],['Morse code','key','n','WPM',75,10,'morse']
 ];
 const SKILLS={},SKILL_LIST=[];
-SKILL_ROWS.forEach(r=>{const s={name:r[0],cat:r[1],ty:r[2],unit:r[3],ref:r[4],med:r[5],ic:r[6]||CATS[r[1]].ic,x0:r[7]||0,size:r[8]||0};s.w=CATS[s.cat].w;
- s.k=Math.log(.25)/Math.log(ratioOf(s,s.med));SKILLS[s.name]=s;SKILL_LIST.push(s);});
+SKILL_ROWS.forEach(r=>{const o=r[7]||{},s={name:r[0],cat:r[1],ty:r[2],unit:r[3],ref:r[4],med:r[5],ic:r[6]||CATS[r[1]].ic,x0:o.x0||0,size:o.size||0,wa:o.wa,bp:o.bp};s.w=CATS[s.cat].w;
+ s.k=Math.log(250/1200)/Math.log(ratioOf(s,s.med));SKILLS[s.name]=s;SKILL_LIST.push(s);});
 
 /* ================= SCORING ENGINE =================
-   points = 1000 × r^k, where r compares a result with the elite reference (1.0 = reference).
-   k is set per skill so a typical recreational result scores 250. This mirrors the
-   World Aquatics points curve (1000 × (base/time)³), with k fitted per skill instead of 3. */
+   Three methods, all on one 0–1400 scale where a world record ≈ 1200 and national level ≈ 1000:
+   1. Official World Athletics combined-events formulas where they exist: P = a·(b−T)^c for times, P = a·(M−b)^c for jumps and throws.
+   2. Everything else measured: P = 1200 · r^k, where r compares the result with the world record and k is fitted
+      per skill so a typical recreational result scores 250 (same family as World Aquatics' 1000 · (base/time)³).
+   3. Ratings (DUPR, UTR, Elo, Provn rating): mapped through bands so e.g. DUPR 4.0 (Advanced) = 500 pts. */
 function ratioOf(s,x){if(s.ty==='t'||s.ty==='tl')return x>0?s.ref/x:0;return (x-s.x0)/(s.ref-s.x0);}
-function pointsOf(s,x){const r=ratioOf(s,x);if(!(r>0))return 0;return Math.min(1100,Math.round(1000*Math.pow(r,s.k)));}
-function perfFor(s,p){const r=Math.pow(p/1000,1/s.k);if(s.ty==='t'||s.ty==='tl')return s.ref/r;return s.x0+r*(s.ref-s.x0);}
-const LEVELS=[['Beginner',0],['Intermediate',300],['Advanced',500],['Pro',700],['Master',850]];
+function interp(bp,x,inv){const a=inv?1:0,b=inv?0:1;if(x<=bp[0][a])return bp[0][b];for(let i=1;i<bp.length;i++)if(x<=bp[i][a]){const p=bp[i-1],q=bp[i];return p[b]+(q[b]-p[b])*(x-p[a])/(q[a]-p[a]);}
+ const p=bp[bp.length-2],q=bp[bp.length-1];return q[b]+(q[b]-p[b])*(x-q[a])/(q[a]-p[a]);}
+function pointsOf(s,x){let p;
+ if(s.wa){const[a,b,c,m]=s.wa,v=s.unit.startsWith('m ')?x:x;const d=m==='t'?b-x:v-b;p=d>0?a*Math.pow(d,c):0;}
+ else if(s.bp)p=interp(s.bp,x);
+ else{const r=ratioOf(s,x);p=r>0?1200*Math.pow(r,s.k):0;}
+ return Math.max(0,Math.min(1400,Math.round(p)));}
+function perfFor(s,p){if(s.wa){const[a,b,c,m]=s.wa,d=Math.pow(p/a,1/c);return m==='t'?b-d:b+d;}
+ if(s.bp)return interp(s.bp,p,true);
+ const r=Math.pow(p/1200,1/s.k);if(s.ty==='t'||s.ty==='tl')return s.ref/r;return s.x0+r*(s.ref-s.x0);}
+const LEVELS=[['Beginner',0],['Intermediate',300],['Advanced',500],['Pro',700],['Master',850],['Elite',1000]];
 const lvOf=p=>{let i=0;LEVELS.forEach((l,k)=>{if(p>=l[1])i=k});return i};
 const isTime=s=>s.ty==='t'||s.ty==='th';
 function parseTime(v){v=String(v).trim();if(!v)return NaN;const parts=v.split(':').map(Number);if(parts.some(isNaN))return NaN;return parts.reduce((a,b)=>a*60+b,0);}
@@ -752,16 +776,17 @@ function fmtTime(sec){if(!(sec>0))return '—';const h=Math.floor(sec/3600),m=Ma
  if(m)return `${m}:${x%1&&sec<600?x.toFixed(1).padStart(4,'0'):pad(Math.floor(x))}`;
  return sec<60&&sec%1?x.toFixed(2):Math.round(x)+'';}
 function fmtPerf(s,x,bw){if(isTime(s))return fmtTime(x);if(s.ty==='bw')return bw?`${Math.round(x*bw)} kg`:`${x.toFixed(2)}× BW`;
- if(s.ty==='r')return Math.round(x)+'';if(s.name==='Bouldering')return 'V'+Math.max(0,Math.round(x));return (x<20&&x%1)?x.toFixed(1):Math.round(x)+'';}
+ if(s.ty==='r')return s.ref<20?x.toFixed(2):Math.round(x)+'';if(s.name==='Bouldering')return 'V'+Math.max(0,Math.round(x));return (x<30&&x%1)?x.toFixed(1):Math.round(x)+'';}
 function unitShort(s){if(isTime(s))return '';if(s.ty==='bw')return '';return ' '+s.unit;}
 function targetText(s,p){const bw=store.get('bw',0),x=perfFor(s,p);
  if(s.ty==='t')return `Under ${fmtTime(x)}`;if(s.ty==='th')return `Hold ${fmtTime(x)}`;if(s.ty==='tl')return `Under ${Math.round(x)} ${s.unit}`;
- if(s.ty==='bw')return `Lift ${x.toFixed(2)}× body weight${bw?` (${Math.round(x*bw)} kg)`:''}`;if(s.ty==='r')return `Reach ${Math.round(x)} ${s.unit}`;
- if(s.name==='Bouldering')return `Send V${Math.ceil(x)}`;return `${Math.ceil(x)} ${s.unit}`;}
+ if(s.ty==='bw')return `Lift ${x.toFixed(2)}× body weight${bw?` (${Math.round(x*bw)} kg)`:''}`;if(s.ty==='r')return `Reach ${s.unit} ${fmtPerf(s,x)}`;
+ if(s.name==='Bouldering')return `Send V${Math.ceil(x)}`;return `${s.unit.startsWith('m')?x.toFixed(2):Math.ceil(x)} ${s.unit}`;}
 
 /* results */
-const SEED={'5k run':[{v:1386,t:1},{v:1308,t:2}],'Pickleball':[{v:1150,t:3}],'Typing':[{v:68,t:4}]};
+const SEED={'5k run':[{v:1386,t:1},{v:1308,t:2}],'Pickleball':[{v:3.4,t:3}],'Typing':[{v:68,t:4}]};
 const resultsOf=n=>store.get('res_'+n,SEED[n]||[]);
+if(store.get('schema',1)<2){['Pickleball','Tennis'].forEach(n=>{const l=store.get('res_'+n,null);if(l)store.set('res_'+n,l.filter(r=>r.v<20));});store.set('schema',2);}
 function bestOf(n){const s=SKILLS[n];let b=null,bp=-1;resultsOf(n).forEach(r=>{const p=pointsOf(s,r.v);if(p>bp){bp=p;b=r;}});return b?{v:b.v,p:bp}:null;}
 function mySkills(){return SKILL_LIST.filter(s=>resultsOf(s.name).length).map(s=>({s,b:bestOf(s.name)})).sort((a,b)=>b.b.p-a.b.p);}
 /* world score = average of your best 3 skills in that world (missing skills count as 0) */
@@ -866,11 +891,11 @@ function openProve(name,fromPath){proveFromPath=!!fromPath;
 function setupProve(){const s=SKILLS[proveSkill],inp=$('#proveVal');inp.value='';
  inp.inputMode=isTime(s)?'text':'decimal';inp.placeholder=isTime(s)?(s.unit==='h:mm:ss'?'0:00:00':s.unit==='sec'?'0.00':'0:00'):(s.ty==='bw'?'0':'0');
  $('#proveUnit').textContent=s.ty==='bw'?'kg lifted':isTime(s)?s.unit:s.unit;$('#bwField').hidden=s.ty!=='bw';$('#bwVal').value=store.get('bw','')||'';
- $('#proveLead').textContent=`${CATS[s.cat].n} · ${s.w==='mind'?'Mind':'Body'} world${s.ty==='r'?' · ratings come from Provn events later; enter yours for now':''}`;livePreview();}
+ $('#proveLead').textContent=`${CATS[s.cat].n} · ${s.w==='mind'?'Mind':'Body'} world${s.ty==='r'?' · enter your current rating; synced ratings come later':''}`;livePreview();}
 function readVal(){const s=SKILLS[proveSkill],raw=$('#proveVal').value;let x=isTime(s)?parseTime(raw):parseFloat(raw);
  if(s.ty==='bw'){const bw=parseFloat($('#bwVal').value);if(!(bw>0))return {err:'Add your body weight'};x=x/bw;}return {x};}
 function livePreview(){const s=SKILLS[proveSkill],r=readVal(),el=$('#proveLive');
- if(r.err||!(r.x>0)&&!(s.ty==='n'&&s.x0<0&&r.x>=0)){const b=bestOf(s.name);el.innerHTML=r.err&&$('#proveVal').value?r.err:(b?`Your best: ${fmtPerf(s,b.v,store.get('bw',0))}${unitShort(s)} · <b>${b.p} pts</b>`:`Elite reference: ${fmtPerf(s,s.ref)}${unitShort(s)} = 1000 pts`);return;}
+ if(r.err||!(r.x>0)&&!(s.ty==='n'&&s.x0<0&&r.x>=0)){const b=bestOf(s.name);el.innerHTML=r.err&&$('#proveVal').value?r.err:(b?`Your best: ${fmtPerf(s,b.v,store.get('bw',0))}${unitShort(s)} · <b>${b.p} pts</b>`:`World record: ${fmtPerf(s,s.ref)}${unitShort(s)} ≈ ${pointsOf(s,s.ref)} pts`);return;}
  const p=pointsOf(s,r.x),l=lvOf(p),nx=LEVELS[l+1];el.innerHTML=`≈ <b>${p} pts</b> · ${LEVELS[l][0]}${nx?`<br>${nx[0]} at ${nx[1]} pts: ${targetText(s,nx[1])}`:''}`;}
 $('#proveVal').addEventListener('input',livePreview);$('#bwVal').addEventListener('input',livePreview);
 $('#proveTab').onclick=()=>{buzz(14);openProve(Orbit.isOpen()?Path.skill():null,Orbit.isOpen())};
@@ -952,16 +977,16 @@ $('#addSkill').onclick=()=>go('orbit');
    Your level comes straight from your best points, so the path always matches your real score. */
 const mixHex=(a,b,t)=>{const h=x=>[1,3,5].map(i=>parseInt(x.slice(i,i+2),16)),A=h(a),B=h(b);return'#'+A.map((v,i)=>Math.round(v+(B[i]-v)*t).toString(16).padStart(2,'0')).join('')};
 const Path=(()=>{let skill=null,popI=-1;const el=$('#path'),body=$('#pBody'),pop=document.createElement('div');pop.className='pop';
- function steps(s){const out=[];LEVELS.forEach((L,l)=>{const nx=LEVELS[l+1],tp=nx?nx[1]:1000;
+ function steps(s){const out=[];LEVELS.forEach((L,l)=>{const nx=LEVELS[l+1],tp=nx?nx[1]:1200;
   out.push({ic:'star',t:l?'Log a new result':'Log your first result',p:l?'Every result counts toward your form.':'Any result counts. It sets your starting points.'},
    {ic:'video',t:'Post again with proof',p:'Attach a short video so other players can verify your number.'},
-   {ic:'target',t:targetText(s,tp),p:`${tp} pts${nx?` unlocks ${nx[0]}`:' matches the elite reference'}.`},
-   {ic:'chest',t:nx?`${nx[0]} badge`:'Elite badge',p:nx?`Proof you reached ${nx[0]} in ${s.name}.`:'Reserved for elite-level results.'});});return out;}
+   {ic:'target',t:targetText(s,tp),p:`${tp} pts${nx?` unlocks ${nx[0]}`:' is world-record level'}.`},
+   {ic:'chest',t:nx?`${nx[0]} badge`:'World-class badge',p:nx?`Proof you reached ${nx[0]} in ${s.name}.`:'Reserved for world-record-level results.'});});return out;}
  function state(s){const res=resultsOf(s.name),b=bestOf(s.name);if(!b)return{lv:0,done:0,b:null};const lv=lvOf(b.p);
   const since=res.filter(r=>lvOf(pointsOf(s,r.v))>=lv).length,after=res.length-res.findIndex(r=>lvOf(pointsOf(s,r.v))>=lv);
-  const done=Math.min(19,lv*4+Math.min(2,after));return{lv,done,b,since};}
+  const done=Math.min(LEVELS.length*4-1,lv*4+Math.min(2,after));return{lv,done,b,since};}
  function render(popNew){const s=SKILLS[skill],st=state(s),list=steps(s),c=CATS[s.cat];let h='';
-  const bw=store.get('bw',0);h+=`<div class="card pinfo">Elite reference <b>${fmtPerf(s,s.ref,bw)}${unitShort(s)}</b> = 1000 pts · typical recreational <b>${fmtPerf(s,s.med,bw)}${unitShort(s)}</b> ≈ 250 pts${st.b?` · your best <b>${fmtPerf(s,st.b.v,bw)}${unitShort(s)}</b>`:''}</div>`;
+  const bw=store.get('bw',0);h+=`<div class="card pinfo">World record <b>${fmtPerf(s,s.ref,bw)}${unitShort(s)}</b> ≈ ${pointsOf(s,s.ref)} pts · typical recreational <b>${fmtPerf(s,s.med,bw)}${unitShort(s)}</b> ≈ ${pointsOf(s,s.med)} pts${st.b?` · your best <b>${fmtPerf(s,st.b.v,bw)}${unitShort(s)}</b>`:''}</div>`;
   list.forEach((n,i)=>{if(i%4===0){const l=i/4;h+=`<div class="lvl-h ${st.lv===l?'now':''}"><span></span>Level ${l+1} · ${LEVELS[l][0]} <em>${LEVELS[l][1]}+</em><span></span></div>`;}
    const x=Math.round(Math.sin(i*0.8)*70),stt=i<st.done?'done':i===st.done?'cur':'lock';
    h+=`<div class="prow" style="--x:${x}px"><button class="pn ${stt} ${popNew&&i===st.done-1?'pop-in':''}" data-n="${i}" aria-label="${esc(n.t)}"><span class="pi"><span data-i="${stt==='done'?'check':n.ic}"></span></span></button>${stt==='cur'?'<span class="ptip">PROVE IT</span>':''}${stt==='cur'?`<div class="pmas" style="left:calc(50% ${x>=0?'- 154':'+ 58'}px)"><div class="mwrap av3d" data-mode="path">${mascot()}</div><div class="ptag">${esc(pname())}</div></div>`:''}</div>`;});
