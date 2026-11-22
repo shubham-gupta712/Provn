@@ -110,6 +110,7 @@ const Cloud = {
     return list;
   },
   setGoing(id, on, name) { const r = doc(db, 'events', id, 'going', Cloud.user.uid); return on ? setDoc(r, { at: serverTimestamp(), name: (name || 'Player').slice(0, 40) }) : deleteDoc(r); },
+  async venues() { const s = await getDocs(query(collection(db, 'venues'), limit(1000))); return s.docs.map(d => ({ id: d.id, ...d.data() })); },
   async config() { const s = await getDoc(doc(db, 'config', 'app')); return s.exists() ? s.data() : {}; },
   async banned() { return (await getDoc(doc(db, 'bans', Cloud.user.uid))).exists(); },
 
@@ -153,8 +154,14 @@ const Cloud = {
     ban(uid, on) { const r = doc(db, 'bans', uid); return on ? setDoc(r, { at: serverTimestamp(), by: Cloud.user.email }) : deleteDoc(r); },
     saveEvent(e, id) {
       const data = { title: e.title, skill: e.skill || '', date: e.date, time: e.time || '', place: e.place || '', city: e.city || '', spots: e.spots || 0, info: e.info || '', updatedAt: serverTimestamp() };
+      if (typeof e.lat === 'number' && typeof e.lng === 'number') { data.lat = e.lat; data.lng = e.lng; }
       return id ? setDoc(doc(db, 'events', id), data) : addDoc(collection(db, 'events'), data);
     },
+    saveVenue(v, id) {
+      const data = { name: v.name, kind: v.kind, acts: v.acts.slice(0, 12), addr: v.addr || '', phone: v.phone || '', web: v.web || '', info: v.info || '', lat: v.lat, lng: v.lng, city: v.city || '', updatedAt: serverTimestamp() };
+      return id ? setDoc(doc(db, 'venues', id), data) : addDoc(collection(db, 'venues'), data);
+    },
+    deleteVenue(id) { return deleteDoc(doc(db, 'venues', id)); },
     deleteEvent(id) { return deleteDoc(doc(db, 'events', id)); },
     async going(id) { const s = await getDocs(collection(db, 'events', id, 'going')); return s.docs.map(d => ({ uid: d.id, ...d.data() })); },
     setConfig(c) { return setDoc(doc(db, 'config', 'app'), { announce: (c.announce || '').slice(0, 280), updatedAt: serverTimestamp() }); }

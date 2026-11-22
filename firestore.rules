@@ -122,7 +122,7 @@ service cloud.firestore {
       allow read: if signedIn();
       allow write: if isAdmin()
         && (request.resource == null || (
-          request.resource.data.keys().hasOnly(['title','skill','date','time','place','city','spots','info','updatedAt'])
+          request.resource.data.keys().hasOnly(['title','skill','date','time','place','city','spots','info','lat','lng','updatedAt'])
           && str(request.resource.data.title, 60) && request.resource.data.title.size() > 0
           && request.resource.data.date is string && request.resource.data.date.matches('[0-9]{4}-[0-9]{2}-[0-9]{2}')
           && request.resource.data.spots is int));
@@ -133,6 +133,17 @@ service cloud.firestore {
           && request.resource.data.at == request.time && str(request.resource.data.name, 40);
         allow delete: if signedIn() && (me() == uid || isAdmin());
       }
+    }
+
+    // ---------- venues added by the admin (shown on the map) ----------
+    match /venues/{vid} {
+      allow read: if signedIn();
+      allow write: if isAdmin()
+        && (request.resource == null || (
+          request.resource.data.keys().hasOnly(['name','kind','acts','addr','phone','web','info','lat','lng','city','updatedAt'])
+          && str(request.resource.data.name, 60) && request.resource.data.name.size() > 0
+          && request.resource.data.acts is list && request.resource.data.acts.size() <= 12
+          && request.resource.data.lat is number && request.resource.data.lng is number));
     }
 
     // ---------- app settings (announcement) ----------

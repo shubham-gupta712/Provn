@@ -565,10 +565,112 @@ svg{display:block}
 .adm-sw2{width:50px;height:30px;border-radius:16px;background:var(--bg3);position:relative;flex:none;border:var(--card-bd)}
 .adm-sw2 i{position:absolute;left:3px;top:50%;width:22px;height:22px;margin-top:-11px;border-radius:50%;background:var(--text3);transition:all .2s}
 .adm-sw2.on{background:var(--accent)}.adm-sw2.on i{left:23px;background:#fff}
-.adm-pill{position:absolute;z-index:86;left:10px;top:60%;touch-action:none;user-select:none;display:flex;align-items:center;gap:6px;padding:9px 14px 9px 11px;border-radius:22px;transition:left .25s ease,top .05s linear,opacity .2s;background:var(--ink,#171A25);color:#fff;font-size:13px;font-weight:800;box-shadow:0 6px 18px rgba(0,0,0,.35);border:2px solid var(--accent)}
+.adm-pill{position:absolute;z-index:94;left:10px;top:60%;touch-action:none;user-select:none;display:flex;align-items:center;gap:6px;padding:9px 14px 9px 11px;border-radius:22px;transition:left .25s ease,top .05s linear,opacity .2s;background:var(--ink,#171A25);color:#fff;font-size:13px;font-weight:800;box-shadow:0 6px 18px rgba(0,0,0,.35);border:2px solid var(--accent)}
 .adm-pill svg{width:16px;height:16px}
 .adm-pill[hidden]{display:none}
 .gate-x{position:absolute;right:16px;top:calc(var(--safe-t) + 16px);width:42px;height:42px;border-radius:50%;background:var(--bg2);border:var(--card-bd);font-size:24px;font-weight:800;z-index:2}
+
+/* map card in Arena */
+.mapcard{margin-top:18px;padding:18px;overflow:hidden;position:relative;cursor:pointer;min-height:370px;display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(180deg,#0b1430 0%,#13224d 55%,var(--bg2) 100%);color:#fff}
+.mapcard::before{content:'';position:absolute;inset:0;background-image:radial-gradient(1.2px 1.2px at 12% 18%,#fff8,transparent),radial-gradient(1px 1px at 72% 12%,#fff9,transparent),radial-gradient(1.4px 1.4px at 86% 30%,#fff7,transparent),radial-gradient(1px 1px at 30% 8%,#fff8,transparent),radial-gradient(1px 1px at 50% 24%,#fff6,transparent)}
+.mapcard h2{margin:8px 0 4px;font-size:28px;position:relative;color:#fff}
+.mapcard p{margin:0;color:#ffffffc0;font-size:13.5px;font-weight:600;position:relative;line-height:1.4}
+.mapcard .btn{position:relative;margin-top:14px;width:100%;height:50px}
+.mg{position:absolute;left:50%;top:18px;width:150px;height:150px;transform:translateX(-50%)}
+.mg-earth{position:absolute;inset:0;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 35% 30%,#4f9be8,#1d5fae 55%,#0c2f66);box-shadow:inset -22px -16px 40px rgba(0,0,0,.55),0 0 40px rgba(90,160,255,.45)}
+.mg-earth i{position:absolute;height:40%;width:60%;border-radius:45% 55% 40% 60%;background:#4caf6a;opacity:.9;animation:mgspin 14s linear infinite}
+.mg-earth i:nth-child(1){top:18%;left:-10%}.mg-earth i:nth-child(2){top:52%;left:30%;width:45%;height:30%;animation-delay:-5s;background:#c9b27a}.mg-earth i:nth-child(3){top:30%;left:55%;width:35%;height:35%;animation-delay:-9s}
+@keyframes mgspin{from{transform:translateX(-120%)}to{transform:translateX(220%)}}
+.mg-pin{position:absolute;width:12px;height:12px;border-radius:50%;background:#FF6B3D;border:2px solid #fff;animation:mgp 1.6s ease-in-out infinite}
+@keyframes mgp{0%,100%{box-shadow:0 0 0 0 rgba(255,107,61,.7)}50%{box-shadow:0 0 0 9px rgba(255,107,61,0)}}
+.mc-stats{display:flex;gap:16px;margin-top:10px;position:relative}.mc-stats:empty{display:none}
+.mc-stats span{font-size:12px;font-weight:700;color:#ffffffb0}.mc-stats b{font-family:var(--f-display);font-size:20px;color:#fff;margin-right:5px}
+.mc-acts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.mc-a{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 4px;border-radius:16px;background:var(--bg2);border:var(--card-bd);font-size:11.5px;font-weight:800;color:var(--text2);text-align:center;line-height:1.15}
+.mc-a span{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:20px;border:2px solid var(--ink)}
+.adm-loc{display:flex;align-items:center;gap:10px;margin-top:5px;padding:10px 12px;border-radius:14px;background:var(--bg2);border:var(--card-bd);font-size:13.5px;font-weight:700;color:var(--text2)}.adm-loc span{flex:1}
+/* explore map */
+.mx{position:absolute;inset:0;z-index:92;background:#05070f;display:none;overflow:hidden}
+.mx.on{display:block}
+.mx .mx-map{position:absolute!important;inset:0;width:100%;height:100%;background:radial-gradient(ellipse at 50% 45%,#0f1d44 0%,#05070f 70%)}
+.mx-map::before{content:'';position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(1.3px 1.3px at 10% 20%,#fff9,transparent),radial-gradient(1px 1px at 25% 70%,#fff7,transparent),radial-gradient(1.2px 1.2px at 80% 15%,#fffa,transparent),radial-gradient(1px 1px at 65% 85%,#fff6,transparent),radial-gradient(1.5px 1.5px at 90% 60%,#fff8,transparent),radial-gradient(1px 1px at 45% 35%,#fff5,transparent),radial-gradient(1px 1px at 5% 90%,#fff7,transparent)}
+.mx .maplibregl-canvas{outline:0}
+.mx .maplibregl-ctrl-attrib{font-size:10px;margin-bottom:calc(var(--mx-dh,190px) + 6px)!important}
+.mx-top{position:absolute;left:12px;right:12px;top:calc(var(--safe-t) + 12px);display:flex;gap:8px;z-index:3}
+.mx-b{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:rgba(18,22,40,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;border:1.5px solid rgba(255,255,255,.18);flex:none;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+.mx-b svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.mx-b b{font-size:13px;font-weight:900;letter-spacing:.02em}
+.mx-b.on{background:var(--accent);color:var(--on-accent);border-color:transparent}
+.mx-b.busy{animation:mxb 1s linear infinite}@keyframes mxb{50%{opacity:.5}}
+.mx-search{flex:1;min-width:0;height:46px;display:flex;align-items:center;gap:8px;padding:0 14px;border-radius:23px;background:rgba(18,22,40,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1.5px solid rgba(255,255,255,.18);box-shadow:0 4px 14px rgba(0,0,0,.35)}
+.mx-search svg{width:19px;height:19px;fill:none;stroke:#ffffffa0;stroke-width:2.2;stroke-linecap:round;flex:none}
+.mx-search input{flex:1;min-width:0;background:none;border:0;outline:0;color:#fff;font-size:15px;font-weight:600}
+.mx-search input::placeholder{color:#ffffff80}
+.mx-search button{width:24px;height:24px;border-radius:50%;background:#ffffff26;color:#fff;font-weight:800}
+.mx-chips{position:absolute;left:0;right:0;top:calc(var(--safe-t) + 66px);display:flex;gap:7px;overflow-x:auto;padding:0 12px 6px;z-index:3;scrollbar-width:none}
+.mx-chips::-webkit-scrollbar{display:none}
+.mx-chip{flex:none;display:flex;align-items:center;gap:5px;padding:8px 13px 8px 10px;border-radius:20px;background:rgba(18,22,40,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1.5px solid rgba(255,255,255,.16);color:#fff;font-size:13px;font-weight:800;white-space:nowrap}
+.mx-chip.on{background:#fff;color:#111}
+.mx-ctl{position:absolute;right:12px;top:calc(var(--safe-t) + 122px);display:flex;flex-direction:column;gap:8px;z-index:3}
+.mx-cross{position:absolute;left:50%;top:50%;z-index:2;pointer-events:none}
+.mx-cross i{position:absolute;left:-15px;top:-42px;width:30px;height:42px;background:var(--accent);clip-path:path('M15 42C15 42 0 24 0 15a15 15 0 0 1 30 0c0 9-15 27-15 27z');filter:drop-shadow(0 3px 4px rgba(0,0,0,.5))}
+.mx-cross::after{content:'';position:absolute;left:-4px;top:-4px;width:8px;height:8px;border-radius:50%;background:#000;opacity:.5}
+.mx-drawer{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:12px 0 calc(var(--safe-b) + 14px);background:linear-gradient(180deg,transparent,rgba(5,7,15,.55) 30%)}
+.mx-dh{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;padding:0 16px 10px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+.mx-dh b{display:block;font-size:17px;font-weight:800}.mx-dh small{display:block;font-size:12.5px;font-weight:700;color:#ffffffb0}
+.mx-chipb{padding:7px 12px;border-radius:16px;background:rgba(255,255,255,.16);color:#fff;font-size:12.5px;font-weight:800;flex:none}
+.mx-drawer.det .mx-dh{display:none}
+.mx-cards{display:flex;gap:10px;overflow-x:auto;padding:0 16px 2px;scroll-snap-type:x mandatory;scrollbar-width:none}
+.mx-cards::-webkit-scrollbar{display:none}
+.mx-card{flex:none;width:min(78vw,300px);scroll-snap-align:start;display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:20px;background:var(--bg2);border:var(--card-bd);text-align:left;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.mx-ic{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:21px;flex:none;border:2.5px solid var(--ink)}
+.mx-ic.big{width:56px;height:56px;font-size:27px}
+.mx-ct{flex:1;min-width:0}
+.mx-ct b{display:block;font-size:15px;line-height:1.25;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.mx-ct small{display:block;font-size:12.5px;font-weight:700;color:var(--text3);margin-top:3px}
+.mx-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.mx-tags em{font-style:normal;padding:3px 8px;border-radius:10px;background:var(--bg3);font-size:11.5px;font-weight:700;color:var(--text2)}
+.mx-tags.big{margin:12px 0 4px}.mx-tags.big em{font-size:13px;padding:5px 10px}
+.mx-ver{font-style:normal;color:var(--accent);font-weight:900}
+.mx-live{font-style:normal;color:#fff;background:#EF4444;padding:1px 6px;border-radius:6px;font-size:10.5px;font-weight:900;letter-spacing:.05em}
+.mx-empty{flex:1;margin:0 0 4px;padding:16px;border-radius:18px;background:var(--bg2);color:var(--text2);font-size:14px;font-weight:600;text-align:center}
+.mx-detail{position:relative;margin:0 12px;padding:16px;border-radius:24px;background:var(--bg2);border:var(--card-bd);box-shadow:0 10px 30px rgba(0,0,0,.45);max-height:58vh;overflow-y:auto;animation:fadeUp .25s ease both}
+.mx-x{position:absolute;right:12px;top:12px;width:34px;height:34px;border-radius:50%;background:var(--bg3);font-size:20px;font-weight:800;color:var(--text2)}
+.mx-dt{display:flex;gap:12px;align-items:center;padding-right:36px}
+.mx-dt b{display:block;font-size:21px;line-height:1.15}.mx-dt small{display:block;font-size:12.5px;font-weight:700;color:var(--text3);margin-top:3px}
+.mx-p{margin:8px 0 0;font-size:13.5px;font-weight:600;color:var(--text2);line-height:1.4}
+.mx-here{margin-top:12px;padding:10px 12px;border-radius:14px;background:var(--bg3)}
+.mx-here div+div{margin-top:8px}.mx-here b{display:block;font-size:14px}.mx-here small{font-size:12px;font-weight:700;color:var(--text3)}
+.mx-row{display:flex;gap:8px;margin-top:14px}.mx-row .btn{flex:1;height:46px;text-decoration:none;display:grid;place-items:center}
+.mx-log{width:100%;height:44px;margin-top:8px}
+.mx-src{margin:10px 0 0;font-size:11px;font-weight:600;color:var(--text3)}
+.mx-pick{margin:0 12px;padding:14px;border-radius:22px;background:var(--bg2);border:var(--card-bd)}
+.mx-pick p{margin:0;font-size:14px;font-weight:700;text-align:center;color:var(--text2)}
+.mx.picking .mx-chips,.mx.picking .mx-ctl{display:none}
+.mx-form{position:absolute;inset:0;z-index:5;background:rgba(0,0,0,.55);display:flex;align-items:flex-end}
+.mx-form[hidden]{display:none}
+.mx-fi{width:100%;max-height:88%;overflow-y:auto;padding:18px 16px calc(var(--safe-b) + 18px);border-radius:24px 24px 0 0;background:var(--bg2)}
+.mx-fi h3{margin:0;font-size:24px}
+.mx-fi label{display:block;margin-top:12px;font-size:12px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.05em}
+.mx-fi input,.mx-fi select{display:block;width:100%;margin-top:5px;padding:11px 13px;border-radius:13px;background:var(--bg3);border:var(--card-bd);font:inherit;font-size:15px;font-weight:600;color:var(--text);outline:0;text-transform:none;letter-spacing:0}
+.mx-two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mx-fchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.mx-fchips button{padding:7px 11px;border-radius:16px;background:var(--bg3);font-size:13px;font-weight:700}
+.mx-fchips button.on{background:var(--accent);color:var(--on-accent)}
+.mx-pin{display:flex;flex-direction:column;align-items:center;animation:pop .4s ease both}
+.mx-pin span{width:46px;height:46px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:grid;place-items:center;font-size:22px;border:3px solid #fff;box-shadow:0 6px 16px rgba(0,0,0,.5)}
+.mx-pin span b{transform:rotate(45deg);font-weight:400}
+.mx-cl{border-radius:50%;background:#FF6B3D;color:#fff;font-weight:900;font-size:14px;border:3px solid #fff;box-shadow:0 4px 12px rgba(0,0,0,.45);display:grid;place-items:center}
+.mx-ev{position:relative;width:40px;height:40px;border-radius:50%;background:#FFC23D;border:3px solid #fff;display:grid;place-items:center;font-size:19px;box-shadow:0 4px 12px rgba(0,0,0,.45)}
+.mx-ev.live{animation:mxlive 1.4s ease-in-out infinite}
+@keyframes mxlive{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.8)}50%{box-shadow:0 0 0 14px rgba(239,68,68,0)}}
+.mx-ev i{position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-style:normal;font-size:9px;font-weight:900;color:#fff;background:#EF4444;padding:1px 5px;border-radius:6px}
+.mx-me{width:18px;height:18px;border-radius:50%;background:#3B82F6;border:3px solid #fff;box-shadow:0 0 0 8px rgba(59,130,246,.25)}
+.mx-load{position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#fff;background:#05070f;transition:opacity .6s}
+.mx-load.out{opacity:0;pointer-events:none}
+.mx-load b{font-size:15px;font-weight:700;color:#ffffffc0}
+.mx-spin{width:58px;height:58px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#4f9be8,#1d5fae 55%,#0c2f66);box-shadow:0 0 30px rgba(90,160,255,.5);animation:mxsp 1.6s ease-in-out infinite}
+@keyframes mxsp{50%{transform:scale(.88)}}
 
 /* sign-in gate */
 .gate{position:absolute;inset:0;z-index:90;background:var(--bg);display:flex;flex-direction:column;padding:calc(var(--safe-t) + 40px) 24px calc(var(--safe-b) + 26px);transition:opacity .35s ease,transform .35s ease}
@@ -764,8 +866,16 @@ svg{display:block}
         <div id="ranks"></div>
       </div>
       <div class="pane" id="p-map">
-        <div class="card globe-card"><div class="globe"><span class="pin" style="left:62%;top:48%"></span><span class="pin" style="left:40%;top:36%;animation-delay:.6s"></span><span class="pin" style="left:52%;top:64%;animation-delay:1.2s"></span></div>
-        <h3 class="display" style="margin:0 0 6px;font-size:22px">The globe is coming soon</h3><p style="margin:0;color:var(--text2);font-size:14px;font-weight:600">Players and events near you on a live map.</p></div>
+        <div class="card mapcard" id="openMap">
+          <div class="mg"><div class="mg-earth"><i></i><i></i><i></i></div><span class="mg-pin" style="left:58%;top:44%"></span><span class="mg-pin" style="left:63%;top:52%;animation-delay:.5s"></span><span class="mg-pin" style="left:54%;top:55%;animation-delay:1s"></span></div>
+          <span class="chip hot" style="position:relative">Now live in Ahmedabad</span>
+          <h2 class="display">Explore the map</h2>
+          <p>Courts, grounds, clubs and tournaments around you. Spin the globe and dive down to street level.</p>
+          <div class="mc-stats" id="mcStats"></div>
+          <button class="btn primary"><span>Open the map</span></button>
+        </div>
+        <div class="sec-h"><h3 class="display">Find a place to play</h3></div>
+        <div class="mc-acts" id="mcActs"></div>
       </div>
     </section>
 
@@ -834,7 +944,7 @@ svg{display:block}
     <div class="row" id="acctRow" style="cursor:pointer"><span data-i="you"></span><span class="sp">Account</span><small id="acctTxt">Sign out</small></div>
     <div class="row"><span data-i="bell"></span><span class="sp">Notifications</span><small>Soon</small></div>
     <div class="row"><span data-i="lock"></span><span class="sp">Privacy</span><small>Soon</small></div>
-    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261122d</small></div>
+    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261122e</small></div>
   </section>
 
   <div class="cele" id="cele"><div class="cele-in"><div class="cele-m" id="celeM"></div><h2 class="display" id="celeT"></h2><div class="big" id="celeB"></div><p id="celeS"></p><button class="btn primary" id="celeOk"><span>Keep going</span></button></div></div>
@@ -1356,10 +1466,17 @@ async function renderRanks(){const sel=$('#rkSkill');if(!sel.options.length){con
  $('#podium').innerHTML=[1,0,2].filter(k=>top[k]).map(k=>`<div class="card pod ${k===0?'p1':''}"><div class="av" style="background:${cols[k]}">${esc(top[k].n[0].toUpperCase())}</div><b>${esc(top[k].n)}</b><small>${fp(top[k].v)} · ${top[k].p}</small><div class="rk display">${k+1}</div></div>`).join('');
  $('#ranks').innerHTML=rows.slice(3,50).map((r,k)=>`<div class="card rank ${r.me?'me':''}"><span class="n">${k+4}</span><div class="av" style="width:32px;height:32px;font-size:12px;background:${cols[(k+3)%5]}">${esc(r.n[0].toUpperCase())}</div><span class="nm">${esc(r.n)}</span><span class="val">${fp(r.v)}<small>${r.p} pts</small></span></div>`).join('');}
 $('#rkSkill').onchange=()=>renderRanks();
+/* ---- explore map (lazy) ---- */
+function openMap(o){if(!window.ProvnMap){toast('Map is loading…');return;}buzz(10);ProvnMap.open(o||{});}
+$('#openMap').onclick=()=>openMap();
+function renderMapPane(){const P=window.ProvnMap;if(!P)return;
+ $('#mcActs').innerHTML=[{k:'events',n:'Tournaments',e:'🏆',col:'#FFC23D'},...P.ACTS.filter(a=>a.k!=='multi')].map(a=>`<button class="mc-a press" data-k="${a.k}"><span style="background:${a.col}">${a.e}</span>${a.n}</button>`).join('');
+ $$('#mcActs .mc-a').forEach(b=>b.onclick=()=>openMap({filter:b.dataset.k}));
+ const n=P.cached();$('#mcStats').innerHTML=n?`<span><b>${n}</b>places mapped</span><span><b>1</b>city</span>`:'';}
 $$('#rkScope button').forEach(b=>b.onclick=()=>{rkScope=b.dataset.sc;buzz(6);renderRanks();});
 let segI=0;
 function moveSeg(anim){const si=$('#seg .si');if(!si)return;const w=si.offsetWidth;if(!anim)si.style.transition='none';si.style.transform=`translateX(${segI*(w)}px)${document.documentElement.dataset.theme==='volt'?' skewX(-10deg)':''}`;if(!anim){si.offsetWidth;si.style.transition='';}}
-$$('#seg button').forEach((b,k)=>b.onclick=()=>{if(segI===k)return;segI=k;buzz(6);$$('#seg button').forEach((x,j)=>x.classList.toggle('on',j===k));$$('.pane').forEach(p=>p.classList.toggle('on',p.id==='p-'+b.dataset.p));if(b.dataset.p==='ranks')renderRanks();moveSeg(true);});
+$$('#seg button').forEach((b,k)=>b.onclick=()=>{if(b.dataset.p==='map')renderMapPane();if(segI===k)return;segI=k;buzz(6);$$('#seg button').forEach((x,j)=>x.classList.toggle('on',j===k));$$('.pane').forEach(p=>p.classList.toggle('on',p.id==='p-'+b.dataset.p));if(b.dataset.p==='ranks')renderRanks();moveSeg(true);});
 
 /* ================= YOU ================= */
 const You={render(){const ae=document.activeElement;if(!(ae&&ae.closest&&ae.closest('[data-pf] input')))renderPF();if(!$('#youM .av3d'))$('#youM').innerHTML=`<div class="av3d" data-mode="you">${mascot()}</div>`;const ni=$('#nameIn');if(document.activeElement!==ni)ni.value=store.get('name','');ni.placeholder='Your name';
@@ -1888,7 +2005,7 @@ async function renderEvents(){if(!CU()||evBusy)return;evBusy=true;
 const Admin={tab:'overview',
  on:()=>!!(CU()&&Cloud.isAdmin&&Cloud.isAdmin()),
  sync(){const a=this.on();$('#admRow').hidden=!a;$('#admPill').hidden=!a||!$('#adm').hidden;if(!a)$('#adm').hidden=true;},
- open(){if(!this.on())return;$('#adm').hidden=false;$('#admPill').hidden=true;$('#admWho').textContent=Cloud.user.email;this.render();},
+ open(keep){if(!this.on())return;$('#adm').hidden=false;$('#admPill').hidden=true;$('#admWho').textContent=Cloud.user.email;if(!keep||!$('#admBody').children.length)this.render();},
  player(){$('#adm').hidden=true;$('#admPill').hidden=false;buzz(8);},
  body:()=>$('#admBody'),
  confirm(b,fn){if(b.dataset.armed){fn();return;}b.dataset.armed=1;const t=b.textContent;b.textContent='Tap again';b.classList.add('warn');setTimeout(()=>{if(b.isConnected){delete b.dataset.armed;b.textContent=t;b.classList.remove('warn');}},3000);},
@@ -1941,13 +2058,16 @@ const Admin={tab:'overview',
     <div class="two"><label>Date<input id="evD" type="date" value="${esc(e.date||'')}"></label><label>Time<input id="evTm" maxlength="12" value="${esc(e.time||'')}" placeholder="7:00 am"></label></div>
     <label>Venue<input id="evP" maxlength="60" value="${esc(e.place||'')}" placeholder="Marine Drive"></label>
     <div class="two"><label>City<input id="evC" maxlength="30" value="${esc(e.city||'')}" placeholder="Mumbai"></label><label>Spots<input id="evN" inputmode="numeric" maxlength="5" value="${e.spots||''}" placeholder="No limit"></label></div>
+    <label>Location on map</label><div class="adm-loc"><span id="evLoc">${e.lat!=null?`📍 ${(+e.lat).toFixed(5)}, ${(+e.lng).toFixed(5)}`:'Not set · the event won\'t show on the map'}</span><button class="adm-b" id="evPick">Pick on map</button></div>
     <label>Details<textarea id="evI" maxlength="300" placeholder="What to bring, how results are measured…">${esc(e.info||'')}</textarea></label>
     <datalist id="evSkills">${SKILL_LIST.map(s=>`<option value="${esc(s.name)}">`).join('')}</datalist>
     <div class="adm-row"><button class="btn primary" id="evSave"><span>${edit?'Save changes':'Create event'}</span></button>${edit?'<button class="btn ghost" id="evCancel"><span>Cancel</span></button>':''}</div>
    </div>
    <h3 class="adm-h3">All events</h3>`+(list.length?list.map(x=>{const f=fmtDate(x.date);return`<div class="adm-r" data-e="${x.id}"><div class="adm-rt"><b>${esc(x.title)}${x.past?' <em class="ban">Past</em>':''}</b><span>${f.w} ${f.d} ${f.m}${x.time?' · '+esc(x.time):''} · ${esc([x.place,x.city].filter(Boolean).join(', '))}</span><small>${x.going} going${x.spots?' of '+x.spots:''}</small></div><button class="adm-b" data-a="who">Going</button><button class="adm-b" data-a="edit">Edit</button><button class="adm-b red" data-a="del">Delete</button></div>`;}).join(''):'<p class="adm-p">No events yet.</p>');
   cityAuto($('#evC'),()=>{});
-  $('#evSave').onclick=async()=>{const ev={title:$('#evT').value.trim(),skill:$('#evS').value.trim(),date:$('#evD').value,time:$('#evTm').value.trim(),place:$('#evP').value.trim(),city:$('#evC').value.trim(),spots:parseInt($('#evN').value)||0,info:$('#evI').value.trim()};
+  let evLat=e.lat??null,evLng=e.lng??null;
+  $('#evPick').onclick=()=>{Admin.player();openMap({pick:r=>{Admin.open(true);setTimeout(()=>{if(r){evLat=r.lat;evLng=r.lng;const l=$('#evLoc');if(l)l.textContent=`📍 ${r.lat.toFixed(5)}, ${r.lng.toFixed(5)}`;toast('Location set');}},0);}});};
+  $('#evSave').onclick=async()=>{const ev={title:$('#evT').value.trim(),skill:$('#evS').value.trim(),date:$('#evD').value,time:$('#evTm').value.trim(),place:$('#evP').value.trim(),city:$('#evC').value.trim(),spots:parseInt($('#evN').value)||0,info:$('#evI').value.trim()};if(evLat!=null){ev.lat=evLat;ev.lng=evLng;}
    if(!ev.title||!ev.date){toast('Title and date are needed');return;}if(ev.skill&&!SKILLS[ev.skill]){toast('Pick a skill from the list, or leave it empty');return;}
    try{await Cloud.admin.saveEvent(ev,edit&&edit.id);toast(edit?'Event updated':'Event created · players see it in Arena');this.t_events(B);renderEvents();}catch(er){this.err(er)}};
   if(edit)$('#evCancel').onclick=()=>this.t_events(B);
@@ -1963,7 +2083,9 @@ const Admin={tab:'overview',
    <div class="adm-tool"><div><b>Sign-in screen</b><small>See what new players see first</small></div><button class="adm-b" id="tGate">Preview</button></div>
    <div class="adm-tool"><div><b>Celebrations</b><small>Level up, new PB, theme unlock</small></div><div class="adm-row tight"><button class="adm-b" data-cl="0">Level</button><button class="adm-b" data-cl="1">PB</button><button class="adm-b" data-cl="2">Unlock</button></div></div>
    <div class="adm-tool"><div><b>Reload my data</b><small>Pull your profile and results from the cloud again</small></div><button class="adm-b" id="tSync">Sync</button></div>
-   <div class="adm-tool"><div><b>App version</b><small>${esc($('#verTxt').textContent)}</small></div><button class="adm-b" id="tReload">Reload app</button></div>`;
+   <div class="adm-tool"><div><b>App version</b><small>${esc($('#verTxt').textContent)}</small></div><button class="adm-b" id="tReload">Reload app</button></div>
+   <div class="adm-tool"><div><b>Map places</b><small>Reload courts and grounds from OpenStreetMap</small></div><button class="adm-b" id="tOsm">Refresh</button></div>`;
+  $('#tOsm').onclick=()=>{localStorage.removeItem('provn_osm_ahmedabad');toast('Places will reload next time the map opens');setTimeout(()=>location.reload(),900);};
   $('#tDev').onclick=()=>{store.set('dev',!dev);renderThemePicker&&renderThemePicker();this.t_test(B);};
   $$('[data-th]',B).forEach(b=>b.onclick=()=>{if(!unlocked(b.dataset.th)){toast('Turn on "Unlock all looks" first');return;}theme=b.dataset.th;store.set('theme',theme);applyTheme(theme);renderThemePicker();pushProfile();this.t_test(B);});
   $('#tOnb').onclick=async()=>{this.player();const p=await Onb.run({name:store.get('name',''),city:store.get('city','')});await Cloud.saveProfile({...cloudProfile()}).catch(e=>this.err(e));renderPF();You.render();this.open();};
@@ -1999,5 +2121,6 @@ setTimeout(()=>$('#orbitHint').style.opacity=0,6000);
 </script>
 <script type="module" src="avatar3d.js"></script>
 <script type="module" src="cloud.js"></script>
+<script src="map.js" defer></script>
 </body>
 </html>
