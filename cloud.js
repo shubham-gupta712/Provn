@@ -42,6 +42,7 @@ const Cloud = {
     if (!Cloud.user) return Promise.resolve();
     const clean = {};
     if (typeof p.sexAt === 'number') clean.sexAt = Math.round(p.sexAt);
+    if (Array.isArray(p.interests)) clean.interests = p.interests.slice(0, 20).map(x => String(x).slice(0, 60));
     ['name', 'sex', 'city', 'char', 'theme'].forEach(k => { if (typeof p[k] === 'string') clean[k] = p[k].slice(0, 40); });
     if (typeof p.photo === 'string' && p.photo.startsWith('https://')) clean.photo = p.photo.slice(0, 400);
     if (p.age) clean.age = Math.round(p.age);

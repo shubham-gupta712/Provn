@@ -46,7 +46,7 @@ service cloud.firestore {
     match /users/{uid} {
       allow read: if signedIn();
       allow create, update: if signedIn() && me() == uid
-        && request.resource.data.keys().hasOnly(['name','sex','sexAt','city','char','theme','photo','age','bw','updatedAt'])
+        && request.resource.data.keys().hasOnly(['name','sex','sexAt','city','char','theme','photo','age','bw','interests','updatedAt'])
         && (!('name'  in request.resource.data) || str(request.resource.data.name, 40))
         && (!('sex'   in request.resource.data) || request.resource.data.sex in ['', 'm', 'f'])
         && (!('city'  in request.resource.data) || str(request.resource.data.city, 40))
@@ -55,6 +55,7 @@ service cloud.firestore {
         && (!('photo' in request.resource.data) || str(request.resource.data.photo, 400))
         && (!('age'   in request.resource.data) || (request.resource.data.age is int && request.resource.data.age >= 0 && request.resource.data.age <= 110))
         && (!('sexAt' in request.resource.data) || request.resource.data.sexAt is int)
+        && (!('interests' in request.resource.data) || (request.resource.data.interests is list && request.resource.data.interests.size() <= 20))
         && (!('bw'    in request.resource.data) || (request.resource.data.bw is number && request.resource.data.bw >= 0 && request.resource.data.bw <= 400))
         && request.resource.data.updatedAt == request.time;
       allow delete: if signedIn() && me() == uid;

@@ -727,6 +727,19 @@ svg{display:block}
 .up-sugg b{flex:1;font-size:14.5px}.up-sugg small{font-size:12px;color:var(--text3);font-weight:700}
 .sv{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:#171A25;font-weight:900;overflow:hidden;flex:none}.sv img{width:100%;height:100%;object-fit:cover}.sv svg{width:16px;height:16px}
 
+/* interests */
+.int-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.int-c{display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 6px;border-radius:22px;background:var(--bg2);border:var(--card-bd);font-size:14px;font-weight:800}
+.int-c .ic,.ip .ic{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:#171A25;border:2px solid var(--ink);flex:none}.int-c .ic svg,.ip .ic svg{width:15px;height:15px}
+.int-c em{font-style:normal;font-size:11.5px;padding:2px 7px;border-radius:9px;background:var(--accent);color:var(--on-accent)}
+.int-empty{line-height:1.5}.int-empty .btn{margin-top:12px}
+.int-pick{max-height:52vh;overflow-y:auto;margin-top:10px}
+.ip-g{margin-top:12px}.ip-g small{display:block;font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.ip-row{display:flex;flex-wrap:wrap;gap:7px}
+.ip{display:inline-flex;align-items:center;gap:7px;padding:5px 11px 5px 5px;border-radius:20px;background:var(--bg3);font-size:13.5px;font-weight:700;color:var(--text2);border:2px solid transparent}
+.ip.on{border-color:var(--accent);color:var(--text);background:color-mix(in srgb,var(--accent) 18%,var(--bg3))}
+.int-f{display:flex;align-items:center;gap:12px;margin-top:12px}.int-f small{flex:1;font-weight:800;color:var(--text3)}.int-f .btn{height:48px;padding:0 28px}
+
 /* account */
 .acct2{padding:14px;margin-top:18px}
 .ac-row{display:flex;align-items:center;gap:12px}
@@ -803,7 +816,7 @@ svg{display:block}
 .gate[hidden]{display:none}
 .gate.out{opacity:0;transform:scale(1.04);pointer-events:none}
 .gate>*:not(.gate-bg){position:relative;z-index:1}
-.gate-bg{position:absolute;left:0;right:0;top:calc(var(--safe-t) + 84px);height:48%;overflow:hidden;pointer-events:none}
+.gate-bg{position:absolute;left:0;right:0;top:calc(var(--safe-t) + 80px);height:54%;overflow:hidden;pointer-events:none}
 .gate-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,color-mix(in srgb,var(--bg) 20%,transparent) 0%,color-mix(in srgb,var(--bg) 45%,transparent) 50%,var(--bg) 92%)}
 .gb{position:absolute;border-radius:50%;display:grid;place-items:center;border:3px solid var(--ink);color:rgba(23,26,37,.85);box-shadow:inset -6px -8px 0 rgba(0,0,0,.12);animation:gbFloat var(--d) ease-in-out infinite alternate}
 .gb svg{width:46%;height:46%}
@@ -812,7 +825,8 @@ svg{display:block}
 [data-theme="volt"] .gb{border-radius:14px;transform:skewX(-8deg)}
 .gate-wm{font-size:44px}
 .gate-mid{flex:1;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:22px}
-.gate-h{font-size:42px;line-height:1.02;margin:0 0 18px}
+.gate-h{font-size:44px;line-height:1.02;margin:0 0 8px;text-shadow:0 2px 14px var(--bg),0 0 2px var(--bg)}
+.gate-sub{margin:0 0 18px;font-size:16px;font-weight:700;color:var(--text2);text-shadow:0 1px 8px var(--bg)}
 .gate-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .gate-list li{display:flex;gap:12px;align-items:center;padding:11px 12px;border-radius:18px;background:color-mix(in srgb,var(--bg2) 88%,transparent);border:var(--card-bd);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 .gate-list li>span{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--bg3);font-size:19px;flex:none}
@@ -1017,8 +1031,9 @@ svg{display:block}
       <div class="prof"><div class="pm" id="youM"></div><div class="pn2"><input class="nameIn" id="nameIn" maxlength="18" aria-label="Your player name" readonly><p id="youSub"></p><button class="btn ghost chg" id="chgPlayer"><span>Change player</span></button></div></div>
       <div class="card pinfo" id="youInfo"></div>
       <div class="wgrid" id="wgrid"></div>
-      <div class="sec-h"><h3 class="display">Your skills</h3><a id="addSkill">Add skill</a></div>
-      <div class="slist" id="slist"></div>
+      <div class="sec-h"><h3 class="display">Your interests</h3><a id="intEdit">Edit</a></div>
+      <div id="intList"></div>
+      <div class="slist" id="slist" hidden></div><a id="addSkill" hidden></a>
       <div class="card acct2" id="acctCard"></div>
       
     </section>
@@ -1066,6 +1081,15 @@ svg{display:block}
     <button class="btn primary" style="width:100%;margin-top:16px" id="upPost"><span>Post</span></button>
   </section>
 
+  <section class="sheet" id="sh-int" aria-label="Your interests">
+    <div class="handle"></div>
+    <h2 class="display">Your interests</h2>
+    <p class="lead">Pick what you play, train or want to get better at.</p>
+    <label class="up-act" style="margin-top:12px"><span data-i="search"></span><input id="intQ" placeholder="Search sports and skills" autocomplete="off"></label>
+    <div class="int-pick" id="intPick"></div>
+    <div class="int-f"><small id="intCount"></small><button class="btn primary" id="intSave"><span>Save</span></button></div>
+  </section>
+
   <section class="sheet" id="sh-pedit" aria-label="Edit player details">
     <div class="handle"></div>
     <h2 class="display">Edit details</h2>
@@ -1101,7 +1125,7 @@ svg{display:block}
     <div class="row" id="acctRow" style="cursor:pointer"><span data-i="you"></span><span class="sp">Account</span><small id="acctTxt">Sign out</small></div>
     <div class="row"><span data-i="bell"></span><span class="sp">Notifications</span><small>Soon</small></div>
     <div class="row"><span data-i="lock"></span><span class="sp">Privacy</span><small>Soon</small></div>
-    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261123g</small></div>
+    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261123h</small></div>
   </section>
 
   <div class="cele" id="cele"><div class="cele-in"><div class="cele-m" id="celeM"></div><h2 class="display" id="celeT"></h2><div class="big" id="celeB"></div><p id="celeS"></p><button class="btn primary" id="celeOk"><span>Keep going</span></button></div></div>
@@ -1113,9 +1137,9 @@ svg{display:block}
     <div class="gate-bg" id="gateBg" aria-hidden="true"></div>
     <div class="gate-top"><div class="wordmark gate-wm">provn<i></i></div></div>
     <div class="gate-mid">
-      <h1 class="display gate-h">Prove what<br>you can do.</h1>
+      <h1 class="display gate-h">Showcase<br>your skills.</h1>
+      <p class="gate-sub">Improve, track and get ranked in the things you love.</p>
       <ul class="gate-list">
-        <li><span>⚡</span><div><b>173 skills, one score</b><small>From 5k runs to Rubik's cubes, every result is scored out of 1200.</small></div></li>
         <li><span>🏆</span><div><b>See where you stand</b><small>Rank against players in your city, state, country and the world.</small></div></li>
         <li><span>📍</span><div><b>Find places to play</b><small>Courts, grounds, clubs and tournaments near you.</small></div></li>
       </ul>
@@ -1746,7 +1770,7 @@ const You={render(){const ae=document.activeElement;if(!(ae&&ae.closest&&ae.clos
   return `<div class="card wcard ${u?'open':''}"><small>${label} world</small><b>${sc}</b><span class="lv">${LEVELS[l][0]}</span><div class="bar"><i style="width:${Math.min(100,sc/req*100)}%"></i></div><div class="unl"><span data-i="${u?'unlock':'lock'}"></span>${u?`${THEMES[t].name} unlocked`:`${THEMES[t].name} at ${req}`}</div></div>`;}).join('');
  $('#slist').innerHTML=ms.length?ms.map(({s,b})=>{const c=CATS[s.cat];return `<button class="card srow press" data-n="${esc(s.name)}" style="width:100%;text-align:left;--cv:${c.col};--cvi:${c.ink}"><span class="si">${iconSvg(s.ic)}</span><span class="sn"><b>${esc(s.name)}</b><small>${LEVELS[lvOf(b.p)][0]} · best ${fmtPerf(s,b.v,store.get('bw',0))}${unitShort(s)}</small></span><span class="sp"><b>${b.p}</b><small>pts</small></span></button>`}).join(''):
   `<div class="card empty">No results yet.<br><button class="btn primary" id="firstProve"><span>Log your first result</span></button></div>`;
- paintIcons($('#s-you'));$$('#slist .srow').forEach(b=>b.onclick=()=>{go('orbit');setTimeout(()=>Orbit.openSkill(b.dataset.n),280)});
+ renderInterests();paintIcons($('#s-you'));$$('#slist .srow').forEach(b=>b.onclick=()=>{go('orbit');setTimeout(()=>Orbit.openSkill(b.dataset.n),280)});
  const fp=$('#firstProve');if(fp)fp.onclick=()=>openProve();}};
 $('#nameIn').addEventListener('click',()=>openPEdit());
 function renderPF(){const pr=profile();$$('[data-pf]').forEach(el=>{el.innerHTML=`<span class="sx"><button data-sx="m" class="${pr.sex==='m'?'on':''}">Male</button><button data-sx="f" class="${pr.sex==='f'?'on':''}">Female</button></span><label>Age <input inputmode="numeric" maxlength="3" data-age value="${pr.age||''}" placeholder="—"></label><label>Weight <input inputmode="decimal" maxlength="5" data-bw value="${pr.bw||''}" placeholder="—"> kg</label>${el.id==='provePf'?'':`<label class="cityL">City <input maxlength="30" data-city value="${esc(store.get('city',''))}" placeholder="—"></label>`}`;
@@ -2103,7 +2127,7 @@ const Orbit=(()=>{const cv=$('#orbitCv'),g=cv.getContext('2d'),q=$('#q');
 /* ================= CLOUD: accounts, sync, real feed ================= */
 const CU=()=>window.Cloud&&window.Cloud.user?window.Cloud:null;
 const ago=t=>{const s=(Date.now()-t)/1000;return s<60?'just now':s<3600?Math.floor(s/60)+' min ago':s<86400?Math.floor(s/3600)+' h ago':Math.floor(s/86400)+' d ago';};
-function cloudProfile(){const pr=profile();return{name:store.get('name','')||'',sex:pr.sex||'',age:pr.age||0,bw:pr.bw||0,city:store.get('city','')||'',char:store.get('char','Knight'),theme:store.get('theme','dusk'),...(store.get('sexAt',0)?{sexAt:store.get('sexAt',0)}:{})};}
+function cloudProfile(){const pr=profile();return{name:store.get('name','')||'',sex:pr.sex||'',age:pr.age||0,bw:pr.bw||0,city:store.get('city','')||'',char:store.get('char','Knight'),theme:store.get('theme','dusk'),interests:myInterests(),...(store.get('sexAt',0)?{sexAt:store.get('sexAt',0)}:{})};}
 let pushT;function pushProfile(){if(!CU())return;clearTimeout(pushT);pushT=setTimeout(()=>CU().saveProfile(cloudProfile()).catch(e=>console.warn('profile',e)),800);}
 const Sync={busy:false,
  async start(u){if(this.busy)return;this.busy=true;
@@ -2111,7 +2135,7 @@ const Sync={busy:false,
    const need=!p||!p.name||!p.sex||!p.age;
    if(need){Gate.hide();p=await Onb.run({...(p||{}),name:(p&&p.name)||store.get('name','')||(u.name||'').split(' ')[0]});
     await Cloud.saveProfile({...cloudProfile(),photo:u.photo||''});}
-   else{store.set('name',p.name);['sex','city'].forEach(k=>{if(typeof p[k]==='string')store.set(k,p[k])});store.set('age',p.age);if(p.bw)store.set('bw',p.bw);if(p.sexAt)store.set('sexAt',p.sexAt);
+   else{store.set('name',p.name);['sex','city'].forEach(k=>{if(typeof p[k]==='string')store.set(k,p[k])});store.set('age',p.age);if(p.bw)store.set('bw',p.bw);if(p.sexAt)store.set('sexAt',p.sexAt);if(Array.isArray(p.interests))store.set('interests',p.interests);
     if(p.char&&window.Avatar3D&&p.char!==Avatar3D.getChar())Avatar3D.setChar(p.char);}
    /* upload results logged on this phone before accounts existed */
    if(!store.get('acct',false)){for(const s of SKILL_LIST){const list=store.get('res_'+s.name,null);if(!list)continue;
@@ -2470,8 +2494,8 @@ $('#upPost').onclick=async()=>{const btn=$('#upPost'),lab=btn.firstChild,text=$(
 function openPostLink(){const m=(location.hash||'').match(/^#post-(results|posts)-([\w-]+)/);if(!m)return;go('pulse');
  const tryIt=(n)=>{const el=$(`#feed .post[data-id="${m[2]}"]`);if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.add('hl');setTimeout(()=>el.classList.remove('hl'),2500);history.replaceState(null,'','#pulse');}else if(n<20)setTimeout(()=>tryIt(n+1),500);};tryIt(0);}
 addEventListener('cloud-auth',e=>{if(e.detail)setTimeout(openPostLink,800);});
-(()=>{const pick=SKILL_LIST.filter(s=>s.size).sort((a,b)=>b.size-a.size).slice(0,14),W=100;let seed=7;const r=()=>(seed=(seed*16807)%2147483647)/2147483647;
- const spots=[[62,3,70],[84,16,46],[6,16,54],[36,20,62],[70,30,58],[18,36,48],[50,42,44],[86,46,40],[2,58,40],[30,60,36],[60,64,38],[82,70,34],[44,6,34],[14,74,30]];
+(()=>{const pick=SKILL_LIST.filter(s=>s.size).sort((a,b)=>b.size-a.size).slice(0,26),W=100;let seed=7;const r=()=>(seed=(seed*16807)%2147483647)/2147483647;
+ const spots=[[60,2,66],[84,12,44],[4,8,50],[34,14,58],[70,26,56],[16,30,46],[48,34,42],[88,38,40],[2,48,38],[28,50,36],[62,52,40],[82,60,34],[44,2,32],[14,64,30],[50,66,30],[74,76,28],[30,78,26],[92,82,26],[6,84,24],[58,88,22],[22,16,28],[40,26,24],[94,24,30],[72,44,26],[36,42,22],[10,22,22]];
  $('#gateBg').innerHTML=pick.map((s,i)=>{const c=CATS[s.cat],[x,y,sz]=spots[i%spots.length];return `<span class="gb" style="left:${x}%;top:${y}%;width:${sz+6}px;height:${sz+6}px;background:${c.col};--c:${c.col};--d:${(4+r()*4).toFixed(1)}s;--x:${(r()*16-8).toFixed(0)}px;--y:${(r()*16-8).toFixed(0)}px;animation-delay:-${(r()*4).toFixed(1)}s">${iconSvg(s.ic)}</span>`;}).join('');})();
 /* swipe left/right to move between tabs, with the screens following your finger */
 (()=>{const main=$('#s-pulse').parentNode;let sx=0,sy=0,dx=0,mode=null,cur0=null,nb=null,dir=0,W=0;
@@ -2492,6 +2516,24 @@ addEventListener('cloud-auth',e=>{if(e.detail)setTimeout(openPostLink,800);});
   else{cur0.style.transform='';if(nb){nb.style.transform=`translateX(${dir*W}px)`;nb.style.opacity=0;}setTimeout(()=>el.forEach(x=>x.style.cssText=''),300);}
   mode=null;nb=null;};
  main.addEventListener('touchend',end);main.addEventListener('touchcancel',end);})();
+/* ================= YOUR INTERESTS ================= */
+const MAX_INT=20;let intSel=new Set();
+function myInterests(){return (store.get('interests',[])||[]).filter(n=>SKILLS[n]);}
+function renderInterests(){const list=myInterests(),el=$('#intList');if(!el)return;
+ el.innerHTML=list.length?`<div class="int-chips">${list.map(n=>{const s=SKILLS[n],c=CATS[s.cat],b=bestOf(n);return `<button class="int-c press" data-n="${esc(n)}"><span class="ic" style="background:${c.col}">${iconSvg(s.ic)}</span>${esc(n)}${b?`<em>${b.p}</em>`:''}</button>`;}).join('')}</div>`
+  :`<div class="card empty int-empty">Pick the sports and skills you're into. We'll use them to tailor your feed, rankings and places to play.<br><button class="btn primary" id="intFirst"><span>Choose interests</span></button></div>`;
+ $$('#intList .int-c').forEach(b=>b.onclick=()=>{buzz(8);go('orbit');setTimeout(()=>Orbit.openSkill(b.dataset.n),280);});
+ const f=$('#intFirst');if(f)f.onclick=openInterests;}
+function openInterests(){intSel=new Set(myInterests());$('#intQ').value='';paintIntPick();showSheet('sh-int');}
+function paintIntPick(){const q=$('#intQ').value.trim().toLowerCase();
+ const groups=Object.entries(CATS).map(([k,c])=>({c,items:SKILL_LIST.filter(s=>s.cat===k&&(!q||s.name.toLowerCase().includes(q)||c.n.toLowerCase().includes(q)))})).filter(g=>g.items.length);
+ $('#intPick').innerHTML=groups.map(g=>`<div class="ip-g"><small>${esc(g.c.n)}</small><div class="ip-row">${g.items.map(s=>`<button class="ip ${intSel.has(s.name)?'on':''}" data-n="${esc(s.name)}"><span class="ic" style="background:${g.c.col}">${iconSvg(s.ic)}</span>${esc(s.name)}</button>`).join('')}</div></div>`).join('')||'<p class="note">No skills match.</p>';
+ $('#intCount').textContent=`${intSel.size}/${MAX_INT} picked`;
+ $$('#intPick .ip').forEach(b=>b.onclick=()=>{const n=b.dataset.n;if(intSel.has(n))intSel.delete(n);else{if(intSel.size>=MAX_INT){toast(`Pick up to ${MAX_INT}`);return;}intSel.add(n);}buzz(6);b.classList.toggle('on');$('#intCount').textContent=`${intSel.size}/${MAX_INT} picked`;});}
+$('#intQ').addEventListener('input',paintIntPick);
+$('#intSave').onclick=()=>{store.set('interests',[...intSel]);hideSheet();buzz(10);renderInterests();pushProfile();toast('Interests saved');};
+$('#intEdit').onclick=openInterests;
+
 /* ================= BOOT ================= */
 paintIcons();
 applyTheme(theme);
