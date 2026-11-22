@@ -10,9 +10,9 @@ export const CHARS = {
   Skeleton_Warrior: 'Skeleton warrior', Skeleton_Mage: 'Skeleton mage', Skeleton_Rogue: 'Skeleton rogue', Skeleton_Minion: 'Skeleton minion'
 };
 const SETS = {
-  dusk:      { idle: 'Idle_A',    tap: 'Interact', cheer: 'Jump_Full_Short' },
-  nightfall: { idle: 'Idle_B',    tap: 'Use_Item', cheer: 'Spawn_Air' },
-  volt:      { idle: 'Running_B', tap: 'Throw',    cheer: 'Jump_Full_Long' }
+  dusk:      { idle: 'Idle_A', walk: 'Mx_Walk', tap: 'Mx_Walk',  cheer: 'Jump_Full_Short' },
+  nightfall: { idle: 'Idle_B', walk: 'Mx_Walk', tap: 'Use_Item', cheer: 'Spawn_Air' },
+  volt:      { idle: 'Mx_Run', walk: 'Mx_Run',  tap: 'Throw',    cheer: 'Jump_Full_Long' }
 };
 const theme = () => document.documentElement.dataset.theme || 'dusk';
 const getChar = () => { try { const v = JSON.parse(localStorage.getItem('provn_char')); return CHARS[v] ? v : 'Knight'; } catch (e) { return 'Knight'; } };
@@ -21,8 +21,11 @@ const loader = new GLTFLoader();
 const charCache = {};
 let clipsP = null;
 const loadChar = n => charCache[n] || (charCache[n] = loader.loadAsync(`assets/chars/${n}.glb`));
-const loadClips = () => clipsP || (clipsP = Promise.all(['General', 'MovementBasic'].map(f => loader.loadAsync(`assets/anims/Rig_Medium_${f}.glb`)))
-  .then(gs => { const m = {}; gs.forEach(g => g.animations.forEach(c => { c.tracks = c.tracks.filter(t => !/^root\.position/.test(t.name)); m[c.name] = c; })); return m; }));
+/* KayKit's own clips plus Mixamo moves converted onto the KayKit skeleton (assets/anims/mixamo.json: Mx_Walk, Mx_Run) */
+const loadClips = () => clipsP || (clipsP = Promise.all([
+    ...['General', 'MovementBasic'].map(f => loader.loadAsync(`assets/anims/Rig_Medium_${f}.glb`).then(g => g.animations)),
+    fetch('assets/anims/mixamo.json').then(r => r.json()).then(js => js.map(j => THREE.AnimationClip.parse(j))).catch(() => [])])
+  .then(lists => { const m = {}; lists.flat().forEach(c => { c.tracks = c.tracks.filter(t => !/^root\.position/.test(t.name)); m[c.name] = c; }); return m; }));
 
 function lights(t) {
   const g = new THREE.Group();
@@ -81,7 +84,7 @@ class Mount {
     const box = new THREE.Box3().setFromObject(this.model); this.h = box.max.y - box.min.y || 2;
     this.model.rotation.y = this.mode === 'path' ? .5 : -.35;
     this.scene.add(this.model);
-    this.hand = null; this.model.traverse(o => { if (o.name === 'handslot.r') this.hand = o; });
+    this.hand = null; this.model.traverse(o => { if (o.name === 'handslot.r' || o.name === 'handslotr') this.hand = o; });
     const sh = new THREE.Mesh(new THREE.CircleGeometry(this.h * .26, 32), new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: .22, depthWrite: false }));
     sh.rotation.x = -Math.PI / 2; sh.position.y = .005; this.scene.add(sh); if (this.shadow) this.scene.remove(this.shadow); this.shadow = sh;
     this.mixer = new THREE.AnimationMixer(this.model); this.cur = null;
@@ -103,9 +106,10 @@ class Mount {
     this.play('idle', true);
   }
   play(kind, instant) {
-    if (!this.mixer) return; const set = SETS[this.t] || SETS.dusk, clip = this.clips[set[kind]] || this.clips.Idle_A; if (!clip) return;
-    const a = this.mixer.clipAction(clip); if (a === this.cur && kind === 'idle') return;
-    a.reset(); a.setLoop(kind === 'idle' ? THREE.LoopRepeat : THREE.LoopOnce, kind === 'idle' ? Infinity : 1); a.clampWhenFinished = false;
+    if (!this.mixer) return; const set = SETS[this.t] || SETS.dusk; if (kind === 'idle' && this.mode === 'path') kind = 'walk';
+    const clip = this.clips[set[kind]] || this.clips[set.idle] || this.clips.Idle_A; if (!clip) return;
+    const a = this.mixer.clipAction(clip); if (a === this.cur && (kind === 'idle' || kind === 'walk')) return;
+    a.reset(); const loop = kind === 'idle' || kind === 'walk'; a.setLoop(loop ? THREE.LoopRepeat : THREE.LoopOnce, loop ? Infinity : 1); a.clampWhenFinished = false;
     if (this.cur && !instant) { a.crossFadeFrom(this.cur, .25, false); } a.play(); this.cur = a;
     if (kind === 'cheer' && this.mode === 'cele') { this.cheers = (this.cheers || 0) + 1; }
   }
