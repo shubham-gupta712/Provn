@@ -727,6 +727,16 @@ svg{display:block}
 .up-sugg b{flex:1;font-size:14.5px}.up-sugg small{font-size:12px;color:var(--text3);font-weight:700}
 .sv{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:#171A25;font-weight:900;overflow:hidden;flex:none}.sv img{width:100%;height:100%;object-fit:cover}.sv svg{width:16px;height:16px}
 
+/* account */
+.acct2{padding:14px;margin-top:18px}
+.ac-row{display:flex;align-items:center;gap:12px}
+.ac-row img,.ac-av{width:42px;height:42px;border-radius:50%;flex:none;object-fit:cover;border:2.5px solid var(--ink);display:grid;place-items:center;background:var(--accent);color:var(--on-accent);font-weight:900}
+.ac-row small{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text3)}.ac-row b{display:block;font-size:14.5px;word-break:break-all}
+.btn.ac-out{width:100%;height:46px;margin-top:12px;color:var(--danger)}
+.ac-out.warn{background:var(--danger)!important;color:#fff!important}
+/* tab swipe */
+.screen.dragging{transition:none!important}
+
 /* player details */
 .pinfo{padding:14px;margin-top:14px}
 .pinfo header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
@@ -1009,6 +1019,7 @@ svg{display:block}
       <div class="wgrid" id="wgrid"></div>
       <div class="sec-h"><h3 class="display">Your skills</h3><a id="addSkill">Add skill</a></div>
       <div class="slist" id="slist"></div>
+      <div class="card acct2" id="acctCard"></div>
       
     </section>
   </main>
@@ -1090,7 +1101,7 @@ svg{display:block}
     <div class="row" id="acctRow" style="cursor:pointer"><span data-i="you"></span><span class="sp">Account</span><small id="acctTxt">Sign out</small></div>
     <div class="row"><span data-i="bell"></span><span class="sp">Notifications</span><small>Soon</small></div>
     <div class="row"><span data-i="lock"></span><span class="sp">Privacy</span><small>Soon</small></div>
-    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261123f</small></div>
+    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261123g</small></div>
   </section>
 
   <div class="cele" id="cele"><div class="cele-in"><div class="cele-m" id="celeM"></div><h2 class="display" id="celeT"></h2><div class="big" id="celeB"></div><p id="celeS"></p><button class="btn primary" id="celeOk"><span>Keep going</span></button></div></div>
@@ -2177,9 +2188,13 @@ $('#onbNext').onclick=()=>{buzz(8);Onb.next();};
 $('#onbSkip').onclick=()=>{const st=Onb.steps[Onb.i];Onb.d[st.k]=st.k==='bw'?0:'';Onb.i++;Onb.paint();};
 $('#onbBack').onclick=()=>{if(Onb.i>0){Onb.i--;Onb.paint();}};
 
-function renderAcct(){const u=CU()&&Cloud.user,ar=$('#acctTxt');if(ar)ar.textContent=u?'Sign out':'Signed out';}
+function renderAcct(){const u=CU()&&Cloud.user,ar=$('#acctTxt');if(ar)ar.textContent=u?'Sign out':'Signed out';
+ const c=$('#acctCard');if(!c)return;if(!u){c.innerHTML='';c.hidden=true;return;}c.hidden=false;
+ c.innerHTML=`<div class="ac-row">${u.photo?`<img src="${esc(u.photo)}" alt="" referrerpolicy="no-referrer">`:`<span class="ac-av">${esc((u.name||u.email||'?')[0].toUpperCase())}</span>`}<div><small>Signed in with Google</small><b>${esc(u.email||u.name)}</b></div></div><button class="btn ghost ac-out" id="signOutBtn"><span>Sign out</span></button>`;
+ $('#signOutBtn').onclick=e=>{const b=e.currentTarget;if(!b.dataset.armed){b.dataset.armed=1;b.classList.add('warn');b.firstChild.textContent='Tap again to sign out';setTimeout(()=>{if(b.isConnected){delete b.dataset.armed;b.classList.remove('warn');b.firstChild.textContent='Sign out';}},3000);return;}
+  buzz(10);Cloud.signOut();};}
 function clearLocal(){Object.keys(localStorage).filter(k=>k.startsWith('provn_res_')).forEach(k=>localStorage.removeItem(k));['name','sex','age','bw','city','acct'].forEach(k=>localStorage.removeItem('provn_'+k));}
-$('#acctRow').onclick=async()=>{if(!CU())return;hideSheet();await Cloud.signOut();};
+$('#acctRow').onclick=async()=>{if(!CU())return;hideSheet();go('you');setTimeout(()=>{const b=$('#signOutBtn');if(b){b.scrollIntoView({behavior:'smooth',block:'center'});b.click();}},350);};
 addEventListener('cloud-ready',()=>{Gate.ready();renderAcct();});
 addEventListener('cloud-auth',e=>{renderAcct();
  if(e.detail){Gate.busy('Signing in…');Sync.start(e.detail);}
@@ -2458,6 +2473,25 @@ addEventListener('cloud-auth',e=>{if(e.detail)setTimeout(openPostLink,800);});
 (()=>{const pick=SKILL_LIST.filter(s=>s.size).sort((a,b)=>b.size-a.size).slice(0,14),W=100;let seed=7;const r=()=>(seed=(seed*16807)%2147483647)/2147483647;
  const spots=[[62,3,70],[84,16,46],[6,16,54],[36,20,62],[70,30,58],[18,36,48],[50,42,44],[86,46,40],[2,58,40],[30,60,36],[60,64,38],[82,70,34],[44,6,34],[14,74,30]];
  $('#gateBg').innerHTML=pick.map((s,i)=>{const c=CATS[s.cat],[x,y,sz]=spots[i%spots.length];return `<span class="gb" style="left:${x}%;top:${y}%;width:${sz+6}px;height:${sz+6}px;background:${c.col};--c:${c.col};--d:${(4+r()*4).toFixed(1)}s;--x:${(r()*16-8).toFixed(0)}px;--y:${(r()*16-8).toFixed(0)}px;animation-delay:-${(r()*4).toFixed(1)}s">${iconSvg(s.ic)}</span>`;}).join('');})();
+/* swipe left/right to move between tabs, with the screens following your finger */
+(()=>{const main=$('#s-pulse').parentNode;let sx=0,sy=0,dx=0,mode=null,cur0=null,nb=null,dir=0,W=0;
+ const blocked=t=>t.closest('input,textarea,select,video,button.adm-pill,.pmc,.tr-pick,.mx-chips,.onb-chips,.rk-ctl,.sugg,.csugg,.path:not([hidden])')||(()=>{for(let e=t;e&&e!==main;e=e.parentElement){const cs=getComputedStyle(e);if((cs.overflowX==='auto'||cs.overflowX==='scroll')&&e.scrollWidth>e.clientWidth+4)return true;}return false;})();
+ main.addEventListener('touchstart',e=>{if(e.touches.length!==1||$('.sheet.on')||(typeof Orbit!=='undefined'&&Orbit.isOpen()))return;const t=e.touches[0];W=main.clientWidth;
+  if(cur==='orbit'&&t.clientX>28&&t.clientX<W-28){mode='no';return;}if(blocked(e.target)){mode='no';return;}sx=t.clientX;sy=t.clientY;dx=0;mode=null;},{passive:true});
+ main.addEventListener('touchmove',e=>{if(mode==='no'||!e.touches.length)return;const t=e.touches[0],ddx=t.clientX-sx,ddy=t.clientY-sy;
+  if(mode===null){if(Math.abs(ddx)<12&&Math.abs(ddy)<12)return;if(Math.abs(ddx)<Math.abs(ddy)*1.4){mode='no';return;}
+   const i=TABS.indexOf(cur);dir=ddx<0?1:-1;const ni=i+dir;if(ni<0||ni>=TABS.length){mode='edge';}else{mode='drag';nb=$('#s-'+TABS[ni]);}cur0=$('#s-'+cur);
+   cur0.classList.add('dragging');if(nb){nb.classList.add('dragging');nb.style.visibility='visible';}}
+  dx=ddx;if(mode==='edge'){cur0.style.transform=`translateX(${dx*.18}px)`;return;}
+  if(mode!=='drag')return;if((dir===1&&dx>0)||(dir===-1&&dx<0))dx=0;
+  cur0.style.transform=`translateX(${dx}px)`;nb.style.opacity=Math.min(1,Math.abs(dx)/(W*.5));nb.style.transform=`translateX(${dx+dir*W}px)`;},{passive:true});
+ const end=()=>{if(mode!=='drag'&&mode!=='edge'){mode=null;return;}const go2=mode==='drag'&&Math.abs(dx)>W*.22,el=[cur0,nb].filter(Boolean);
+  el.forEach(x=>{x.classList.remove('dragging');x.style.transition='transform .28s cubic-bezier(.2,.8,.2,1),opacity .28s';});
+  if(go2){buzz(6);cur0.style.transform=`translateX(${-dir*W}px)`;nb.style.transform='translateX(0)';nb.style.opacity=1;
+   setTimeout(()=>{el.forEach(x=>{x.style.cssText='';});go(TABS[TABS.indexOf(cur)+dir],true);},280);}
+  else{cur0.style.transform='';if(nb){nb.style.transform=`translateX(${dir*W}px)`;nb.style.opacity=0;}setTimeout(()=>el.forEach(x=>x.style.cssText=''),300);}
+  mode=null;nb=null;};
+ main.addEventListener('touchend',end);main.addEventListener('touchcancel',end);})();
 /* ================= BOOT ================= */
 paintIcons();
 applyTheme(theme);
