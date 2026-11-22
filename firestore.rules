@@ -37,6 +37,15 @@ service cloud.firestore {
       return (counterOnly('comments') && request.resource.data.comments == resource.data.comments + 1)
         || (counterOnly('comments') && request.resource.data.comments == resource.data.comments - 1 && ownerUid == me());
     }
+    // a repost carries a copy of the original post, which must still exist
+    function repostOk(r) {
+      return r is map
+        && r.keys().hasOnly(['id','col','uid','name','photo','city','text','skill','media','v','pts','t'])
+        && r.col in ['posts', 'results'] && str(r.id, 64) && str(r.uid, 64) && r.uid != me()
+        && str(r.name, 40) && str(r.photo, 400) && str(r.city, 40) && str(r.text, 1000) && str(r.skill, 60)
+        && mediaOk(r.media)
+        && exists(/databases/$(database)/documents/$(r.col)/$(r.id));
+    }
     function okVideo(v) {
       return v is string && v.size() < 400
         && v.matches('https://res[.]cloudinary[.]com/y3geoabc/video/upload/.*');
@@ -118,14 +127,15 @@ service cloud.firestore {
     match /posts/{pid} {
       allow read: if signedIn();
       allow create: if signedIn() && notBanned()
-        && request.resource.data.keys().hasOnly(['uid','name','city','photo','text','tags','mentions','skill','media','createdAt','likes','comments','flags'])
+        && request.resource.data.keys().hasOnly(['uid','name','city','photo','text','tags','mentions','skill','media','repost','createdAt','likes','comments','flags'])
         && request.resource.data.uid == me()
         && str(request.resource.data.name, 40) && str(request.resource.data.city, 40) && str(request.resource.data.photo, 400)
         && str(request.resource.data.text, 1000) && str(request.resource.data.skill, 60)
         && request.resource.data.tags is list && request.resource.data.tags.size() <= 20
         && request.resource.data.mentions is list && request.resource.data.mentions.size() <= 20
         && mediaOk(request.resource.data.media)
-        && (request.resource.data.text.size() > 0 || request.resource.data.media.size() > 0)
+        && (request.resource.data.text.size() > 0 || request.resource.data.media.size() > 0 || 'repost' in request.resource.data)
+        && (!('repost' in request.resource.data) || repostOk(request.resource.data.repost))
         && request.resource.data.createdAt == request.time
         && request.resource.data.likes == 0 && request.resource.data.comments == 0 && request.resource.data.flags == 0;
       allow update: if isAdmin() || signedIn() && (
@@ -164,6 +174,48 @@ service cloud.firestore {
         && str(request.resource.data.fromName, 40) && str(request.resource.data.toName, 40)
         && request.resource.data.at == request.time;
       allow delete: if signedIn() && (resource.data.from == me() || isAdmin());
+    }
+
+    // ---------- notifications: only the receiver can read them ----------
+    match /notifs/{nid} {
+      allow read: if signedIn() && resource.data.to == me();
+      allow create: if signedIn() && notBanned()
+        && request.resource.data.keys().hasOnly(['to','from','fromName','fromPhoto','kind','ref','col','text','at','read'])
+        && request.resource.data.from == me() && request.resource.data.to != me()
+        && request.resource.data.kind in ['like', 'legit', 'comment', 'mention', 'repost', 'follow']
+        && str(request.resource.data.to, 64) && str(request.resource.data.fromName, 40) && str(request.resource.data.fromPhoto, 400)
+        && str(request.resource.data.ref, 64) && str(request.resource.data.col, 10) && str(request.resource.data.text, 140)
+        && request.resource.data.at == request.time && request.resource.data.read == false;
+      allow update: if signedIn() && resource.data.to == me()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read']);
+      allow delete: if signedIn() && (resource.data.to == me() || resource.data.from == me() || isAdmin());
+    }
+
+    // ---------- direct messages: chats/{uidA__uidB} (ids sorted), messages inside ----------
+    match /chats/{cid} {
+      allow get: if signedIn() && me() in cid.split('__');
+      allow list: if signedIn() && me() in resource.data.members;
+      allow create: if signedIn() && notBanned()
+        && request.resource.data.keys().hasOnly(['members','names','photos','last','lastFrom','lastAt','seen'])
+        && request.resource.data.members is list && request.resource.data.members.size() == 2
+        && me() in request.resource.data.members
+        && cid == request.resource.data.members[0] + '__' + request.resource.data.members[1]
+        && request.resource.data.lastFrom == me() && str(request.resource.data.last, 200)
+        && request.resource.data.lastAt == request.time;
+      allow update: if signedIn() && me() in resource.data.members
+        && request.resource.data.keys().hasOnly(['members','names','photos','last','lastFrom','lastAt','seen'])
+        && request.resource.data.members == resource.data.members
+        && ((notBanned() && request.resource.data.lastFrom == me() && str(request.resource.data.last, 200) && request.resource.data.lastAt == request.time)
+            || request.resource.data.diff(resource.data).affectedKeys().hasOnly(['seen']));
+      match /msgs/{mid} {
+        allow read: if signedIn() && me() in cid.split('__');
+        allow create: if signedIn() && notBanned() && me() in cid.split('__')
+          && request.resource.data.keys().hasOnly(['uid','text','at'])
+          && request.resource.data.uid == me()
+          && request.resource.data.text is string && request.resource.data.text.size() > 0 && request.resource.data.text.size() <= 1000
+          && request.resource.data.at == request.time;
+        allow delete: if signedIn() && resource.data.uid == me();
+      }
     }
 
     // ---------- best result per player per skill (Arena rankings) ----------

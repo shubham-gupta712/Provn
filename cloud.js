@@ -2,7 +2,7 @@
    If this module fails to load (offline, blocked), the app keeps working on-device. */
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut as fbSignOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-import { getFirestore, doc, getDoc, setDoc, collection, query, where, orderBy, limit, getDocs, serverTimestamp, increment, writeBatch, addDoc, deleteDoc, updateDoc, getCountFromServer } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+import { getFirestore, doc, getDoc, setDoc, collection, query, where, orderBy, limit, getDocs, serverTimestamp, increment, writeBatch, addDoc, deleteDoc, updateDoc, getCountFromServer, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyD0RInNbKgLZiGDfL20KH9L6RVlYMI806g',
@@ -27,6 +27,7 @@ const bots = {};
 function botApp(id) { if (!bots[id]) { const a = initializeApp(firebaseConfig, 'provn-' + id); bots[id] = { app: a, auth: getAuth(a), db: getFirestore(a) }; } return bots[id]; }
 const userOf = u => u ? { uid: u.uid, name: u.displayName || '', email: u.email || '', photo: u.photoURL || '', verified: !!u.emailVerified } : null;
 const skillKey = s => s.replace(/[^A-Za-z0-9]+/g, '_');
+const cleanMedia = m => (m || []).slice(0, 4).map(x => { const o = { type: x.type === 'video' ? 'video' : 'image', url: String(x.url) }; if (x.w) o.w = Math.round(x.w); if (x.h) o.h = Math.round(x.h); return o; });
 const tsMs = t => (t && t.toMillis) ? t.toMillis() : Date.now();
 
 const Cloud = {
@@ -87,7 +88,10 @@ const Cloud = {
   async savePost(p) {
     const u = Cloud.user, data = { uid: u.uid, name: (p.name || 'Player').slice(0, 40), city: (p.city || '').slice(0, 40), photo: (p.photo || '').slice(0, 400),
       text: (p.text || '').slice(0, 1000), tags: (p.tags || []).slice(0, 20).map(t => String(t).slice(0, 40)), mentions: (p.mentions || []).slice(0, 20).map(m => ({ uid: String(m.uid).slice(0, 64), name: String(m.name).slice(0, 40) })),
-      skill: (p.skill || '').slice(0, 60), media: (p.media || []).slice(0, 4), createdAt: serverTimestamp(), likes: 0, comments: 0, flags: 0 };
+      skill: (p.skill || '').slice(0, 60), media: cleanMedia(p.media), createdAt: serverTimestamp(), likes: 0, comments: 0, flags: 0 };
+    if (p.repost) { const r = p.repost; data.repost = { id: String(r.id).slice(0, 64), col: r.col === 'results' ? 'results' : 'posts', uid: String(r.uid).slice(0, 64), name: String(r.name || 'Player').slice(0, 40),
+      photo: String(r.photo || '').slice(0, 400), city: String(r.city || '').slice(0, 40), text: String(r.text || '').slice(0, 1000), skill: String(r.skill || '').slice(0, 60), media: cleanMedia(r.media),
+      v: typeof r.v === 'number' ? r.v : 0, pts: typeof r.pts === 'number' ? Math.round(r.pts) : 0, t: Math.round(r.t || 0) }; }
     return (await addDoc(collection(db, 'posts'), data)).id;
   },
   /* ---------- follows: friends = people who follow each other ---------- */
@@ -107,6 +111,43 @@ const Cloud = {
     const items = [...posts.docs.map(d => ({ id: d.id, col: 'posts', ...d.data() })), ...res.docs.map(d => ({ id: d.id, col: 'results', ...d.data() }))].map(x => ({ ...x, t: tsMs(x.createdAt) })).sort((a, b) => b.t - a.t);
     return { profile: u.exists() ? { uid, ...u.data() } : { uid }, best: best.docs.map(d => d.data()).sort((a, b) => b.pts - a.pts), items };
   },
+  /* ---------- notifications (likes, legit, comments, mentions, reposts, follows) ---------- */
+  async notify(to, kind, n = {}) {
+    const me = Cloud.user; if (!me || !to || to === me.uid) return;
+    const data = { to, from: me.uid, fromName: (n.name || me.name || 'Player').slice(0, 40), fromPhoto: (me.photo || '').slice(0, 400), kind, ref: String(n.ref || '').slice(0, 64), col: String(n.col || '').slice(0, 10),
+      text: String(n.text || '').slice(0, 140), at: serverTimestamp(), read: false };
+    const fixed = ['like', 'legit', 'follow'].includes(kind);   // one per person per thing, removed again on unlike / unfollow
+    return (fixed ? setDoc(doc(db, 'notifs', `${kind}__${me.uid}__${data.ref}`), data) : addDoc(collection(db, 'notifs'), data)).catch(e => console.warn('notify', e.code));
+  },
+  unnotify(kind, ref) { return deleteDoc(doc(db, 'notifs', `${kind}__${Cloud.user.uid}__${ref}`)).catch(() => {}); },
+  listenNotifs(cb) {
+    return onSnapshot(query(collection(db, 'notifs'), where('to', '==', Cloud.user.uid), limit(100)),
+      s => cb(s.docs.map(d => ({ id: d.id, ...d.data({ serverTimestamps: 'estimate' }), t: tsMs(d.data({ serverTimestamps: 'estimate' }).at) })).sort((a, b) => b.t - a.t)), e => console.warn('notifs', e.code));
+  },
+  markRead(ids) { if (!ids.length) return; const b = writeBatch(db); ids.slice(0, 400).forEach(id => b.update(doc(db, 'notifs', id), { read: true })); return b.commit().catch(e => console.warn('read', e.code)); },
+
+  /* ---------- direct messages: chats/{uidA__uidB}/msgs ---------- */
+  chatId: (a, b) => [a, b].sort().join('__'),
+  listenChats(cb) {
+    return onSnapshot(query(collection(db, 'chats'), where('members', 'array-contains', Cloud.user.uid), limit(100)),
+      s => cb(s.docs.map(d => { const x = d.data({ serverTimestamps: 'estimate' }); return { id: d.id, ...x, t: tsMs(x.lastAt), seenMs: Object.fromEntries(Object.entries(x.seen || {}).map(([k, v]) => [k, tsMs(v)])) }; }).sort((a, b) => b.t - a.t)),
+      e => console.warn('chats', e.code));
+  },
+  listenMsgs(cid, cb) {
+    return onSnapshot(query(collection(db, 'chats', cid, 'msgs'), orderBy('at', 'desc'), limit(150)),
+      s => cb(s.docs.map(d => { const x = d.data({ serverTimestamps: 'estimate' }); return { id: d.id, ...x, t: tsMs(x.at), pending: d.metadata.hasPendingWrites }; }).reverse()), e => cb(null, e));
+  },
+  async sendMsg(other, text) {
+    const me = Cloud.user, cid = Cloud.chatId(me.uid, other.uid), members = [me.uid, other.uid].sort(), b = writeBatch(db);
+    b.set(doc(db, 'chats', cid), { members, names: { [me.uid]: (me.name || 'Player').slice(0, 40), [other.uid]: (other.name || 'Player').slice(0, 40) },
+      photos: { [me.uid]: (me.photo || '').slice(0, 400), [other.uid]: (other.photo || '').slice(0, 400) },
+      last: text.slice(0, 200), lastFrom: me.uid, lastAt: serverTimestamp(), seen: { [me.uid]: serverTimestamp() } }, { merge: true });
+    b.set(doc(collection(db, 'chats', cid, 'msgs')), { uid: me.uid, text: text.slice(0, 1000), at: serverTimestamp() });
+    return b.commit();
+  },
+  seen(cid) { return updateDoc(doc(db, 'chats', cid), { ['seen.' + Cloud.user.uid]: serverTimestamp() }).catch(() => {}); },
+  deleteMsg(cid, id) { return deleteDoc(doc(db, 'chats', cid, 'msgs', id)); },
+
   async people() { const s = await getDocs(query(collection(db, 'users'), limit(500))); return s.docs.map(d => ({ uid: d.id, name: d.data().name || '', city: d.data().city || '', photo: d.data().photo || '', interests: d.data().interests || [] })).filter(x => x.name); },
   /* like / legit / flag: the mark and the counter change together, and the rules check they match */
   async toggle(kind, id, on, col = 'results') {
