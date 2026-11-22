@@ -789,16 +789,24 @@ svg{display:block}
 .field.venue select{flex:1;min-width:0;background:transparent;border:0;outline:0;font:inherit;font-weight:800;font-size:15px;color:var(--text)}
 
 /* sign-in gate */
-.gate{position:absolute;inset:0;z-index:90;background:var(--bg);display:flex;flex-direction:column;padding:calc(var(--safe-t) + 40px) 24px calc(var(--safe-b) + 26px);transition:opacity .35s ease,transform .35s ease}
+.gate{position:absolute;inset:0;z-index:90;background:var(--bg);display:flex;flex-direction:column;padding:calc(var(--safe-t) + 26px) 24px calc(var(--safe-b) + 24px);overflow:hidden;transition:opacity .35s ease,transform .35s ease}
 .gate[hidden]{display:none}
 .gate.out{opacity:0;transform:scale(1.04);pointer-events:none}
-.gate-wm{font-size:54px}
-.gate-tag{margin-top:6px;color:var(--text2);font-size:18px;font-weight:700}
-.gate-av{flex:1;min-height:180px;display:grid;place-items:center}
-.gate-av .av3d{width:min(78vw,320px);height:100%;max-height:360px}
-.gate-pts{display:flex;justify-content:space-between;margin-bottom:18px}
-.gate-pts span{display:flex;flex-direction:column;align-items:center;flex:1;color:var(--text3);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
-.gate-pts b{font-family:var(--f-display);font-size:26px;color:var(--text);letter-spacing:0;text-transform:none}
+.gate>*:not(.gate-bg){position:relative;z-index:1}
+.gate-bg{position:absolute;left:0;right:0;top:calc(var(--safe-t) + 84px);height:48%;overflow:hidden;pointer-events:none}
+.gate-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,color-mix(in srgb,var(--bg) 20%,transparent) 0%,color-mix(in srgb,var(--bg) 45%,transparent) 50%,var(--bg) 92%)}
+.gb{position:absolute;border-radius:50%;display:grid;place-items:center;border:3px solid var(--ink);color:rgba(23,26,37,.85);box-shadow:inset -6px -8px 0 rgba(0,0,0,.12);animation:gbFloat var(--d) ease-in-out infinite alternate}
+.gb svg{width:46%;height:46%}
+@keyframes gbFloat{from{transform:translate(0,0) rotate(-4deg)}to{transform:translate(var(--x),var(--y)) rotate(4deg)}}
+[data-theme="nightfall"] .gb{background:#14141f!important;border-color:var(--c);color:var(--c);box-shadow:0 0 18px color-mix(in srgb,var(--c) 45%,transparent)}
+[data-theme="volt"] .gb{border-radius:14px;transform:skewX(-8deg)}
+.gate-wm{font-size:44px}
+.gate-mid{flex:1;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:22px}
+.gate-h{font-size:42px;line-height:1.02;margin:0 0 18px}
+.gate-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.gate-list li{display:flex;gap:12px;align-items:center;padding:11px 12px;border-radius:18px;background:color-mix(in srgb,var(--bg2) 88%,transparent);border:var(--card-bd);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.gate-list li>span{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--bg3);font-size:19px;flex:none}
+.gate-list b{display:block;font-size:15px;font-weight:800}.gate-list small{display:block;font-size:12.5px;font-weight:600;color:var(--text2);line-height:1.35;margin-top:1px}
 .gate-btn{width:100%;height:58px;font-size:18px;gap:12px}
 .gate-btn[disabled]{opacity:.7}
 .g-ic{width:30px;height:30px;border-radius:50%;background:#fff;display:grid;place-items:center;flex:none}
@@ -1082,7 +1090,7 @@ svg{display:block}
     <div class="row" id="acctRow" style="cursor:pointer"><span data-i="you"></span><span class="sp">Account</span><small id="acctTxt">Sign out</small></div>
     <div class="row"><span data-i="bell"></span><span class="sp">Notifications</span><small>Soon</small></div>
     <div class="row"><span data-i="lock"></span><span class="sp">Privacy</span><small>Soon</small></div>
-    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261123e</small></div>
+    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261123f</small></div>
   </section>
 
   <div class="cele" id="cele"><div class="cele-in"><div class="cele-m" id="celeM"></div><h2 class="display" id="celeT"></h2><div class="big" id="celeB"></div><p id="celeS"></p><button class="btn primary" id="celeOk"><span>Keep going</span></button></div></div>
@@ -1091,10 +1099,17 @@ svg{display:block}
   <div class="toast" id="toast"></div>
   <div class="gate" id="gate">
     <button class="gate-x press" id="gateX" hidden aria-label="Close preview">×</button>
-    <div class="gate-top"><div class="wordmark gate-wm">provn<i></i></div><p class="gate-tag">Your skills, in numbers.</p></div>
-    <div class="gate-av"><div class="av3d" data-mode="you" id="gateAv"></div></div>
+    <div class="gate-bg" id="gateBg" aria-hidden="true"></div>
+    <div class="gate-top"><div class="wordmark gate-wm">provn<i></i></div></div>
+    <div class="gate-mid">
+      <h1 class="display gate-h">Prove what<br>you can do.</h1>
+      <ul class="gate-list">
+        <li><span>⚡</span><div><b>173 skills, one score</b><small>From 5k runs to Rubik's cubes, every result is scored out of 1200.</small></div></li>
+        <li><span>🏆</span><div><b>See where you stand</b><small>Rank against players in your city, state, country and the world.</small></div></li>
+        <li><span>📍</span><div><b>Find places to play</b><small>Courts, grounds, clubs and tournaments near you.</small></div></li>
+      </ul>
+    </div>
     <div class="gate-bot">
-      <div class="gate-pts"><span><b>173</b>skills</span><span><b>1200</b>world record</span><span><b>2</b>worlds</span></div>
       <button class="btn primary gate-btn" id="gIn" disabled><span class="g-ic"><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5a5.6 5.6 0 0 1-2.4 3.6v3h3.9c2.3-2.1 3.5-5.2 3.5-8.8z"/><path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-2.9l-3.9-3c-1.1.7-2.5 1.2-4.1 1.2-3.1 0-5.8-2.1-6.7-5H1.3v3.1A12 12 0 0 0 12 24z"/><path fill="#FBBC05" d="M5.3 14.3a7.2 7.2 0 0 1 0-4.6V6.6h-4a12 12 0 0 0 0 10.8l4-3.1z"/><path fill="#EA4335" d="M12 4.8c1.8 0 3.3.6 4.6 1.8l3.4-3.4A12 12 0 0 0 1.3 6.6l4 3.1c.9-2.9 3.6-4.9 6.7-4.9z"/></svg></span><span id="gInTxt">Connecting…</span></button>
       <p class="gate-fine">By continuing you agree to play fair and post only your own results.</p>
     </div>
@@ -2440,6 +2455,9 @@ $('#upPost').onclick=async()=>{const btn=$('#upPost'),lab=btn.firstChild,text=$(
 function openPostLink(){const m=(location.hash||'').match(/^#post-(results|posts)-([\w-]+)/);if(!m)return;go('pulse');
  const tryIt=(n)=>{const el=$(`#feed .post[data-id="${m[2]}"]`);if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.add('hl');setTimeout(()=>el.classList.remove('hl'),2500);history.replaceState(null,'','#pulse');}else if(n<20)setTimeout(()=>tryIt(n+1),500);};tryIt(0);}
 addEventListener('cloud-auth',e=>{if(e.detail)setTimeout(openPostLink,800);});
+(()=>{const pick=SKILL_LIST.filter(s=>s.size).sort((a,b)=>b.size-a.size).slice(0,14),W=100;let seed=7;const r=()=>(seed=(seed*16807)%2147483647)/2147483647;
+ const spots=[[62,3,70],[84,16,46],[6,16,54],[36,20,62],[70,30,58],[18,36,48],[50,42,44],[86,46,40],[2,58,40],[30,60,36],[60,64,38],[82,70,34],[44,6,34],[14,74,30]];
+ $('#gateBg').innerHTML=pick.map((s,i)=>{const c=CATS[s.cat],[x,y,sz]=spots[i%spots.length];return `<span class="gb" style="left:${x}%;top:${y}%;width:${sz+6}px;height:${sz+6}px;background:${c.col};--c:${c.col};--d:${(4+r()*4).toFixed(1)}s;--x:${(r()*16-8).toFixed(0)}px;--y:${(r()*16-8).toFixed(0)}px;animation-delay:-${(r()*4).toFixed(1)}s">${iconSvg(s.ic)}</span>`;}).join('');})();
 /* ================= BOOT ================= */
 paintIcons();
 applyTheme(theme);
