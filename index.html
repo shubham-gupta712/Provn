@@ -704,8 +704,9 @@ svg{display:block}
 .viewer[hidden]{display:none}.viewer img{max-width:100%;max-height:100%;object-fit:contain}
 .viewer button{position:absolute;right:14px;top:calc(var(--safe-t) + 12px);width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;font-size:24px;font-weight:800}
 .pmc{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;background:#000}.pmc::-webkit-scrollbar{display:none}
-.pm-i{flex:0 0 100%;scroll-snap-align:center;position:relative;display:grid;place-items:center;aspect-ratio:4/3;background:#000;overflow:hidden}
-.pm-i img{width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in}
+.pm-i{flex:0 0 100%;scroll-snap-align:center;position:relative;display:grid;place-items:center;aspect-ratio:var(--ar,1);max-height:62vh;background:#000;overflow:hidden}
+.pm-blur{position:absolute;inset:-20px;background-size:cover;background-position:center;filter:blur(22px) brightness(.55);transform:scale(1.1)}
+.pm-i img{position:relative;width:100%;height:100%;object-fit:contain;display:block;cursor:zoom-in}
 .pm-i video{width:100%;height:100%;object-fit:contain;display:block;background:#000}
 .pm-i .burst{position:absolute;width:96px;height:96px;color:#fff;opacity:0;transform:scale(.4);pointer-events:none}.pm-i .burst svg{width:100%;height:100%}.pm-i .burst.go{animation:burst 700ms ease forwards}
 .pm-dots{position:absolute;left:0;right:0;bottom:10px;display:flex;justify-content:center;gap:5px;pointer-events:none}.pm-dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5)}.pm-dots i.on{background:#fff}
@@ -1137,7 +1138,7 @@ svg{display:block}
     <div class="row" id="acctRow" style="cursor:pointer"><span data-i="you"></span><span class="sp">Account</span><small id="acctTxt">Sign out</small></div>
     <div class="row"><span data-i="bell"></span><span class="sp">Notifications</span><small>Soon</small></div>
     <div class="row"><span data-i="lock"></span><span class="sp">Privacy</span><small>Soon</small></div>
-    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261123k</small></div>
+    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261123l</small></div>
   </section>
 
   <div class="cele" id="cele"><div class="cele-in"><div class="cele-m" id="celeM"></div><h2 class="display" id="celeT"></h2><div class="big" id="celeB"></div><p id="celeS"></p><button class="btn primary" id="celeOk"><span>Keep going</span></button></div></div>
@@ -1622,9 +1623,10 @@ $('#provePost').onclick=async()=>{const s=SKILLS[proveSkill],r=readVal(),btn=$('
 const linkify=(t,p)=>esc(t).replace(/(^|\s)#([\p{L}\p{N}_]{2,40})/gu,'$1<a class="tg" data-tag="$2">#$2</a>').replace(/(^|\s)@([\p{L}\p{N}_.]{2,40})/gu,(m,a,n)=>`${a}<a class="mn">@${n}</a>`);
 function avatar(p,col){return p.photo?`<img class="av" src="${esc(p.photo)}" alt="" referrerpolicy="no-referrer" loading="lazy">`:`<div class="av" style="background:${col}">${esc((p.n||'?')[0].toUpperCase())}</div>`;}
 function mediaHTML(list,k){if(!list.length)return '';
- return `<div class="pm-wrap"><div class="pmc ${list.length>1?'multi':''}" data-k="${k}">${list.map(m=>m.type==='video'
+ const ar=list[0].w&&list[0].h?Math.min(1.91,Math.max(.8,list[0].w/list[0].h)):1;
+ return `<div class="pm-wrap" style="--ar:${ar.toFixed(3)}"><div class="pmc ${list.length>1?'multi':''}" data-k="${k}">${list.map(m=>m.type==='video'
   ?`<div class="pm-i"><video src="${esc(m.url)}" poster="${esc(Cloud.thumb(m.url))}" controls playsinline preload="metadata"></video></div>`
-  :`<div class="pm-i img"><img src="${esc(m.url.replace('/upload/','/upload/w_1080,c_limit,q_auto,f_auto/'))}" alt="" loading="lazy"><span class="burst"><span data-i="heartFull"></span></span></div>`).join('')}</div>${list.length>1?`<div class="pm-dots">${list.map((_,i)=>`<i class="${i?'':'on'}"></i>`).join('')}</div>`:''}</div>`;}
+  :(()=>{const src=esc(m.url.replace('/upload/','/upload/w_1080,c_limit,q_auto,f_auto/'));return `<div class="pm-i img"><span class="pm-blur" style="background-image:url('${src}')"></span><img src="${src}" alt="" loading="lazy"><span class="burst"><span data-i="heartFull"></span></span></div>`;})()).join('')}</div>${list.length>1?`<div class="pm-dots">${list.map((_,i)=>`<i class="${i?'':'on'}"></i>`).join('')}</div>`:''}</div>`;}
 function postHTML(p,k){const m=p.mine||{},isRes=p.col==='results',s=SKILLS[p.skill],c=s?CATS[s.cat]:null,me=CU()&&p.uid===Cloud.user.uid;
  const head=`<div class="post-h">${avatar(p,c?c.col:'var(--accent)')}<div class="ph-t"><b>${esc(p.n)}</b><small>${[p.top,p.when].filter(Boolean).map(esc).join(' · ')}</small></div>${p.skill?`<span class="chip act-chip">${s?`<span class="ac-ic" style="background:${c.col}">${iconSvg(s.ic)}</span>`:''}${esc(p.skill)}</span>`:''}</div>`;
  let score='';
@@ -2563,7 +2565,7 @@ $('#intSave').onclick=()=>{store.set('interests',[...intSel]);hideSheet();buzz(1
 $('#intEdit').onclick=openInterests;
 
 /* auto-update: GitHub Pages lets phones keep an old copy for ~10 min; check the live version and reload if it's newer */
-const APP_V='20261123k';
+const APP_V='20261123l';
 async function checkUpdate(){try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});const j=await r.json();
  if(j.v&&j.v!==APP_V&&sessionStorage.getItem('provn_upd')!==j.v){sessionStorage.setItem('provn_upd',j.v);toast('Updating Provn…');setTimeout(()=>location.replace(location.pathname+'?v='+j.v+location.hash),600);}}catch(e){}}
 checkUpdate();document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkUpdate();});
@@ -2576,8 +2578,8 @@ setTimeout(()=>$('#splash').classList.add('out'),matchMedia('(prefers-reduced-mo
 setTimeout(()=>$('#splash').remove(),1700);
 setTimeout(()=>$('#orbitHint').style.opacity=0,6000);
 </script>
-<script type="module" src="avatar3d.js?v=20261123k"></script>
-<script type="module" src="cloud.js?v=20261123k"></script>
-<script src="map.js?v=20261123k" defer></script>
+<script type="module" src="avatar3d.js?v=20261123l"></script>
+<script type="module" src="cloud.js?v=20261123l"></script>
+<script src="map.js?v=20261123l" defer></script>
 </body>
 </html>
