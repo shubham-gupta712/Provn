@@ -120,7 +120,13 @@ const Cloud = {
     const by = {}; s.docs.forEach(d => { const r = d.data(); if (!by[r.uid] || by[r.uid].pts < r.pts) by[r.uid] = r; });
     return Object.values(by).sort((a, b) => b.pts - a.pts);
   },
-  async deleteResult(id) { return deleteDoc(doc(db, 'results', id)); },
+  /* delete one of my results; its ranking entry goes too (the next-best result is re-ranked on the next sync) */
+  async deleteResult(id) {
+    const r = await getDoc(doc(db, 'results', id)); if (!r.exists()) return;
+    const d = r.data(), bref = doc(db, 'best', d.uid + '__' + skillKey(d.skill)), b = await getDoc(bref);
+    if (b.exists() && b.data().result === id) await deleteDoc(bref);
+    await deleteDoc(doc(db, 'results', id));
+  },
 
   /* ---------- events (created by the admin, shown in Arena) ---------- */
   async events() {
