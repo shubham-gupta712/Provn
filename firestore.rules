@@ -73,7 +73,8 @@ service cloud.firestore {
     // ---------- results (the Pulse feed) ----------
     match /results/{rid} {
       allow read: if signedIn();
-      allow create: if signedIn() && notBanned()
+      // players no longer log their own scores; scores come only from Provn events (eventResults)
+      allow create: if false
         && request.resource.data.keys().hasOnly(['uid','name','city','skill','v','pts','sex','age','createdAt','likes','legit','flags','comments','video','venue','venueName'])
         && request.resource.data.uid == me()
         && str(request.resource.data.name, 40)
@@ -182,7 +183,7 @@ service cloud.firestore {
       allow create: if signedIn() && notBanned()
         && request.resource.data.keys().hasOnly(['to','from','fromName','fromPhoto','kind','ref','col','text','at','read'])
         && request.resource.data.from == me() && request.resource.data.to != me()
-        && request.resource.data.kind in ['like', 'legit', 'comment', 'mention', 'repost', 'follow']
+        && request.resource.data.kind in ['like', 'legit', 'comment', 'mention', 'repost', 'follow', 'result']
         && str(request.resource.data.to, 64) && str(request.resource.data.fromName, 40) && str(request.resource.data.fromPhoto, 400)
         && str(request.resource.data.ref, 64) && str(request.resource.data.col, 10) && str(request.resource.data.text, 140)
         && request.resource.data.at == request.time && request.resource.data.read == false;
@@ -221,7 +222,7 @@ service cloud.firestore {
     // ---------- best result per player per skill (Arena rankings) ----------
     match /best/{id} {
       allow read: if signedIn();
-      allow create, update: if signedIn()
+      allow create, update: if false
         && id.matches(me() + '__.*')
         && request.resource.data.keys().hasOnly(['uid','name','city','skill','v','pts','sex','age','video','result','updatedAt'])
         && request.resource.data.uid == me()
@@ -253,6 +254,21 @@ service cloud.firestore {
           && request.resource.data.at == request.time && str(request.resource.data.name, 40);
         allow delete: if signedIn() && (me() == uid || isAdmin());
       }
+    }
+
+    // ---------- scores from Provn events (entered by the admin) ----------
+    match /eventResults/{id} {
+      allow read: if signedIn();
+      allow write: if isAdmin()
+        && (request.resource == null || (
+          request.resource.data.keys().hasOnly(['event','eventTitle','date','place','evCity','uid','name','city','photo','sex','age','skill','v','pts','at'])
+          && id == request.resource.data.event + '__' + request.resource.data.uid
+          && exists(/databases/$(database)/documents/events/$(request.resource.data.event))
+          && str(request.resource.data.skill, 60) && request.resource.data.skill.size() > 0
+          && request.resource.data.v is number
+          && request.resource.data.pts is int && request.resource.data.pts >= 0 && request.resource.data.pts <= 1400
+          && str(request.resource.data.name, 40) && str(request.resource.data.city, 40)
+          && request.resource.data.at == request.time));
     }
 
     // ---------- venues added by the admin (shown on the map) ----------

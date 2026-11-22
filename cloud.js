@@ -172,10 +172,19 @@ const Cloud = {
     const s = await getDocs(query(collection(db, 'best'), ...cons, limit(300)));
     return s.docs.map(d => d.data()).sort((a, b) => b.pts - a.pts);
   },
-  /* every player's best for one skill (filtered into city / state / country on the phone) */
+  /* scores now come only from Provn events: every event result for one skill */
+  async eventResults(skill) {
+    const s = await getDocs(query(collection(db, 'eventResults'), where('skill', '==', skill), limit(2000)));
+    return s.docs.map(d => ({ id: d.id, ...d.data(), t: tsMs(d.data().at) }));
+  },
+  /* best event result per player for one skill (filtered into city / state / country on the phone) */
   async rankings(skill) {
-    const s = await getDocs(query(collection(db, 'best'), where('skill', '==', skill), limit(1000)));
-    return s.docs.map(d => d.data());
+    const by = {}; (await Cloud.eventResults(skill)).forEach(r => { if (!by[r.uid] || by[r.uid].pts < r.pts) by[r.uid] = r; });
+    return Object.values(by);
+  },
+  async myEventResults(uid) {
+    const s = await getDocs(query(collection(db, 'eventResults'), where('uid', '==', uid || Cloud.user.uid), limit(500)));
+    return s.docs.map(d => ({ id: d.id, ...d.data(), t: tsMs(d.data().at) }));
   },
   /* best per player for one skill at one Provn venue */
   async venueBoard(skill, venue) {
@@ -296,6 +305,14 @@ const Cloud = {
     deleteRecord(id) { return deleteDoc(doc(adb, 'records', id)); },
     deleteVenue(id) { return deleteDoc(doc(adb, 'venues', id)); },
     deleteEvent(id) { return deleteDoc(doc(adb, 'events', id)); },
+    /* results entered by the admin after a Provn event; points are worked out on the admin's phone */
+    async eventResults(eid) { const s = await getDocs(query(collection(adb, 'eventResults'), where('event', '==', eid), limit(1000))); return s.docs.map(d => ({ id: d.id, ...d.data() })); },
+    saveEventResult(ev, p, v, pts) {
+      return setDoc(doc(adb, 'eventResults', ev.id + '__' + p.uid), { event: ev.id, eventTitle: (ev.title || '').slice(0, 60), date: ev.date || '', place: (ev.place || '').slice(0, 60),
+        evCity: (ev.city || '').slice(0, 40), uid: p.uid, name: (p.name || 'Player').slice(0, 40), city: (p.city || '').slice(0, 40), photo: (p.photo || '').slice(0, 400),
+        sex: ['m', 'f'].includes(p.sex) ? p.sex : '', age: Math.round(p.age || 0), skill: ev.skill, v, pts: Math.max(0, Math.min(1400, Math.round(pts))), at: serverTimestamp() });
+    },
+    deleteEventResult(id) { return deleteDoc(doc(adb, 'eventResults', id)); },
     async going(id) { const s = await getDocs(collection(adb, 'events', id, 'going')); return s.docs.map(d => ({ uid: d.id, ...d.data() })); },
     setConfig(c) {
       const d = { updatedAt: serverTimestamp() };

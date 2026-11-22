@@ -682,6 +682,7 @@ svg{display:block}
 .ac-ic{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;color:#171A25;flex:none}.ac-ic svg{width:13px;height:13px}
 .ptxt{margin:12px 2px 2px;font-size:15px;line-height:1.5;font-weight:500;white-space:pre-wrap;word-break:break-word}
 .ptxt .tg,.ptxt .mn{color:var(--accent);font-weight:800;cursor:pointer}
+.score.lite{grid-template-columns:1fr}
 .score{margin-top:12px;padding:14px;border-radius:18px;background:linear-gradient(135deg,var(--sc),color-mix(in srgb,var(--sc) 55%,#000));color:var(--sci);display:grid;grid-template-columns:1fr auto;gap:4px 10px;position:relative;overflow:hidden}
 .score::after{content:'';position:absolute;right:-30px;top:-40px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.16)}
 .sc-m{display:flex;align-items:baseline;gap:6px}.sc-m b{font-size:40px;line-height:1}.sc-m span{font-weight:800;opacity:.75}
@@ -772,7 +773,7 @@ svg{display:block}
 .hb-recs{display:flex;gap:10px;overflow-x:auto;margin:0 -16px;padding:2px 16px 6px;scroll-snap-type:x mandatory;scrollbar-width:none}.hb-recs::-webkit-scrollbar{display:none}
 .hb-rc{flex:none;width:72%;scroll-snap-align:start;padding:14px 16px;border-radius:var(--r-card);background:var(--cv);color:var(--cvi);box-shadow:0 4px 0 var(--cvd)}
 .hb-rc.in{background:var(--bg2);color:var(--text);box-shadow:none;border:var(--card-bd)}
-.hb-rc.provn{background:transparent;color:var(--text);box-shadow:none;border:2px dashed var(--bg3)}
+.hb-rc.provn{background:transparent;color:var(--text);box-shadow:none;border:2px dashed var(--bg3)}.hb-rc.provn.on{border:2px solid var(--accent)}
 .hb-rl{display:block;font-size:11.5px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;opacity:.8}
 .hb-rc b{display:block;margin:6px 0 2px;font-size:30px;line-height:1.05}
 .hb-rw{display:block;font-size:14.5px;font-weight:800}.hb-rc small{display:block;margin-top:4px;font-size:12px;line-height:1.35;opacity:.75;font-weight:600}
@@ -1299,7 +1300,7 @@ svg{display:block}
       <h1 class="display gate-h">Showcase<br>your skills.</h1>
       <p class="gate-sub">Improve, track and get ranked in the things you love.</p>
       <ul class="gate-list">
-        <li><span>🏆</span><div><b>See where you stand</b><small>Rank against players in your city, state, country and the world.</small></div></li>
+        <li><span>🏆</span><div><b>Compete at Provn events</b><small>Get scored and ranked against players in your city, state and country.</small></div></li>
         <li><span>📍</span><div><b>Find places to play</b><small>Courts, grounds, clubs and tournaments near you.</small></div></li>
       </ul>
     </div>
@@ -1786,7 +1787,8 @@ function quoteHTML(r,k){const s=SKILLS[r.skill],c=s?CATS[s.cat]:null,q={n:r.name
 function postHTML(p,k){const m=p.mine||{},isRes=p.col==='results',s=SKILLS[p.skill],c=s?CATS[s.cat]:null,me=CU()&&p.uid===Cloud.user.uid;
  const head=`<div class="post-h"><button class="ph-u" data-u="${p.uid||''}" data-n="${esc(p.n)}">${avatar(p,c?c.col:'var(--accent)')}</button><div class="ph-t"><b class="ph-u" data-u="${p.uid||''}" data-n="${esc(p.n)}">${esc(p.n)}</b><small>${p.repost?'<span class="rp-tag">↻ reposted</span> · ':''}${[p.top,p.when].filter(Boolean).map(esc).join(' · ')}</small></div>${p.skill?`<span class="chip act-chip">${s?`<span class="ac-ic" style="background:${c.col}">${iconSvg(s.ic)}</span>`:''}${esc(p.skill)}</span>`:''}</div>`;
  let score='';
- if(isRes&&s){const pts=p.pts,l=lvOf(pts),nx=LEVELS[l+1],pct=nx?Math.round((pts-LEVELS[l][1])/(nx[1]-LEVELS[l][1])*100):100;
+ if(isRes&&s)score=`<div class="score lite" style="--sc:${c.col};--sci:${c.ink}"><div class="sc-m"><b class="display">${fmtPerf(s,p.v,0)}</b><span>${unitShort(s)||s.unit}</span></div></div>`;
+ if(false){const pts=p.pts,l=lvOf(pts),nx=LEVELS[l+1],pct=nx?Math.round((pts-LEVELS[l][1])/(nx[1]-LEVELS[l][1])*100):100;
   score=`<div class="score" style="--sc:${c.col};--sci:${c.ink}"><div class="sc-m"><b class="display">${fmtPerf(s,p.v,0)}</b><span>${unitShort(s)||s.unit}</span></div><div class="sc-p"><b>${pts}</b><small>pts · ${LEVELS[l][0]}</small></div><div class="sc-bar"><i style="width:${pct}%"></i></div><small class="sc-n">${nx?pct+'% to '+nx[0]:'Max level'}${p.venueName?' · at '+esc(p.venueName):''}</small></div>`;}
  const media=mediaHTML(p.media||[],k);
  return `<article class="card post v2" style="animation:fadeUp .4s ${k*50}ms ease both" data-id="${p.id}" data-col="${p.col}" data-uid="${p.uid||''}">
@@ -1882,14 +1884,14 @@ async function renderRanks(){const sel=$('#rkSkill');
  $('#rkTiers').innerHTML='<div class="skel" style="height:120px;margin-top:12px"></div><div class="skel" style="height:120px;margin-top:12px"></div>';$('#rkSum').innerHTML='';
  let all=[],venues=[];
  let recs=[],rf={};
- try{[all,venues,recs,rf]=await Promise.all([Cloud.rankings(name),provnVenues(),Cloud.records?Cloud.records(name).catch(()=>[]):[],recData()]);}catch(e){$('#rkTiers').innerHTML=`<div class="card empty">Could not load rankings (${esc(e.code||e.message)})</div>`;return;}
+ let raw=[];try{[raw,recs,rf]=await Promise.all([Cloud.eventResults(name),Cloud.records?Cloud.records(name).catch(()=>[]):[],recData()]);
+  const by={};raw.forEach(r=>{if(!by[r.uid]||by[r.uid].pts<r.pts)by[r.uid]=r;});all=Object.values(by);}catch(e){$('#rkTiers').innerHTML=`<div class="card empty">Could not load rankings (${esc(e.code||e.message)})</div>`;return;}
  if(sel.value!==name)return;
  all=all.map(r=>({...r,...placeOf(r.city)})).sort((a,b)=>b.pts-a.pts);
  const mine=all.find(r=>r.uid===me)||(bestOf(name)?{uid:me,name:pname(),v:bestOf(name).v,pts:bestOf(name).p,city}:null);
- /* local: Provn-approved venues (pick one) */
- const vInCity=venues.filter(v=>!city||!v.city||v.city.toLowerCase()===city.toLowerCase());
- if(!vInCity.find(v=>v.id===rkVenue))rkVenue=vInCity[0]?.id||'';
- let local=null;if(rkVenue){try{local=await Cloud.venueBoard(name,rkVenue);}catch(e){local=[];console.warn(e);}}
+ /* latest Provn event for this skill */
+ const evs={};raw.forEach(r=>{(evs[r.event]=evs[r.event]||{id:r.event,title:r.eventTitle,date:r.date,place:r.place,rows:[]}).rows.push(r);});
+ const lastEv=Object.values(evs).sort((a,b)=>(b.date||'').localeCompare(a.date||''))[0]||null,local=lastEv?lastEv.rows.slice().sort((a,b)=>b.pts-a.pts):null;
  const sx=profile().sex==='f'?'f':'m',sxL=sx==='f'?'Women':'Men';
  const pickRec=(level,region)=>{if(!region)return null;const fs=recs.find(r=>r.level===level&&r.region===region&&r.sex===sx);if(fs)return fs;const j=(rf[level==='state'?'state':'national']||{})[region];return j&&j[sx]&&j[sx][name]?{...j[sx][name],skill:name}:null;};
  const wr=(()=>{const e=eff(s,{sex:sx}),r=e.fem==='record'?[e.wrec[2],e.wrec[3],e.wrec[4],e.wrec[5],e.wrec[6]]:e.fem==='estimated'?null:REC[name];
@@ -1898,14 +1900,13 @@ async function renderRanks(){const sel=$('#rkSkill');
   const rp=rawPoints(eff(s,{sex:sx}),rec.v),you=mine?`<div class="you">You: ${fp(mine.v)} · ${mine.pts} pts${mine.pts>=rp?' · <b>you beat it!</b>':` · ${rp-mine.pts} pts to go`}</div>`:'';
   return `<div class="tr-rec"><small>🏆 ${label}</small><div class="rm"><b>${fp(rec.v)}</b><span>≈ ${rp} pts</span></div>${rec.holder?`<p>${esc(rec.holder)} <span>· ${esc([rec.date,rec.meet,rec.place].filter(Boolean).join(' · '))}</span></p>`:''}${you}</div>`;};
  const tiers=[
-  {k:'local',ic:'pin',t:'Local',sub:vInCity.length?'At Provn-approved venues':'Provn-approved venues',rows:local,
-   pick:vInCity.length>1?vInCity:null,empty:!vInCity.length?`No Provn-approved venues${city?' in '+esc(city):''} yet. Results you log at one will be ranked here.`:`No one has logged ${esc(name)} at ${esc(vInCity.find(v=>v.id===rkVenue)?.name||'this venue')} yet. Pick the venue when you log a result.`},
-  {k:'city',ic:'city',t:city?esc(city):'City',sub:'Every Provn player in your city',rows:city?all.filter(r=>(r.city||'').toLowerCase()===city.toLowerCase()):null,empty:city?`No one in ${esc(city)} has logged ${esc(name)} yet.`:'Add your city on the You tab to see city rankings.'},
-  {k:'state',ic:'state',t:pl.state||'State',sub:'State record and top Provn players',rows:pl.state?all.filter(r=>r.state===pl.state):null,empty:pl.state?`No Provn player in ${esc(pl.state)} has logged ${esc(name)} yet.`:city?`We couldn't match ${esc(city)} to a state yet.`:'Add your city to see state rankings.',
+  {k:'local',ic:'pin',t:'Latest event',sub:lastEv?[lastEv.title,lastEv.date].filter(Boolean).join(' · '):'Provn events',rows:local,empty:`No Provn event for ${esc(name)} has results yet.`},
+  {k:'city',ic:'city',t:city?esc(city):'City',sub:'Every Provn player in your city',rows:city?all.filter(r=>(r.city||'').toLowerCase()===city.toLowerCase()):null,empty:city?`No one in ${esc(city)} has an event result in ${esc(name)} yet.`:'Add your city on the You tab to see city rankings.'},
+  {k:'state',ic:'state',t:pl.state||'State',sub:'State record and top Provn players',rows:pl.state?all.filter(r=>r.state===pl.state):null,empty:pl.state?`No Provn player in ${esc(pl.state)} has an event result in ${esc(name)} yet.`:city?`We couldn't match ${esc(city)} to a state yet.`:'Add your city to see state rankings.',
    rec:pl.state?recCard(`${esc(pl.state)} record · ${sxL}`,pickRec('state',pl.state),`No official ${esc(pl.state)} record for ${esc(name)} on file yet.`):''},
-  {k:'nat',ic:'flag',t:pl.country||'National',sub:'National record and top Provn players',rows:pl.country?all.filter(r=>r.country===pl.country):null,empty:pl.country?`No Provn player in ${esc(pl.country)} has logged ${esc(name)} yet.`:'Add your city to see national rankings.',
+  {k:'nat',ic:'flag',t:pl.country||'National',sub:'National record and top Provn players',rows:pl.country?all.filter(r=>r.country===pl.country):null,empty:pl.country?`No Provn player in ${esc(pl.country)} has an event result in ${esc(name)} yet.`:'Add your city to see national rankings.',
    rec:pl.country?recCard(`${esc(pl.country)} national record · ${sxL}`,pickRec('national',pl.country),`No ${esc(pl.country)} national record for ${esc(name)} on file yet.`):''},
-  {k:'glob',ic:'globe',t:'Global',sub:'World record and every Provn player',rows:all,empty:`No Provn player has logged ${esc(name)} yet. Be the first!`,
+  {k:'glob',ic:'globe',t:'Global',sub:'World record and every Provn player',rows:all,empty:`No Provn player has an event result in ${esc(name)} yet. Join a Provn event to be the first!`,
    rec:recCard(`${wr.bench?'Elite benchmark':'World record'} · ${sxL}`,wr,'')}];
  const IC={pin:'<path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>',city:'<path d="M3.5 20.5h17M5.5 20.5V9l5-3v14.5M10.5 20.5V4.5l8 3.5v12.5M13.5 10h2M13.5 13h2M13.5 16h2M7.5 12h1M7.5 15h1"/>',state:'<path d="M4 6.5 9 4l6 2.5 5-2.5v13.5L15 20l-6-2.5L4 20z"/><path d="M9 4v13.5M15 6.5V20"/>',flag:'<path d="M5 21V4M5 4.5h11l-2 4 2 4H5"/>',globe:'<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.8 2.6 2.8 14.4 0 17M12 3.5c-2.8 2.6-2.8 14.4 0 17"/>'};
  const icon=k=>`<svg viewBox="0 0 24 24" ${P}>${IC[k]}</svg>`;
@@ -1914,21 +1915,21 @@ async function renderRanks(){const sel=$('#rkSkill');
  const sum=[];
  $('#rkTiers').innerHTML=tiers.map(T=>{
   const rows=T.rows,has=rows&&rows.length,pos=has?rows.findIndex(r=>r.uid===me):-1,you=pos>=0?rows[pos]:null;
-  sum.push({k:T.k,t:T.k==='local'?'Local':T.k==='city'?'City':T.k==='state'?'State':T.k==='nat'?'National':'Global',ic:T.ic,r:pos>=0?`#${pos+1}`:'–',of:has?rows.length:0});
+  sum.push({k:T.k,t:T.k==='local'?'Event':T.k==='city'?'City':T.k==='state'?'State':T.k==='nat'?'National':'Global',ic:T.ic,r:pos>=0?`#${pos+1}`:'–',of:has?rows.length:0});
   let cmp='';
   if(has&&you){const top=rows[0],next=pos>0?rows[pos-1]:null,pct=Math.max(4,Math.round(you.pts/Math.max(1,top.pts)*100));
    cmp=`<div class="tr-cmp"><div class="tr-bar"><i style="width:${pct}%"></i><b style="left:${pct}%"></b></div><p>${pos===0?`<b>You're #1</b>${rows[1]?` · ${you.pts-rows[1].pts} pts ahead of ${esc(rows[1].name)}`:''}`:`<b>#${pos+1} of ${rows.length}</b> · ${next.pts-you.pts+1} pts to pass ${esc(next.name)} · ${top.pts-you.pts} pts behind #1`}</p></div>`;}
-  else if(has&&!mine)cmp=`<div class="tr-cmp"><p>Log a result to see where you stand.</p></div>`;
-  else if(has&&mine&&!you)cmp=`<div class="tr-cmp"><p>Your best isn't ranked here${T.k==='local'?' (it wasn\'t logged at this venue)':''}.</p></div>`;
+  else if(has&&!mine)cmp=`<div class="tr-cmp"><p>Take part in a Provn event to see where you stand.</p></div>`;
+  else if(has&&mine&&!you)cmp=`<div class="tr-cmp"><p>Your best isn't ranked here${T.k==='local'?' (you weren\'t at this event)':''}.</p></div>`;
   const picker=T.pick?`<div class="tr-pick">${T.pick.map(v=>`<button class="${v.id===rkVenue?'on':''}" data-v="${v.id}">${esc(v.name)}</button>`).join('')}</div>`:'';
-  return `<section class="card tier t-${T.k}"><header><span class="tr-ic">${icon(T.ic)}</span><div><b>${T.t}</b><small>${T.k==='local'&&rkVenue?esc(vInCity.find(v=>v.id===rkVenue)?.name||T.sub):T.sub}</small></div><span class="tr-pos">${pos>=0?`#${pos+1}<small>of ${rows.length}</small>`:has?`<small>${rows.length} ranked</small>`:''}</span></header>
+  return `<section class="card tier t-${T.k}"><header><span class="tr-ic">${icon(T.ic)}</span><div><b>${T.t}</b><small>${esc(T.sub)}</small></div><span class="tr-pos">${pos>=0?`#${pos+1}<small>of ${rows.length}</small>`:has?`<small>${rows.length} ranked</small>`:''}</span></header>
    ${picker}${T.rec||''}${T.rec?'<div class="tr-sub">Top Provn players</div>':''}${has?rows.slice(0,5).map(row).join('')+(pos>=5?`<div class="tr-gap">···</div>${row(you,pos)}`:''):`<p class="tr-empty">${T.empty}</p>`}${cmp}
-   ${!mine&&T.k==='glob'?`<button class="btn primary tr-go" id="rkLog"><span>Log a ${esc(name)} result</span></button>`:''}</section>`;}).join('');
+   ${!mine&&T.k==='glob'?`<button class="btn primary tr-go" id="rkLog"><span>See upcoming events</span></button>`:''}</section>`;}).join('');
  $('#rkSum').innerHTML=sum.map(x=>`<button class="rs ${x.r!=='–'?'on':''}" data-k="${x.k}"><span>${icon(x.ic)}</span><b>${x.r}</b><small>${x.t}</small></button>`).join('');
  $$('#rkSum .rs').forEach(b=>b.onclick=()=>{buzz(6);const el=$('#rkTiers .t-'+b.dataset.k);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});});
  $$('#rkTiers .tr-r').forEach(r=>r.onclick=()=>openUser(r.dataset.u,r.dataset.n));
  $$('#rkTiers .tr-pick button').forEach(b=>b.onclick=()=>{buzz(6);rkVenue=b.dataset.v;store.set('rkVenue',rkVenue);renderRanks();});
- const lg=$('#rkLog');if(lg)lg.onclick=()=>openProve(name,false);}
+ const lg=$('#rkLog');if(lg)lg.onclick=()=>goEvents();}
 $('#rkSkill').onchange=()=>renderRanks();
 /* log sheet: optional Provn venue, so the result counts in Local rankings */
 const _openProve=openProve;openProve=function(name,fromPath){_openProve(name,fromPath);const f=$('#proveVenueF');f.hidden=true;
@@ -1947,13 +1948,14 @@ $$('#seg button').forEach((b,k)=>b.onclick=()=>{if(b.dataset.p==='map')renderMap
 
 /* ================= YOU ================= */
 const You={render(){const ae=document.activeElement;if(!(ae&&ae.closest&&ae.closest('[data-pf] input')))renderPF();if(!$('#youM .av3d'))$('#youM').innerHTML=`<div class="av3d" data-mode="you">${mascot()}</div>`;const ni=$('#nameIn');if(document.activeElement!==ni)ni.value=store.get('name','');ni.placeholder='Your name';
- const ms=mySkills();$('#youSub').textContent=`${ms.length} skill${ms.length===1?'':'s'} proven${store.get('city','')?' · '+esc(store.get('city','')):''}`;renderAcct();renderPInfo();
+ const ms=mySkills();$('#youSub').textContent=`${ms.length} event score${ms.length===1?'':'s'}${store.get('city','')?' · '+esc(store.get('city','')):''}`;renderAcct();renderPInfo();
  $('#wgrid').innerHTML=[['body','Body','volt'],['mind','Mind','nightfall']].map(([w,label,t])=>{const sc=worldScore(w),l=lvOf(sc),req=THEMES[t].req[1],u=unlocked(t);
   return `<div class="card wcard ${u?'open':''}"><small>${label} world</small><b>${sc}</b><span class="lv">${LEVELS[l][0]}</span><div class="bar"><i style="width:${Math.min(100,sc/req*100)}%"></i></div><div class="unl"><span data-i="${u?'unlock':'lock'}"></span>${u?`${THEMES[t].name} unlocked`:`${THEMES[t].name} at ${req}`}</div></div>`;}).join('');
- $('#slist').innerHTML=ms.length?ms.map(({s,b})=>{const c=CATS[s.cat];return `<button class="card srow press" data-n="${esc(s.name)}" style="width:100%;text-align:left;--cv:${c.col};--cvi:${c.ink}"><span class="si">${iconSvg(s.ic)}</span><span class="sn"><b>${esc(s.name)}</b><small>${LEVELS[lvOf(b.p)][0]} · best ${fmtPerf(s,b.v,store.get('bw',0))}${unitShort(s)}</small></span><span class="sp"><b>${b.p}</b><small>pts</small></span></button>`}).join(''):
-  `<div class="card empty">No results yet.<br><button class="btn primary" id="firstProve"><span>Log your first result</span></button></div>`;
+ $('#slist').innerHTML=ms.length?ms.map(({s,b})=>{const c=CATS[s.cat];return `<button class="card srow press" data-n="${esc(s.name)}" style="width:100%;text-align:left;--cv:${c.col};--cvi:${c.ink}"><span class="si">${iconSvg(s.ic)}</span><span class="sn"><b>${esc(s.name)}</b><small>${LEVELS[lvOf(b.p)][0]} · best ${fmtPerf(s,b.v,store.get('bw',0))}${unitShort(s)}${(()=>{const r=resultsOf(s.name).find(x=>x.v===b.v);return r&&r.ev?' · '+esc(r.ev):'';})()}</small></span><span class="sp"><b>${b.p}</b><small>pts</small></span></button>`}).join(''):
+  `<div class="card empty">No scores yet. Scores come from <b>Provn events</b>: take part in one and your result is added here.<br><button class="btn primary" id="firstProve"><span>See upcoming events</span></button></div>`;
  renderInterests();renderSocial();paintIcons($('#s-you'));$$('#slist .srow').forEach(b=>b.onclick=()=>{go('orbit');setTimeout(()=>Orbit.openSkill(b.dataset.n),280)});
- const fp=$('#firstProve');if(fp)fp.onclick=()=>openProve();}};
+ const fp=$('#firstProve');if(fp)fp.onclick=()=>goEvents();}};
+function goEvents(){go('arena');const b=$('#seg button[data-p="events"]');if(b)b.click();}
 $('#nameIn').addEventListener('click',()=>openPEdit());
 function renderPF(){const pr=profile();$$('[data-pf]').forEach(el=>{el.innerHTML=`<span class="sx"><button data-sx="m" class="${pr.sex==='m'?'on':''}">Male</button><button data-sx="f" class="${pr.sex==='f'?'on':''}">Female</button></span><label>Age <input inputmode="numeric" maxlength="3" data-age value="${pr.age||''}" placeholder="—"></label><label>Weight <input inputmode="decimal" maxlength="5" data-bw value="${pr.bw||''}" placeholder="—"> kg</label>${el.id==='provePf'?'':`<label class="cityL">City <input maxlength="30" data-city value="${esc(store.get('city',''))}" placeholder="—"></label>`}`;
  el.querySelectorAll('[data-sx]').forEach(b=>b.onclick=()=>{buzz(6);store.set('sex',b.dataset.sx);renderPF();onProfile();});
@@ -2071,13 +2073,14 @@ const Path=(()=>{let skill=null,tok=0;const el=$('#path'),body=$('#pBody');
    :`<p class="note">No fresh headlines in the last month. Tap <b>More news</b> below for older stories.</p>`;})
    .catch(()=>{if(live())$('#hbNews').innerHTML=`<p class="note">Headlines didn’t load right now. <a href="https://news.google.com/search?q=${encodeURIComponent(s.name)}" target="_blank" rel="noopener">Open Google News</a>.</p>`;});
   /* records: world · India · state (admin) · Provn events */
-  Promise.all([natRecs(),CU()?Cloud.records(s.name).catch(()=>[]):[]]).then(([nat,st])=>{if(!live())return;const cards=[];
+  Promise.all([natRecs(),CU()?Cloud.records(s.name).catch(()=>[]):[],CU()?Cloud.eventResults(s.name).catch(()=>[]):[]]).then(([nat,st,er])=>{if(!live())return;const cards=[],pv=er.slice().sort((a,b)=>b.pts-a.pts)[0];
    const card=(lvl,flag,mark,who,meta,tone)=>`<div class="hb-rc ${tone||''}"><span class="hb-rl">${flag} ${lvl}</span><b class="display">${esc(mark)}</b><span class="hb-rw">${esc(who)}</span>${meta?`<small>${esc(meta)}</small>`:''}</div>`;
    if(s.ty!=='r'&&!BENCH.has(s.name))cards.push(card(s.w==='body'?"World record · men":'World record','🌍',`${fmtPerf(s,s.ref,bw)}${unitShort(s)}`,r?`${r[0]}${r[1]?' ('+r[1]+')':''}`:'Holder being added',r?[r[2],r[3],r[4]].filter(Boolean).join(' · '):''));
    if(FEM[s.name]&&FEM[s.name][2])cards.push(card('World record · women','🌍',`${fmtPerf(s,FEM[s.name][0],bw)}${unitShort(s)}`,`${FEM[s.name][2]}${FEM[s.name][3]?' ('+FEM[s.name][3]+')':''}`,[FEM[s.name][4],FEM[s.name][5],FEM[s.name][6]].filter(Boolean).join(' · ')));
    const IN=(nat.national||{}).India||{};['m','f'].forEach(g=>{const x=(IN[g]||{})[s.name];if(x)cards.push(card(`India · ${g==='m'?'men':'women'}`,'🇮🇳',`${fmtPerf(s,x.v,bw)}${unitShort(s)}`,x.holder,[x.date,x.meet,x.place].filter(Boolean).join(' · '),'in'));});
    st.forEach(x=>cards.push(card(`${x.level==='state'?x.region:x.region||'India'} · ${x.sex==='f'?'women':'men'}`,x.level==='state'?'📍':'🇮🇳',`${fmtPerf(s,x.v,bw)}${unitShort(s)}`,x.holder,[x.date,x.meet,x.place].filter(Boolean).join(' · '),'in')));
-   cards.push(`<div class="hb-rc provn"><span class="hb-rl">⚡ Provn record</span><b class="display">—</b><span class="hb-rw">Set at Provn events</span><small>Scores only count at official Provn events. Join one in Arena to put your name here.</small></div>`);
+   cards.push(pv?card('Provn record','⚡',`${fmtPerf(s,pv.v,bw)}${unitShort(s)}`,pv.name,[pv.eventTitle,pv.date].filter(Boolean).join(' · ')+` · ${pv.pts} pts`,'provn on')
+    :`<div class="hb-rc provn"><span class="hb-rl">⚡ Provn record</span><b class="display">—</b><span class="hb-rw">Set at Provn events</span><small>Scores only count at official Provn events. Join one in Arena to put your name here.</small></div>`);
    $('#hbRecs').innerHTML=`<div class="hb-recs">${cards.join('')}</div>`;});
   /* events + places */
   Promise.all([guide(),CU()?Cloud.events().catch(()=>[]):[]]).then(([g,ev])=>{if(!live())return;const today=new Date().toISOString().slice(0,10);
@@ -2405,12 +2408,9 @@ const Sync={busy:false,
     await Cloud.saveProfile({...cloudProfile(),photo:u.photo||''});}
    else{store.set('name',p.name);['sex','city'].forEach(k=>{if(typeof p[k]==='string')store.set(k,p[k])});store.set('age',p.age);store.set('bw',p.bw||0);store.set('sexAt',p.sexAt||0);store.set('interests',Array.isArray(p.interests)?p.interests:[]);store.set('city',p.city||'');
     if(p.char&&window.Avatar3D&&p.char!==Avatar3D.getChar())Avatar3D.setChar(p.char);}
-   /* upload results logged on this phone before accounts existed */
-   if(!store.get('acct',false)){for(const s of SKILL_LIST){const list=store.get('res_'+s.name,null);if(!list)continue;
-     for(const r of list){if(r.cloud)continue;try{r.cloud=await Cloud.saveResult({skill:s.name,v:r.v,pts:pointsOf(s,r.v),name:store.get('name',''),city:store.get('city',''),sex:profile().sex,age:profile().age});}catch(e){console.warn(e)}}
-     store.set('res_'+s.name,list);}}
    store.set('acct',true);
-   const mine=await Cloud.myResults(),by={};mine.forEach(r=>{(by[r.skill]=by[r.skill]||[]).push({v:r.v,t:r.t,cloud:r.id,video:r.video||''})});
+   /* your scores = your results at Provn events (entered by the Provn team) */
+   const mine=await Cloud.myEventResults().catch(()=>[]),by={};mine.forEach(r=>{(by[r.skill]=by[r.skill]||[]).push({v:r.v,t:r.t,ev:r.eventTitle||'',date:r.date||''})});
    SKILL_LIST.forEach(s=>{if(by[s.name])store.set('res_'+s.name,by[s.name]);else if(store.get('res_'+s.name,null))store.set('res_'+s.name,[]);});
    if(!need)toast(`Welcome back, ${store.get('name','')}`);}
   catch(e){console.warn('sync',e);toast('Could not sync: '+(e.code||e.message));}
@@ -2450,7 +2450,7 @@ const Onb={i:0,d:{},done:null,
   {k:'char',t:'Pick your player',sub:'Your player cheers you on across the app. Each look has its own moves.',
    body:d=>`<div class="onb-stage"><div class="av3d" data-mode="you"></div></div><div class="pgrid" id="oGrid"></div>`,
    ok:()=>true},
-  {k:'done',t:'',body:d=>`<div class="onb-done"><div class="onb-stage"><div class="av3d" data-mode="cele"></div></div><h2 class="display">You're in, ${esc(d.name)}!</h2><p class="sub">Log your first result and your path starts. Every skill is scored out of 1200, where 1200 is the world record.</p></div>`,ok:()=>true}],
+  {k:'done',t:'',body:d=>`<div class="onb-done"><div class="onb-stage"><div class="av3d" data-mode="cele"></div></div><h2 class="display">You're in, ${esc(d.name)}!</h2><p class="sub">Explore any activity in Orbit, share your moments in Pulse, and earn scores at Provn events.</p></div>`,ok:()=>true}],
  run(pre){this.d={name:pre.name||'',sex:pre.sex||store.get('sex','')||'',age:pre.age||store.get('age',0)||0,bw:pre.bw||store.get('bw',0)||0,city:pre.city||store.get('city','')||''};
   this.i=0;$('#onb').hidden=false;this.paint();return new Promise(r=>this.done=r);},
  paint(){const st=this.steps[this.i],d=this.d,n=this.steps.length-1;
@@ -2625,7 +2625,7 @@ const Admin={tab:'overview',
     <datalist id="evSkills">${SKILL_LIST.map(s=>`<option value="${esc(s.name)}">`).join('')}</datalist>
     <div class="adm-row"><button class="btn primary" id="evSave"><span>${edit?'Save changes':'Create event'}</span></button>${edit?'<button class="btn ghost" id="evCancel"><span>Cancel</span></button>':''}</div>
    </div>
-   <h3 class="adm-h3">All events</h3>`+(list.length?list.map(x=>{const f=fmtDate(x.date);return`<div class="adm-r" data-e="${x.id}"><div class="adm-rt"><b>${esc(x.title)}${x.past?' <em class="ban">Past</em>':''}</b><span>${f.w} ${f.d} ${f.m}${x.time?' · '+esc(x.time):''} · ${esc([x.place,x.city].filter(Boolean).join(', '))}</span><small>${x.going} going${x.spots?' of '+x.spots:''}</small></div><button class="adm-b" data-a="who">Going</button><button class="adm-b" data-a="edit">Edit</button><button class="adm-b red" data-a="del">Delete</button></div>`;}).join(''):'<p class="adm-p">No events yet.</p>');
+   <h3 class="adm-h3">All events</h3>`+(list.length?list.map(x=>{const f=fmtDate(x.date);return`<div class="adm-r" data-e="${x.id}"><div class="adm-rt"><b>${esc(x.title)}${x.past?' <em class="ban">Past</em>':''}</b><span>${f.w} ${f.d} ${f.m}${x.time?' · '+esc(x.time):''} · ${esc([x.place,x.city].filter(Boolean).join(', '))}</span><small>${x.going} going${x.spots?' of '+x.spots:''}</small></div>${x.skill?'<button class="adm-b" data-a="res">Results</button>':''}<button class="adm-b" data-a="who">Going</button><button class="adm-b" data-a="edit">Edit</button><button class="adm-b red" data-a="del">Delete</button></div>`;}).join(''):'<p class="adm-p">No events yet.</p>');
   cityAuto($('#evC'),()=>{});
   let evLat=e.lat??null,evLng=e.lng??null;
   $('#evPick').onclick=()=>{Admin.player();openMap({pick:r=>{Admin.open(true);setTimeout(()=>{if(r){evLat=r.lat;evLng=r.lng;const l=$('#evLoc');if(l)l.textContent=`📍 ${r.lat.toFixed(5)}, ${r.lng.toFixed(5)}`;toast('Location set');}},0);}});};
@@ -2636,7 +2636,30 @@ const Admin={tab:'overview',
   $$('[data-e]',B).forEach(el=>{const x=list.find(y=>y.id===el.dataset.e);$$('[data-a]',el).forEach(b=>b.onclick=async()=>{
    if(b.dataset.a==='edit'){this.t_events(B,x);}
    if(b.dataset.a==='del')this.confirm(b,async()=>{try{await Cloud.admin.deleteEvent(x.id);toast('Event deleted');this.t_events(B);renderEvents();}catch(er){this.err(er)}});
+   if(b.dataset.a==='res'){const o=el.querySelector('.adm-er');if(o){o.remove();return;}el.insertAdjacentHTML('beforeend','<div class="adm-er"><div class="skel" style="height:40px"></div></div>');this.evResults(el.querySelector('.adm-er'),x);return;}
    if(b.dataset.a==='who'){const o=el.querySelector('.adm-c');if(o){o.remove();return;}const g=await Cloud.admin.going(x.id);el.insertAdjacentHTML('beforeend',`<div class="adm-c">${g.length?g.map(p=>esc(p.name||'Player')).join(', '):'Nobody yet.'}</div>`);}});});},
+ /* enter scores for a Provn event: pick a player, type their result; points use their gender and age */
+ async evResults(box,ev){const s=SKILLS[ev.skill],q=x=>box.querySelector(x);if(!s){box.innerHTML='<p class="adm-p">Set a valid skill on this event first.</p>';return;}
+  const [rows,users,going]=await Promise.all([Cloud.admin.eventResults(ev.id),Cloud.admin.users(),Cloud.admin.going(ev.id).catch(()=>[])]);
+  const gs=new Set(going.map(g=>g.uid)),pool=users.filter(u=>u.name).sort((a,b)=>(gs.has(b.uid)-gs.has(a.uid))||a.name.localeCompare(b.name));
+  const ph=isTime(s)?(s.unit==='h:mm:ss'?'1:45:00':s.unit==='sec'?'12.34':'21:30'):s.unit;
+  rows.sort((a,b)=>b.pts-a.pts);
+  box.innerHTML=`<p class="adm-p">${esc(s.name)} · enter each player's result in <b>${esc(s.ty==='bw'?'kg':s.unit)}</b>. Points use their gender and age. Players are notified.</p>
+   ${rows.length?rows.map((r,i)=>`<div class="adm-r sm"><div class="adm-rt"><b>#${i+1} ${esc(r.name)}</b><span>${fmtPerf(s,r.v,0)}${unitShort(s)} · ${r.pts} pts</span></div><button class="adm-b red" data-del="${r.id}">Remove</button></div>`).join(''):'<p class="adm-p">No results yet.</p>'}
+   <div class="adm-form"><label>Player<select class="adm-in erP" style="margin:5px 0 0">${pool.map(u=>`<option value="${u.uid}">${esc(u.name)}${gs.has(u.uid)?' · registered':''}${u.city?' · '+esc(u.city):''}</option>`).join('')}</select></label>
+    ${s.ty==='bw'?'<div class="two"><label>Lifted (kg)<input class="erV" inputmode="decimal" placeholder="140"></label><label>Body weight (kg)<input class="erBw" inputmode="decimal" placeholder="75"></label></div>':`<label>Result<input class="erV" inputmode="${isTime(s)?'text':'decimal'}" placeholder="${esc(ph)}"></label>`}
+    <p class="adm-p erPrev"></p><button class="btn primary erSave"><span>Save result</span></button></div>`;
+  const read=()=>{const u=pool.find(x=>x.uid===q('.erP').value),raw=q('.erV').value.trim();if(!u||!raw)return null;
+   let x=isTime(s)?(/^\d+([.,]\d+)?$/.test(raw)&&/:/.test(s.unit)?parseFloat(raw.replace(',','.'))*60:parseTime(raw)):parseFloat(raw.replace(',','.'));
+   if(s.ty==='bw'){const bw=parseFloat(q('.erBw').value)||u.bw;if(!(bw>0))return {u,err:'Add their body weight'};x=x/bw;}
+   if(!(x>0)&&!(s.x0<0&&x>=0))return {u,err:'Check the result'};return {u,x,pts:pointsOf(s,x,{sex:u.sex,age:u.age,bw:u.bw})};};
+  const prev=()=>{const r=read();q('.erPrev').textContent=!r?'':r.err?r.err:`${fmtPerf(s,r.x,0)}${unitShort(s)} ≈ ${r.pts} pts${r.pts>1260?' · beats the world record, double-check':''}`;};
+  box.querySelectorAll('input,select').forEach(i=>i.oninput=prev);
+  q('.erSave').onclick=async()=>{const r=read();if(!r||r.err){toast(r?r.err:'Pick a player and enter a result');return;}
+   try{await Cloud.admin.saveEventResult(ev,r.u,r.x,r.pts);
+    Cloud.notify(r.u.uid,'result',{ref:ev.id,col:'events',text:`${fmtPerf(s,r.x,0)}${unitShort(s)} at ${ev.title} · ${r.pts} pts`});
+    toast(`Saved ${r.u.name}: ${r.pts} pts`);this.evResults(box,ev);}catch(e){this.err(e);}};
+  box.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>this.confirm(b,async()=>{try{await Cloud.admin.deleteEventResult(b.dataset.del);toast('Removed');this.evResults(box,ev);}catch(e){this.err(e);}}));},
  async t_records(B){const list=(await Cloud.admin.allRecords()).sort((a,b)=>(a.region+a.skill).localeCompare(b.region+b.skill));
   B.innerHTML=`<h3 class="adm-h3" style="margin-top:0">Add a state or national record</h3><p class="adm-p">Shown at the top of the State and National rankings. India's national athletics records are already built in; anything you add here replaces them.</p>
    <div class="adm-form">
@@ -2824,7 +2847,7 @@ $('#intSave').onclick=()=>{store.set('interests',[...intSel]);hideSheet();buzz(1
 $('#intEdit').onclick=openInterests;
 
 /* auto-update: GitHub Pages lets phones keep an old copy for ~10 min; check the live version and reload if it's newer */
-const APP_V='20261123r';
+const APP_V='20261123s';
 async function checkUpdate(){try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});const j=await r.json();
  if(j.v&&j.v!==APP_V&&sessionStorage.getItem('provn_upd')!==j.v){sessionStorage.setItem('provn_upd',j.v);toast('Updating Provn…');setTimeout(()=>location.replace(location.pathname+'?v='+j.v+location.hash),600);}}catch(e){}}
 checkUpdate();document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkUpdate();});
@@ -2874,10 +2897,10 @@ async function openPeople(kind,uid,name,g){const dm=kind==='dm';$('#pplT').textC
 /* ================= NOTIFICATIONS + DIRECT MESSAGES (live) ================= */
 const snip=p=>(p.text||(p.skill?p.skill:'')||'').replace(/\s+/g,' ').slice(0,80);
 let ntfs=[],chats=[],ntfUn=null,chatUn=null,ntfNew=new Set();
-const NTF={like:['❤️','liked your post'],legit:['✅','vouched your result is legit'],comment:['💬','commented'],mention:['@','mentioned you'],repost:['↻','reposted your post'],follow:['👤','started following you']};
+const NTF={like:['❤️','liked your post'],legit:['✅','vouched your result is legit'],comment:['💬','commented'],mention:['@','mentioned you'],repost:['↻','reposted your post'],follow:['👤','started following you'],result:['🏅','added your event result']};
 function ntfLine(n){const k=NTF[n.kind]||['•',''];return n.kind==='follow'&&n.text==='back'?'followed you back':k[1];}
 function startLive(){ntfUn&&ntfUn();chatUn&&chatUn();ntfUn=chatUn=null;ntfs=[];chats=[];paintBadges();if(!CU())return;
- let f1=true;ntfUn=Cloud.listenNotifs(l=>{if(!f1&&!(openSheet&&openSheet.id==='sh-ntf')){const n=l.find(x=>!x.read&&!ntfs.some(o=>o.id===x.id));if(n){toast(`${NTF[n.kind]?NTF[n.kind][0]:''} ${n.fromName} ${ntfLine(n)}`);buzz(12);}}
+ let f1=true;ntfUn=Cloud.listenNotifs(l=>{if(!f1&&!(openSheet&&openSheet.id==='sh-ntf')){const n=l.find(x=>!x.read&&!ntfs.some(o=>o.id===x.id));if(n){toast(`${NTF[n.kind]?NTF[n.kind][0]:''} ${n.kind==='result'?'Provn':n.fromName} ${ntfLine(n)}${n.kind==='result'&&n.text?': '+n.text:''}`);buzz(12);}}
   f1=false;ntfs=l;paintBadges();if(openSheet&&openSheet.id==='sh-ntf')paintNotifs();});
  let f2=true;chatUn=Cloud.listenChats(l=>{const me=Cloud.user.uid;
   if(!f2)l.forEach(c=>{const o=chats.find(x=>x.id===c.id);if(c.lastFrom!==me&&(!o||o.t<c.t)&&!(chatWith&&Cloud.chatId(me,chatWith.uid)===c.id&&openSheet&&openSheet.id==='sh-chat')){toast(`💬 ${(c.names||{})[c.lastFrom]||'New message'}: ${c.last}`);buzz(12);}});
@@ -2888,10 +2911,10 @@ function paintBadges(){const a=ntfs.filter(n=>!n.read).length,b=unreadChats();
  [['#btnBell',a],['#btnChat',b]].forEach(([s,n])=>{const el=$(s+' .bdg');el.hidden=!n;el.textContent=n>9?'9+':n;});}
 function openNotifs(){ntfNew=new Set(ntfs.filter(n=>!n.read).map(n=>n.id));showSheet('sh-ntf');paintNotifs();if(ntfNew.size)setTimeout(()=>Cloud.markRead([...ntfNew]),900);}
 function paintNotifs(){const el=$('#ntfList');
- el.innerHTML=ntfs.length?ntfs.map(n=>`<button class="ntf ${ntfNew.has(n.id)?'new':''}" data-id="${n.id}"><span class="na">${avHTML(n.fromName,n.fromPhoto,'pp-av')}<i>${(NTF[n.kind]||['•'])[0]}</i></span><div><b>${esc(n.fromName)}</b> ${esc(ntfLine(n))}${n.text&&n.kind!=='follow'?`<q>${esc(n.text)}</q>`:''}<small>${ago(n.t)}</small></div></button>`).join('')
+ el.innerHTML=ntfs.length?ntfs.map(n=>`<button class="ntf ${ntfNew.has(n.id)?'new':''}" data-id="${n.id}"><span class="na">${avHTML(n.fromName,n.fromPhoto,'pp-av')}<i>${(NTF[n.kind]||['•'])[0]}</i></span><div><b>${esc(n.kind==='result'?'Provn':n.fromName)}</b> ${esc(ntfLine(n))}${n.text&&n.kind!=='follow'?`<q>${esc(n.text)}</q>`:''}<small>${ago(n.t)}</small></div></button>`).join('')
   :'<p class="note">Nothing yet. You’ll hear here when players like, vouch, comment on or repost your posts, tag you or follow you.</p>';
  $$('#ntfList .ntf').forEach(b=>b.onclick=()=>{const n=ntfs.find(x=>x.id===b.dataset.id);if(!n)return;buzz(6);
-  if(n.kind==='follow'){openUser(n.from,n.fromName);return;}hideSheet();setTimeout(()=>focusPost(n.ref),60);});}
+  if(n.kind==='follow'){openUser(n.from,n.fromName);return;}if(n.kind==='result'){hideSheet();go('you');return;}hideSheet();setTimeout(()=>focusPost(n.ref),60);});}
 /* messages */
 let chatWith=null,msgUn=null;
 function chatOther(c){const me=Cloud.user.uid,o=c.members.find(x=>x!==me)||me;return {uid:o,name:(c.names||{})[o]||'Player',photo:(c.photos||{})[o]||''};}
@@ -2930,8 +2953,8 @@ setTimeout(()=>$('#splash').classList.add('out'),matchMedia('(prefers-reduced-mo
 setTimeout(()=>$('#splash').remove(),1700);
 setTimeout(()=>$('#orbitHint').style.opacity=0,6000);
 </script>
-<script type="module" src="avatar3d.js?v=20261123r"></script>
-<script type="module" src="cloud.js?v=20261123r"></script>
-<script src="map.js?v=20261123r" defer></script>
+<script type="module" src="avatar3d.js?v=20261123s"></script>
+<script type="module" src="cloud.js?v=20261123s"></script>
+<script src="map.js?v=20261123s" defer></script>
 </body>
 </html>
