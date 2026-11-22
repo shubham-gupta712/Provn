@@ -565,18 +565,14 @@ svg{display:block}
 .adm-sw2{width:50px;height:30px;border-radius:16px;background:var(--bg3);position:relative;flex:none;border:var(--card-bd)}
 .adm-sw2 i{position:absolute;left:3px;top:50%;width:22px;height:22px;margin-top:-11px;border-radius:50%;background:var(--text3);transition:all .2s}
 .adm-sw2.on{background:var(--accent)}.adm-sw2.on i{left:23px;background:#fff}
-.adm-pill{position:absolute;z-index:94;left:10px;top:60%;touch-action:none;user-select:none;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;color:#fff;
- background:radial-gradient(circle at 32% 26%,#fff 0,#ffd2bf 9%,var(--accent) 38%,#c2361d 72%,#5a1208 100%);
- box-shadow:inset -6px -8px 14px rgba(0,0,0,.35),inset 4px 5px 10px rgba(255,255,255,.25),0 8px 22px rgba(0,0,0,.45),0 0 22px color-mix(in srgb,var(--accent) 55%,transparent);
- transition:left .25s ease,top .05s linear,transform .15s;animation:orbFloat 3.2s ease-in-out infinite}
+.adm-pill{position:absolute;z-index:94;left:10px;top:60%;touch-action:none;user-select:none;width:64px;height:64px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;color:#fff;
+ background:radial-gradient(circle at 32% 26%,rgba(255,255,255,.55) 0,rgba(255,255,255,.12) 22%,color-mix(in srgb,var(--accent) 42%,transparent) 55%,color-mix(in srgb,var(--accent) 65%,rgba(0,0,0,.4)) 100%);
+ -webkit-backdrop-filter:blur(8px) saturate(1.4);backdrop-filter:blur(8px) saturate(1.4);border:1.5px solid rgba(255,255,255,.4);
+ box-shadow:inset -5px -7px 12px rgba(0,0,0,.22),inset 3px 4px 8px rgba(255,255,255,.3),0 8px 20px rgba(0,0,0,.35);transition:left .25s ease,top .05s linear,transform .15s}
 .adm-pill:active{transform:scale(.92)}
-.adm-pill svg{width:25px;height:25px;position:relative;z-index:1;filter:drop-shadow(0 1px 2px rgba(0,0,0,.45))}
-.adm-pill .orb-ring{position:absolute;inset:-5px;border-radius:50%;border:2px solid transparent;border-top-color:color-mix(in srgb,var(--accent) 80%,#fff);border-right-color:color-mix(in srgb,var(--accent) 35%,transparent);animation:orbSpin 2.6s linear infinite}
-.adm-pill::after{content:'';position:absolute;left:14px;top:9px;width:18px;height:10px;border-radius:50%;background:rgba(255,255,255,.55);filter:blur(2px);transform:rotate(-25deg)}
-@keyframes orbSpin{to{transform:rotate(360deg)}}
-@keyframes orbFloat{0%,100%{translate:0 0}50%{translate:0 -3px}}
-[data-theme="nightfall"] .adm-pill{background:radial-gradient(circle at 32% 26%,#e8e2ff 0,#b49cff 10%,#8B5CFF 40%,#3a1e8a 75%,#120a30 100%)}
-[data-theme="volt"] .adm-pill{background:radial-gradient(circle at 32% 26%,#fff 0,#f4ffb0 10%,#D6FF1F 38%,#7d9a00 74%,#1f2600 100%);color:#0D0E12}
+.adm-pill svg{width:21px;height:21px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.45))}
+.adm-pill b{font-size:10.5px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+[data-theme="volt"] .adm-pill{color:#0D0E12}[data-theme="volt"] .adm-pill b{text-shadow:none}
 .pb-ic{width:1.15em;height:1.15em;vertical-align:-.2em}
 .mc-a .pb-ic,.mx-ic .pb-ic{width:62%;height:62%}
 .adm-pill[hidden]{display:none}
@@ -686,6 +682,36 @@ svg{display:block}
 .mx-load b{font-size:15px;font-weight:700;color:#ffffffc0}
 .mx-spin{width:58px;height:58px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#4f9be8,#1d5fae 55%,#0c2f66);box-shadow:0 0 30px rgba(90,160,255,.5);animation:mxsp 1.6s ease-in-out infinite}
 @keyframes mxsp{50%{transform:scale(.88)}}
+
+/* player details */
+.pinfo{padding:14px;margin-top:14px}
+.pinfo header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.pinfo header b{display:block;font-family:var(--f-display);font-size:19px}.pinfo header small{display:block;font-size:12px;font-weight:700;color:var(--text3)}
+.pinfo header .btn{height:38px;padding:0 16px;font-size:14px}
+.pi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pi{display:flex;gap:9px;align-items:center;padding:10px;border-radius:14px;background:var(--bg3);min-width:0}
+.pi.wide{grid-column:1/-1}
+.pi-ic{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:var(--bg2);font-size:16px;flex:none}
+.pi small{display:block;font-size:10.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--text3)}
+.pi b{display:block;font-size:15px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pi b i{font-style:normal;color:var(--text3);font-weight:700}
+.pi b em{font-style:normal;font-size:12px;font-weight:700;color:var(--text3);margin-left:6px}
+.pe-f{display:block;margin-top:14px}.pe-f>span{display:block;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.pe-f input{width:100%;height:50px;padding:0 14px;border-radius:14px;background:var(--bg3);border:var(--card-bd);font:inherit;font-size:16px;font-weight:700;color:var(--text);outline:0}
+.pe-f input:focus{border-color:var(--accent)}
+.pe-f small{display:block;margin-top:6px;font-size:12.5px;font-weight:600;color:var(--text3);line-height:1.4}
+.pe-seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pe-seg button{height:48px;border-radius:14px;background:var(--bg3);border:var(--card-bd);font-size:15px;font-weight:800;color:var(--text2)}
+.pe-seg button.on{background:var(--accent);color:var(--on-accent);border-color:transparent}.pe-seg button:disabled{opacity:.35}
+.pe-two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pe-u{position:relative}.pe-u em{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-style:normal;font-weight:800;color:var(--text3)}
+.tr-rec{margin:4px 0 10px;padding:12px;border-radius:16px;background:linear-gradient(135deg,color-mix(in srgb,#FFC23D 22%,var(--bg3)),var(--bg3));border:1.5px solid color-mix(in srgb,#FFC23D 45%,transparent)}
+.tr-rec small{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#E8A800}
+.tr-rec .rm{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-top:4px}
+.tr-rec .rm b{font-family:var(--f-display);font-size:26px;line-height:1}.tr-rec .rm span{font-size:12.5px;font-weight:800;color:var(--text2)}
+.tr-rec p{margin:4px 0 0;font-size:13px;font-weight:700}.tr-rec p span{color:var(--text3);font-weight:600}
+.tr-rec .you{margin-top:8px;padding-top:8px;border-top:1.5px dashed color-mix(in srgb,#FFC23D 35%,transparent);font-size:12.5px;font-weight:700;color:var(--text2)}
+.tr-rec.none{background:var(--bg3);border-color:transparent}.tr-rec.none small{color:var(--text3)}
+.tr-sub{margin:12px 0 2px;font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--text3)}
 
 /* rankings */
 .rk-sum{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:12px}
@@ -925,8 +951,8 @@ svg{display:block}
     </section>
 
     <section class="screen" id="s-you" data-tab="you">
-      <div class="prof"><div class="pm" id="youM"></div><div class="pn2"><input class="nameIn" id="nameIn" maxlength="18" aria-label="Your player name"><p id="youSub"></p><button class="btn ghost chg" id="chgPlayer"><span>Change player</span></button></div></div>
-      <div class="card pdet"><small>Your details · for fair scoring</small><div class="pfields" data-pf></div></div>
+      <div class="prof"><div class="pm" id="youM"></div><div class="pn2"><input class="nameIn" id="nameIn" maxlength="18" aria-label="Your player name" readonly><p id="youSub"></p><button class="btn ghost chg" id="chgPlayer"><span>Change player</span></button></div></div>
+      <div class="card pinfo" id="youInfo"></div>
       <div class="wgrid" id="wgrid"></div>
       <div class="sec-h"><h3 class="display">Your skills</h3><a id="addSkill">Add skill</a></div>
       <div class="slist" id="slist"></div>
@@ -966,6 +992,17 @@ svg{display:block}
     <div id="siBody"></div>
   </section>
 
+  <section class="sheet" id="sh-pedit" aria-label="Edit player details">
+    <div class="handle"></div>
+    <h2 class="display">Edit details</h2>
+    <p class="lead">These keep scoring fair: records by gender, age grading and body-weight strength scores.</p>
+    <label class="pe-f"><span>Player name</span><input id="peName" maxlength="24" autocomplete="off"></label>
+    <div class="pe-f"><span>Gender</span><div class="pe-seg" id="peSex"><button data-s="m">♂ Male</button><button data-s="f">♀ Female</button></div><small id="peSexNote"></small></div>
+    <div class="pe-two"><label class="pe-f"><span>Age</span><div class="pe-u"><input id="peAge" inputmode="numeric" maxlength="3"><em>yrs</em></div></label><label class="pe-f"><span>Weight</span><div class="pe-u"><input id="peBw" inputmode="decimal" maxlength="5"><em>kg</em></div></label></div>
+    <label class="pe-f"><span>City</span><input id="peCity" maxlength="30" autocomplete="off" placeholder="Start typing your city"></label>
+    <button class="btn primary" style="width:100%;margin-top:18px" id="peSave"><span>Save</span></button>
+  </section>
+
   <section class="sheet" id="sh-cmt" aria-label="Comments">
     <div class="handle"></div>
     <h2 class="display">Comments</h2>
@@ -990,7 +1027,7 @@ svg{display:block}
     <div class="row" id="acctRow" style="cursor:pointer"><span data-i="you"></span><span class="sp">Account</span><small id="acctTxt">Sign out</small></div>
     <div class="row"><span data-i="bell"></span><span class="sp">Notifications</span><small>Soon</small></div>
     <div class="row"><span data-i="lock"></span><span class="sp">Privacy</span><small>Soon</small></div>
-    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261123b</small></div>
+    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261123c</small></div>
   </section>
 
   <div class="cele" id="cele"><div class="cele-in"><div class="cele-m" id="celeM"></div><h2 class="display" id="celeT"></h2><div class="big" id="celeB"></div><p id="celeS"></p><button class="btn primary" id="celeOk"><span>Keep going</span></button></div></div>
@@ -1010,10 +1047,10 @@ svg{display:block}
 
   <div class="adm" id="adm" hidden>
     <header class="adm-hd"><div><b class="display">Admin</b><small id="admWho"></small></div><button class="btn ghost" id="admPlayer"><span>Player view</span></button></header>
-    <nav class="adm-tabs" id="admTabs"><button data-t="overview" class="on">Overview</button><button data-t="mod">Moderation</button><button data-t="users">Players</button><button data-t="events">Events</button><button data-t="test">Test</button></nav>
+    <nav class="adm-tabs" id="admTabs"><button data-t="overview" class="on">Overview</button><button data-t="mod">Moderation</button><button data-t="users">Players</button><button data-t="events">Events</button><button data-t="records">Records</button><button data-t="test">Test</button></nav>
     <div class="adm-body" id="admBody"></div>
   </div>
-  <button class="adm-pill" id="admPill" hidden aria-label="Admin console"><i class="orb-ring"></i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 19.5 6v5.6c0 4.6-3.2 7.9-7.5 9.4-4.3-1.5-7.5-4.8-7.5-9.4V6z"/><path d="m8.8 12.2 2.2 2.2 4.4-4.6"/></svg></button>
+  <button class="adm-pill" id="admPill" hidden aria-label="Admin console"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 19.5 6v5.6c0 4.6-3.2 7.9-7.5 9.4-4.3-1.5-7.5-4.8-7.5-9.4V6z"/><path d="m8.8 12.2 2.2 2.2 4.4-4.6"/></svg><b>Admin</b></button>
 
   <div class="onb" id="onb" hidden>
     <div class="onb-h"><button class="onb-back press" id="onbBack" aria-label="Back"><span data-i="back"></span></button><div class="onb-bar"><i id="onbBar"></i></div><span class="onb-n" id="onbN"></span></div>
@@ -1525,6 +1562,7 @@ let venueCache=null;
 async function provnVenues(){if(venueCache)return venueCache;if(!CU()||!Cloud.venues)return [];try{venueCache=(await Cloud.venues()).sort((a,b)=>a.name.localeCompare(b.name));}catch(e){venueCache=[];}return venueCache;}
 
 let rkVenue=store.get('rkVenue','');
+let recFile=null;async function recData(){if(recFile)return recFile;try{recFile=await (await fetch('data/records.json',{cache:'no-cache'})).json();}catch(e){recFile={national:{},state:{}};}return recFile;}
 async function renderRanks(){const sel=$('#rkSkill');
  if(!sel.options.length){const mine=mySkills().map(x=>x.s.name);
   const list=[...new Set([...mine,'5k run','Pickleball',"Rubik's cube",'Chess','Push-ups','Deadlift','Typing','100m sprint',...SKILL_LIST.map(x=>x.name).sort()])];sel.innerHTML=list.map(n=>`<option>${esc(n)}</option>`).join('');}
@@ -1532,7 +1570,8 @@ async function renderRanks(){const sel=$('#rkSkill');
  const name=sel.value,s=SKILLS[name],me=Cloud.user.uid,city=store.get('city',''),pl=placeOf(city),fp=v=>fmtPerf(s,v,0)+(unitShort(s)?' '+unitShort(s):'');
  $('#rkTiers').innerHTML='<div class="skel" style="height:120px;margin-top:12px"></div><div class="skel" style="height:120px;margin-top:12px"></div>';$('#rkSum').innerHTML='';
  let all=[],venues=[];
- try{[all,venues]=await Promise.all([Cloud.rankings(name),provnVenues()]);}catch(e){$('#rkTiers').innerHTML=`<div class="card empty">Could not load rankings (${esc(e.code||e.message)})</div>`;return;}
+ let recs=[],rf={};
+ try{[all,venues,recs,rf]=await Promise.all([Cloud.rankings(name),provnVenues(),Cloud.records?Cloud.records(name).catch(()=>[]):[],recData()]);}catch(e){$('#rkTiers').innerHTML=`<div class="card empty">Could not load rankings (${esc(e.code||e.message)})</div>`;return;}
  if(sel.value!==name)return;
  all=all.map(r=>({...r,...placeOf(r.city)})).sort((a,b)=>b.pts-a.pts);
  const mine=all.find(r=>r.uid===me)||(bestOf(name)?{uid:me,name:pname(),v:bestOf(name).v,pts:bestOf(name).p,city}:null);
@@ -1540,13 +1579,23 @@ async function renderRanks(){const sel=$('#rkSkill');
  const vInCity=venues.filter(v=>!city||!v.city||v.city.toLowerCase()===city.toLowerCase());
  if(!vInCity.find(v=>v.id===rkVenue))rkVenue=vInCity[0]?.id||'';
  let local=null;if(rkVenue){try{local=await Cloud.venueBoard(name,rkVenue);}catch(e){local=[];console.warn(e);}}
+ const sx=profile().sex==='f'?'f':'m',sxL=sx==='f'?'Women':'Men';
+ const pickRec=(level,region)=>{if(!region)return null;const fs=recs.find(r=>r.level===level&&r.region===region&&r.sex===sx);if(fs)return fs;const j=(rf[level==='state'?'state':'national']||{})[region];return j&&j[sx]&&j[sx][name]?{...j[sx][name],skill:name}:null;};
+ const wr=(()=>{const e=eff(s,{sex:sx}),r=e.fem==='record'?[e.wrec[2],e.wrec[3],e.wrec[4],e.wrec[5],e.wrec[6]]:e.fem==='estimated'?null:REC[name];
+   return {v:e.ref,holder:r&&r[0]?r[0]+(r[1]?` (${r[1]})`:''):'',date:r?r[2]:'',meet:r?r[3]:'',place:r?r[4]:'',bench:BENCH.has(name)||e.fem==='estimated'};})();
+ const recCard=(label,rec,emptyTxt)=>{if(!rec)return `<div class="tr-rec none"><small>🏆 ${label}</small><p><span>${emptyTxt}</span></p></div>`;
+  const rp=rawPoints(eff(s,{sex:sx}),rec.v),you=mine?`<div class="you">You: ${fp(mine.v)} · ${mine.pts} pts${mine.pts>=rp?' · <b>you beat it!</b>':` · ${rp-mine.pts} pts to go`}</div>`:'';
+  return `<div class="tr-rec"><small>🏆 ${label}</small><div class="rm"><b>${fp(rec.v)}</b><span>≈ ${rp} pts</span></div>${rec.holder?`<p>${esc(rec.holder)} <span>· ${esc([rec.date,rec.meet,rec.place].filter(Boolean).join(' · '))}</span></p>`:''}${you}</div>`;};
  const tiers=[
   {k:'local',ic:'pin',t:'Local',sub:vInCity.length?'At Provn-approved venues':'Provn-approved venues',rows:local,
    pick:vInCity.length>1?vInCity:null,empty:!vInCity.length?`No Provn-approved venues${city?' in '+esc(city):''} yet. Results you log at one will be ranked here.`:`No one has logged ${esc(name)} at ${esc(vInCity.find(v=>v.id===rkVenue)?.name||'this venue')} yet. Pick the venue when you log a result.`},
   {k:'city',ic:'city',t:city?esc(city):'City',sub:'Every Provn player in your city',rows:city?all.filter(r=>(r.city||'').toLowerCase()===city.toLowerCase()):null,empty:city?`No one in ${esc(city)} has logged ${esc(name)} yet.`:'Add your city on the You tab to see city rankings.'},
-  {k:'state',ic:'state',t:pl.state||'State',sub:'Top players in your state',rows:pl.state?all.filter(r=>r.state===pl.state):null,empty:pl.state?`No one in ${esc(pl.state)} has logged ${esc(name)} yet.`:city?`We couldn't match ${esc(city)} to a state yet.`:'Add your city to see state rankings.'},
-  {k:'nat',ic:'flag',t:pl.country||'National',sub:'Top players in your country',rows:pl.country?all.filter(r=>r.country===pl.country):null,empty:pl.country?`No one in ${esc(pl.country)} has logged ${esc(name)} yet.`:'Add your city to see national rankings.'},
-  {k:'glob',ic:'globe',t:'Global',sub:'Every Provn player worldwide',rows:all,empty:`No one has logged ${esc(name)} yet. Be the first!`}];
+  {k:'state',ic:'state',t:pl.state||'State',sub:'State record and top Provn players',rows:pl.state?all.filter(r=>r.state===pl.state):null,empty:pl.state?`No Provn player in ${esc(pl.state)} has logged ${esc(name)} yet.`:city?`We couldn't match ${esc(city)} to a state yet.`:'Add your city to see state rankings.',
+   rec:pl.state?recCard(`${esc(pl.state)} record · ${sxL}`,pickRec('state',pl.state),`No official ${esc(pl.state)} record for ${esc(name)} on file yet.`):''},
+  {k:'nat',ic:'flag',t:pl.country||'National',sub:'National record and top Provn players',rows:pl.country?all.filter(r=>r.country===pl.country):null,empty:pl.country?`No Provn player in ${esc(pl.country)} has logged ${esc(name)} yet.`:'Add your city to see national rankings.',
+   rec:pl.country?recCard(`${esc(pl.country)} national record · ${sxL}`,pickRec('national',pl.country),`No ${esc(pl.country)} national record for ${esc(name)} on file yet.`):''},
+  {k:'glob',ic:'globe',t:'Global',sub:'World record and every Provn player',rows:all,empty:`No Provn player has logged ${esc(name)} yet. Be the first!`,
+   rec:recCard(`${wr.bench?'Elite benchmark':'World record'} · ${sxL}`,wr,'')}];
  const IC={pin:'<path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>',city:'<path d="M3.5 20.5h17M5.5 20.5V9l5-3v14.5M10.5 20.5V4.5l8 3.5v12.5M13.5 10h2M13.5 13h2M13.5 16h2M7.5 12h1M7.5 15h1"/>',state:'<path d="M4 6.5 9 4l6 2.5 5-2.5v13.5L15 20l-6-2.5L4 20z"/><path d="M9 4v13.5M15 6.5V20"/>',flag:'<path d="M5 21V4M5 4.5h11l-2 4 2 4H5"/>',globe:'<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.8 2.6 2.8 14.4 0 17M12 3.5c-2.8 2.6-2.8 14.4 0 17"/>'};
  const icon=k=>`<svg viewBox="0 0 24 24" ${P}>${IC[k]}</svg>`;
  const medal=i=>i<3?`<i class="md m${i}">${i+1}</i>`:`<i class="md">${i+1}</i>`;
@@ -1560,10 +1609,9 @@ async function renderRanks(){const sel=$('#rkSkill');
    cmp=`<div class="tr-cmp"><div class="tr-bar"><i style="width:${pct}%"></i><b style="left:${pct}%"></b></div><p>${pos===0?`<b>You're #1</b>${rows[1]?` · ${you.pts-rows[1].pts} pts ahead of ${esc(rows[1].name)}`:''}`:`<b>#${pos+1} of ${rows.length}</b> · ${next.pts-you.pts+1} pts to pass ${esc(next.name)} · ${top.pts-you.pts} pts behind #1`}</p></div>`;}
   else if(has&&!mine)cmp=`<div class="tr-cmp"><p>Log a result to see where you stand.</p></div>`;
   else if(has&&mine&&!you)cmp=`<div class="tr-cmp"><p>Your best isn't ranked here${T.k==='local'?' (it wasn\'t logged at this venue)':''}.</p></div>`;
-  const glob=T.k==='glob'?`<div class="tr-wr"><span>${BENCH.has(name)?'Elite benchmark':'World record'}</span><b>${fp(eff(s).ref)} · ${rawPoints(eff(s),eff(s).ref)} pts</b>${mine?`<small>You're at ${Math.round(mine.pts/12)}% of the record scale</small>`:''}</div>`:'';
   const picker=T.pick?`<div class="tr-pick">${T.pick.map(v=>`<button class="${v.id===rkVenue?'on':''}" data-v="${v.id}">${esc(v.name)}</button>`).join('')}</div>`:'';
   return `<section class="card tier t-${T.k}"><header><span class="tr-ic">${icon(T.ic)}</span><div><b>${T.t}</b><small>${T.k==='local'&&rkVenue?esc(vInCity.find(v=>v.id===rkVenue)?.name||T.sub):T.sub}</small></div><span class="tr-pos">${pos>=0?`#${pos+1}<small>of ${rows.length}</small>`:has?`<small>${rows.length} ranked</small>`:''}</span></header>
-   ${picker}${has?rows.slice(0,5).map(row).join('')+(pos>=5?`<div class="tr-gap">···</div>${row(you,pos)}`:''):`<p class="tr-empty">${T.empty}</p>`}${cmp}${glob}
+   ${picker}${T.rec||''}${T.rec?'<div class="tr-sub">Top Provn players</div>':''}${has?rows.slice(0,5).map(row).join('')+(pos>=5?`<div class="tr-gap">···</div>${row(you,pos)}`:''):`<p class="tr-empty">${T.empty}</p>`}${cmp}
    ${!mine&&T.k==='glob'?`<button class="btn primary tr-go" id="rkLog"><span>Log a ${esc(name)} result</span></button>`:''}</section>`;}).join('');
  $('#rkSum').innerHTML=sum.map(x=>`<button class="rs ${x.r!=='–'?'on':''}" data-k="${x.k}"><span>${icon(x.ic)}</span><b>${x.r}</b><small>${x.t}</small></button>`).join('');
  $$('#rkSum .rs').forEach(b=>b.onclick=()=>{buzz(6);const el=$('#rkTiers .t-'+b.dataset.k);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});});
@@ -1587,14 +1635,14 @@ $$('#seg button').forEach((b,k)=>b.onclick=()=>{if(b.dataset.p==='map')renderMap
 
 /* ================= YOU ================= */
 const You={render(){const ae=document.activeElement;if(!(ae&&ae.closest&&ae.closest('[data-pf] input')))renderPF();if(!$('#youM .av3d'))$('#youM').innerHTML=`<div class="av3d" data-mode="you">${mascot()}</div>`;const ni=$('#nameIn');if(document.activeElement!==ni)ni.value=store.get('name','');ni.placeholder='Your name';
- const ms=mySkills();$('#youSub').textContent=`${ms.length} skill${ms.length===1?'':'s'} proven${store.get('city','')?' · '+esc(store.get('city','')):''}`;renderAcct();
+ const ms=mySkills();$('#youSub').textContent=`${ms.length} skill${ms.length===1?'':'s'} proven${store.get('city','')?' · '+esc(store.get('city','')):''}`;renderAcct();renderPInfo();
  $('#wgrid').innerHTML=[['body','Body','volt'],['mind','Mind','nightfall']].map(([w,label,t])=>{const sc=worldScore(w),l=lvOf(sc),req=THEMES[t].req[1],u=unlocked(t);
   return `<div class="card wcard ${u?'open':''}"><small>${label} world</small><b>${sc}</b><span class="lv">${LEVELS[l][0]}</span><div class="bar"><i style="width:${Math.min(100,sc/req*100)}%"></i></div><div class="unl"><span data-i="${u?'unlock':'lock'}"></span>${u?`${THEMES[t].name} unlocked`:`${THEMES[t].name} at ${req}`}</div></div>`;}).join('');
  $('#slist').innerHTML=ms.length?ms.map(({s,b})=>{const c=CATS[s.cat];return `<button class="card srow press" data-n="${esc(s.name)}" style="width:100%;text-align:left;--cv:${c.col};--cvi:${c.ink}"><span class="si">${iconSvg(s.ic)}</span><span class="sn"><b>${esc(s.name)}</b><small>${LEVELS[lvOf(b.p)][0]} · best ${fmtPerf(s,b.v,store.get('bw',0))}${unitShort(s)}</small></span><span class="sp"><b>${b.p}</b><small>pts</small></span></button>`}).join(''):
   `<div class="card empty">No results yet.<br><button class="btn primary" id="firstProve"><span>Log your first result</span></button></div>`;
  paintIcons($('#s-you'));$$('#slist .srow').forEach(b=>b.onclick=()=>{go('orbit');setTimeout(()=>Orbit.openSkill(b.dataset.n),280)});
  const fp=$('#firstProve');if(fp)fp.onclick=()=>openProve();}};
-$('#nameIn').addEventListener('input',e=>store.set('name',e.target.value.trim()));
+$('#nameIn').addEventListener('click',()=>openPEdit());
 function renderPF(){const pr=profile();$$('[data-pf]').forEach(el=>{el.innerHTML=`<span class="sx"><button data-sx="m" class="${pr.sex==='m'?'on':''}">Male</button><button data-sx="f" class="${pr.sex==='f'?'on':''}">Female</button></span><label>Age <input inputmode="numeric" maxlength="3" data-age value="${pr.age||''}" placeholder="—"></label><label>Weight <input inputmode="decimal" maxlength="5" data-bw value="${pr.bw||''}" placeholder="—"> kg</label>${el.id==='provePf'?'':`<label class="cityL">City <input maxlength="30" data-city value="${esc(store.get('city',''))}" placeholder="—"></label>`}`;
  el.querySelectorAll('[data-sx]').forEach(b=>b.onclick=()=>{buzz(6);store.set('sex',b.dataset.sx);renderPF();onProfile();});
  el.querySelector('[data-age]').oninput=e=>{const v=parseInt(e.target.value);store.set('age',v>4&&v<110?v:0);onProfile();};
@@ -1949,7 +1997,7 @@ const Orbit=(()=>{const cv=$('#orbitCv'),g=cv.getContext('2d'),q=$('#q');
 /* ================= CLOUD: accounts, sync, real feed ================= */
 const CU=()=>window.Cloud&&window.Cloud.user?window.Cloud:null;
 const ago=t=>{const s=(Date.now()-t)/1000;return s<60?'just now':s<3600?Math.floor(s/60)+' min ago':s<86400?Math.floor(s/3600)+' h ago':Math.floor(s/86400)+' d ago';};
-function cloudProfile(){const pr=profile();return{name:store.get('name','')||'',sex:pr.sex||'',age:pr.age||0,bw:pr.bw||0,city:store.get('city','')||'',char:store.get('char','Knight'),theme:store.get('theme','dusk')};}
+function cloudProfile(){const pr=profile();return{name:store.get('name','')||'',sex:pr.sex||'',age:pr.age||0,bw:pr.bw||0,city:store.get('city','')||'',char:store.get('char','Knight'),theme:store.get('theme','dusk'),...(store.get('sexAt',0)?{sexAt:store.get('sexAt',0)}:{})};}
 let pushT;function pushProfile(){if(!CU())return;clearTimeout(pushT);pushT=setTimeout(()=>CU().saveProfile(cloudProfile()).catch(e=>console.warn('profile',e)),800);}
 const Sync={busy:false,
  async start(u){if(this.busy)return;this.busy=true;
@@ -1957,7 +2005,7 @@ const Sync={busy:false,
    const need=!p||!p.name||!p.sex||!p.age;
    if(need){Gate.hide();p=await Onb.run({...(p||{}),name:(p&&p.name)||store.get('name','')||(u.name||'').split(' ')[0]});
     await Cloud.saveProfile({...cloudProfile(),photo:u.photo||''});}
-   else{store.set('name',p.name);['sex','city'].forEach(k=>{if(typeof p[k]==='string')store.set(k,p[k])});store.set('age',p.age);if(p.bw)store.set('bw',p.bw);
+   else{store.set('name',p.name);['sex','city'].forEach(k=>{if(typeof p[k]==='string')store.set(k,p[k])});store.set('age',p.age);if(p.bw)store.set('bw',p.bw);if(p.sexAt)store.set('sexAt',p.sexAt);
     if(p.char&&window.Avatar3D&&p.char!==Avatar3D.getChar())Avatar3D.setChar(p.char);}
    /* upload results logged on this phone before accounts existed */
    if(!store.get('acct',false)){for(const s of SKILL_LIST){const list=store.get('res_'+s.name,null);if(!list)continue;
@@ -1968,7 +2016,7 @@ const Sync={busy:false,
    SKILL_LIST.forEach(s=>{if(by[s.name])store.set('res_'+s.name,by[s.name]);else if(store.get('res_'+s.name,null))store.set('res_'+s.name,[]);});
    if(!need)toast(`Welcome back, ${store.get('name','')}`);}
   catch(e){console.warn('sync',e);toast('Could not sync: '+(e.code||e.message));}
-  this.busy=false;Gate.hide();renderEvents();Admin.sync();Cloud.banned&&Cloud.banned().then(b=>{if(b)toast('Your account can no longer post results. Contact support if this is a mistake.')}).catch(()=>{});renderPF();You.render();Pulse.refresh(true);if(segI===1)renderRanks();renderAcct();}};
+  this.busy=false;Gate.hide();askLoc();renderEvents();Admin.sync();Cloud.banned&&Cloud.banned().then(b=>{if(b)toast('Your account can no longer post results. Contact support if this is a mistake.')}).catch(()=>{});renderPF();You.render();Pulse.refresh(true);if(segI===1)renderRanks();renderAcct();}};
 
 /* ---- sign-in gate: the only screen until you're signed in ---- */
 const Gate={el:$('#gate'),
@@ -2042,7 +2090,6 @@ addEventListener('cloud-auth',e=>{renderAcct();
  if(e.detail){Gate.busy('Signing in…');Sync.start(e.detail);}
  else{clearLocal();renderPF();You.render();Gate.ready();Gate.show();}});
 /* hook profile changes */
-$('#nameIn').addEventListener('input',pushProfile);
 const _onProfile=onProfile;onProfile=function(){_onProfile();pushProfile();};
 addEventListener('click',e=>{if(e.target.closest('#pgrid .pcard'))setTimeout(pushProfile,300);});
 
@@ -2185,6 +2232,27 @@ const Admin={tab:'overview',
    if(b.dataset.a==='edit'){this.t_events(B,x);}
    if(b.dataset.a==='del')this.confirm(b,async()=>{try{await Cloud.admin.deleteEvent(x.id);toast('Event deleted');this.t_events(B);renderEvents();}catch(er){this.err(er)}});
    if(b.dataset.a==='who'){const o=el.querySelector('.adm-c');if(o){o.remove();return;}const g=await Cloud.admin.going(x.id);el.insertAdjacentHTML('beforeend',`<div class="adm-c">${g.length?g.map(p=>esc(p.name||'Player')).join(', '):'Nobody yet.'}</div>`);}});});},
+ async t_records(B){const list=(await Cloud.admin.allRecords()).sort((a,b)=>(a.region+a.skill).localeCompare(b.region+b.skill));
+  B.innerHTML=`<h3 class="adm-h3" style="margin-top:0">Add a state or national record</h3><p class="adm-p">Shown at the top of the State and National rankings. India's national athletics records are already built in; anything you add here replaces them.</p>
+   <div class="adm-form">
+    <div class="two"><label>Level<select id="rcL" class="adm-in" style="margin:5px 0 0"><option value="state">State</option><option value="national">National</option></select></label><label>Gender<select id="rcS" class="adm-in" style="margin:5px 0 0"><option value="m">Men</option><option value="f">Women</option></select></label></div>
+    <label>State or country<input id="rcR" list="rcRegions" placeholder="Gujarat"></label>
+    <label>Skill<input id="rcK" list="evSkills" placeholder="5k run"></label>
+    <label>Record<input id="rcV" placeholder="e.g. 14:05 or 7.85"></label>
+    <label>Holder<input id="rcH" maxlength="80" placeholder="Name"></label>
+    <div class="two"><label>Date<input id="rcD" maxlength="30" placeholder="12 Jan 2026"></label><label>Venue<input id="rcP" maxlength="60" placeholder="Ahmedabad"></label></div>
+    <label>Meet<input id="rcM" maxlength="80" placeholder="State Championships"></label>
+    <datalist id="rcRegions">${[...Object.keys(STATES),'India',...Object.keys(ABROAD)].map(x=>`<option value="${esc(x)}">`).join('')}</datalist>
+    <datalist id="evSkills">${SKILL_LIST.map(s=>`<option value="${esc(s.name)}">`).join('')}</datalist>
+    <div class="adm-row"><button class="btn primary" id="rcSave"><span>Save record</span></button></div>
+   </div>
+   <h3 class="adm-h3">Records you added</h3>`+(list.length?list.map(r=>{const s=SKILLS[r.skill];return `<div class="adm-r" data-rc="${r.id}"><div class="adm-rt"><b>${esc(r.region)} · ${esc(r.skill)} · ${r.sex==='f'?'Women':'Men'}</b><span>${s?fmtPerf(s,r.v,0):r.v} · ${esc(r.holder)}</span><small>${esc(r.level)} · ${esc([r.date,r.meet,r.place].filter(Boolean).join(' · '))}</small></div><button class="adm-b red" data-a="del">Delete</button></div>`;}).join(''):'<p class="adm-p">None yet.</p>');
+  $('#rcSave').onclick=async()=>{const k=$('#rcK').value.trim(),s=SKILLS[k];if(!s){toast('Pick a skill from the list');return;}
+   const raw=$('#rcV').value.trim(),v=isTime(s)?parseTime(raw):parseFloat(raw);if(!(v>0)){toast('Enter the record value');return;}
+   const r={level:$('#rcL').value,sex:$('#rcS').value,region:$('#rcR').value.trim(),skill:k,v,holder:$('#rcH').value.trim(),date:$('#rcD').value.trim(),meet:$('#rcM').value.trim(),place:$('#rcP').value.trim()};
+   if(!r.region||!r.holder){toast('Add the state/country and the holder');return;}
+   try{await Cloud.admin.saveRecord(r);toast('Record saved');this.t_records(B);}catch(e){this.err(e)}};
+  $$('[data-rc]',B).forEach(el=>{const b=el.querySelector('[data-a=del]');b.onclick=()=>this.confirm(b,async()=>{try{await Cloud.admin.deleteRecord(el.dataset.rc);toast('Deleted');this.t_records(B);}catch(e){this.err(e)}});});},
  async t_test(B){const dev=store.get('dev',false);
   B.innerHTML=`<p class="adm-p" style="margin-top:0">Tools for trying the app as a player. They only change this phone, not other players.</p>
    <div class="adm-tool"><div><b>Unlock all looks</b><small>Use Nightfall and Volt without reaching 400</small></div><button class="adm-sw2 ${dev?'on':''}" id="tDev"><i></i></button></div>
@@ -2220,6 +2288,31 @@ Gate.preview=function(){this.show();$('#gIn').disabled=true;$('#gInTxt').textCon
 $('#gateX').onclick=()=>{$('#gateX').hidden=true;Gate.hide();Gate.ready();Admin.open();};
 addEventListener('cloud-auth',()=>Admin.sync());
 
+/* ================= PLAYER DETAILS (read-only card + edit sheet) ================= */
+const SEX_LOCK_DAYS=30;
+function renderPInfo(){const pr=profile(),city=store.get('city',''),pl=placeOf(city);
+ const tile=(ic,l,v,wide)=>`<div class="pi ${wide?'wide':''}"><span class="pi-ic">${ic}</span><div><small>${l}</small><b>${v||'<i>Not set</i>'}</b></div></div>`;
+ $('#youInfo').innerHTML=`<header><div><b>Player details</b><small>Used for fair scoring</small></div><button class="btn ghost" id="pEdit"><span>Edit</span></button></header>
+  <div class="pi-grid">${tile(pr.sex==='f'?'♀':pr.sex==='m'?'♂':'⚥','Gender',pr.sex==='f'?'Female':pr.sex==='m'?'Male':'')}${tile('🎂','Age',pr.age?pr.age+' yrs':'')}${tile('⚖️','Weight',pr.bw?pr.bw+' kg':'')}${tile('📍','City',city?esc(city)+(pl.state?`<em>${esc(pl.state)}, ${esc(pl.country)}</em>`:pl.country?`<em>${esc(pl.country)}</em>`:''):'',true)}</div>`;
+ $('#pEdit').onclick=openPEdit;}
+let peSex='';
+function openPEdit(){const pr=profile(),sAt=store.get('sexAt',0),locked=pr.sex&&sAt&&Date.now()-sAt<SEX_LOCK_DAYS*864e5;peSex=pr.sex||'';
+ $('#peName').value=store.get('name','');$('#peAge').value=pr.age||'';$('#peBw').value=pr.bw||'';$('#peCity').value=store.get('city','');
+ $$('#peSex button').forEach(b=>{b.classList.toggle('on',b.dataset.s===peSex);b.disabled=!!locked&&b.dataset.s!==peSex;});
+ $('#peSexNote').textContent=locked?`Gender was changed recently. You can change it again on ${new Date(sAt+SEX_LOCK_DAYS*864e5).toLocaleDateString('en',{day:'numeric',month:'short'})}.`:pr.sex?`Changing gender re-scores all your results and can only be done once every ${SEX_LOCK_DAYS} days.`:'Women are scored against women’s records, men against men’s.';
+ $('#peSave').firstChild.textContent='Save';delete $('#peSave').dataset.armed;showSheet('sh-pedit');}
+$$('#peSex button').forEach(b=>b.onclick=()=>{if(b.disabled)return;buzz(6);peSex=b.dataset.s;$$('#peSex button').forEach(x=>x.classList.toggle('on',x===b));delete $('#peSave').dataset.armed;$('#peSave').firstChild.textContent='Save';});
+cityAuto($('#peCity'),()=>{});
+$('#peSave').onclick=()=>{const pr=profile(),name=$('#peName').value.trim(),age=parseInt($('#peAge').value)||0,bw=parseFloat($('#peBw').value)||0,city=$('#peCity').value.trim(),btn=$('#peSave');
+ if(!name){toast('Add your player name');return;}if(age&&(age<8||age>100)){toast('Age should be between 8 and 100');return;}if(bw&&(bw<25||bw>300)){toast('Weight should be between 25 and 300 kg');return;}
+ const sexChange=pr.sex&&peSex&&peSex!==pr.sex;
+ if(sexChange&&!btn.dataset.armed){btn.dataset.armed=1;btn.firstChild.textContent='Confirm gender change';toast(`Your results will be re-scored against ${peSex==='f'?'women’s':'men’s'} records`);return;}
+ store.set('name',name);store.set('age',age);store.set('bw',bw);store.set('city',city);if(peSex)store.set('sex',peSex);if(sexChange)store.set('sexAt',Date.now());
+ $('#nameIn').value=name;hideSheet();buzz(10);onProfile();pushProfile();renderPInfo();You.render();toast('Profile saved');};
+
+/* location: asked once when the app opens (the browser remembers the answer); the map reuses it */
+function askLoc(){if(!navigator.geolocation||!CU())return;navigator.geolocation.getCurrentPosition(p=>{window.provnLoc={lat:p.coords.latitude,lng:p.coords.longitude,t:Date.now()};dispatchEvent(new Event('provn-loc'));},()=>{},{enableHighAccuracy:true,timeout:15000,maximumAge:300000});}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&window.provnLoc&&Date.now()-window.provnLoc.t>300000)askLoc();});
 /* ================= BOOT ================= */
 paintIcons();
 applyTheme(theme);

@@ -41,6 +41,7 @@ const Cloud = {
   saveProfile(p) {
     if (!Cloud.user) return Promise.resolve();
     const clean = {};
+    if (typeof p.sexAt === 'number') clean.sexAt = Math.round(p.sexAt);
     ['name', 'sex', 'city', 'char', 'theme'].forEach(k => { if (typeof p[k] === 'string') clean[k] = p[k].slice(0, 40); });
     if (typeof p.photo === 'string' && p.photo.startsWith('https://')) clean.photo = p.photo.slice(0, 400);
     if (p.age) clean.age = Math.round(p.age);
@@ -123,6 +124,7 @@ const Cloud = {
   },
   setGoing(id, on, name) { const r = doc(db, 'events', id, 'going', Cloud.user.uid); return on ? setDoc(r, { at: serverTimestamp(), name: (name || 'Player').slice(0, 40) }) : deleteDoc(r); },
   async venues() { const s = await getDocs(query(collection(db, 'venues'), limit(1000))); return s.docs.map(d => ({ id: d.id, ...d.data() })); },
+  async records(skill) { const s = await getDocs(query(collection(db, 'records'), where('skill', '==', skill), limit(60))); return s.docs.map(d => ({ id: d.id, ...d.data() })); },
   async config() { const s = await getDoc(doc(db, 'config', 'app')); return s.exists() ? s.data() : {}; },
   async banned() { return (await getDoc(doc(db, 'bans', Cloud.user.uid))).exists(); },
 
@@ -173,6 +175,12 @@ const Cloud = {
       const data = { name: v.name, kind: v.kind, acts: v.acts.slice(0, 12), addr: v.addr || '', phone: v.phone || '', web: v.web || '', info: v.info || '', lat: v.lat, lng: v.lng, city: v.city || '', updatedAt: serverTimestamp() };
       return id ? setDoc(doc(db, 'venues', id), data) : addDoc(collection(db, 'venues'), data);
     },
+    async allRecords() { const s = await getDocs(query(collection(db, 'records'), limit(1000))); return s.docs.map(d => ({ id: d.id, ...d.data() })); },
+    saveRecord(r) {
+      const id = [r.level, r.region, r.sex, skillKey(r.skill)].join('__').replace(/[^A-Za-z0-9_]/g, '_');
+      return setDoc(doc(db, 'records', id), { level: r.level, region: r.region, sex: r.sex, skill: r.skill, v: r.v, holder: r.holder, date: r.date || '', meet: r.meet || '', place: r.place || '', updatedAt: serverTimestamp() });
+    },
+    deleteRecord(id) { return deleteDoc(doc(db, 'records', id)); },
     deleteVenue(id) { return deleteDoc(doc(db, 'venues', id)); },
     deleteEvent(id) { return deleteDoc(doc(db, 'events', id)); },
     async going(id) { const s = await getDocs(collection(db, 'events', id, 'going')); return s.docs.map(d => ({ uid: d.id, ...d.data() })); },

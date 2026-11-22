@@ -1,0 +1,278 @@
+{
+"note": "Indian national records from the Wikipedia list of Indian records in athletics, checked 23 Nov 2026. State records are added by the Provn admin.",
+"national": {
+"India": {
+"m": {
+"100m sprint": {
+"v": 10.09,
+"holder": "Gurindervir Singh",
+"date": "23 May 2026",
+"meet": "Federation Cup",
+"place": "Ranchi"
+},
+"200m": {
+"v": 20.32,
+"holder": "Animesh Kujur",
+"date": "31 May 2025",
+"meet": "Asian Championships",
+"place": "Gumi, South Korea"
+},
+"400m": {
+"v": 44.98,
+"holder": "Vishal Thennarasu Kayalvizhi",
+"date": "23 May 2026",
+"meet": "Federation Cup",
+"place": "Ranchi"
+},
+"800m": {
+"v": 104.93,
+"holder": "Mohammed Afsal",
+"date": "5 Jul 2025",
+"meet": "Memoriał Czesława Cybulskiego",
+"place": "Poznań, Poland"
+},
+"1500m": {
+"v": 215.24,
+"holder": "Jinson Johnson",
+"date": "1 Sep 2019",
+"meet": "ISTAF Berlin",
+"place": "Berlin, Germany"
+},
+"5k run": {
+"v": 783.93,
+"holder": "Gulveer Singh",
+"date": "23 May 2026",
+"meet": "LA Track Festival (5000m)",
+"place": "Los Angeles, USA"
+},
+"10k run": {
+"v": 1620.22,
+"holder": "Gulveer Singh",
+"date": "29 Mar 2025",
+"meet": "The TEN (10,000m)",
+"place": "San Juan Capistrano, USA"
+},
+"Half marathon": {
+"v": 3582,
+"holder": "Gulveer Singh",
+"date": "15 Mar 2026",
+"meet": "NYC Half Marathon (course not WA-eligible)",
+"place": "New York, USA"
+},
+"Marathon": {
+"v": 7918,
+"holder": "Sawan Barwal",
+"date": "12 Apr 2026",
+"meet": "Rotterdam Marathon",
+"place": "Rotterdam, Netherlands"
+},
+"110m hurdles": {
+"v": 13.27,
+"holder": "Tejas Shirse",
+"date": "13 Jun 2026",
+"meet": "Indian Athletics Series 9",
+"place": "Ludhiana"
+},
+"400m hurdles": {
+"v": 48.8,
+"holder": "Dharun Ayyasamy",
+"date": "16 Mar 2019",
+"meet": "Federation Cup",
+"place": "Patiala"
+},
+"3000m steeplechase": {
+"v": 489.91,
+"holder": "Avinash Sable",
+"date": "7 Jul 2024",
+"meet": "Meeting de Paris",
+"place": "Paris, France"
+},
+"High jump": {
+"v": 231,
+"holder": "Sarvesh Anil Kushare",
+"date": "27 Jun 2026",
+"meet": "National Inter-State Championships",
+"place": "Bhubaneswar"
+},
+"Pole vault": {
+"v": 546,
+"holder": "Dev Meena",
+"date": "24 Jun 2026",
+"meet": "National Inter-State Championships",
+"place": "Bhubaneswar"
+},
+"Long jump": {
+"v": 842,
+"holder": "Jeswin Aldrin",
+"date": "2 Mar 2023",
+"meet": "Indian Open Jumps",
+"place": "Vijayanagar"
+},
+"Triple jump": {
+"v": 17.37,
+"holder": "Praveen Chithravel",
+"date": "6 May 2023",
+"meet": "V Prueba de Confrontación",
+"place": "Havana, Cuba"
+},
+"Shot put": {
+"v": 21.77,
+"holder": "Tajinderpal Singh Toor",
+"date": "19 Jun 2023",
+"meet": "Inter-State Championships",
+"place": "Bhubaneswar"
+},
+"Discus": {
+"v": 66.28,
+"holder": "Vikas Gowda",
+"date": "12 Apr 2012",
+"meet": "Old Style Discus Challenge",
+"place": "Norman, USA"
+},
+"Hammer": {
+"v": 71.02,
+"holder": "Nirbhay Choudhary",
+"date": "10 Sep 2026",
+"meet": "Indian Athletics Final Series",
+"place": "New Delhi"
+},
+"Javelin": {
+"v": 90.23,
+"holder": "Neeraj Chopra",
+"date": "16 May 2025",
+"meet": "Doha Diamond League",
+"place": "Doha, Qatar"
+}
+},
+"f": {
+"100m sprint": {
+"v": 11.17,
+"holder": "Dutee Chand",
+"date": "21 Jun 2021",
+"meet": "Indian Grand Prix 4",
+"place": "Patiala"
+},
+"200m": {
+"v": 22.82,
+"holder": "Saraswati Saha",
+"date": "28 Aug 2002",
+"meet": "National Circuit Meet",
+"place": "Ludhiana"
+},
+"400m": {
+"v": 50.79,
+"holder": "Hima Das",
+"date": "26 Aug 2018",
+"meet": "Asian Games",
+"place": "Jakarta, Indonesia"
+},
+"800m": {
+"v": 119.17,
+"holder": "Tintu Luka",
+"date": "4 Sep 2010",
+"meet": "Continental Cup",
+"place": "Split, Croatia"
+},
+"1500m": {
+"v": 244.78,
+"holder": "K. M. Deeksha",
+"date": "11 May 2024",
+"meet": "Sound Running Track Fest",
+"place": "Los Angeles, USA"
+},
+"5k run": {
+"v": 904.26,
+"holder": "Parul Chaudhary",
+"date": "13 Jun 2026",
+"meet": "Meeting Nikaïa (5000m)",
+"place": "Nice, France"
+},
+"10k run": {
+"v": 1910.47,
+"holder": "Preeja Sreedharan",
+"date": "21 Nov 2010",
+"meet": "Asian Games (10,000m)",
+"place": "Guangzhou, China"
+},
+"Half marathon": {
+"v": 4231,
+"holder": "Suriya Loganathan",
+"date": "19 Nov 2017",
+"meet": "Delhi Half Marathon",
+"place": "New Delhi"
+},
+"Marathon": {
+"v": 9283,
+"holder": "O. P. Jaisha",
+"date": "30 Aug 2015",
+"meet": "World Championships",
+"place": "Beijing, China"
+},
+"400m hurdles": {
+"v": 55.42,
+"holder": "P. T. Usha & Vithya Ramraj",
+"date": "1984 / 2023",
+"meet": "Olympic Games / Asian Games",
+"place": "Los Angeles / Hangzhou"
+},
+"3000m steeplechase": {
+"v": 552.46,
+"holder": "Parul Chaudhary",
+"date": "30 May 2025",
+"meet": "Asian Championships",
+"place": "Gumi, South Korea"
+},
+"High jump": {
+"v": 193,
+"holder": "Pooja Singh",
+"date": "29 May 2026",
+"meet": "Asian U20 Championships",
+"place": "Hong Kong"
+},
+"Pole vault": {
+"v": 421,
+"holder": "Rosy Meena Paulraj",
+"date": "15 Oct 2022",
+"meet": "Indian Championships",
+"place": "Bengaluru"
+},
+"Long jump": {
+"v": 688,
+"holder": "Ancy Sojan",
+"date": "27 Jun 2026",
+"meet": "National Inter-State Championships",
+"place": "Bhubaneswar"
+},
+"Triple jump": {
+"v": 14.11,
+"holder": "Mayookha Johny",
+"date": "9 Jul 2011",
+"meet": "Asian Championships",
+"place": "Kobe, Japan"
+},
+"Shot put": {
+"v": 18.41,
+"holder": "Abha Khatua",
+"date": "13 May 2024",
+"meet": "Federation Cup",
+"place": "Bhubaneswar"
+},
+"Discus": {
+"v": 66.59,
+"holder": "Kamalpreet Kaur",
+"date": "21 Jun 2021",
+"meet": "Indian Grand Prix 4",
+"place": "Patiala"
+},
+"Javelin": {
+"v": 63.82,
+"holder": "Annu Rani",
+"date": "8 May 2022",
+"meet": "Indian Open Javelin",
+"place": "Jamshedpur"
+}
+}
+}
+},
+"state": {}
+}

@@ -20,7 +20,7 @@ service cloud.firestore {
     match /users/{uid} {
       allow read: if signedIn();
       allow create, update: if signedIn() && me() == uid
-        && request.resource.data.keys().hasOnly(['name','sex','city','char','theme','photo','age','bw','updatedAt'])
+        && request.resource.data.keys().hasOnly(['name','sex','sexAt','city','char','theme','photo','age','bw','updatedAt'])
         && (!('name'  in request.resource.data) || str(request.resource.data.name, 40))
         && (!('sex'   in request.resource.data) || request.resource.data.sex in ['', 'm', 'f'])
         && (!('city'  in request.resource.data) || str(request.resource.data.city, 40))
@@ -28,6 +28,7 @@ service cloud.firestore {
         && (!('theme' in request.resource.data) || request.resource.data.theme in ['dusk', 'nightfall', 'volt'])
         && (!('photo' in request.resource.data) || str(request.resource.data.photo, 400))
         && (!('age'   in request.resource.data) || (request.resource.data.age is int && request.resource.data.age >= 0 && request.resource.data.age <= 110))
+        && (!('sexAt' in request.resource.data) || request.resource.data.sexAt is int)
         && (!('bw'    in request.resource.data) || (request.resource.data.bw is number && request.resource.data.bw >= 0 && request.resource.data.bw <= 400))
         && request.resource.data.updatedAt == request.time;
       allow delete: if signedIn() && me() == uid;
@@ -147,6 +148,18 @@ service cloud.firestore {
           && str(request.resource.data.name, 60) && request.resource.data.name.size() > 0
           && request.resource.data.acts is list && request.resource.data.acts.size() <= 12
           && request.resource.data.lat is number && request.resource.data.lng is number));
+    }
+
+    // ---------- state / national records added by the admin ----------
+    match /records/{id} {
+      allow read: if signedIn();
+      allow write: if isAdmin()
+        && (request.resource == null || (
+          request.resource.data.keys().hasOnly(['level','region','sex','skill','v','holder','date','meet','place','updatedAt'])
+          && request.resource.data.level in ['state', 'national']
+          && request.resource.data.sex in ['m', 'f']
+          && str(request.resource.data.region, 60) && str(request.resource.data.skill, 60)
+          && request.resource.data.v is number && str(request.resource.data.holder, 80)));
     }
 
     // ---------- app settings (announcement) ----------

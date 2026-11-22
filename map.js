@@ -30,7 +30,7 @@
   const OVERPASS = ['https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter', 'https://maps.mail.ru/osm/tools/overpass/api/interpreter'];
   const CACHE = 'osm_' + CITY.name.toLowerCase(), CACHE_MS = 3 * 864e5;
 
-  let osmFailed = false, MT = '', map, root, venues = [], events = [], filter = 'all', query = '', sel = null, me = null, layer = 'sat', is3d = true, pickCb = null, evMarkers = [], selMarker = null, meMarker = null, ready = false;
+  let osmFailed = false, MT = '', map, root, venues = [], events = [], filter = 'all', query = '', sel = null, me = null, layer = 'street', is3d = true, pickCb = null, evMarkers = [], selMarker = null, meMarker = null, ready = false;
   const $m = s => root.querySelector(s), $$m = s => [...root.querySelectorAll(s)];
 
   /* ---------- data ---------- */
@@ -112,11 +112,6 @@
         <label class="mx-search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg><input id="mxQ" placeholder="Search courts, grounds, sports" autocomplete="off" enterkeyhint="search"><button id="mxQx" hidden aria-label="Clear">×</button></label>
       </div>
       <div class="mx-chips" id="mxChips"></div>
-      <div class="mx-ctl">
-        <button class="mx-b press" id="mxLayer" aria-label="Map style"><svg viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/></svg></button>
-        <button class="mx-b press on" id="mx3d" aria-label="3D view"><b>3D</b></button>
-        <button class="mx-b press" id="mxMe" aria-label="My location"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3"/><circle cx="12" cy="12" r="7"/></svg></button>
-      </div>
       <div class="mx-cross" id="mxCross" hidden><i></i></div>
       <div class="mx-drawer" id="mxDrawer">
         <div class="mx-dh"><div><b id="mxCount">Loading places…</b><small id="mxSub">${CITY.name} · more cities soon</small></div><button class="mx-chipb" id="mxCity">${CITY.name}</button></div>
@@ -135,9 +130,6 @@
     let qT; q.oninput = () => { query = q.value.trim().toLowerCase(); $m('#mxQx').hidden = !q.value; deselect(); data(); refresh(); clearTimeout(qT); qT = setTimeout(() => { const m = query && shown(); if (m && m.length) fit(m.map(v => [v.lng, v.lat])); }, 700); };
     q.onkeydown = e => { if (e.key === 'Enter') { q.blur(); const l = list(); if (l[0]) select(l[0].id, true); } };
     $m('#mxQx').onclick = () => { q.value = ''; q.oninput(); };
-    $m('#mxLayer').onclick = () => { buzz(6); setLayer(layer === 'sat' ? 'street' : 'sat'); };
-    $m('#mx3d').onclick = () => { buzz(6); is3d = !is3d; $m('#mx3d').classList.toggle('on', is3d); map.easeTo({ pitch: is3d ? 55 : 0, bearing: is3d ? map.getBearing() : 0, duration: 800 }); };
-    $m('#mxMe').onclick = locate;
     $m('#mxCity').onclick = () => { buzz(6); deselect(); flyCity(1800); };
     $m('#mxPickNo').onclick = () => endPick(false);
     $m('#mxPickOk').onclick = () => endPick(true);
@@ -183,7 +175,7 @@
   }
   function data() {
     if (!ready) return; const s = shown();
-    map.getSource('v').setData({ type: 'FeatureCollection', features: s.map(v => ({ type: 'Feature', geometry: { type: 'Point', coordinates: [v.lng, v.lat] }, properties: { id: v.id, icon: `pin-${v.acts[0]}${v.src === 'osm' ? '' : 'v'}`, rank: v.src === 'provn' ? 0 : v.src === 'guide' ? 1 : v.named ? 2 : 3 } })) });
+    map.getSource('v').setData({ type: 'FeatureCollection', features: s.map(v => ({ type: 'Feature', geometry: { type: 'Point', coordinates: [v.lng, v.lat] }, properties: { id: v.id, icon: `pin-${v.acts.includes(filter) ? filter : v.acts[0]}${v.src === 'osm' ? '' : 'v'}`, rank: v.src === 'provn' ? 0 : v.src === 'guide' ? 1 : v.named ? 2 : 3 } })) });
   }
   function refresh() {
     if (!ready) return;
@@ -205,7 +197,7 @@
   /* ---------- selection ---------- */
   function select(id, fly) {
     const v = venues.find(x => x.id === id); if (!v) return;
-    buzz(8); sel = v; const a = A[v.acts[0]], d = dist(ref(), [v.lng, v.lat]);
+    buzz(8); sel = v; const a = A[v.acts.includes(filter) ? filter : v.acts[0]], d = dist(ref(), [v.lng, v.lat]);
     if (selMarker) selMarker.remove();
     const el = document.createElement('div'); el.className = 'mx-pin'; el.innerHTML = `<span style="background:${a.col}"><b>${ico(a)}</b></span>`;
     selMarker = new maplibregl.Marker({ element: el, anchor: 'bottom' }).setLngLat([v.lng, v.lat]).addTo(map);
@@ -293,6 +285,12 @@
   }
 
   /* ---------- location ---------- */
+  function useLoc() {
+    const l = window.provnLoc; if (!l) return;
+    me = [l.lng, l.lat];
+    if (!meMarker) { const el = document.createElement('div'); el.className = 'mx-me'; meMarker = new maplibregl.Marker({ element: el }).setLngLat(me).addTo(map); } else meMarker.setLngLat(me);
+  }
+  addEventListener('provn-loc', () => { if (map && ready) { useLoc(); refresh(); } });
   function locate() {
     buzz(8);
     if (!navigator.geolocation) { toast('Location is not available on this device'); return; }
@@ -359,10 +357,10 @@
         },
         layers: [
           { id: 'bg', type: 'background', paint: { 'background-color': '#0b1430' } },
-          { id: 'sat', type: 'raster', source: 'sat' },
-          { id: 'roads', type: 'raster', source: 'roads', minzoom: 11, paint: { 'raster-opacity': 0.85 } },
-          { id: 'street', type: 'raster', source: 'street', layout: { visibility: 'none' } },
-          { id: 'lbl', type: 'raster', source: 'lbl' },
+          { id: 'sat', type: 'raster', source: 'sat', layout: { visibility: 'none' } },
+          { id: 'roads', type: 'raster', source: 'roads', minzoom: 11, layout: { visibility: 'none' }, paint: { 'raster-opacity': 0.85 } },
+          { id: 'street', type: 'raster', source: 'street' },
+          { id: 'lbl', type: 'raster', source: 'lbl', layout: { visibility: 'none' } },
           { id: 'vp', type: 'symbol', source: 'v', layout: { 'icon-image': ['get', 'icon'], 'icon-anchor': 'bottom', 'icon-size': ['interpolate', ['linear'], ['zoom'], 3, 0.5, 10, 0.72, 14, 0.9, 17, 1.05], 'icon-allow-overlap': ['step', ['zoom'], false, 15.5, true], 'icon-padding': 1, 'symbol-sort-key': ['get', 'rank'], 'symbol-z-order': 'source' } }
         ]
       }
@@ -370,10 +368,11 @@
     map.on('load', async () => {
       makePins(); ready = true;
       if (MT) { try { map.setTerrain({ source: 'dem', exaggeration: 1.3 }); } catch (e) { console.warn('terrain', e); } } $m('#mxLoad').classList.add('out');
+      useLoc();
       if (pickReturn) { map.jumpTo({ center: CITY.center, zoom: 13, pitch: 0 }); startPick(); }
       /* gentle spin, then dive into the city like Google Earth */
       else map.easeTo({ center: [CITY.center[0] - 10, 20], duration: 1400, easing: t => t });
-      if (!pickReturn) setTimeout(() => { if (!sel && !pickCb) flyCity(4200); }, 1450);
+      if (!pickReturn) setTimeout(() => { if (sel || pickCb) return; if (me && dist(me, CITY.center) < 60) map.flyTo({ center: me, zoom: 13.2, pitch: 50, bearing: -12, duration: 4200, curve: 1.5, essential: true }); else flyCity(4200); }, 1450);
       $m('#mxCount').textContent = 'Finding courts and grounds…';
       const [g, cur, evs] = await Promise.all([loadGuide(), loadCurated(), loadEvents()]);
       guide = g; venues = merge(cur, g.venues, []); events = [...evs, ...g.events]; drawEvents(); data(); refresh();
