@@ -503,7 +503,7 @@ svg{display:block}
 .si-row.you b{color:var(--accent)}
 .si-note{font-size:12px;color:var(--text3);font-weight:600;margin:6px 0 0;line-height:1.4}
 .banner .bt{cursor:pointer}
-.banner .bi-more{font-size:11px;font-weight:800;opacity:.7;text-decoration:underline;text-underline-offset:2px}
+.hb-dummy{font-size:11px;font-weight:800;opacity:.7;text-decoration:underline;text-underline-offset:2px}
 
 /* announcements, empty feed, events */
 .announce{display:flex;gap:12px;align-items:flex-start;padding:14px;margin:4px 0 6px;border-color:var(--accent)}
@@ -742,6 +742,51 @@ svg{display:block}
 .adm-as{padding:0 16px 8px}.adm-as small{display:block;font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
 .adm-as>div{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:4px;border-radius:16px;background:var(--bg2);border:var(--card-bd)}
 .adm-as button{height:38px;border-radius:12px;font-size:13.5px;font-weight:800;color:var(--text2)}.adm-as button.on{background:var(--accent);color:var(--on-accent)}
+
+/* ===== Orbit hub (one page per activity) ===== */
+.hb-bic{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.35)}.hb-bic svg{width:26px;height:26px}
+.hb-nav{position:sticky;top:76px;z-index:5;display:flex;gap:6px;overflow-x:auto;padding:6px 2px 10px;margin:0 -16px;padding-left:16px;padding-right:16px;background:linear-gradient(var(--bg) 80%,transparent);scrollbar-width:none}
+.hb-nav::-webkit-scrollbar{display:none}
+.hb-nav button{flex:none;height:34px;padding:0 14px;border-radius:17px;font-size:13.5px;font-weight:800;color:var(--text2);background:var(--bg2);border:var(--card-bd)}
+.hb-nav button.on{background:var(--cv);color:var(--cvi);border-color:transparent}
+.hb-sec{margin:8px 0 26px}
+.hb-h{display:flex;align-items:center;gap:10px;margin:0 0 12px;font-size:13px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--text2)}
+.hb-h::after{content:'';flex:1;height:2px;border-radius:1px;background:var(--bg3)}
+.hb-hi{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;background:var(--bg2);font-size:14px;letter-spacing:0}
+.hb-hero{border-radius:var(--r-card);background:var(--bg2);border:var(--card-bd);overflow:hidden;padding-bottom:14px}
+.hb-img{height:170px;background:center/cover no-repeat var(--bg3);margin-bottom:4px}
+.hb-lead{margin:12px 16px 0;font-size:15.5px;font-weight:800;line-height:1.35}.hb-lead:empty{display:none}
+.hb-txt{margin:8px 16px 0;font-size:14.5px;line-height:1.55;color:var(--text2)}
+.hb-txt.clamp{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.hb-rm{margin:6px 16px 0;font-size:13px;font-weight:800;color:var(--accent)}
+.hb-src{display:block;margin:8px 16px 0;font-size:11px;font-weight:700;color:var(--text3)}
+.hb-facts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.hb-f{padding:12px 14px;border-radius:16px;background:var(--bg2);border:var(--card-bd)}
+.hb-f small{display:block;font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--text3)}.hb-f b{display:block;margin-top:3px;font-size:14.5px;line-height:1.25}
+.hb-news{display:flex;flex-direction:column;gap:8px}
+.hb-n{display:flex;gap:12px;align-items:center;padding:10px;border-radius:16px;background:var(--bg2);border:var(--card-bd);color:inherit;text-decoration:none}
+.hb-ni{width:76px;height:60px;border-radius:11px;background:center/cover no-repeat var(--bg3);flex:none}
+.hb-nt{flex:1;min-width:0}.hb-nt b{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-size:14px;line-height:1.32}
+.hb-nt small{display:block;margin-top:4px;font-size:11.5px;font-weight:700;color:var(--text3)}
+.hb-n.top{flex-direction:column;align-items:stretch;padding:0;overflow:hidden}.hb-n.top .hb-ni{width:100%;height:170px;border-radius:0}.hb-n.top .hb-nt{padding:2px 14px 12px}.hb-n.top .hb-nt b{font-size:16px}
+.hb-recs{display:flex;gap:10px;overflow-x:auto;margin:0 -16px;padding:2px 16px 6px;scroll-snap-type:x mandatory;scrollbar-width:none}.hb-recs::-webkit-scrollbar{display:none}
+.hb-rc{flex:none;width:72%;scroll-snap-align:start;padding:14px 16px;border-radius:var(--r-card);background:var(--cv);color:var(--cvi);box-shadow:0 4px 0 var(--cvd)}
+.hb-rc.in{background:var(--bg2);color:var(--text);box-shadow:none;border:var(--card-bd)}
+.hb-rc.provn{background:transparent;color:var(--text);box-shadow:none;border:2px dashed var(--bg3)}
+.hb-rl{display:block;font-size:11.5px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;opacity:.8}
+.hb-rc b{display:block;margin:6px 0 2px;font-size:30px;line-height:1.05}
+.hb-rw{display:block;font-size:14.5px;font-weight:800}.hb-rc small{display:block;margin-top:4px;font-size:12px;line-height:1.35;opacity:.75;font-weight:600}
+.hb-ev{display:flex;gap:12px;align-items:center;padding:10px 12px;border-radius:16px;background:var(--bg2);border:var(--card-bd);margin-bottom:8px}
+.hb-ed{width:48px;height:52px;border-radius:12px;background:var(--cv);color:var(--cvi);display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none}.hb-ed b{font-size:20px;line-height:1}.hb-ed small{font-size:11px;font-weight:900;text-transform:uppercase}
+.hb-ev>div{flex:1;min-width:0}.hb-ev b{display:block;font-size:14.5px}.hb-ev small{display:block;font-size:12px;color:var(--text3);font-weight:700}.hb-ev em{display:inline-block;margin-top:4px;font-style:normal;font-size:11px;font-weight:900;color:var(--accent)}
+.hb-map{width:100%;margin-top:4px}.hb-map svg{width:18px;height:18px}
+.hb-tl{position:relative;padding-left:22px}.hb-tl::before{content:'';position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:var(--bg3)}
+.hb-tp{position:relative;margin-bottom:12px}.hb-tp i{position:absolute;left:-21px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--cv);box-shadow:0 0 0 3px var(--bg)}
+.hb-tp p{margin:0;font-size:14.5px;line-height:1.58;color:var(--text2)}
+.hb-cont{display:inline-block;margin-top:2px;font-size:13.5px;font-weight:800;color:var(--accent);text-decoration:none}
+.hb-more{margin:4px 0 10px}.hb-more small{display:block;font-size:11.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.hb-more div{display:flex;gap:8px;flex-wrap:wrap}.hb-ln{padding:9px 14px;border-radius:18px;background:var(--bg2);border:var(--card-bd);font-size:13.5px;font-weight:800;color:var(--text);text-decoration:none}
+.hb-ln::after{content:' ↗';opacity:.5}
 /* account switcher (admin only): small round button + pop-up */
 .as-btn{position:relative;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:14px;color:#171A25;background:var(--accent);border:2px solid var(--bg2);box-shadow:0 0 0 2px var(--accent);flex:none}
 .as-btn.adm{background:var(--bg3);font-size:15px}
@@ -1077,7 +1122,7 @@ svg{display:block}
       <div class="sugg" id="qSugg" role="listbox" hidden></div>
       <p class="orbit-hint" id="orbitHint">Drag to explore · pinch to zoom · tap a skill</p>
       <div class="path" id="path">
-        <div class="banner" id="pBanner"><button class="bk press" id="pBack" aria-label="Back"><span data-i="back"></span></button><div class="bt" id="pInfo"><small id="pCat"></small><b id="pTitle"></b><span class="bi-more">About this skill</span></div><div class="bp"><b id="pPts"></b><small id="pLv"></small></div></div>
+        <div class="banner" id="pBanner"><button class="bk press" id="pBack" aria-label="Back"><span data-i="back"></span></button><div class="bt" id="pInfo"><small id="pCat"></small><b id="pTitle"></b></div><div class="bp"></div></div>
         <div class="pbody" id="pBody"></div>
       </div>
     </section>
@@ -1698,7 +1743,7 @@ function livePreview(){const s=SKILLS[proveSkill],r=readVal(),el=$('#proveLive')
  if(r.err||!(r.x>0)&&!(s.ty==='n'&&s.x0<0&&r.x>=0)){const b=bestOf(s.name);el.innerHTML=r.err&&$('#proveVal').value?r.err:(b?`Your best: ${fmtPerf(s,b.v,store.get('bw',0))}${unitShort(s)} · <b>${b.p} pts</b>`:`${eff(s).fem==='estimated'?'Top level':'World record'}: ${fmtPerf(s,eff(s).ref)}${unitShort(s)} ≈ ${rawPoints(eff(s),eff(s).ref)} pts<br><small>${scoringNote(s)}</small>`);return;}
  const p=pointsOf(s,r.x),l=lvOf(p),nx=LEVELS[l+1];el.innerHTML=`≈ <b>${p} pts</b> · ${LEVELS[l][0]}${nx?`<br>${nx[0]} at ${nx[1]} pts: ${targetText(s,nx[1])}`:''}<br><small>${scoringNote(s)}</small>`;}
 $('#proveVal').addEventListener('input',livePreview);$('#bwVal').addEventListener('input',livePreview);
-$('#proveTab').onclick=()=>{buzz(14);const inSkill=Orbit.isOpen()&&Path.skill();if(inSkill)openProve(inSkill,true);else openUpload();};
+$('#proveTab').onclick=()=>{buzz(14);const inSkill=Orbit.isOpen()&&Path.skill();openUpload();if(inSkill)$('#upAct').value=inSkill;};
 $('#provePost').onclick=async()=>{const s=SKILLS[proveSkill],r=readVal(),btn=$('#provePost');if(btn.disabled)return;
  if(r.err){toast(r.err);return;}if(!(r.x>0)&&!(s.x0<0&&r.x>=0)){toast('Enter your result first');$('#proveVal').focus();return;}
  {const v=parseFloat($('#bwVal').value);if(s.ty==='bw'&&v>0)store.set('bw',v);}
@@ -1929,40 +1974,126 @@ $('#addSkill').onclick=()=>go('orbit');
    Each level has 4 steps: log a result, post with proof, hit the next level's target, earn the badge.
    Your level comes straight from your best points, so the path always matches your real score. */
 const mixHex=(a,b,t)=>{const h=x=>[1,3,5].map(i=>parseInt(x.slice(i,i+2),16)),A=h(a),B=h(b);return'#'+A.map((v,i)=>Math.round(v+(B[i]-v)*t).toString(16).padStart(2,'0')).join('')};
-const Path=(()=>{let skill=null,popI=-1;const el=$('#path'),body=$('#pBody'),pop=document.createElement('div');pop.className='pop';
- function steps(s){const out=[];LEVELS.forEach((L,l)=>{const nx=LEVELS[l+1],tp=nx?nx[1]:1200;
-  out.push({ic:'star',t:l?'Log a new result':'Log your first result',p:l?'Every result counts toward your form.':'Any result counts. It sets your starting points.'},
-   {ic:'video',t:'Post again with proof',p:'Attach a short video so other players can verify your number.'},
-   {ic:'target',t:targetText(s,tp),p:`${tp} pts${nx?` unlocks ${nx[0]}`:' is world-record level'}.`},
-   {ic:'chest',t:nx?`${nx[0]} badge`:'World-class badge',p:nx?`Proof you reached ${nx[0]} in ${s.name}.`:'Reserved for world-record-level results.'});});return out;}
- function state(s){const res=resultsOf(s.name),b=bestOf(s.name);if(!b)return{lv:0,done:0,b:null};const lv=lvOf(b.p);
-  const since=res.filter(r=>lvOf(pointsOf(s,r.v))>=lv).length,after=res.length-res.findIndex(r=>lvOf(pointsOf(s,r.v))>=lv);
-  const done=Math.min(LEVELS.length*4-1,lv*4+Math.min(2,after));return{lv,done,b,since};}
- function render(popNew){const s=SKILLS[skill],st=state(s),list=steps(s),c=CATS[s.cat];let h='';
-  const bw=store.get('bw',0),e=eff(s);h+=`<div class="card pinfo">${e.fem==='estimated'?'Top level':'World record'} <b>${fmtPerf(s,e.ref,bw)}${unitShort(s)}</b> ≈ ${rawPoints(e,e.ref)} pts · an average casual player gets about <b>${fmtPerf(s,e.med,bw)}${unitShort(s)}</b> ≈ ${rawPoints(e,e.med)} pts · ${scoringNote(s)}${st.b?` · your best <b>${fmtPerf(s,st.b.v,bw)}${unitShort(s)}</b>`:''}</div>`;
-  list.forEach((n,i)=>{if(i%4===0){const l=i/4;h+=`<div class="lvl-h ${st.lv===l?'now':''}"><span></span>Level ${l+1} · ${LEVELS[l][0]} <em>${LEVELS[l][1]}+</em><span></span></div>`;}
-   const x=Math.round(Math.sin(i*0.8)*70),stt=i<st.done?'done':i===st.done?'cur':'lock';
-   h+=`<div class="prow" style="--x:${x}px"><button class="pn ${stt} ${popNew&&i===st.done-1?'pop-in':''}" data-n="${i}" aria-label="${esc(n.t)}"><span class="pi"><span data-i="${stt==='done'?'check':n.ic}"></span></span></button>${stt==='cur'?'<span class="ptip">YOUR TURN</span>':''}${stt==='cur'?`<div class="pmas" style="left:calc(50% ${x>=0?'- 154':'+ 58'}px)"><div class="mwrap av3d" data-mode="path">${mascot()}</div><div class="ptag">${esc(pname())}</div></div>`:''}</div>`;});
-  body.innerHTML=h;body.appendChild(pop);pop.className='pop';popI=-1;paintIcons(body);
-  $('#pTitle').textContent=s.name;$('#pCat').textContent=`${s.w==='mind'?'Mind':'Body'} · ${c.n}`;$('#pPts').textContent=st.b?st.b.p:'—';$('#pLv').textContent=st.b?LEVELS[st.lv][0]:'No result';
-  body.querySelectorAll('.pn').forEach(b=>b.onclick=e=>{e.stopPropagation();tapNode(+b.dataset.n,b,list,st)});}
- function tapNode(i,b,list,st){const n=list[i];buzz(8);if(popI===i){hidePop();return;}popI=i;
-  const t=i<st.done?'done':i===st.done?'cur':'lock';if(t==='lock'){b.classList.remove('shake');b.offsetWidth;b.classList.add('shake');}
-  pop.className='pop'+(t==='lock'?' lock':'');
-  pop.innerHTML=`<span class="arw"></span><b>${esc(n.t)}</b><p>${t==='lock'?'Finish the steps above to unlock this.':n.p}</p><button class="btn"><span>${t==='done'?'Done':t==='cur'?'Log result':'Locked'}</span></button>`;
-  const row=b.parentElement,bx=b.getBoundingClientRect(),pb=body.getBoundingClientRect();pop.style.top=(row.offsetTop+88)+'px';
-  pop.querySelector('.arw').style.left=(bx.left-pb.left+bx.width/2-8-16)+'px';requestAnimationFrame(()=>pop.classList.add('on'));
-  pop.querySelector('.btn').onclick=e=>{e.stopPropagation();if(t==='cur'){hidePop();openProve(skill,true);}else hidePop();};}
- function hidePop(){pop.classList.remove('on');popI=-1;}
- dragClose(pop,hidePop,()=>pop.classList.contains('on'));
- el.addEventListener('click',e=>{if(!e.target.closest('.pop'))hidePop()});
+/* ================= ORBIT HUB: one page per activity — overview, news, records, events, history ================= */
+const WIKI={'1 mile':'Mile run','5k run':'5000 metres','10k run':'10,000 metres','One hour run':'One hour run','20 km race walk':'20 kilometres race walk','100 km ultra':'Ultramarathon',
+ 'Cycling FTP':'Cycling power meter','Cycling hour':'Hour record','Rowing 2k':'Indoor rower','Rowing 500m':'Indoor rower',
+ 'Deadlift':'Deadlift','Squat':'Squat (exercise)','Bench press':'Bench press','Overhead press':'Overhead press','Snatch':'Snatch (weightlifting)','Clean & jerk':'Clean and jerk',
+ 'Powerlifting total':'Powerlifting','Pull-ups':'Pull-up (exercise)','Push-ups':'Push-up','Dips':'Dip (exercise)','Plank':'Plank (exercise)','Dead hang':'Calisthenics','Muscle-ups':'Muscle-up','Sit-ups':'Sit-up',
+ 'Shot put':'Shot put','Discus':'Discus throw','Javelin':'Javelin throw','Hammer':'Hammer throw','Vertical jump':'Vertical jump','Standing broad jump':'Standing long jump',
+ 'Skipping':'Skipping rope','Rope speed sprint':'Jump rope','Rope speed endurance':'Jump rope','Double unders':'Jump rope','Triple unders':'Jump rope','Burpees':'Burpee (exercise)','Beep test':'Multi-stage fitness test','Speed climbing':'Speed climbing',
+ 'Squash':'Squash (sport)','Padel':'Padel','Open water 1.5k':'Open water swimming','Static apnea':'Static apnea',
+ 'MMA':'Mixed martial arts','Free throws':'Free throw','Basketball 3-pointers':'Three-point field goal','Football juggling':'Keepie uppie','Bowling speed':'Fast bowling','Tennis serve speed':'Serve (tennis)',
+ 'Handstand hold':'Handstand','L-sit hold':'Calisthenics','Sit and reach':'Sit and reach','One-leg balance':'Balance (ability)',
+ '10m air rifle':'10 metre air rifle','10m air pistol':'10 metre air pistol','50m rifle 3 positions':'50 metre rifle three positions','25m rapid fire pistol':'25 metre rapid fire pistol','Trap':'Trap shooting','Skeet':'Skeet shooting',
+ 'Compound archery':'Compound bow','Indoor archery 18m':'Archery','Barebow archery':'Archery','Ten-pin bowling':'Ten-pin bowling','Sport stacking 3-6-3':'Sport stacking','Sport stacking cycle':'Sport stacking','Sport stacking 3-3-3':'Sport stacking',
+ 'Go':'Go (game)','Checkers':'Checkers','Chess puzzles':'Chess problem','Bullet chess':'Fast chess',
+ "Rubik's cube":"Rubik's Cube",'2x2 cube':'Pocket Cube','4x4 cube':"Rubik's Revenge",'5x5 cube':"Professor's Cube",'6x6 cube':'V-Cube 6','7x7 cube':'V-Cube 7','One-handed cube':'Speedcubing','Pyraminx':'Pyraminx','Megaminx':'Megaminx','Skewb':'Skewb','Square-1':'Square-1 (puzzle)','Clock':"Rubik's Clock",
+ 'Fewest moves':'Speedcubing','Blindfolded cube':'Blindfold cubing','4x4 blindfolded':'Blindfold cubing','5x5 blindfolded':'Blindfold cubing','Multi-blind':'Blindfold cubing',
+ 'Jigsaw 500':'Jigsaw puzzle','Pi digits':'Piphilology','Reaction time':'Mental chronometry','Aim trainer':'First-person shooter','Sequence memory':'Working memory','Verbal memory':'Verbal memory','Visual memory':'Visual memory','Digit span':'Memory span','Chimp test':'Working memory',
+ 'Typing':'Words per minute','Mental math':'Mental calculation','Mental addition':'Mental calculation','Calendar dates':'Determination of the day of the week','Flash anzan':'Flash Anzan','Morse code':'Morse code','HYROX':'Hyrox'};
+function wikiTitle(s){if(WIKI[s.name])return WIKI[s.name];const n=s.name;let m;
+ if(s.cat==='wat'){if(/IM$/.test(n))return 'Individual medley';if(/freestyle/.test(n))return 'Freestyle swimming';if(/backstroke/.test(n))return 'Backstroke';if(/breaststroke/.test(n))return 'Breaststroke';if(/butterfly/.test(n))return 'Butterfly stroke';}
+ if((m=n.match(/^(\d+)m( hurdles| steeplechase)?$/)))return `${m[1]} metres${m[2]||''}`;if(n==='100m sprint')return '100 metres';
+ if(s.cat==='fit')return 'CrossFit';if(s.cat==='cub')return 'Speedcubing';if(s.cat==='mem')return 'Memory sport';return n;}
+function newsQ(s){const n=s.name,c=s.cat;
+ const M={'Marathon':'marathon','Half marathon':'"half marathon"','100 km ultra':'ultramarathon','20 km race walk':'"race walking"','Cycling FTP':'cycling','Cycling hour':'cycling','Rowing 2k':'rowing','Rowing 500m':'rowing',
+  'Deadlift':'powerlifting','Squat':'powerlifting','Bench press':'powerlifting','Powerlifting total':'powerlifting','Snatch':'weightlifting','Clean & jerk':'weightlifting','Overhead press':'weightlifting',
+  'Skipping':'"jump rope"','Rope speed sprint':'"jump rope"','Rope speed endurance':'"jump rope"','Double unders':'"jump rope"','Triple unders':'"jump rope"','Speed climbing':'"sport climbing"','Burpees':'fitness','Beep test':'fitness',
+  'Free throws':'basketball','Basketball 3-pointers':'basketball','Football juggling':'"freestyle football"','Bowling speed':'"fast bowler"','Tennis serve speed':'tennis','Go':'(baduk OR "go board game")','Checkers':'draughts',
+  'Chess puzzles':'chess','Bullet chess':'chess','Jigsaw 500':'"jigsaw puzzle"','Typing':'typing','Morse code':'"morse code"','Static apnea':'freediving','Open water 1.5k':'"open water swimming"','HYROX':'hyrox','Ten-pin bowling':'"ten-pin bowling"','Bouldering':'bouldering'};
+ if(M[n])return M[n];
+ return {end:'athletics',str:'calisthenics',flx:'calisthenics',pow:'athletics',wat:'swimming',fit:'crossfit',cub:'speedcubing',mem:'"memory championship"',rfx:'"brain training"',key:'"mental math"'}[c]
+  ||(/archery/i.test(n)?'archery':/pistol|rifle|trap|skeet/i.test(n)?'"shooting championship"':/stacking/i.test(n)?'"sport stacking"':`"${n}"`);}
+const MAPACT={Pickleball:'pickleball',Tennis:'tennis',Badminton:'badminton','Table tennis':'tt',Squash:'racket',Padel:'racket',Chess:'chess','Chess puzzles':'chess','Bullet chess':'chess',
+ 'Bowling speed':'cricket','Football juggling':'football','Free throws':'basketball','Basketball 3-pointers':'basketball'};
+const mapActOf=s=>MAPACT[s.name]||{end:'running',wat:'swimming',str:'gym',fit:'gym',cmb:'combat',flx:'gym'}[s.cat]||'';
+const hubCache=(k,ms,fn)=>{const c=store.get('hub_'+k,null);if(c&&Date.now()-c.t<ms)return Promise.resolve(c.v);return fn().then(v=>{try{store.set('hub_'+k,{t:Date.now(),v});}catch(e){}return v;});};
+const WAPI='https://en.wikipedia.org/w/api.php?format=json&origin=*&redirects=1&';
+async function wikiSummary(s){return hubCache('ws_'+s.name,7*864e5,async()=>{let t=wikiTitle(s);
+ const get=async t=>{const r=await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(t.replace(/ /g,'_')));if(!r.ok)return null;const j=await r.json();return j.type==='disambiguation'?null:j;};
+ let j=await get(t).catch(()=>null);
+ if(!j){const r=await fetch(WAPI+'action=query&list=search&srlimit=1&srsearch='+encodeURIComponent(s.name+' '+CATS[s.cat].n)).then(r=>r.json()).catch(()=>null);const h=r&&r.query&&r.query.search[0];if(h){t=h.title;j=await get(t).catch(()=>null);}}
+ return j?{title:j.title,text:j.extract||'',img:j.thumbnail?j.thumbnail.source:'',url:(j.content_urls&&j.content_urls.mobile&&j.content_urls.mobile.page)||('https://en.wikipedia.org/wiki/'+encodeURIComponent(j.title))}:null;});}
+async function wikiHistory(title){return hubCache('wh_'+title,7*864e5,async()=>{
+ const sec=await fetch(WAPI+'action=parse&prop=sections&page='+encodeURIComponent(title)).then(r=>r.json());
+ const ss=(sec.parse&&sec.parse.sections)||[],h=ss.find(x=>/^(history|origins?|background|development)\b/i.test(x.line))||ss.find(x=>/history|origin/i.test(x.line));if(!h)return null;
+ const tx=await fetch(WAPI+'action=parse&prop=text&disableeditsection=1&section='+h.index+'&page='+encodeURIComponent(title)).then(r=>r.json());
+ const doc=new DOMParser().parseFromString(tx.parse.text['*'],'text/html');
+ const ps=[...doc.querySelectorAll('p')].map(p=>p.textContent.replace(/\[[^\]]{1,12}\]/g,'').replace(/\s+/g,' ').trim()).filter(x=>x.length>60).slice(0,4);
+ return ps.length?{head:h.line.replace(/<[^>]+>/g,''),paras:ps}:null;});}
+async function hubNews(s){return hubCache('nw_'+s.name,3*36e5,async()=>{
+ const u=`https://api.gdeltproject.org/api/v2/doc/doc?query=${encodeURIComponent(newsQ(s)+' sourcelang:english')}&mode=artlist&maxrecords=25&format=json&sort=datedesc&timespan=1month`;
+ const j=await fetch(u).then(r=>r.json());const seen=new Set();
+ return (j.articles||[]).filter(a=>{const k=a.title.toLowerCase().slice(0,50);if(seen.has(k))return false;seen.add(k);return true;}).slice(0,8)
+  .map(a=>({t:a.title,u:a.url,d:a.domain,img:a.socialimage||'',at:a.seendate?Date.UTC(+a.seendate.slice(0,4),+a.seendate.slice(4,6)-1,+a.seendate.slice(6,8),+a.seendate.slice(9,11),+a.seendate.slice(11,13)):0}));});}
+let guideP=null;const guide=()=>guideP||(guideP=fetch('data/ahmedabad.json').then(r=>r.json()).catch(()=>({venues:[],events:[]})));
+let natP=null;const natRecs=()=>natP||(natP=fetch('data/records.json').then(r=>r.json()).catch(()=>({})));
+
+const Path=(()=>{let skill=null,tok=0;const el=$('#path'),body=$('#pBody');
  function setColors(s){const c=CATS[s.cat];el.style.setProperty('--cv',c.col);el.style.setProperty('--cvd',mixHex(c.col,c.ink,.4));el.style.setProperty('--cvi',c.ink);}
- function scrollToCur(){const c=body.querySelector('.pn.cur');if(!c)return;el.scrollTo({top:Math.max(0,c.parentElement.offsetTop-el.clientHeight*0.42),behavior:'smooth'});}
+ const sec=(id,ic,t,inner)=>`<section class="hb-sec" id="hb-${id}"><h3 class="hb-h"><span class="hb-hi">${ic}</span>${t}</h3>${inner}</section>`;
+ const sk=(h=60,n=1)=>Array.from({length:n},()=>`<div class="skel" style="height:${h}px;margin-top:8px;border-radius:14px"></div>`).join('');
+ function render(){const s=SKILLS[skill],c=CATS[s.cat],my=++tok,e=eff(s),bw=store.get('bw',0),r=REC[s.name];
+  $('#pTitle').textContent=s.name;$('#pCat').textContent=`${s.w==='mind'?'Mind':'Body'} · ${c.n}`;$('#pBanner .bp').innerHTML=`<span class="hb-bic">${iconSvg(s.ic)}</span>`;
+  const act=mapActOf(s);
+  body.innerHTML=`<nav class="hb-nav" id="hbNav">${[['about','Overview'],['news','News'],['records','Records'],['events','Events'],['history','History']].map(([k,n],i)=>`<button data-k="${k}" class="${i?'':'on'}">${n}</button>`).join('')}</nav>
+   ${sec('about','✦','Overview',`<div class="hb-hero" id="hbHero">${sk(150)}</div>
+     <div class="hb-facts" id="hbFacts">
+      <div class="hb-f"><small>Category</small><b>${esc(c.n)}</b></div>
+      <div class="hb-f"><small>Governed by</small><b>${esc(KEEP_S[s.name]||KEEPER[s.cat]||'—')}</b></div>
+      <div class="hb-f" id="hbFans"><small>Into it on Provn</small><b>…</b></div>
+      <div class="hb-f" id="hbPlaces"><small>Places in Ahmedabad</small><b>…</b></div>
+     </div>`)}
+   ${sec('news','📰','Latest news',`<div id="hbNews">${sk(76,3)}</div>`)}
+   ${sec('records','🏆','Records',`<div id="hbRecs">${sk(90,2)}</div>`)}
+   ${sec('events','📅','Events & places',`<div id="hbEvents">${sk(64,2)}</div>${act&&window.ProvnMap?`<button class="btn ghost hb-map" id="hbMap"><span data-i="pin"></span><span>Find places to play</span></button>`:''}`)}
+   ${sec('history','📜','History',`<div id="hbHist">${sk(120)}</div>`)}
+   <div class="hb-more"><small>Learn more</small><div>
+    <a class="hb-ln" id="hbWikiL" href="https://en.wikipedia.org/wiki/${encodeURIComponent(wikiTitle(s))}" target="_blank" rel="noopener">Wikipedia</a>
+    <a class="hb-ln" href="https://www.youtube.com/results?search_query=${encodeURIComponent(s.name+' technique tips')}" target="_blank" rel="noopener">How-to videos</a>
+    <a class="hb-ln" href="https://news.google.com/search?q=${encodeURIComponent(s.name.replace(/[^\w\s'-]/g,' '))}" target="_blank" rel="noopener">More news</a></div></div>`;
+  paintIcons(body);
+  const live=()=>my===tok&&skill===s.name;
+  /* tabs scroll to their section; the active tab follows scrolling */
+  $$('#hbNav button').forEach(b=>b.onclick=()=>{buzz(6);const t=$('#hb-'+b.dataset.k);el.scrollTo({top:t.offsetTop-118,behavior:'smooth'});});
+  const mb=$('#hbMap');if(mb)mb.onclick=()=>openMap({filter:act});
+  /* overview + history (Wikipedia) */
+  wikiSummary(s).then(w=>{if(!live())return;const h=$('#hbHero');
+   if(!w){h.innerHTML=`<p class="hb-txt">${esc(DESC[s.name]||CAT_DESC[s.cat])}</p>`;$('#hbHist').innerHTML='<p class="note">No history found for this one yet.</p>';return;}
+   $('#hbWikiL').href=w.url;
+   h.innerHTML=`${w.img?`<div class="hb-img" style="background-image:url('${esc(w.img)}')"></div>`:''}<p class="hb-lead">${esc(DESC[s.name]||'')}</p><p class="hb-txt clamp" id="hbSum">${esc(w.text)}</p><button class="hb-rm" id="hbRm">Read more</button><small class="hb-src">From Wikipedia · ${esc(w.title)}</small>`;
+   $('#hbRm').onclick=()=>{const p=$('#hbSum');p.classList.toggle('clamp');$('#hbRm').textContent=p.classList.contains('clamp')?'Read more':'Show less';};
+   wikiHistory(w.title).then(hs=>{if(!live())return;$('#hbHist').innerHTML=hs?`<div class="hb-tl">${hs.paras.map((p,i)=>`<div class="hb-tp"><i></i><p>${esc(p)}</p></div>`).join('')}</div><a class="hb-cont" href="${esc(w.url)}#${encodeURIComponent(hs.head.replace(/ /g,'_'))}" target="_blank" rel="noopener">Continue reading on Wikipedia →</a>`
+    :`<p class="note">Wikipedia has no history section for ${esc(w.title)}. <a href="${esc(w.url)}" target="_blank" rel="noopener">Read the article</a>.</p>`;}).catch(()=>{if(live())$('#hbHist').innerHTML=`<p class="note">Couldn’t load history. <a href="${esc(w.url)}" target="_blank" rel="noopener">Open on Wikipedia</a>.</p>`;});})
+  .catch(()=>{if(!live())return;$('#hbHero').innerHTML=`<p class="hb-txt">${esc(DESC[s.name]||CAT_DESC[s.cat])}</p>`;$('#hbHist').innerHTML='<p class="note">Couldn’t reach Wikipedia. Check your connection.</p>';});
+  /* news */
+  hubNews(s).then(l=>{if(!live())return;$('#hbNews').innerHTML=l.length?`<div class="hb-news">${l.map((a,i)=>`<a class="hb-n ${i===0&&a.img?'top':''}" href="${esc(a.u)}" target="_blank" rel="noopener">${a.img?`<span class="hb-ni" style="background-image:url('${esc(a.img)}')"></span>`:''}<span class="hb-nt"><b>${esc(a.t)}</b><small>${esc(a.d.replace(/^www\./,''))}${a.at?' · '+ago(a.at):''}</small></span></a>`).join('')}</div>`
+   :`<p class="note">No fresh headlines in the last month. Tap <b>More news</b> below for older stories.</p>`;})
+   .catch(()=>{if(live())$('#hbNews').innerHTML=`<p class="note">Headlines didn’t load right now. <a href="https://news.google.com/search?q=${encodeURIComponent(s.name)}" target="_blank" rel="noopener">Open Google News</a>.</p>`;});
+  /* records: world · India · state (admin) · Provn events */
+  Promise.all([natRecs(),CU()?Cloud.records(s.name).catch(()=>[]):[]]).then(([nat,st])=>{if(!live())return;const cards=[];
+   const card=(lvl,flag,mark,who,meta,tone)=>`<div class="hb-rc ${tone||''}"><span class="hb-rl">${flag} ${lvl}</span><b class="display">${esc(mark)}</b><span class="hb-rw">${esc(who)}</span>${meta?`<small>${esc(meta)}</small>`:''}</div>`;
+   if(s.ty!=='r'&&!BENCH.has(s.name))cards.push(card(s.w==='body'?"World record · men":'World record','🌍',`${fmtPerf(s,s.ref,bw)}${unitShort(s)}`,r?`${r[0]}${r[1]?' ('+r[1]+')':''}`:'Holder being added',r?[r[2],r[3],r[4]].filter(Boolean).join(' · '):''));
+   if(FEM[s.name]&&FEM[s.name][2])cards.push(card('World record · women','🌍',`${fmtPerf(s,FEM[s.name][0],bw)}${unitShort(s)}`,`${FEM[s.name][2]}${FEM[s.name][3]?' ('+FEM[s.name][3]+')':''}`,[FEM[s.name][4],FEM[s.name][5],FEM[s.name][6]].filter(Boolean).join(' · ')));
+   const IN=(nat.national||{}).India||{};['m','f'].forEach(g=>{const x=(IN[g]||{})[s.name];if(x)cards.push(card(`India · ${g==='m'?'men':'women'}`,'🇮🇳',`${fmtPerf(s,x.v,bw)}${unitShort(s)}`,x.holder,[x.date,x.meet,x.place].filter(Boolean).join(' · '),'in'));});
+   st.forEach(x=>cards.push(card(`${x.level==='state'?x.region:x.region||'India'} · ${x.sex==='f'?'women':'men'}`,x.level==='state'?'📍':'🇮🇳',`${fmtPerf(s,x.v,bw)}${unitShort(s)}`,x.holder,[x.date,x.meet,x.place].filter(Boolean).join(' · '),'in')));
+   cards.push(`<div class="hb-rc provn"><span class="hb-rl">⚡ Provn record</span><b class="display">—</b><span class="hb-rw">Set at Provn events</span><small>Scores only count at official Provn events. Join one in Arena to put your name here.</small></div>`);
+   $('#hbRecs').innerHTML=`<div class="hb-recs">${cards.join('')}</div>`;});
+  /* events + places */
+  Promise.all([guide(),CU()?Cloud.events().catch(()=>[]):[]]).then(([g,ev])=>{if(!live())return;const today=new Date().toISOString().slice(0,10);
+   const kw=[s.name.toLowerCase(),act];
+   const list=[...ev.filter(x=>!x.past&&(x.skill===s.name)).map(x=>({...x,provn:1})),...(g.events||[]).filter(x=>x.date>=today&&(x.skill===s.name||kw.some(k=>k&&(x.title||'').toLowerCase().includes(k))))];
+   const places=act?(g.venues||[]).filter(v=>v.acts.includes(act)).length:0;
+   $('#hbPlaces b').textContent=act?(places?places+'+':'—'):'—';
+   $('#hbEvents').innerHTML=list.length?list.map(x=>{const d=new Date(x.date+'T00:00');return `<div class="hb-ev"><span class="hb-ed"><b>${d.getDate()}</b><small>${d.toLocaleDateString(undefined,{month:'short'})}</small></span><div><b>${esc(x.title)}</b><small>${esc([x.time,x.place,x.city].filter(Boolean).join(' · '))}</small>${x.provn?'<em>Provn event · scores count</em>':''}</div></div>`;}).join('')
+    :`<p class="note">No upcoming ${esc(s.name)} events yet.${places?` There are ${places} places to play in Ahmedabad.`:''}</p>`;});
+  if(CU())people().then(l=>{if(!live())return;const n=l.filter(p=>(p.interests||[]).includes(s.name)).length+(myInterests().includes(s.name)?1:0);$('#hbFans b').textContent=n?`${n} player${n>1?'s':''}`:'Be the first';}).catch(()=>{});
+  else $('#hbFans b').textContent='—';}
+ el.addEventListener('scroll',()=>{const n=$('#hbNav');if(!n)return;let on='about';$$('.hb-sec',body).forEach(x=>{if(x.offsetTop-140<=el.scrollTop)on=x.id.slice(3);});if(el.scrollTop+el.clientHeight>=el.scrollHeight-8)on='history';
+  $$('#hbNav button').forEach(b=>{const a=b.dataset.k===on;if(a&&!b.classList.contains('on'))b.scrollIntoView({inline:'center',block:'nearest'});b.classList.toggle('on',a);});},{passive:true});
  $('#pBack').onclick=e=>{e.stopPropagation();Orbit.close()};
- $('#pInfo').onclick=e=>{e.stopPropagation();buzz(8);openSkillInfo(skill)};
- $('.banner .bp').onclick=e=>{e.stopPropagation();openSkillInfo(skill)};
- return{show(n){skill=n;setColors(SKILLS[n]);render();el.scrollTop=0;el.classList.add('on');setTimeout(scrollToCur,450);},
-  hide(){hidePop();el.classList.remove('on');skill=null},skill:()=>skill,refresh(p){render(p);setTimeout(scrollToCur,300);}};})();
+ return{show(n){skill=n;setColors(SKILLS[n]);render();el.scrollTop=0;el.classList.add('on');},
+  hide(){el.classList.remove('on');skill=null;tok++;},skill:()=>skill,refresh(){if(skill)render();}};})();
 
 /* ================= SKILL INFO =================
    Record details come from the Cross-Genre Skill Records Catalog (marked C) or well-documented records (as of mid-2026).
@@ -2693,7 +2824,7 @@ $('#intSave').onclick=()=>{store.set('interests',[...intSel]);hideSheet();buzz(1
 $('#intEdit').onclick=openInterests;
 
 /* auto-update: GitHub Pages lets phones keep an old copy for ~10 min; check the live version and reload if it's newer */
-const APP_V='20261123q';
+const APP_V='20261123r';
 async function checkUpdate(){try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});const j=await r.json();
  if(j.v&&j.v!==APP_V&&sessionStorage.getItem('provn_upd')!==j.v){sessionStorage.setItem('provn_upd',j.v);toast('Updating Provn…');setTimeout(()=>location.replace(location.pathname+'?v='+j.v+location.hash),600);}}catch(e){}}
 checkUpdate();document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkUpdate();});
@@ -2799,8 +2930,8 @@ setTimeout(()=>$('#splash').classList.add('out'),matchMedia('(prefers-reduced-mo
 setTimeout(()=>$('#splash').remove(),1700);
 setTimeout(()=>$('#orbitHint').style.opacity=0,6000);
 </script>
-<script type="module" src="avatar3d.js?v=20261123q"></script>
-<script type="module" src="cloud.js?v=20261123q"></script>
-<script src="map.js?v=20261123q" defer></script>
+<script type="module" src="avatar3d.js?v=20261123r"></script>
+<script type="module" src="cloud.js?v=20261123r"></script>
+<script src="map.js?v=20261123r" defer></script>
 </body>
 </html>
