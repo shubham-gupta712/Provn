@@ -2,7 +2,7 @@
    If this module fails to load (offline, blocked), the app keeps working on-device. */
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut as fbSignOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-import { getFirestore, doc, getDoc, setDoc, collection, query, where, orderBy, limit, getDocs, serverTimestamp, increment, writeBatch, addDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+import { getFirestore, doc, getDoc, setDoc, collection, query, where, orderBy, limit, getDocs, serverTimestamp, increment, writeBatch, addDoc, deleteDoc, updateDoc, getCountFromServer } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyD0RInNbKgLZiGDfL20KH9L6RVlYMI806g',
@@ -13,6 +13,7 @@ const firebaseConfig = {
   appId: '1:160948214906:web:67bfd2cca7bc15f25c2fc3',
   measurementId: 'G-C8FKKRP83C'
 };
+export const ADMIN_EMAIL = 'shubhamgupta1414@gmail.com';
 const CLOUDINARY = { cloud: 'y3geoabc', preset: 'provn_unsigned' };
 
 const app = initializeApp(firebaseConfig);
@@ -97,6 +98,68 @@ const Cloud = {
   },
   async deleteResult(id) { return deleteDoc(doc(db, 'results', id)); },
 
+  /* ---------- events (created by the admin, shown in Arena) ---------- */
+  async events() {
+    const s = await getDocs(query(collection(db, 'events'), limit(100)));
+    const today = new Date().toISOString().slice(0, 10);
+    const list = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+    await Promise.all(list.map(async e => {
+      const [c, m] = await Promise.all([getCountFromServer(collection(db, 'events', e.id, 'going')), getDoc(doc(db, 'events', e.id, 'going', Cloud.user.uid))]);
+      e.going = c.data().count; e.mine = m.exists(); e.past = (e.date || '') < today;
+    }));
+    return list;
+  },
+  setGoing(id, on, name) { const r = doc(db, 'events', id, 'going', Cloud.user.uid); return on ? setDoc(r, { at: serverTimestamp(), name: (name || 'Player').slice(0, 40) }) : deleteDoc(r); },
+  async config() { const s = await getDoc(doc(db, 'config', 'app')); return s.exists() ? s.data() : {}; },
+  async banned() { return (await getDoc(doc(db, 'bans', Cloud.user.uid))).exists(); },
+
+  /* ---------- admin only (the rules enforce this too) ---------- */
+  isAdmin() { return !!(Cloud.user && Cloud.user.email === ADMIN_EMAIL && Cloud.user.verified); },
+  admin: {
+    async stats() {
+      const c = q => getCountFromServer(q).then(r => r.data().count).catch(() => '–');
+      const [users, results, flagged, events, bans] = await Promise.all([c(collection(db, 'users')), c(collection(db, 'results')),
+        c(query(collection(db, 'results'), where('flags', '>', 0))), c(collection(db, 'events')), c(collection(db, 'bans'))]);
+      return { users, results, flagged, events, bans };
+    },
+    async flagged() {
+      const s = await getDocs(query(collection(db, 'results'), where('flags', '>', 0), limit(100)));
+      return s.docs.map(d => ({ id: d.id, ...d.data(), t: tsMs(d.data().createdAt) })).sort((a, b) => b.flags - a.flags);
+    },
+    async users() {
+      const [u, b] = await Promise.all([getDocs(query(collection(db, 'users'), limit(500))), getDocs(collection(db, 'bans'))]);
+      const banned = new Set(b.docs.map(d => d.id));
+      return u.docs.map(d => ({ uid: d.id, ...d.data(), t: tsMs(d.data().updatedAt), banned: banned.has(d.id) })).sort((a, b) => b.t - a.t);
+    },
+    async results(uid) {
+      const s = await getDocs(query(collection(db, 'results'), where('uid', '==', uid), limit(500)));
+      return s.docs.map(d => ({ id: d.id, ...d.data(), t: tsMs(d.data().createdAt) })).sort((a, b) => b.t - a.t);
+    },
+    async removeResult(r) {
+      const bref = doc(db, 'best', r.uid + '__' + skillKey(r.skill)), b = await getDoc(bref);
+      if (b.exists() && b.data().result === r.id) await deleteDoc(bref);
+      await deleteDoc(doc(db, 'results', r.id));
+    },
+    async clearFlags(id) {
+      const s = await getDocs(collection(db, 'results', id, 'flags')), b = writeBatch(db);
+      s.docs.forEach(d => b.delete(d.ref)); b.update(doc(db, 'results', id), { flags: 0 });
+      return b.commit();
+    },
+    async comments(id) { return Cloud.comments(id); },
+    async removeComment(rid, cid) {
+      const b = writeBatch(db); b.delete(doc(db, 'results', rid, 'comments', cid)); b.update(doc(db, 'results', rid), { comments: increment(-1) });
+      return b.commit();
+    },
+    ban(uid, on) { const r = doc(db, 'bans', uid); return on ? setDoc(r, { at: serverTimestamp(), by: Cloud.user.email }) : deleteDoc(r); },
+    saveEvent(e, id) {
+      const data = { title: e.title, skill: e.skill || '', date: e.date, time: e.time || '', place: e.place || '', city: e.city || '', spots: e.spots || 0, info: e.info || '', updatedAt: serverTimestamp() };
+      return id ? setDoc(doc(db, 'events', id), data) : addDoc(collection(db, 'events'), data);
+    },
+    deleteEvent(id) { return deleteDoc(doc(db, 'events', id)); },
+    async going(id) { const s = await getDocs(collection(db, 'events', id, 'going')); return s.docs.map(d => ({ uid: d.id, ...d.data() })); },
+    setConfig(c) { return setDoc(doc(db, 'config', 'app'), { announce: (c.announce || '').slice(0, 280), updatedAt: serverTimestamp() }); }
+  },
+
   /* proof video straight from the phone to Cloudinary (unsigned preset) */
   uploadVideo(file, onProgress) {
     return new Promise((res, rej) => {
@@ -113,7 +176,7 @@ const Cloud = {
 
 getRedirectResult(auth).catch(() => {});
 onAuthStateChanged(auth, u => {
-  Cloud.user = u ? { uid: u.uid, name: u.displayName || '', email: u.email || '', photo: u.photoURL || '' } : null;
+  Cloud.user = u ? { uid: u.uid, name: u.displayName || '', email: u.email || '', photo: u.photoURL || '', verified: !!u.emailVerified } : null;
   Cloud.ready = true;
   window.dispatchEvent(new CustomEvent('cloud-auth', { detail: Cloud.user }));
 });

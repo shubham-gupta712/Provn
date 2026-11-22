@@ -468,6 +468,71 @@ svg{display:block}
 .banner .bt{cursor:pointer}
 .banner .bi-more{font-size:11px;font-weight:800;opacity:.7;text-decoration:underline;text-underline-offset:2px}
 
+/* announcements, empty feed, events */
+.announce{display:flex;gap:12px;align-items:flex-start;padding:14px;margin:4px 0 6px;border-color:var(--accent)}
+.announce svg{width:22px;height:22px;color:var(--accent);flex:none}
+.announce p{margin:0;font-size:14.5px;font-weight:700;line-height:1.4}
+.feed-empty{text-align:center;padding:28px 20px;line-height:1.5}
+.feed-empty b.display{display:block;font-size:22px;color:var(--text);margin-bottom:6px}
+.ev-info{margin-top:6px!important}
+.hero-f{display:flex;align-items:center;justify-content:space-between;margin-top:12px;position:relative}
+.hero-f small{font-weight:800;color:var(--text2);font-size:13px}
+.hero-f .btn{height:40px;padding:0 16px}
+/* city suggestions */
+.csugg{position:absolute;z-index:120;border-radius:16px;background:var(--bg2);border:var(--card-bd);box-shadow:0 14px 30px rgba(0,0,0,.3);padding:5px;animation:fadeUp .16s ease both}
+.csugg[hidden]{display:none}
+.csugg button{display:flex;align-items:center;gap:10px;width:100%;padding:10px 10px;border-radius:11px;text-align:left;font-size:15px;font-weight:600;color:var(--text2)}
+.csugg button b{color:var(--text);font-weight:800}
+.csugg button.act,.csugg button:active{background:var(--bg3)}
+.csugg svg{width:17px;height:17px;color:var(--text3);flex:none}
+/* admin */
+.adm{position:absolute;inset:0;z-index:95;background:var(--bg);display:flex;flex-direction:column}
+.adm[hidden]{display:none}
+.adm-hd{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:calc(var(--safe-t) + 14px) 16px 8px}
+.adm-hd b{font-size:30px;display:block;line-height:1}.adm-hd small{color:var(--text3);font-size:12px;font-weight:700}
+.adm-hd .btn{height:40px;padding:0 14px;font-size:14px}
+.adm-tabs{display:flex;gap:6px;overflow-x:auto;padding:6px 16px 10px;scrollbar-width:none;flex:none}
+.adm-tabs::-webkit-scrollbar{display:none}
+.adm-tabs button{flex:none;padding:9px 14px;border-radius:20px;background:var(--bg2);border:var(--card-bd);font-size:13.5px;font-weight:800;color:var(--text2)}
+.adm-tabs button.on{background:var(--accent);color:var(--on-accent)}
+.adm-body{flex:1;overflow-y:auto;padding:4px 16px calc(var(--safe-b) + 30px)}
+.adm-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.adm-stats .card{padding:12px;text-align:center}.adm-stats b{display:block;font-size:26px}.adm-stats small{color:var(--text3);font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em}
+.adm-h3{font-family:var(--f-display);font-size:19px;margin:22px 0 4px}
+.adm-p{margin:0 0 10px;color:var(--text2);font-size:13px;font-weight:600;line-height:1.4}
+.adm textarea,.adm-in,.adm-form input,.adm-form textarea{width:100%;padding:12px 14px;border-radius:14px;background:var(--bg2);border:var(--card-bd);font:inherit;font-size:15px;font-weight:600;color:var(--text);outline:0}
+.adm textarea{min-height:80px;resize:vertical}
+.adm-in{margin-bottom:8px}
+.adm-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.adm-row .btn{flex:1;height:44px}.adm-row.tight{margin-top:0;flex-wrap:nowrap}
+.adm-r{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:12px;margin-top:8px;border-radius:16px;background:var(--bg2);border:var(--card-bd)}
+.adm-rt{flex:1 1 100%;min-width:0}
+.adm-rt b{display:block;font-size:15px}.adm-rt span{display:block;font-size:13.5px;font-weight:700;color:var(--text2)}.adm-rt em{font-style:normal;color:var(--accent)}
+.adm-rt small{display:block;font-size:12px;color:var(--text3);font-weight:600;margin-top:2px}
+.adm-b{padding:7px 12px;border-radius:12px;background:var(--bg3);font-size:12.5px;font-weight:800;color:var(--text)}
+.adm-b.red{color:var(--danger)}.adm-b.on{background:var(--accent);color:var(--on-accent)}
+.adm-b.warn,.btn.warn{background:var(--danger)!important;color:#fff!important}
+.adm-r video{flex:1 1 100%;width:100%;max-height:320px;border-radius:12px;background:#000;margin-top:6px}
+.adm-c{flex:1 1 100%;margin-top:6px;padding:8px 10px;border-radius:12px;background:var(--bg3);font-size:13px;font-weight:600;color:var(--text2)}
+.adm-cm{display:flex;align-items:center;gap:8px;padding:4px 0}.adm-cm span{flex:1}
+.adm-u{margin-top:8px;padding:12px;border-radius:16px;background:var(--bg2);border:var(--card-bd)}
+.adm-ut{display:flex;gap:12px;align-items:center;cursor:pointer}
+.adm-ut .av{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:800;color:#171A25;flex:none;border:2px solid var(--ink)}
+.adm-ut b{display:block;font-size:15px}.adm-ut small{display:block;font-size:12px;color:var(--text3);font-weight:600}
+.ban{font-style:normal;font-size:11px;padding:2px 7px;border-radius:8px;background:var(--danger);color:#fff;margin-left:4px;vertical-align:2px}
+.adm-ud{margin-top:6px}.adm-ud .adm-r{background:var(--bg3)}
+.adm-form label{display:block;margin-top:10px;font-size:12px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.05em}
+.adm-form label input,.adm-form label textarea{margin-top:5px;text-transform:none;letter-spacing:0}
+.adm-form .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.adm-tool{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1.5px solid var(--bg3)}
+.adm-tool>div:first-child{flex:1;min-width:0}.adm-tool b{display:block;font-size:15px}.adm-tool small{display:block;font-size:12.5px;color:var(--text2);font-weight:600}
+.adm-sw2{width:50px;height:30px;border-radius:16px;background:var(--bg3);position:relative;flex:none;border:var(--card-bd)}
+.adm-sw2 i{position:absolute;left:3px;top:50%;width:22px;height:22px;margin-top:-11px;border-radius:50%;background:var(--text3);transition:all .2s}
+.adm-sw2.on{background:var(--accent)}.adm-sw2.on i{left:23px;background:#fff}
+.adm-pill{position:absolute;z-index:60;left:12px;bottom:calc(var(--safe-b) + 96px);display:flex;align-items:center;gap:6px;padding:9px 14px 9px 11px;border-radius:22px;background:var(--ink,#171A25);color:#fff;font-size:13px;font-weight:800;box-shadow:0 6px 18px rgba(0,0,0,.35);border:2px solid var(--accent)}
+.adm-pill svg{width:16px;height:16px}
+.adm-pill[hidden]{display:none}
+.gate-x{position:absolute;right:16px;top:calc(var(--safe-t) + 16px);width:42px;height:42px;border-radius:50%;background:var(--bg2);border:var(--card-bd);font-size:24px;font-weight:800;z-index:2}
+
 /* sign-in gate */
 .gate{position:absolute;inset:0;z-index:90;background:var(--bg);display:flex;flex-direction:column;padding:calc(var(--safe-t) + 40px) 24px calc(var(--safe-b) + 26px);transition:opacity .35s ease,transform .35s ease}
 .gate[hidden]{display:none}
@@ -625,14 +690,14 @@ svg{display:block}
 <div id="app">
   <header class="topbar">
     <div class="tb-title display" id="tbTitle"></div>
-    <button class="icon-btn press" id="btnBell" aria-label="Notifications"><span data-i="bell"></span><span class="dot"></span></button>
+    <button class="icon-btn press" id="btnBell" aria-label="Notifications"><span data-i="bell"></span></button>
     <button class="icon-btn press" id="btnChat" aria-label="Messages"><span data-i="chat"></span></button>
     <button class="icon-btn press" id="btnGear" aria-label="Settings" hidden><span data-i="gear"></span></button>
   </header>
 
   <main class="screens">
     <section class="screen" id="s-pulse" data-tab="pulse">
-      <div class="rings" id="rings"></div>
+      <div id="announce"></div>
       <div id="feed"></div>
       <p class="note" id="feedNote"></p>
     </section>
@@ -652,8 +717,8 @@ svg{display:block}
     <section class="screen" id="s-arena" data-tab="arena">
       <div class="seg" id="seg"><span class="si"></span><button class="on" data-p="events">Events</button><button data-p="ranks">Rankings</button><button data-p="map">Map</button></div>
       <div class="pane on" id="p-events">
-        <div class="card hero"><span class="blob" style="background:#9BE15D"></span><span class="chip hot" style="align-self:flex-start;position:relative">Next near you</span><h2 class="display">Pickleball Open</h2><p>Sat 6 Dec · Andheri Sports Complex · 14 spots left</p></div>
-        <div class="sec-h"><h3 class="display">This month</h3><a>See all</a></div>
+        <div id="evHero"></div>
+        <div class="sec-h" id="evHead" hidden><h3 class="display">Also coming up</h3></div>
         <div id="events"></div>
       </div>
       <div class="pane" id="p-ranks">
@@ -663,7 +728,7 @@ svg{display:block}
       </div>
       <div class="pane" id="p-map">
         <div class="card globe-card"><div class="globe"><span class="pin" style="left:62%;top:48%"></span><span class="pin" style="left:40%;top:36%;animation-delay:.6s"></span><span class="pin" style="left:52%;top:64%;animation-delay:1.2s"></span></div>
-        <h3 class="display" style="margin:0 0 6px;font-size:22px">The globe is coming</h3><p style="margin:0;color:var(--text2);font-size:14px;font-weight:600">Events and players on a 3D map arrive with Provn events in Phase 2.</p></div>
+        <h3 class="display" style="margin:0 0 6px;font-size:22px">The globe is coming soon</h3><p style="margin:0;color:var(--text2);font-size:14px;font-weight:600">Players and events near you on a live map.</p></div>
       </div>
     </section>
 
@@ -673,7 +738,7 @@ svg{display:block}
       <div class="wgrid" id="wgrid"></div>
       <div class="sec-h"><h3 class="display">Your skills</h3><a id="addSkill">Add skill</a></div>
       <div class="slist" id="slist"></div>
-      <p class="note">Results are saved on this phone until sign-in is added</p>
+      
     </section>
   </main>
 
@@ -728,10 +793,11 @@ svg{display:block}
     <h2 class="display">Settings</h2>
     <p class="lead">Unlock new looks by scoring in each world.</p>
     <div class="themes" id="themes"></div>
+    <div class="row" id="admRow" hidden style="cursor:pointer"><span data-i="info"></span><span class="sp">Admin console</span><small>Open</small></div>
     <div class="row" id="acctRow" style="cursor:pointer"><span data-i="you"></span><span class="sp">Account</span><small id="acctTxt">Sign out</small></div>
     <div class="row"><span data-i="bell"></span><span class="sp">Notifications</span><small>Soon</small></div>
     <div class="row"><span data-i="lock"></span><span class="sp">Privacy</span><small>Soon</small></div>
-    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261122b</small></div>
+    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Phase 2 · 20261122c</small></div>
   </section>
 
   <div class="cele" id="cele"><div class="cele-in"><div class="cele-m" id="celeM"></div><h2 class="display" id="celeT"></h2><div class="big" id="celeB"></div><p id="celeS"></p><button class="btn primary" id="celeOk"><span>Keep going</span></button></div></div>
@@ -739,6 +805,7 @@ svg{display:block}
   <button class="pv" id="pv"><span data-i="eye"></span><span id="pvTxt"></span></button>
   <div class="toast" id="toast"></div>
   <div class="gate" id="gate">
+    <button class="gate-x press" id="gateX" hidden aria-label="Close preview">×</button>
     <div class="gate-top"><div class="wordmark gate-wm">provn<i></i></div><p class="gate-tag">Your skills, in numbers.</p></div>
     <div class="gate-av"><div class="av3d" data-mode="you" id="gateAv"></div></div>
     <div class="gate-bot">
@@ -747,6 +814,13 @@ svg{display:block}
       <p class="gate-fine">By continuing you agree to play fair and post only your own results.</p>
     </div>
   </div>
+
+  <div class="adm" id="adm" hidden>
+    <header class="adm-hd"><div><b class="display">Admin</b><small id="admWho"></small></div><button class="btn ghost" id="admPlayer"><span>Player view</span></button></header>
+    <nav class="adm-tabs" id="admTabs"><button data-t="overview" class="on">Overview</button><button data-t="mod">Moderation</button><button data-t="users">Players</button><button data-t="events">Events</button><button data-t="test">Test</button></nav>
+    <div class="adm-body" id="admBody"></div>
+  </div>
+  <button class="adm-pill press" id="admPill" hidden><span data-i="you"></span>Admin</button>
 
   <div class="onb" id="onb" hidden>
     <div class="onb-h"><button class="onb-back press" id="onbBack" aria-label="Back"><span data-i="back"></span></button><div class="onb-bar"><i id="onbBar"></i></div><span class="onb-n" id="onbN"></span></div>
@@ -780,6 +854,7 @@ const ICONS={
  video:`<svg viewBox="0 0 24 24" ${P}><rect x="3" y="6" width="13" height="12" rx="3"/><path d="m16 10.5 5-3v9l-5-3"/></svg>`,
  lock:`<svg viewBox="0 0 24 24" ${P}><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></svg>`,
  unlock:`<svg viewBox="0 0 24 24" ${P}><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 6.8-1.2"/></svg>`,
+ pin:`<svg viewBox="0 0 24 24" ${P}><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>`,
  eye:`<svg viewBox="0 0 24 24" ${P} stroke-width="2.4"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg>`,
  info:`<svg viewBox="0 0 24 24" ${P}><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 8h.01"/></svg>`,
  star:`<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.2l2.6 5.5 6 .7-4.4 4.1 1.2 5.9L12 16.5l-5.4 2.9 1.2-5.9-4.4-4.1 6-.7z"/></svg>`,
@@ -788,7 +863,7 @@ const ICONS={
  flag:`<svg viewBox="0 0 24 24" ${P}><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg>`,
  check:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5.5 12.5 4.2 4.2 8.8-9.2"/></svg>`
 };
-const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const $=s=>document.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 function paintIcons(root=document){root.querySelectorAll('[data-i]').forEach(el=>{if(el.dataset.done!==el.dataset.i){el.innerHTML=ICONS[el.dataset.i]||'';el.dataset.done=el.dataset.i;el.style.display='contents';}});}
 const buzz=ms=>{try{navigator.vibrate&&navigator.vibrate(ms)}catch(e){}};
 const store={get(k,d){try{const v=localStorage.getItem('provn_'+k);return v===null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('provn_'+k,JSON.stringify(v))}catch(e){}}};
@@ -1042,8 +1117,7 @@ function targetText(s,p){const bw=store.get('bw',0),x=perfFor(s,p);
  if(s.name==='Bouldering')return `Send V${Math.ceil(x)}`;return `${s.unit.startsWith('m')?x.toFixed(2):Math.ceil(x)} ${s.unit}`;}
 
 /* results */
-const SEED={'5k run':[{v:1386,t:1},{v:1308,t:2}],'Pickleball':[{v:3.4,t:3}],'Typing':[{v:68,t:4}]};
-const resultsOf=n=>store.get('res_'+n,store.get('acct',false)?[]:(SEED[n]||[]));
+const resultsOf=n=>store.get('res_'+n,[]);
 if(store.get('schema',1)<2){['Pickleball','Tennis'].forEach(n=>{const l=store.get('res_'+n,null);if(l)store.set('res_'+n,l.filter(r=>r.v<20));});store.set('schema',2);}
 function bestOf(n){const s=SKILLS[n];let b=null,bp=-1;resultsOf(n).forEach(r=>{const p=pointsOf(s,r.v);if(p>bp){bp=p;b=r;}});return b?{v:b.v,p:bp}:null;}
 function mySkills(){return SKILL_LIST.filter(s=>resultsOf(s.name).length).map(s=>({s,b:bestOf(s.name)})).sort((a,b)=>b.b.p-a.b.p);}
@@ -1119,7 +1193,7 @@ function go(tab,instant){if(tab===cur){const s=$('#s-'+tab);if(tab==='orbit')Orb
  $('#tbTitle').innerHTML=TITLES[tab];
  $('#btnBell').hidden=$('#btnChat').hidden=tab==='you';$('#btnGear').hidden=tab!=='you';
  cur=tab;moveInd(!instant);history.replaceState({tab},'','#'+tab);store.set('tab',tab);
- Orbit.active(tab==='orbit');if(tab==='pulse')Pulse.show();if(tab==='you')You.render();}
+ Orbit.active(tab==='orbit');if(tab==='pulse')Pulse.show();if(tab==='you')You.render();if(tab==='arena')renderEvents();}
 function moveInd(anim){const b=$('.tab[data-tab="'+cur+'"]');if(!b)return;const ind=$('#ind'),bar=$('#tabbar').getBoundingClientRect(),r=b.getBoundingClientRect();
  const w=ind.offsetWidth,sk=document.documentElement.dataset.theme==='volt'?' skewX(-20deg)':'';if(!anim)ind.style.transition='none';ind.style.transform=`translateX(${r.left-bar.left+r.width/2-w/2}px)${sk}`;if(!anim){ind.offsetWidth;ind.style.transition='';}}
 $$('.tab[data-tab]').forEach(b=>b.onclick=()=>{if(b.dataset.tab!==cur)buzz(6);go(b.dataset.tab)});
@@ -1145,8 +1219,8 @@ function dragClose(el,onClose,isOpen){let y0=null,x0=0,dy=0,active=false;
  addEventListener('pointermove',e=>{if(e.pointerType==='mouse')move(e.clientX,e.clientY,e);});addEventListener('pointerup',e=>{if(e.pointerType==='mouse')end();});}
 $$('.sheet').forEach(sh=>dragClose(sh,()=>hideSheet(),()=>sh.classList.contains('on')));
 $('#btnGear').onclick=()=>{renderThemePicker();showSheet('sh-settings')};
-$('#btnBell').onclick=()=>toast('Notifications arrive with sign-in');
-$('#btnChat').onclick=()=>toast('Messages arrive in a later layer');
+$('#btnBell').onclick=()=>toast('Notifications are coming soon');
+$('#btnChat').onclick=()=>toast('Messages are coming soon');
 
 /* ================= PROVE IT ================= */
 let proveSkill=null,proveFromPath=false;
@@ -1191,10 +1265,6 @@ $('#provePost').onclick=async()=>{const s=SKILLS[proveSkill],r=readVal(),btn=$('
   msgs.shift()();celeQueue=msgs;},380);};
 
 /* ================= PULSE ================= */
-const POSTS=[
- {n:'Riya Sharma',i:'R',ctx:{sex:'f',age:27},skill:'5k run',v:1308,when:'12 min ago',top:'Top 18% in Mumbai',likes:48,com:6,legit:11},
- {n:'Kabir Rao',i:'K',ctx:{sex:'m',age:22},skill:"Rubik's cube",v:14.62,when:'1 h ago',top:'Top 9% in India',likes:77,com:12,legit:20},
- {n:'Arjun Mehta',i:'A',ctx:{sex:'m',age:29},skill:'Deadlift',v:2.0,bw:80,when:'3 h ago',top:'160 kg at 80 kg body weight',likes:31,com:4,legit:8}];
 function postHTML(p,k){const s=SKILLS[p.skill];if(!s)return '';const c=CATS[s.cat],pts=p.pts!=null?p.pts:pointsOf(s,p.v,p.ctx),l=lvOf(pts),nx=LEVELS[l+1],pct=nx?Math.round((pts-LEVELS[l][1])/(nx[1]-LEVELS[l][1])*100):100;
  const m=p.mine||{},id=p.id||'',vid=p.video||'',init=(p.n||'?')[0].toUpperCase();
  return `<article class="card post" style="animation:fadeUp .4s ${k*60}ms ease both" data-id="${id}">
@@ -1205,17 +1275,19 @@ function postHTML(p,k){const s=SKILLS[p.skill];if(!s)return '';const c=CATS[s.ca
    ${id&&!vid?`<div class="novid">No proof video</div>`:`<div class="media" data-k="${k}" ${vid?`data-v="${esc(vid)}"`:''} style="background:${vid?`#000 url('${esc(Cloud.thumb(vid))}') center/cover`:`linear-gradient(135deg,${c.col},${c.ink})`}"><span class="play"><span data-i="play"></span></span><span class="burst"><span data-i="heartFull"></span></span></div>`}
    <div class="acts"><button class="act like press ${m.likes?'liked':''}" data-k="${k}"><span data-i="heart"></span><span>${p.likes||0}</span></button><button class="act press" ${id?`data-cmt="${id}"`:''}><span data-i="comment"></span><span>${p.com||0}</span></button><button class="act legit press ${m.legit?'on':''}"><span data-i="legit"></span><span>${p.legit||0}</span></button><span style="flex:1"></span>${id?`<button class="act flag press ${m.flags?'on':''}" aria-label="Flag"><span data-i="flag"></span></button>`:''}<button class="act press" aria-label="Share"><span data-i="share"></span></button></div>
   </article>`;}
+let annCache=null;
+async function annShow(){if(!CU())return;try{if(annCache===null)annCache=(await Cloud.config()).announce||'';}catch(e){annCache='';}
+ $('#announce').innerHTML=annCache?`<div class="card announce"><span data-i="bell"></span><p>${esc(annCache)}</p></div>`:'';paintIcons($('#announce'));}
 const Pulse={ready:false,last:0,
  show(){if(!this.ready){this.ready=true;const cols=Object.values(CATS).map(c=>c.col);
-   $('#rings').innerHTML=['Riya','Arjun','Kabir','Meera','Dev','Sana','Ishaan'].map((n,k)=>`<div class="ring ${k>3?'seen':''}"><div class="rv"><span style="background:${cols[k*2%cols.length]}">${n[0]}</span></div>${n}</div>`).join('');}
+}
   this.refresh();},
  async refresh(force){if(!force&&this.last&&Date.now()-this.last<30000)return;this.last=Date.now();
   $('#feed').innerHTML=[0,1].map(()=>`<div class="card post"><div class="post-h"><div class="skel" style="width:38px;height:38px;border-radius:50%"></div><div style="flex:1"><div class="skel" style="width:55%;height:12px"></div><div class="skel" style="width:35%;height:10px;margin-top:7px"></div></div></div><div class="skel" style="width:45%;height:40px;margin-top:16px"></div><div class="skel" style="height:160px;margin-top:14px"></div></div>`).join('');
   let posts=null;
   if(CU()){try{const f=await Cloud.feed(30);posts=f.filter(r=>SKILLS[r.skill]).map(r=>({id:r.id,n:r.name||'Player',skill:r.skill,v:r.v,pts:r.pts,ctx:{sex:r.sex,age:r.age},when:ago(r.t),top:r.city||'',likes:r.likes,com:r.comments,legit:r.legit,video:r.video,mine:r.mine,uid:r.uid}));}catch(e){console.warn(e);toast('Feed: '+(e.code||e.message));}}
-  else await new Promise(r=>setTimeout(r,500));
-  const real=posts&&posts.length;if(!real)posts=POSTS;
-  $('#feed').innerHTML=posts.map(postHTML).join('');$('#feedNote').textContent=real?'':CU()?'No posts yet. Log a result with a proof video to start the feed. Showing samples.':'Sample posts · sign in on the You tab to see real players';
+  const real=!!posts;posts=posts||[];annShow();
+  $('#feed').innerHTML=posts.length?posts.map(postHTML).join(''):`<div class="card empty feed-empty"><b class="display">The feed is quiet</b>No one has posted yet. Tap <b>+</b> to log a result with a proof video and be the first.</div>`;$('#feedNote').textContent='';
   paintIcons($('#feed'));this.wire(real);},
  wire(real){
   const act=async(b,kind)=>{const art=b.closest('.post'),id=art.dataset.id,cls=kind==='likes'?'liked':'on',on=!b.classList.contains(cls);
@@ -1233,20 +1305,16 @@ const Pulse={ready:false,last:0,
    last=now;};});}};
 
 /* ================= ARENA ================= */
-const EVENTS=[['6','Dec','Pickleball Open','Andheri · 14 spots left'],['13','Dec','Sunday 5k Time Trial','Marine Drive · 120 spots'],['20','Dec','Deadlift Day','Powai · 22 spots left'],['27','Dec','Speedcubing Meet','Bandra · 40 spots']];
-$('#events').innerHTML=EVENTS.map(e=>`<div class="card ev"><div class="date"><b class="display">${e[0]}</b><small>${e[1]}</small></div><div class="info"><b>${e[2]}</b><small>${e[3]}</small></div><button class="btn ghost reg"><span>Register</span></button></div>`).join('');
-$$('#events .reg').forEach(b=>b.onclick=()=>{buzz(10);toast('Event registration comes in the next phase')});
 let rkScope='world';
 async function renderRanks(){const sel=$('#rkSkill');if(!sel.options.length){const mine=mySkills().map(x=>x.s.name);
-  const list=[...new Set([...mine,'5k run','Pickleball',"Rubik's cube",'Chess','Push-ups','Deadlift','Typing','100m sprint'])];sel.innerHTML=list.map(n=>`<option>${esc(n)}</option>`).join('');}
+  const list=[...new Set([...mine,'5k run','Pickleball',"Rubik's cube",'Chess','Push-ups','Deadlift','Typing','100m sprint',...SKILL_LIST.map(x=>x.name).sort()])];sel.innerHTML=list.map(n=>`<option>${esc(n)}</option>`).join('');}
  const name=sel.value,s=SKILLS[name],city=store.get('city','');$('#rkCity').textContent=city?`In ${city}`:'My city';$$('#rkScope button').forEach(b=>b.classList.toggle('on',b.dataset.sc===rkScope));
  const cols=['#FF8A5B','#FFC23D','#9BE15D','#60A5FA','#C084FC'];let rows=[];
- if(CU()){$('#ranks').innerHTML='<div class="skel" style="height:56px;margin-top:10px"></div>';$('#podium').innerHTML='';
+ if(!CU())return;
+ {$('#ranks').innerHTML='<div class="skel" style="height:56px;margin-top:10px"></div>';$('#podium').innerHTML='';
   if(rkScope==='city'&&!city){$('#ranks').innerHTML='<div class="card empty">Add your city on the You tab to see local rankings.</div>';return;}
   try{rows=(await Cloud.leaderboard(name,rkScope==='city'?city:'')).map(r=>({n:r.name||'Player',v:r.v,p:r.pts,me:r.uid===Cloud.user.uid}));}catch(e){$('#ranks').innerHTML=`<div class="card empty">Could not load rankings (${esc(e.code||e.message)})</div>`;return;}
   if(!rows.length){$('#ranks').innerHTML=`<div class="card empty">No one has logged ${esc(name)} yet. Be the first!</div>`;return;}}
- else{const F={sex:'f',age:28},M={sex:'m',age:28},me=bestOf('5k run');if(name!=='5k run'){$('#podium').innerHTML='';$('#ranks').innerHTML='<div class="card empty">Sign in to see real rankings for every skill.</div>';return;}
-  rows=[['Riya S',1182,F],['Dev P',1198,M],['Sana K',1211,F],['Ishaan T',1235,M],['Meera J',1249,F]].map(r=>({n:r[0],v:r[1],p:pointsOf(s,r[1],r[2])}));if(me)rows.push({n:pname(),v:me.v,p:me.p,me:true});rows.sort((a,b)=>b.p-a.p);}
  const top=rows.slice(0,3),fp=v=>`${fmtPerf(s,v,0)}`;
  $('#podium').innerHTML=[1,0,2].filter(k=>top[k]).map(k=>`<div class="card pod ${k===0?'p1':''}"><div class="av" style="background:${cols[k]}">${esc(top[k].n[0].toUpperCase())}</div><b>${esc(top[k].n)}</b><small>${fp(top[k].v)} · ${top[k].p}</small><div class="rk display">${k+1}</div></div>`).join('');
  $('#ranks').innerHTML=rows.slice(3,50).map((r,k)=>`<div class="card rank ${r.me?'me':''}"><span class="n">${k+4}</span><div class="av" style="width:32px;height:32px;font-size:12px;background:${cols[(k+3)%5]}">${esc(r.n[0].toUpperCase())}</div><span class="nm">${esc(r.n)}</span><span class="val">${fp(r.v)}<small>${r.p} pts</small></span></div>`).join('');}
@@ -1269,7 +1337,7 @@ $('#nameIn').addEventListener('input',e=>store.set('name',e.target.value.trim())
 function renderPF(){const pr=profile();$$('[data-pf]').forEach(el=>{el.innerHTML=`<span class="sx"><button data-sx="m" class="${pr.sex==='m'?'on':''}">Male</button><button data-sx="f" class="${pr.sex==='f'?'on':''}">Female</button></span><label>Age <input inputmode="numeric" maxlength="3" data-age value="${pr.age||''}" placeholder="—"></label><label>Weight <input inputmode="decimal" maxlength="5" data-bw value="${pr.bw||''}" placeholder="—"> kg</label>${el.id==='provePf'?'':`<label class="cityL">City <input maxlength="30" data-city value="${esc(store.get('city',''))}" placeholder="—"></label>`}`;
  el.querySelectorAll('[data-sx]').forEach(b=>b.onclick=()=>{buzz(6);store.set('sex',b.dataset.sx);renderPF();onProfile();});
  el.querySelector('[data-age]').oninput=e=>{const v=parseInt(e.target.value);store.set('age',v>4&&v<110?v:0);onProfile();};
- const ci=el.querySelector('[data-city]');if(ci)ci.oninput=e=>{store.set('city',e.target.value.trim());onProfile();};
+ const ci=el.querySelector('[data-city]');if(ci){ci.oninput=e=>{store.set('city',e.target.value.trim());onProfile();};cityAuto(ci,v=>{store.set('city',v);onProfile();});}
  el.querySelector('[data-bw]').oninput=e=>{const v=parseFloat(e.target.value);store.set('bw',v>20&&v<300?v:0);$('#bwVal').value=v||'';onProfile();};});}
 function onProfile(){if(openSheet&&openSheet.id==='sh-prove')livePreview();if(cur==='you'){clearTimeout(onProfile.t);onProfile.t=setTimeout(()=>You.render(),350);}}
 const thumbCache={};
@@ -1614,7 +1682,7 @@ const Sync={busy:false,
    SKILL_LIST.forEach(s=>{if(by[s.name])store.set('res_'+s.name,by[s.name]);else if(store.get('res_'+s.name,null))store.set('res_'+s.name,[]);});
    if(!need)toast(`Welcome back, ${store.get('name','')}`);}
   catch(e){console.warn('sync',e);toast('Could not sync: '+(e.code||e.message));}
-  this.busy=false;Gate.hide();renderPF();You.render();Pulse.refresh(true);if(segI===1)renderRanks();renderAcct();}};
+  this.busy=false;Gate.hide();renderEvents();Admin.sync();Cloud.banned&&Cloud.banned().then(b=>{if(b)toast('Your account can no longer post results. Contact support if this is a mistake.')}).catch(()=>{});renderPF();You.render();Pulse.refresh(true);if(segI===1)renderRanks();renderAcct();}};
 
 /* ---- sign-in gate: the only screen until you're signed in ---- */
 const Gate={el:$('#gate'),
@@ -1659,7 +1727,8 @@ const Onb={i:0,d:{},done:null,
   $('#onbBody').innerHTML=(st.t?`<h2 class="display">${st.t}</h2><p class="sub">${st.sub}</p>`:'')+st.body(d);
   $('#onbBody').style.animation='none';$('#onbBody').offsetWidth;$('#onbBody').style.animation='';
   $('#onbSkip').hidden=!st.skip;$('#onbNext').firstChild.textContent=this.i===n?"Let's go":'Continue';
-  const inp=$('#oIn');if(inp){inp.oninput=()=>{st.read(d);this.valid();};inp.onkeydown=e=>{if(e.key==='Enter')$('#onbNext').click();};setTimeout(()=>inp.focus(),250);}
+  const inp=$('#oIn');if(inp&&st.k==='city')cityAuto(inp,v=>{d.city=v;$$('#onbBody .onb-chips button').forEach(x=>x.classList.toggle('on',x.dataset.c===v));});
+  if(inp){inp.oninput=()=>{st.read(d);this.valid();};inp.onkeydown=e=>{if(e.key==='Enter')$('#onbNext').click();};setTimeout(()=>inp.focus(),250);}
   if(st.pick)$$('#onbBody .onb-opt').forEach(b=>b.onclick=()=>{buzz(10);d[st.pick]=b.dataset.v;$$('#onbBody .onb-opt').forEach(x=>x.classList.toggle('on',x===b));this.valid();setTimeout(()=>this.next(),260);});
   $$('#onbBody .onb-chips button').forEach(b=>b.onclick=()=>{buzz(8);$('#oIn').value=b.dataset.c;d.city=b.dataset.c;$$('#onbBody .onb-chips button').forEach(x=>x.classList.toggle('on',x===b));});
   if(st.k==='char')this.grid();
@@ -1706,6 +1775,148 @@ async function openComments(id){if(!CU()){toast('Sign in to comment');return;}cm
  catch(e){$('#cmtList').innerHTML=`<p class="note">Could not load comments (${esc(e.code||e.message)})</p>`;}}
 $('#cmtSend').onclick=async()=>{const t=$('#cmtIn').value.trim();if(!t||!cmtFor)return;$('#cmtIn').value='';
  try{await Cloud.addComment(cmtFor,t,store.get('name',''));openComments(cmtFor);const b=$(`#feed [data-cmt="${cmtFor}"] span:last-child`);if(b)b.textContent=+b.textContent+1;}catch(e){toast('Could not post: '+(e.code||e.message));}};
+
+/* ================= CITY AUTOCOMPLETE ================= */
+const CITY_LIST=['Mumbai','Delhi','New Delhi','Bengaluru','Hyderabad','Ahmedabad','Chennai','Kolkata','Pune','Jaipur','Surat','Lucknow','Kanpur','Nagpur','Indore','Thane','Bhopal','Visakhapatnam','Patna','Vadodara','Ghaziabad','Ludhiana','Agra','Nashik','Faridabad','Meerut','Rajkot','Varanasi','Srinagar','Aurangabad','Dhanbad','Amritsar','Navi Mumbai','Prayagraj','Ranchi','Howrah','Coimbatore','Jabalpur','Gwalior','Vijayawada','Jodhpur','Madurai','Raipur','Kota','Guwahati','Chandigarh','Solapur','Hubballi','Bareilly','Moradabad','Mysuru','Gurugram','Noida','Aligarh','Jalandhar','Tiruchirappalli','Bhubaneswar','Salem','Warangal','Thiruvananthapuram','Kochi','Kozhikode','Bhiwandi','Saharanpur','Gorakhpur','Guntur','Bikaner','Amravati','Jamshedpur','Bhilai','Cuttack','Firozabad','Nellore','Bhavnagar','Dehradun','Durgapur','Asansol','Kolhapur','Ajmer','Gulbarga','Jamnagar','Ujjain','Siliguri','Jhansi','Jammu','Mangaluru','Erode','Belagavi','Tirunelveli','Gaya','Udaipur','Kakinada','Davanagere','Bokaro','Panipat','Rohtak','Karnal','Shimla','Manali','Rishikesh','Haridwar','Nainital','Panaji','Margao','Vasco da Gama','Puducherry','Tirupati','Vellore','Thrissur','Kannur','Mohali','Panchkula','Zirakpur','Sonipat','Hisar','Bathinda','Patiala','Gandhinagar','Anand','Nadiad','Bharuch','Vapi','Valsad','Junagadh','Porbandar','Bhuj','Morbi','Mehsana','Palanpur','Silvassa','Daman','Diu','Satara','Sangli','Ahmednagar','Latur','Nanded','Jalgaon','Akola','Lonavala','Alibag','Ratnagiri','Shillong','Imphal','Aizawl','Agartala','Itanagar','Kohima','Gangtok','Port Blair','Leh','Darjeeling','Ooty','Kodaikanal','Mount Abu','Pushkar','Ayodhya','Mathura','Vrindavan','Kurukshetra',
+ 'Dubai','Abu Dhabi','Sharjah','Doha','Riyadh','Muscat','Singapore','Kuala Lumpur','Bangkok','Jakarta','Manila','Hong Kong','Tokyo','Osaka','Seoul','Beijing','Shanghai','Sydney','Melbourne','Brisbane','Perth','Auckland','London','Manchester','Birmingham','Edinburgh','Dublin','Paris','Berlin','Munich','Amsterdam','Madrid','Barcelona','Rome','Milan','Zurich','Geneva','Vienna','Stockholm','Oslo','Copenhagen','Helsinki','Lisbon','Prague','Warsaw','Istanbul','Moscow','Cairo','Nairobi','Lagos','Johannesburg','Cape Town','New York','Los Angeles','San Francisco','Chicago','Boston','Seattle','Austin','Houston','Dallas','Miami','Atlanta','Washington','Toronto','Vancouver','Montreal','Mexico City','São Paulo','Rio de Janeiro','Buenos Aires','Kathmandu','Colombo','Dhaka','Karachi','Lahore','Islamabad'];
+const cityDrop=document.createElement('div');cityDrop.className='csugg';cityDrop.hidden=true;$('#app').appendChild(cityDrop);
+function cityAuto(inp,onPick){let list=[],act=-1;
+ const close=()=>{cityDrop.hidden=true;act=-1;};
+ const paint=()=>{const q=inp.value.trim().toLowerCase();
+  if(!q){close();return;}
+  const norm=x=>x.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  list=CITY_LIST.map(c=>{const n=norm(c);return{c,sc:n===q?100:n.startsWith(q)?80-c.length*.1:n.split(/[\s-]+/).some(w=>w.startsWith(q))?50:n.includes(q)?30:0};}).filter(x=>x.sc&&x.c.toLowerCase()!==inp.value.trim().toLowerCase()).sort((a,b)=>b.sc-a.sc).slice(0,6).map(x=>x.c);
+  if(!list.length){close();return;}
+  const r=inp.getBoundingClientRect(),app=$('#app').getBoundingClientRect(),w=Math.max(r.width,220),left=Math.min(r.left-app.left,app.width-w-12);
+  Object.assign(cityDrop.style,{left:Math.max(12,left)+'px',top:(r.bottom-app.top+6)+'px',width:w+'px'});
+  cityDrop.innerHTML=list.map((c,k)=>{const i=c.toLowerCase().indexOf(q);return`<button class="${k===act?'act':''}" data-c="${esc(c)}"><span data-i="pin"></span><span>${i<0?esc(c):esc(c.slice(0,i))+'<b>'+esc(c.slice(i,i+q.length))+'</b>'+esc(c.slice(i+q.length))}</span></button>`;}).join('');
+  paintIcons(cityDrop);cityDrop.hidden=false;cityDrop._owner=inp;
+  $$('button',cityDrop).forEach(b=>{b.onpointerdown=e=>e.preventDefault();b.onclick=()=>pick(b.dataset.c);});};
+ const pick=c=>{buzz(8);inp.value=c;close();onPick(c);inp.blur();};
+ inp.setAttribute('autocomplete','off');
+ inp.addEventListener('input',paint);inp.addEventListener('focus',paint);
+ inp.addEventListener('blur',()=>setTimeout(()=>{if(cityDrop._owner===inp)close();},150));
+ inp.addEventListener('keydown',e=>{if(cityDrop.hidden)return;
+  if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();act=Math.max(0,Math.min(list.length-1,act+(e.key==='ArrowDown'?1:-1)));paint();}
+  else if(e.key==='Enter'&&list.length){e.preventDefault();e.stopPropagation();pick(list[act>=0?act:0]);}
+  else if(e.key==='Escape')close();});}
+document.addEventListener('scroll',()=>{if(!cityDrop.hidden&&cityDrop._owner){cityDrop._owner.blur();cityDrop.hidden=true;}},true);
+
+/* ================= EVENTS (real, created by admin) ================= */
+const fmtDate=d=>{const x=new Date(d+'T00:00');return isNaN(x)?{d:'?',m:'',w:''}:{d:x.getDate(),m:x.toLocaleString('en',{month:'short'}),w:x.toLocaleString('en',{weekday:'short'})};};
+let evBusy=false;
+async function renderEvents(){if(!CU()||evBusy)return;evBusy=true;
+ if(!$('#events').children.length)$('#events').innerHTML='<div class="skel" style="height:80px;margin-top:12px"></div>';
+ try{const all=await Cloud.events(),up=all.filter(e=>!e.past);
+  const where=e=>[e.place,e.city].filter(Boolean).join(', ');
+  const left=e=>e.spots?Math.max(0,e.spots-e.going)+' spots left':e.going+' going';
+  const btn=e=>`<button class="btn ${e.mine?'primary':'ghost'} reg" data-id="${e.id}"><span>${e.mine?'Going ✓':'Register'}</span></button>`;
+  if(!up.length){$('#evHero').innerHTML='';$('#evHead').hidden=true;$('#events').innerHTML='<div class="card empty">No events yet. New meets and challenges will show up here.</div>';}
+  else{const h=up[0],f=fmtDate(h.date);
+   $('#evHero').innerHTML=`<div class="card hero"><span class="blob" style="background:${h.skill&&SKILLS[h.skill]?CATS[SKILLS[h.skill].cat].col:'#9BE15D'}"></span><span class="chip hot" style="align-self:flex-start;position:relative">Next event</span><h2 class="display">${esc(h.title)}</h2><p>${f.w} ${f.d} ${f.m}${h.time?' · '+esc(h.time):''}${where(h)?' · '+esc(where(h)):''}</p>${h.info?`<p class="ev-info">${esc(h.info)}</p>`:''}<div class="hero-f"><small>${left(h)}</small>${btn(h)}</div></div>`;
+   $('#evHead').hidden=up.length<2;
+   $('#events').innerHTML=up.slice(1).map(e=>{const f=fmtDate(e.date);return`<div class="card ev"><div class="date"><b class="display">${f.d}</b><small>${f.m}</small></div><div class="info"><b>${esc(e.title)}</b><small>${esc(where(e)||e.skill||'')} · ${left(e)}</small></div>${btn(e)}</div>`;}).join('');}
+  $$('#p-events .reg').forEach(b=>b.onclick=async()=>{const e=all.find(x=>x.id===b.dataset.id);buzz(10);b.disabled=true;
+   try{await Cloud.setGoing(e.id,!e.mine,store.get('name',''));toast(e.mine?'Registration cancelled':`You're going to ${e.title}!`);}catch(err){toast('Could not register: '+(err.code||err.message));}
+   evBusy=false;renderEvents();});}
+ catch(e){$('#events').innerHTML=`<div class="card empty">Could not load events (${esc(e.code||e.message)})</div>`;}
+ evBusy=false;}
+
+/* ================= ADMIN CONSOLE ================= */
+const Admin={tab:'overview',
+ on:()=>!!(CU()&&Cloud.isAdmin&&Cloud.isAdmin()),
+ sync(){const a=this.on();$('#admRow').hidden=!a;$('#admPill').hidden=!a||!$('#adm').hidden;if(!a)$('#adm').hidden=true;},
+ open(){if(!this.on())return;$('#adm').hidden=false;$('#admPill').hidden=true;$('#admWho').textContent=Cloud.user.email;this.render();},
+ player(){$('#adm').hidden=true;$('#admPill').hidden=false;buzz(8);},
+ body:()=>$('#admBody'),
+ confirm(b,fn){if(b.dataset.armed){fn();return;}b.dataset.armed=1;const t=b.textContent;b.textContent='Tap again';b.classList.add('warn');setTimeout(()=>{if(b.isConnected){delete b.dataset.armed;b.textContent=t;b.classList.remove('warn');}},3000);},
+ err(e){toast('Admin: '+(e.code||e.message));console.warn(e);},
+ res(r,acts){const s=SKILLS[r.skill];return`<div class="adm-r" data-id="${r.id}"><div class="adm-rt"><b>${esc(r.name||'Player')}</b><span>${esc(r.skill)} · ${s?fmtPerf(s,r.v,0)+' '+(unitShort(s)||''):r.v} · <em>${r.pts} pts</em></span><small>${ago(r.t)}${r.city?' · '+esc(r.city):''} · ♥${r.likes||0} ✓${r.legit||0} ⚑${r.flags||0} 💬${r.comments||0}</small></div>${r.video?`<button class="adm-b" data-a="vid">Video</button>`:''}${acts}</div>`;},
+ wireRes(list,root,after){$$('.adm-r',root).forEach(el=>{const r=list.find(x=>x.id===el.dataset.id);if(!r)return;
+   $$('[data-a]',el).forEach(b=>b.onclick=()=>{const a=b.dataset.a;
+    if(a==='vid'){const v=el.querySelector('video');if(v){v.remove();return;}el.insertAdjacentHTML('beforeend',`<video src="${esc(r.video)}" controls autoplay playsinline></video>`);}
+    if(a==='del')this.confirm(b,async()=>{try{await Cloud.admin.removeResult(r);toast('Post removed');after();}catch(e){this.err(e)}});
+    if(a==='keep')(async()=>{try{await Cloud.admin.clearFlags(r.id);toast('Flags cleared');after();}catch(e){this.err(e)}})();
+    if(a==='ban')this.confirm(b,async()=>{try{await Cloud.admin.ban(r.uid,true);toast(`${r.name} can no longer post`);after();}catch(e){this.err(e)}});
+    if(a==='cmt')this.comments(r,el);});});},
+ async comments(r,el){const box=el.querySelector('.adm-c');if(box){box.remove();return;}
+  el.insertAdjacentHTML('beforeend','<div class="adm-c">Loading…</div>');const c=el.querySelector('.adm-c');
+  try{const list=await Cloud.admin.comments(r.id);c.innerHTML=list.length?list.map(x=>`<div class="adm-cm"><span><b>${esc(x.name)}</b> ${esc(x.text)}</span><button class="adm-b red" data-c="${x.id}">Delete</button></div>`).join(''):'No comments.';
+   $$('[data-c]',c).forEach(b=>b.onclick=()=>this.confirm(b,async()=>{try{await Cloud.admin.removeComment(r.id,b.dataset.c);b.parentNode.remove();}catch(e){this.err(e)}}));}catch(e){c.textContent='Could not load: '+(e.code||e.message);}},
+ async render(){$$('#admTabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===this.tab));const B=this.body();B.scrollTop=0;
+  B.innerHTML='<div class="skel" style="height:90px"></div><div class="skel" style="height:90px;margin-top:10px"></div>';
+  try{await this['t_'+this.tab](B);}catch(e){B.innerHTML=`<div class="card empty">Could not load (${esc(e.code||e.message)}). Check that the latest Firestore rules are published.</div>`;}},
+ async t_overview(B){const [st,cfg,feed]=await Promise.all([Cloud.admin.stats(),Cloud.config(),Cloud.feed(20)]);
+  B.innerHTML=`<div class="adm-stats">${[['Players',st.users],['Results',st.results],['Flagged',st.flagged],['Events',st.events],['Banned',st.bans]].map(([l,v])=>`<div class="card"><b class="display">${v}</b><small>${l}</small></div>`).join('')}</div>
+   <h3 class="adm-h3">Announcement</h3><p class="adm-p">Shown at the top of everyone's Pulse feed.</p>
+   <textarea id="admAnn" maxlength="280" placeholder="e.g. Sunday 5k time trial at Marine Drive, register in Arena!">${esc(cfg.announce||'')}</textarea>
+   <div class="adm-row"><button class="btn primary" id="admAnnSave"><span>Publish</span></button><button class="btn ghost" id="admAnnClr"><span>Clear</span></button></div>
+   <h3 class="adm-h3">Latest posts</h3><div id="admFeed">${feed.length?feed.map(r=>this.res(r,`<button class="adm-b" data-a="cmt">Comments</button><button class="adm-b red" data-a="del">Remove</button>`)).join(''):'<p class="adm-p">No posts yet.</p>'}</div>`;
+  const save=async t=>{try{await Cloud.admin.setConfig({announce:t});annCache=null;toast(t?'Announcement published':'Announcement cleared');Pulse.refresh(true);}catch(e){this.err(e)}};
+  $('#admAnnSave').onclick=()=>save($('#admAnn').value.trim());$('#admAnnClr').onclick=()=>{$('#admAnn').value='';save('');};
+  this.wireRes(feed,B,()=>this.render());},
+ async t_mod(B){const list=await Cloud.admin.flagged();
+  B.innerHTML=`<h3 class="adm-h3" style="margin-top:0">Flagged posts</h3><p class="adm-p">Posts players reported. Keep clears the flags, Remove deletes the post and its ranking entry.</p>`+
+   (list.length?list.map(r=>this.res(r,`<button class="adm-b" data-a="keep">Keep</button><button class="adm-b" data-a="cmt">Comments</button><button class="adm-b red" data-a="del">Remove</button><button class="adm-b red" data-a="ban">Ban</button>`)).join(''):'<div class="card empty">Nothing flagged. All clear.</div>');
+  this.wireRes(list,B,()=>this.render());},
+ async t_users(B){const list=await Cloud.admin.users();
+  B.innerHTML=`<input class="adm-in" id="admQ" placeholder="Search ${list.length} players by name or city"><div id="admUL"></div>`;
+  const paint=()=>{const q=$('#admQ').value.trim().toLowerCase(),f=list.filter(u=>!q||(u.name||'').toLowerCase().includes(q)||(u.city||'').toLowerCase().includes(q));
+   $('#admUL').innerHTML=f.map(u=>`<div class="adm-u" data-u="${u.uid}"><div class="adm-ut"><span class="av" style="background:${u.banned?'#888':'var(--accent)'}">${esc((u.name||'?')[0].toUpperCase())}</span><div><b>${esc(u.name||'No name')}${u.banned?' <em class="ban">Banned</em>':''}</b><small>${[u.sex==='f'?'Women':u.sex==='m'?'Men':'',u.age?u.age+' yrs':'',u.bw?u.bw+' kg':'',u.city].filter(Boolean).map(esc).join(' · ')||'Profile not finished'} · active ${ago(u.t)}</small></div></div></div>`).join('')||'<p class="adm-p">No players match.</p>';
+   $$('#admUL .adm-ut').forEach(el=>el.onclick=()=>this.user(list.find(u=>u.uid===el.parentNode.dataset.u),el.parentNode));};
+  $('#admQ').oninput=paint;paint();},
+ async user(u,el){const open=el.querySelector('.adm-ud');if(open){open.remove();return;}
+  el.insertAdjacentHTML('beforeend','<div class="adm-ud">Loading results…</div>');const d=el.querySelector('.adm-ud');
+  const rs=await Cloud.admin.results(u.uid);
+  d.innerHTML=`<div class="adm-row"><button class="btn ${u.banned?'primary':'ghost'} adm-banb"><span>${u.banned?'Unban player':'Ban from posting'}</span></button></div>`+(rs.length?rs.map(r=>this.res(r,`<button class="adm-b red" data-a="del">Remove</button>`)).join(''):'<p class="adm-p">No results yet.</p>');
+  d.querySelector('.adm-banb').onclick=e=>this.confirm(e.currentTarget.firstChild.parentNode,async()=>{try{await Cloud.admin.ban(u.uid,!u.banned);toast(u.banned?`${u.name} unbanned`:`${u.name} banned from posting`);this.render();}catch(er){this.err(er)}});
+  this.wireRes(rs,d,()=>{d.remove();this.user(u,el);});},
+ async t_events(B,edit){const list=await Cloud.events(),e=edit||{};
+  B.innerHTML=`<h3 class="adm-h3" style="margin-top:0">${edit?'Edit event':'New event'}</h3>
+   <div class="adm-form">
+    <label>Title<input id="evT" maxlength="60" value="${esc(e.title||'')}" placeholder="Sunday 5k Time Trial"></label>
+    <label>Skill<input id="evS" list="evSkills" value="${esc(e.skill||'')}" placeholder="Optional, e.g. 5k run"></label>
+    <div class="two"><label>Date<input id="evD" type="date" value="${esc(e.date||'')}"></label><label>Time<input id="evTm" maxlength="12" value="${esc(e.time||'')}" placeholder="7:00 am"></label></div>
+    <label>Venue<input id="evP" maxlength="60" value="${esc(e.place||'')}" placeholder="Marine Drive"></label>
+    <div class="two"><label>City<input id="evC" maxlength="30" value="${esc(e.city||'')}" placeholder="Mumbai"></label><label>Spots<input id="evN" inputmode="numeric" maxlength="5" value="${e.spots||''}" placeholder="No limit"></label></div>
+    <label>Details<textarea id="evI" maxlength="300" placeholder="What to bring, how results are measured…">${esc(e.info||'')}</textarea></label>
+    <datalist id="evSkills">${SKILL_LIST.map(s=>`<option value="${esc(s.name)}">`).join('')}</datalist>
+    <div class="adm-row"><button class="btn primary" id="evSave"><span>${edit?'Save changes':'Create event'}</span></button>${edit?'<button class="btn ghost" id="evCancel"><span>Cancel</span></button>':''}</div>
+   </div>
+   <h3 class="adm-h3">All events</h3>`+(list.length?list.map(x=>{const f=fmtDate(x.date);return`<div class="adm-r" data-e="${x.id}"><div class="adm-rt"><b>${esc(x.title)}${x.past?' <em class="ban">Past</em>':''}</b><span>${f.w} ${f.d} ${f.m}${x.time?' · '+esc(x.time):''} · ${esc([x.place,x.city].filter(Boolean).join(', '))}</span><small>${x.going} going${x.spots?' of '+x.spots:''}</small></div><button class="adm-b" data-a="who">Going</button><button class="adm-b" data-a="edit">Edit</button><button class="adm-b red" data-a="del">Delete</button></div>`;}).join(''):'<p class="adm-p">No events yet.</p>');
+  cityAuto($('#evC'),()=>{});
+  $('#evSave').onclick=async()=>{const ev={title:$('#evT').value.trim(),skill:$('#evS').value.trim(),date:$('#evD').value,time:$('#evTm').value.trim(),place:$('#evP').value.trim(),city:$('#evC').value.trim(),spots:parseInt($('#evN').value)||0,info:$('#evI').value.trim()};
+   if(!ev.title||!ev.date){toast('Title and date are needed');return;}if(ev.skill&&!SKILLS[ev.skill]){toast('Pick a skill from the list, or leave it empty');return;}
+   try{await Cloud.admin.saveEvent(ev,edit&&edit.id);toast(edit?'Event updated':'Event created · players see it in Arena');this.t_events(B);renderEvents();}catch(er){this.err(er)}};
+  if(edit)$('#evCancel').onclick=()=>this.t_events(B);
+  $$('[data-e]',B).forEach(el=>{const x=list.find(y=>y.id===el.dataset.e);$$('[data-a]',el).forEach(b=>b.onclick=async()=>{
+   if(b.dataset.a==='edit'){this.t_events(B,x);}
+   if(b.dataset.a==='del')this.confirm(b,async()=>{try{await Cloud.admin.deleteEvent(x.id);toast('Event deleted');this.t_events(B);renderEvents();}catch(er){this.err(er)}});
+   if(b.dataset.a==='who'){const o=el.querySelector('.adm-c');if(o){o.remove();return;}const g=await Cloud.admin.going(x.id);el.insertAdjacentHTML('beforeend',`<div class="adm-c">${g.length?g.map(p=>esc(p.name||'Player')).join(', '):'Nobody yet.'}</div>`);}});});},
+ async t_test(B){const dev=store.get('dev',false);
+  B.innerHTML=`<p class="adm-p" style="margin-top:0">Tools for trying the app as a player. They only change this phone, not other players.</p>
+   <div class="adm-tool"><div><b>Unlock all looks</b><small>Use Nightfall and Volt without reaching 400</small></div><button class="adm-sw2 ${dev?'on':''}" id="tDev"><i></i></button></div>
+   <div class="adm-tool"><div><b>Look</b><small>Switch theme instantly</small></div><div class="adm-row tight">${Object.keys(THEMES).map(t=>`<button class="adm-b ${theme===t?'on':''}" data-th="${t}">${THEMES[t].name}</button>`).join('')}</div></div>
+   <div class="adm-tool"><div><b>Player setup</b><small>Go through the first-time questions again</small></div><button class="adm-b" id="tOnb">Replay</button></div>
+   <div class="adm-tool"><div><b>Sign-in screen</b><small>See what new players see first</small></div><button class="adm-b" id="tGate">Preview</button></div>
+   <div class="adm-tool"><div><b>Celebrations</b><small>Level up, new PB, theme unlock</small></div><div class="adm-row tight"><button class="adm-b" data-cl="0">Level</button><button class="adm-b" data-cl="1">PB</button><button class="adm-b" data-cl="2">Unlock</button></div></div>
+   <div class="adm-tool"><div><b>Reload my data</b><small>Pull your profile and results from the cloud again</small></div><button class="adm-b" id="tSync">Sync</button></div>
+   <div class="adm-tool"><div><b>App version</b><small>${esc($('#verTxt').textContent)}</small></div><button class="adm-b" id="tReload">Reload app</button></div>`;
+  $('#tDev').onclick=()=>{store.set('dev',!dev);renderThemePicker&&renderThemePicker();this.t_test(B);};
+  $$('[data-th]',B).forEach(b=>b.onclick=()=>{if(!unlocked(b.dataset.th)){toast('Turn on "Unlock all looks" first');return;}theme=b.dataset.th;store.set('theme',theme);applyTheme(theme);renderThemePicker();pushProfile();this.t_test(B);});
+  $('#tOnb').onclick=async()=>{this.player();const p=await Onb.run({name:store.get('name',''),city:store.get('city','')});await Cloud.saveProfile({...cloudProfile()}).catch(e=>this.err(e));renderPF();You.render();this.open();};
+  $('#tGate').onclick=()=>{this.player();Gate.preview();};
+  const C3=[()=>celebrate('Level up!','850 pts',"Deadlift: you're now Master."),()=>celebrate('New PB!','612 pts','5k run · +34 on your best.'),()=>celebrate('Volt unlocked!','','You reached 400 in the Body world. Switch looks in Settings.')];
+  $$('[data-cl]',B).forEach(b=>b.onclick=()=>{this.player();C3[b.dataset.cl]();});
+  $('#tSync').onclick=()=>{Sync.start(Cloud.user);toast('Syncing…');};
+  $('#tReload').onclick=()=>location.reload();}};
+$$('#admTabs button').forEach(b=>b.onclick=()=>{Admin.tab=b.dataset.t;buzz(6);Admin.render();});
+$('#admPlayer').onclick=()=>Admin.player();
+$('#admPill').onclick=()=>{buzz(8);Admin.open();};
+$('#admRow').onclick=()=>{hideSheet();Admin.open();};
+Gate.preview=function(){this.show();$('#gIn').disabled=true;$('#gInTxt').textContent='Preview · you are signed in';$('#gateX').hidden=false;};
+$('#gateX').onclick=()=>{$('#gateX').hidden=true;Gate.hide();Gate.ready();Admin.open();};
+addEventListener('cloud-auth',()=>Admin.sync());
 
 /* ================= BOOT ================= */
 paintIcons();
