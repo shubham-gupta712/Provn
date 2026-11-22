@@ -616,7 +616,7 @@ svg{display:block}
     <div class="row"><span data-i="you"></span><span class="sp">Account</span><small>Soon</small></div>
     <div class="row"><span data-i="bell"></span><span class="sp">Notifications</span><small>Soon</small></div>
     <div class="row"><span data-i="lock"></span><span class="sp">Privacy</span><small>Soon</small></div>
-    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Layer 2 · 20261122h</small></div>
+    <div class="row" id="verRow" style="border:0"><span data-i="info"></span><span class="sp">Version</span><small id="verTxt">Layer 2 · 20261122i</small></div>
   </section>
 
   <div class="cele" id="cele"><div class="cele-in"><div class="cele-m" id="celeM"></div><h2 class="display" id="celeT"></h2><div class="big" id="celeB"></div><p id="celeS"></p><button class="btn primary" id="celeOk"><span>Keep going</span></button></div></div>
@@ -744,8 +744,8 @@ const PROVN=[[800,0],[1000,100],[1200,300],[1500,500],[1800,700],[2100,850],[240
 const SKILL_ROWS=[
  ['100m sprint','end','t','sec',9.58,15.5,'bolt',{wa:[25.4347,18,1.81,'t'],size:40}],['200m','end','t','sec',19.19,32,'bolt'],
  ['400m','end','t','min:sec',43.03,80,'bolt',{wa:[1.53775,82,1.81,'t']}],['1500m','end','t','min:sec',206.0,420,'shoe',{wa:[0.03768,480,1.85,'t']}],
- ['1 mile','end','t','min:sec',223.13,480,'shoe'],['5k run','end','t','min:sec',755,1800,'shoe',{size:46}],['10k run','end','t','min:sec',1571,3600,'shoe',{size:40}],
- ['Half marathon','end','t','h:mm:ss',3402,7800,'medal'],['Marathon','end','t','h:mm:ss',7235,16200,'medal',{size:40}],
+ ['1 mile','end','t','min:sec',222.66,480,'shoe'],['5k run','end','t','min:sec',755,1800,'shoe',{size:46}],['10k run','end','t','min:sec',1571,3600,'shoe',{size:40}],
+ ['Half marathon','end','t','h:mm:ss',3411,7800,'medal'],['Marathon','end','t','h:mm:ss',7170,16200,'medal',{size:40}],
  ['Cycling FTP','end','n','W/kg',6.4,2.5,'bike',{size:38}],['Rowing 2k','end','t','min:sec',335.8,510,'row'],['Murph','fit','t','h:mm:ss',1961,2700,'pullup'],
  ['Deadlift','str','bw','× body weight',4.0,1.4,'barbell',{size:42}],['Squat','str','bw','× body weight',3.5,1.2,'kettle',{size:38}],['Bench press','str','bw','× body weight',2.5,0.9,'bench',{size:38}],
  ['Overhead press','str','bw','× body weight',1.6,0.55,'dumb'],['Snatch','str','bw','× body weight',2.3,0.7,'barbell'],['Clean & jerk','str','bw','× body weight',2.9,0.9,'barbell'],
@@ -768,8 +768,8 @@ const SKILL_ROWS=[
  ['Sport stacking 3-6-3','prc','t','sec',1.751,4.0,'cards'],['Sport stacking cycle','prc','t','sec',4.739,12,'cards'],
  ['Chess','stg','r','Elo',2823,1200,'pawn',{bp:ELO,size:46}],['Go','stg','r','Elo',3800,1600,'grid',{x0:800}],['Carrom','stg','r','Provn rating',2700,1200,'carrom',{bp:PROVN,size:38}],
  ['Scrabble','stg','r','rating',2200,1100,'grid',{x0:600}],['Checkers','stg','r','Provn rating',2700,1200,'grid',{bp:PROVN}],
- ["Rubik's cube",'cub','t','sec',2.51,90,'cube',{size:44}],['2x2 cube','cub','t','sec',0.39,15,'cube'],['4x4 cube','cub','t','min:sec',15.7,180,'cube'],
- ['One-handed cube','cub','t','sec',6.2,120,'cube'],['Pyraminx','cub','t','sec',0.73,15,'cube'],['Blindfolded cube','cub','t','min:sec',11.56,300,'cube'],
+ ["Rubik's cube",'cub','t','sec',2.41,90,'cube',{size:44}],['2x2 cube','cub','t','sec',0.29,15,'cube'],['4x4 cube','cub','t','min:sec',15.08,180,'cube'],
+ ['One-handed cube','cub','t','sec',5.62,120,'cube'],['Pyraminx','cub','t','sec',0.73,15,'cube'],['Blindfolded cube','cub','t','min:sec',11.56,300,'cube'],
  ['Sudoku','puz','t','min:sec',90,900,'sudoku',{size:40}],['Crossword','puz','t','min:sec',120,900,'grid'],['Jigsaw 500','puz','t','h:mm:ss',1700,10800,'puzzle'],
  ['Speed cards','mem','t','min:sec',12.74,900,'cards'],['Speed numbers','mem','n','digits in 5 min',642,40,'bulb'],['Pi digits','mem','n','digits',10000,30,'pi'],['Names & faces','mem','n','names in 15 min',224,25,'bulb'],
  ['Reaction time','rfx','tl','ms',120,273,'react',{size:40}],['Aim trainer','rfx','tl','ms per target',300,550,'bull'],['Sequence memory','rfx','n','level',40,9,'grid'],['Verbal memory','rfx','n','score',300,45,'eye'],['Visual memory','rfx','n','level',20,9,'eye'],
@@ -779,11 +779,11 @@ const SKILL_ROWS=[
 /* More events from the catalog's federation lists (WA, World Aquatics, WCA, memory sports, ISSF, World Archery, IJRU, CrossFit, Memoriad).
    Values marked ≈ in the review list are approximate until checked against each federation's record table. */
 SKILL_ROWS.push(
- ['60m','end','t','sec',6.34,10.5,'bolt'],['800m','end','t','min:sec',100.91,190,'shoe'],['1000m','end','t','min:sec',131.96,250,'shoe'],['3000m','end','t','min:sec',437.55,900,'shoe'],
- ['3000m steeplechase','end','t','min:sec',472.11,1050,'jump'],['110m hurdles','end','t','sec',12.80,20,'jump',{wa:[5.74352,28.5,1.92,'t']}],['400m hurdles','end','t','sec',45.94,75,'jump'],
- ['One hour run','end','n','km',21.33,10,'watch'],['20 km race walk','end','t','h:mm:ss',4596,9000,'shoe'],['100 km ultra','end','t','h:mm:ss',21941,50400,'medal'],
+ ['60m','end','t','sec',6.34,10.5,'bolt'],['800m','end','t','min:sec',100.91,190,'shoe'],['1000m','end','t','min:sec',131.83,250,'shoe'],['3000m','end','t','min:sec',437.55,900,'shoe'],
+ ['3000m steeplechase','end','t','min:sec',472.11,1050,'jump'],['110m hurdles','end','t','sec',12.75,20,'jump',{wa:[5.74352,28.5,1.92,'t']}],['400m hurdles','end','t','sec',45.80,75,'jump'],
+ ['One hour run','end','n','km',21.33,10,'watch'],['20 km race walk','end','t','h:mm:ss',4570,9000,'shoe'],['100 km ultra','end','t','h:mm:ss',21935,50400,'medal'],
  ['Cycling hour','end','n','km',56.792,30,'bike'],['Rowing 500m','end','t','min:sec',74,120,'row'],
- ['Pole vault','pow','n','cm',630,250,'jump',{wa:[0.2797,100,1.35,'f']}],['Triple jump','pow','n','m',18.29,9,'jump'],
+ ['Pole vault','pow','n','cm',631,250,'jump',{wa:[0.2797,100,1.35,'f']}],['Triple jump','pow','n','m',18.29,9,'jump'],
  ['Discus','pow','n','m (2 kg)',75.56,25,'bull',{wa:[12.91,4,1.1,'f']}],['Javelin','pow','n','m (800 g)',98.48,30,'bolt',{wa:[10.14,7,1.08,'f']}],['Hammer','pow','n','m (7.26 kg)',86.74,25,'bull'],
  ['Rope speed sprint','pow','n','steps in 30 s',110,55,'rope'],['Rope speed endurance','pow','n','steps in 3 min',620,250,'rope'],['Double unders','pow','n','in 1 min',220,40,'rope'],['Triple unders','pow','n','consecutive',600,3,'rope'],
  ['Fran','fit','t','min:sec',120,420,'kettle'],['Grace','fit','t','min:sec',60,300,'barbell'],['Helen','fit','t','min:sec',420,900,'kettle'],['Karen','fit','t','min:sec',270,720,'ball'],
@@ -791,16 +791,16 @@ SKILL_ROWS.push(
  ['Cindy','fit','n','rounds in 20 min',40,15,'pullup'],['HYROX','fit','t','h:mm:ss',3202,5400,'medal',{size:38}],
  ['Powerlifting total','str','bw','× body weight',8.0,3.5,'barbell'],['Muscle-ups','str','n','reps',40,3,'pullup'],['Sit-ups','str','n','in 1 min',80,35,'pushup'],
  ['50m backstroke','wat','t','sec',23.55,55,'swim'],['200m backstroke','wat','t','min:sec',111.92,260,'swim'],['50m breaststroke','wat','t','sec',25.95,60,'breast'],['200m breaststroke','wat','t','min:sec',125.48,290,'breast'],
- ['50m butterfly','wat','t','sec',22.27,55,'fly'],['200m butterfly','wat','t','min:sec',110.34,280,'fly'],['200m freestyle','wat','t','min:sec',102.0,210,'swim'],['400m freestyle','wat','t','min:sec',220.07,450,'swim'],
- ['800m freestyle','wat','t','min:sec',452.12,960,'swim'],['1500m freestyle','wat','t','min:sec',871.02,1860,'swim'],['200m IM','wat','t','min:sec',112.69,270,'swim'],['400m IM','wat','t','min:sec',242.5,580,'swim'],
+ ['50m butterfly','wat','t','sec',22.27,55,'fly'],['200m butterfly','wat','t','min:sec',110.34,280,'fly'],['200m freestyle','wat','t','min:sec',102.0,210,'swim'],['400m freestyle','wat','t','min:sec',219.96,450,'swim'],
+ ['800m freestyle','wat','t','min:sec',452.12,960,'swim'],['1500m freestyle','wat','t','min:sec',870.67,1860,'swim'],['200m IM','wat','t','min:sec',112.69,270,'swim'],['400m IM','wat','t','min:sec',242.5,580,'swim'],
  ['Static apnea','wat','th','min:sec',695,90,'swim'],
  ['10m air pistol','prc','n','pts of 600',594,520,'bull',{x0:400}],['50m rifle 3 positions','prc','n','pts of 600',597,540,'bull',{x0:400}],['25m rapid fire pistol','prc','n','pts of 600',597,520,'bull',{x0:400}],
  ['Trap','prc','n','hits of 125',125,90,'bull',{x0:50}],['Skeet','prc','n','hits of 125',125,90,'bull',{x0:50}],
  ['Compound archery','prc','n','pts of 720',718,620,'bull',{x0:300}],['Indoor archery 18m','prc','n','pts of 600',599,480,'bull',{x0:300}],['Barebow archery','prc','n','pts of 720',673,450,'bull',{x0:200}],
  ['Sport stacking 3-3-3','prc','t','sec',1.392,3.0,'cards'],['Basketball 3-pointers','bal','n','made of 100',90,35,'ball',{x0:10}],
- ['5x5 cube','cub','t','min:sec',32.0,360,'cube'],['6x6 cube','cub','t','min:sec',59.7,720,'cube'],['7x7 cube','cub','t','min:sec',95,1200,'cube'],['Megaminx','cub','t','min:sec',23,240,'cube'],
- ['Skewb','cub','t','sec',0.75,15,'cube'],['Square-1','cub','t','sec',3.4,60,'cube'],['Clock','cub','t','sec',1.6,20,'cube'],['Fewest moves','cub','tl','moves',16,45,'cube'],
- ['4x4 blindfolded','cub','t','min:sec',52,1200,'cube'],['5x5 blindfolded','cub','t','min:sec',127,2400,'cube'],['Multi-blind','cub','n','cubes solved',62,2,'cube'],
+ ['5x5 cube','cub','t','min:sec',29.39,360,'cube'],['6x6 cube','cub','t','min:sec',50.67,720,'cube'],['7x7 cube','cub','t','min:sec',95,1200,'cube'],['Megaminx','cub','t','min:sec',21.04,240,'cube'],
+ ['Skewb','cub','t','sec',0.73,15,'cube'],['Square-1','cub','t','sec',2.85,60,'cube'],['Clock','cub','t','sec',1.53,20,'cube'],['Fewest moves','cub','tl','moves',16,45,'cube'],
+ ['4x4 blindfolded','cub','t','min:sec',51.96,1200,'cube'],['5x5 blindfolded','cub','t','min:sec',118.59,2400,'cube'],['Multi-blind','cub','n','cubes solved',63,2,'cube'],
  ['Hour numbers','mem','n','digits',4620,200,'bulb'],['Binary numbers','mem','n','digits in 30 min',7485,300,'bulb'],['Spoken numbers','mem','n','digits',547,15,'bulb'],['Hour cards','mem','n','cards',2530,52,'cards'],
  ['Random words','mem','n','words in 15 min',335,30,'bulb'],['Abstract images','mem','n','score in 5 min',804,50,'eye'],['Historic dates','mem','n','dates in 5 min',154,15,'bulb'],
  ['Mental addition','key','t','sec (10 × 10-digit)',78,600,'calc'],['Calendar dates','key','n','correct in 1 min',140,8,'calc'],['Flash anzan','key','tl','sec (15 × 3-digit)',1.6,10,'calc'],
@@ -1091,35 +1091,43 @@ const KEEPER={end:'World Athletics',pow:'World Athletics',wat:'World Aquatics',c
 const REC={
  '100m sprint':['Usain Bolt','JAM','16 Aug 2009','World Championships','Berlin, Germany'],'200m':['Usain Bolt','JAM','20 Aug 2009','World Championships','Berlin, Germany'],
  '400m':['Wayde van Niekerk','RSA','14 Aug 2016','Olympic Games','Rio de Janeiro, Brazil'],'800m':['David Rudisha','KEN','9 Aug 2012','Olympic Games','London, UK'],
- '1000m':['Noah Ngeny','KEN','5 Sep 1999','Rieti Meeting','Rieti, Italy'],'1500m':['Hicham El Guerrouj','MAR','14 Jul 1998','Golden Gala','Rome, Italy'],
- '1 mile':['Hicham El Guerrouj','MAR','7 Jul 1999','Golden Gala','Rome, Italy'],'3000m':['Jakob Ingebrigtsen','NOR','25 Aug 2024','Silesia Diamond League','Chorzów, Poland','7:17.55'],
- '5k run':['Joshua Cheptegei','UGA','14 Aug 2020','Herculis (5000 m track)','Monaco'],'10k run':['Joshua Cheptegei','UGA','7 Oct 2020','Valencia World Record Day (10,000 m track)','Valencia, Spain'],
- 'Half marathon':['Jacob Kiplimo','UGA','16 Feb 2025','eDreams Barcelona Half Marathon','Barcelona, Spain'],'Marathon':['Kelvin Kiptum','KEN','8 Oct 2023','Chicago Marathon','Chicago, USA'],
- '60m':['Christian Coleman','USA','18 Feb 2018','USA Indoor Championships','Albuquerque, USA'],'110m hurdles':['Aries Merritt','USA','7 Sep 2012','Memorial Van Damme','Brussels, Belgium'],
- '400m hurdles':['Karsten Warholm','NOR','3 Aug 2021','Olympic Games','Tokyo, Japan'],'3000m steeplechase':['Lamecha Girma','ETH','9 Jun 2023','Meeting de Paris (Diamond League)','Paris, France'],
- 'One hour run':['Mo Farah','GBR','4 Sep 2020','Memorial Van Damme','Brussels, Belgium'],'20 km race walk':['Yusuke Suzuki','JPN','15 Mar 2015','Asian Race Walking Championships','Nomi, Japan'],
- '100 km ultra':['Aleksandr Sorokin','LTU','24 Apr 2022','Centurion Running Track 100 Mile','Vilnius, Lithuania'],'Cycling hour':['Filippo Ganna','ITA','8 Oct 2022','UCI Hour Record attempt','Grenchen, Switzerland'],
- 'High jump':['Javier Sotomayor','CUB','27 Jul 1993','Salamanca meeting','Salamanca, Spain'],'Long jump':['Mike Powell','USA','30 Aug 1991','World Championships','Tokyo, Japan'],
- 'Triple jump':['Jonathan Edwards','GBR','7 Aug 1995','World Championships','Gothenburg, Sweden'],'Shot put':['Ryan Crouser','USA','27 May 2023','Los Angeles Grand Prix','Los Angeles, USA'],
+ '1000m':['Emmanuel Wanyonyi','KEN','10 Jul 2026','Herculis','Monaco'],'1500m':['Hicham El Guerrouj','MAR','14 Jul 1998','Golden Gala','Rome, Italy'],
+ '1 mile':['Josh Kerr','GBR','18 Jul 2026','London Athletics Meet','London, UK'],'3000m':['Jakob Ingebrigtsen','NOR','25 Aug 2024','Kamila Skolimowska Memorial','Chorzów, Poland'],
+ '5k run':['Joshua Cheptegei','UGA','14 Aug 2020','Herculis (5000 m track)','Monaco'],'10k run':['Joshua Cheptegei','UGA','7 Oct 2020','10,000 m track race','Valencia, Spain'],
+ 'Half marathon':['Yomif Kejelcha','ETH','23 Aug 2026','Media Maratón Ciudad de Buenos Aires','Buenos Aires, Argentina'],'Marathon':['Sabastian Sawe','KEN','26 Apr 2026','London Marathon','London, UK'],
+ '60m':['Christian Coleman','USA','18 Feb 2018','USA Indoor Championships','Albuquerque, USA'],'110m hurdles':["Ja'Kobe Tharp",'USA','10 Jun 2026','NCAA Division I Outdoor Championships','Eugene, USA'],
+ '400m hurdles':['Alison dos Santos','BRA','27 Aug 2026','Weltklasse Zürich','Zurich, Switzerland'],'3000m steeplechase':['Lamecha Girma','ETH','9 Jun 2023','Meeting de Paris','Paris, France'],
+ 'One hour run':['Mo Farah','GBR','4 Sep 2020','Diamond League (Memorial Van Damme)','Brussels, Belgium'],'20 km race walk':['Toshikazu Yamanishi','JPN','16 Feb 2025','Japanese 20 km Race Walking Championships','Kobe, Japan'],
+ '100 km ultra':['Aleksandr Sorokin','LTU','14 May 2023',"World's Fastest Run",'Vilnius, Lithuania'],'Cycling hour':['Filippo Ganna','ITA','8 Oct 2022','UCI Hour Record attempt','Grenchen, Switzerland'],
+ 'High jump':['Javier Sotomayor','CUB','27 Jul 1993','Gran Premio Diputación','Salamanca, Spain'],'Long jump':['Mike Powell','USA','30 Aug 1991','World Championships','Tokyo, Japan'],
+ 'Triple jump':['Jonathan Edwards','GBR','7 Aug 1995','World Championships','Gothenburg, Sweden'],'Shot put':['Ryan Crouser','USA','27 May 2023','USATF LA Grand Prix','Los Angeles, USA'],
  'Discus':['Mykolas Alekna','LTU','13 Apr 2025','Oklahoma Throws Series','Ramona, USA'],'Hammer':['Yuriy Sedykh','URS','30 Aug 1986','European Championships','Stuttgart, Germany'],
- 'Javelin':['Jan Železný','CZE','25 May 1996','Jena meeting','Jena, Germany'],'Pole vault':['Armand Duplantis','SWE','15 Sep 2025','World Championships','Tokyo, Japan','6.30 m — he raises this often, check the live record'],
+ 'Javelin':['Jan Železný','CZE','25 May 1996','','Jena, Germany'],'Pole vault':['Armand Duplantis','SWE','12 Mar 2026','Mondo Classic (indoor)','Uppsala, Sweden'],
  '50m freestyle':['César Cielo','BRA','18 Dec 2009','Brazilian Championships','São Paulo, Brazil'],'100m freestyle':['Pan Zhanle','CHN','31 Jul 2024','Olympic Games','Paris, France'],
- '200m freestyle':['Paul Biedermann','GER','28 Jul 2009','World Championships','Rome, Italy'],'400m freestyle':['Paul Biedermann','GER','26 Jul 2009','World Championships','Rome, Italy'],
- '800m freestyle':['Zhang Lin','CHN','29 Jul 2009','World Championships','Rome, Italy'],'1500m freestyle':['Sun Yang','CHN','4 Aug 2012','Olympic Games','London, UK'],
- '50m backstroke':['Kliment Kolesnikov','RUS','22 Apr 2023','Russian Championships','Kazan, Russia'],'100m backstroke':['Thomas Ceccon','ITA','20 Jun 2022','World Championships','Budapest, Hungary'],
+ '200m freestyle':['Paul Biedermann','GER','28 Jul 2009','World Championships','Rome, Italy'],'400m freestyle':['Lukas Märtens','GER','12 Apr 2025','','Stockholm, Sweden'],
+ '800m freestyle':['Zhang Lin','CHN','29 Jul 2009','World Championships','Rome, Italy'],'1500m freestyle':['Bobby Finke','USA','4 Aug 2024','Olympic Games','Paris, France'],
+ '50m backstroke':['Kliment Kolesnikov','RUS','27 Jul 2023','','Kazan, Russia'],'100m backstroke':['Thomas Ceccon','ITA','20 Jun 2022','World Championships','Budapest, Hungary'],
  '200m backstroke':['Aaron Peirsol','USA','31 Jul 2009','World Championships','Rome, Italy'],'50m breaststroke':['Adam Peaty','GBR','25 Jul 2017','World Championships','Budapest, Hungary'],
  '100m breaststroke':['Adam Peaty','GBR','21 Jul 2019','World Championships','Gwangju, South Korea'],'200m breaststroke':['Qin Haiyang','CHN','28 Jul 2023','World Championships','Fukuoka, Japan'],
- '50m butterfly':['Andriy Govorov','UKR','1 Jul 2018','Sette Colli Trophy','Rome, Italy'],'100m butterfly':['Caeleb Dressel','USA','31 Jul 2021','Olympic Games','Tokyo, Japan'],
- '200m butterfly':['Kristóf Milák','HUN','21 Jun 2022','World Championships','Budapest, Hungary'],'400m IM':['Léon Marchand','FRA','23 Jul 2023','World Championships','Fukuoka, Japan'],
+ '50m butterfly':['Andrii Govorov','UKR','1 Jul 2018','Sette Colli Trophy','Rome, Italy'],'100m butterfly':['Caeleb Dressel','USA','31 Jul 2021','Olympic Games','Tokyo, Japan'],
+ '200m butterfly':['Kristóf Milák','HUN','21 Jun 2022','World Championships','Budapest, Hungary'],'200m IM':['Léon Marchand','FRA','30 Jul 2025','World Championships','Singapore'],
+ '400m IM':['Léon Marchand','FRA','23 Jul 2023','World Championships','Fukuoka, Japan'],
  'Static apnea':['Stéphane Mifsud','FRA','8 Jun 2009','Static apnea record attempt','Hyères, France'],
- "Rubik's cube":['Xuanyi Geng','CHN','2026','WCA competition','','2.51 s single (C)'],'2x2 cube':['','','','WCA competition','','0.39 s single (C)'],'Blindfolded cube':['','','','WCA competition','','11.56 s single (C)'],
+ "Rubik's cube":['Xuanyi Geng','CHN','4–5 Oct 2026','Guangzhou Grand Open 2026',''],'2x2 cube':['Ziyu Ye','CHN','25 Oct 2025','Hefei Open 2025',''],
+ '4x4 cube':['Tymon Kolasiński','POL','6–8 Dec 2025','Spanish Championship 2025',''],'5x5 cube':['','','1–3 May 2026','All Rounders Katowice I 2026',''],
+ '6x6 cube':['Max Park','USA','26 Apr 2025','Burbank Big Cubes 2025',''],'Blindfolded cube':['Tommy Cherry','USA','27–28 Jun 2026','Mid-Atlantic Quiet Championship 2026',''],
+ 'Fewest moves':['Sebastiano Tronto','ITA','15–16 Jun 2019','FMC 2019',''],'One-handed cube':['Patrick Ponce','USA','14–16 Aug 2026','Mid-Atlantic Speedcubing Championship 2026',''],
+ 'Clock':['Lachlan Gibson','NZL','27 Sep 2025','Hasty Hastings 2025',''],'Megaminx':['Ziyu Wu','CHN','30 May 2026','Quanzhou Summer 2026',''],
+ 'Pyraminx':['Simon Kellum','USA','21 Dec 2023','Middleton Meetup Thursday 2023',''],'Skewb':['Vojtěch Grohmann','CZE','7–8 Mar 2026','Głuszyca Open 2026',''],
+ 'Square-1':['Brian Johnson','USA','17 May 2026','Evanston Qualifier 2026',''],'4x4 blindfolded':['Stanley Chapel','USA','28–29 Jan 2023','4BLD in a Madison Hall 2023',''],
+ '5x5 blindfolded':['','','2–4 Jan 2026','Multi Mayhem VA 2026',''],'Multi-blind':['Graham Siggins','USA','18 Oct 2025','Please Be Quiet Reno 2025','','63/65 cubes in 58:23'],
  'Speed cards':['Shijir-Erdene Bat-Enkh','MGL','2018','Memory championship','','12.74 s (C)'],'Speed numbers':['','','','World Memory Sports Council event','','642 digits (C)'],'Hour numbers':['','','','World Memory Sports Council event','','4,620 digits (C)'],
  'Speed climbing':['Zhao Yicheng','CHN','','IFSC competition','','4.54 s (C)'],'Murph':['Alec Blenis','USA','2021','Live-streamed attempt (weighted, unpartitioned)','','32:41 (C)'],
  'Mental addition':['Aaryan Shukla','IND','2024','Memoriad record','','78.0 s (C)'],'10m air rifle':['Sheng Lihao','CHN','2023','ISSF competition (qualification)','','637.9 (C)'],
  'Barebow archery':['Oliver Hicks','','2022','World Archery event (50 m)','','673/720 (C)'],'Sport stacking 3-3-3':['','','','WSSA (G5 timer)','','1.392 s (C)'],'Sport stacking 3-6-3':['','','','WSSA (G5 timer)','','1.751 s (C)'],
- 'Sport stacking cycle':['','','','WSSA (G5 timer)','','4.739 s (C)'],'Chess':['Magnus Carlsen','NOR','Nov 2026','FIDE rating list (current #1)','','2823 classical (C)'],
- 'Cycling FTP':null
+ 'Sport stacking cycle':['','','','WSSA (G5 timer)','','4.739 s (C)'],'Chess':['Magnus Carlsen','NOR','Nov 2026','FIDE rating list (current #1)','','2823 classical (C)']
 };
+const SRC={end:'World Athletics list via Wikipedia, checked Nov 2026',pow:'World Athletics list via Wikipedia, checked Nov 2026',wat:'Swimming World record list (as of 8 Nov 2025)',cub:'WCA records via Wikipedia (as of Oct 2026)'};
 const DESC={'5k run':'Run 5 km as fast as you can on a road or track.','Marathon':'The classic 42.195 km road race.','100m sprint':'Flat-out sprint over 100 metres.','Deadlift':'Lift a loaded barbell from the floor to standing. Scored against your body weight.',
  'Push-ups':'As many full push-ups as you can in one minute.','Pull-ups':'Strict pull-ups from a dead hang, chin over the bar.','Plank':'Hold a straight forearm plank as long as you can.',"Rubik's cube":'Solve a scrambled 3×3 cube as fast as you can.',
  'Chess':'Your chess rating from FIDE or an online platform.','Pickleball':'Your DUPR rating, the global pickleball rating.','Tennis':'Your UTR rating.','Typing':'Typing speed in words per minute over a timed test.',
@@ -1147,7 +1155,7 @@ function openSkillInfo(name){const s=SKILLS[name],c=CATS[s.cat],r=REC[name],b=be
    <div class="si-row"><span>National level</span><b>${esc(targetText(s,1000).replace(/^(Under|Hold|Reach|Lift|Send) /,''))} ≈ 1000 pts</b></div>
    <div class="si-row"><span>Average casual player</span><b>${fmtPerf(s,s.med,bw)}${unitShort(s)} ≈ ${pointsOf(s,s.med)} pts</b></div>
    ${b?`<div class="si-row you"><span>${esc(pname())}</span><b>${fmtPerf(s,b.v,bw)}${unitShort(s)} = ${b.p} pts</b></div>`:''}</div>
-  <p class="si-note">Records are men's open records and need checking against the federation's live list before launch.</p>`;
+  <p class="si-note">${SRC[s.cat]?`Source: ${SRC[s.cat]}. Men's open records.`:`Men's open records. This record still needs checking against the federation's live list.`}</p>`;
  showSheet('sh-skill');}
 
 /* ================= ORBIT =================
