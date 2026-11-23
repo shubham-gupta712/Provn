@@ -46,10 +46,6 @@ service cloud.firestore {
         && mediaOk(r.media)
         && exists(/databases/$(database)/documents/$(r.col)/$(r.id));
     }
-    function okVideo(v) {
-      return v is string && v.size() < 400
-        && v.matches('https://res[.]cloudinary[.]com/y3geoabc/video/upload/.*');
-    }
 
     // ---------- player profiles ----------
     match /users/{uid} {
@@ -70,27 +66,11 @@ service cloud.firestore {
       allow delete: if signedIn() && me() == uid;
     }
 
-    // ---------- results (the Pulse feed) ----------
+    // ---------- old self-logged results (still shown in Pulse; no new ones) ----------
     match /results/{rid} {
       allow read: if signedIn();
-      // players no longer log their own scores; scores come only from Provn events (eventResults)
-      allow create: if false
-        && request.resource.data.keys().hasOnly(['uid','name','city','skill','v','pts','sex','age','createdAt','likes','legit','flags','comments','video','venue','venueName'])
-        && request.resource.data.uid == me()
-        && str(request.resource.data.name, 40)
-        && str(request.resource.data.city, 40)
-        && str(request.resource.data.skill, 60) && request.resource.data.skill.size() > 0
-        && request.resource.data.v is number
-        && request.resource.data.pts is int && request.resource.data.pts >= 0 && request.resource.data.pts <= 1400
-        && request.resource.data.sex in ['', 'm', 'f']
-        && request.resource.data.age is int && request.resource.data.age >= 0 && request.resource.data.age <= 110
-        && request.resource.data.createdAt == request.time
-        && request.resource.data.likes == 0 && request.resource.data.legit == 0
-        && request.resource.data.flags == 0 && request.resource.data.comments == 0
-        && (!('video' in request.resource.data) || okVideo(request.resource.data.video))
-        && (!('venue' in request.resource.data) || (str(request.resource.data.venue, 40)
-            && exists(/databases/$(database)/documents/venues/$(request.resource.data.venue))
-            && str(request.resource.data.venueName, 60)));
+      // players no longer log their own scores (scores come from eventResults); old results can still be read, liked and deleted
+      allow create: if false;
       allow update: if isAdmin() || signedIn() && (
         markMoved('results', rid, 'likes') || markMoved('results', rid, 'legit') || markMoved('results', rid, 'flags')
         || commentCount(resource.data.uid));
@@ -252,22 +232,10 @@ service cloud.firestore {
       allow delete: if signedIn() && (resource.data.uid == me() || isAdmin());
     }
 
-    // ---------- best result per player per skill (Arena rankings) ----------
+    // ---------- old best-result index (read and delete only) ----------
     match /best/{id} {
       allow read: if signedIn();
-      allow create, update: if false
-        && id.matches(me() + '__.*')
-        && request.resource.data.keys().hasOnly(['uid','name','city','skill','v','pts','sex','age','video','result','updatedAt'])
-        && request.resource.data.uid == me()
-        && str(request.resource.data.name, 40) && str(request.resource.data.city, 40) && str(request.resource.data.skill, 60)
-        && request.resource.data.v is number
-        && request.resource.data.pts is int && request.resource.data.pts >= 0 && request.resource.data.pts <= 1400
-        && request.resource.data.sex in ['', 'm', 'f']
-        && request.resource.data.age is int
-        && (request.resource.data.video == '' || okVideo(request.resource.data.video))
-        && str(request.resource.data.result, 40)
-        && request.resource.data.updatedAt == request.time
-        && exists(/databases/$(database)/documents/results/$(request.resource.data.result));
+      allow create, update: if false;   // old rankings data, kept only so it can be read and deleted
       allow delete: if signedIn() && (resource.data.uid == me() || isAdmin());
     }
 
@@ -389,7 +357,7 @@ service cloud.firestore {
           && request.resource.data.v is number && str(request.resource.data.holder, 80)));
     }
 
-    // ---------- app settings (announcement) ----------
+    // ---------- app settings (announcement, map key, UPI payment details) ----------
     match /config/{id} {
       allow read: if signedIn();
       allow write: if isAdmin();

@@ -56,23 +56,6 @@ const Cloud = {
     return setDoc(doc(db, 'users', Cloud.user.uid), clean, { merge: true });
   },
 
-  /* one result; also keeps the player's best per skill for leaderboards */
-  async saveResult(r) {
-    const u = Cloud.user, data = { uid: u.uid, name: (r.name || 'Player').slice(0, 40), city: (r.city || '').slice(0, 40), skill: r.skill, v: r.v, pts: Math.max(0, Math.min(1400, Math.round(r.pts) || 0)),
-      sex: r.sex || '', age: Math.round(r.age || 0), createdAt: serverTimestamp(), likes: 0, legit: 0, flags: 0, comments: 0 };
-    if (r.video) data.video = r.video;
-    if (r.venue) { data.venue = String(r.venue).slice(0, 40); data.venueName = String(r.venueName || '').slice(0, 60); }
-    const ref = await addDoc(collection(db, 'results'), data);
-    const bref = doc(db, 'best', u.uid + '__' + skillKey(r.skill)), b = await getDoc(bref);
-    if (!b.exists() || (b.data().pts || 0) < data.pts) {
-      await setDoc(bref, { uid: u.uid, name: data.name, city: data.city, skill: r.skill, v: r.v, pts: data.pts, sex: data.sex, age: data.age, video: r.video || '', result: ref.id, updatedAt: serverTimestamp() });
-    }
-    return ref.id;
-  },
-  async myResults() {
-    const s = await getDocs(query(collection(db, 'results'), where('uid', '==', Cloud.user.uid), limit(500)));
-    return s.docs.map(d => ({ id: d.id, ...d.data(), t: tsMs(d.data().createdAt) })).sort((a, b) => a.t - b.t);
-  },
   /* Pulse: scored results and general posts, newest first */
   async feed(n = 30) {
     const [r, p] = await Promise.all(['results', 'posts'].map(c => getDocs(query(collection(db, c), orderBy('createdAt', 'desc'), limit(n))).catch(() => ({ docs: [] }))));
@@ -181,30 +164,14 @@ const Cloud = {
     return b.commit();
   },
   async deletePost(id) { return deleteDoc(doc(db, 'posts', id)); },
-  async leaderboard(skill, city) {
-    const cons = [where('skill', '==', skill)]; if (city) cons.push(where('city', '==', city));
-    const s = await getDocs(query(collection(db, 'best'), ...cons, limit(300)));
-    return s.docs.map(d => d.data()).sort((a, b) => b.pts - a.pts);
-  },
   /* scores now come only from Provn events: every event result for one skill */
   async eventResults(skill) {
     const s = await getDocs(query(collection(db, 'eventResults'), where('skill', '==', skill), limit(2000)));
     return s.docs.map(d => ({ id: d.id, ...d.data(), t: tsMs(d.data().at) }));
   },
-  /* best event result per player for one skill (filtered into city / state / country on the phone) */
-  async rankings(skill) {
-    const by = {}; (await Cloud.eventResults(skill)).forEach(r => { if (!by[r.uid] || by[r.uid].pts < r.pts) by[r.uid] = r; });
-    return Object.values(by);
-  },
   async myEventResults(uid) {
     const s = await getDocs(query(collection(db, 'eventResults'), where('uid', '==', uid || Cloud.user.uid), limit(500)));
     return s.docs.map(d => ({ id: d.id, ...d.data(), t: tsMs(d.data().at) }));
-  },
-  /* best per player for one skill at one Provn venue */
-  async venueBoard(skill, venue) {
-    const s = await getDocs(query(collection(db, 'results'), where('skill', '==', skill), where('venue', '==', venue), limit(500)));
-    const by = {}; s.docs.forEach(d => { const r = d.data(); if (!by[r.uid] || by[r.uid].pts < r.pts) by[r.uid] = r; });
-    return Object.values(by).sort((a, b) => b.pts - a.pts);
   },
   /* delete one of my results; its ranking entry goes too (the next-best result is re-ranked on the next sync) */
   async deleteResult(id) {
@@ -307,6 +274,25 @@ const Cloud = {
       const banned = new Set(b.docs.map(d => d.id));
       return u.docs.map(d => ({ uid: d.id, ...d.data(), t: tsMs(d.data().updatedAt), banned: banned.has(d.id) })).sort((a, b) => b.t - a.t);
     },
+    /* clean-up: old self-logged results (scores now come only from events) */
+    async purgeOld() {
+      const s = await getDocs(query(collection(adb, 'results'), limit(500)));
+      for (const d of s.docs) await Cloud.admin.removeResult({ id: d.id, col: 'results', ...d.data() });
+      const b = await getDocs(query(collection(adb, 'best'), limit(500)));
+      for (const d of b.docs) await deleteDoc(d.ref);
+      return s.size;
+    },
+    /* clean-up: everything the two test bots made */
+    async purgeBots() {
+      const ids = Object.values(await Cloud.botCreds()).map(c => c.uid).filter(Boolean); let n = 0;
+      for (const uid of ids) {
+        for (const [col, f] of [['posts', 'uid'], ['results', 'uid'], ['meetups', 'uid'], ['follows', 'from'], ['follows', 'to']]) {
+          const s = await getDocs(query(collection(adb, col), where(f, '==', uid), limit(500)));
+          for (const d of s.docs) { if (col === 'results') await Cloud.admin.removeResult({ id: d.id, col, ...d.data() }); else await deleteDoc(d.ref); n++; }
+        }
+      }
+      return n;
+    },
     async results(uid) {
       const s = await getDocs(query(collection(adb, 'results'), where('uid', '==', uid), limit(500)));
       return s.docs.map(d => ({ id: d.id, ...d.data(), t: tsMs(d.data().createdAt) })).sort((a, b) => b.t - a.t);
@@ -378,17 +364,6 @@ const Cloud = {
     }
   },
 
-  /* proof video straight from the phone to Cloudinary (unsigned preset) */
-  uploadVideo(file, onProgress) {
-    return new Promise((res, rej) => {
-      const fd = new FormData(); fd.append('file', file); fd.append('upload_preset', CLOUDINARY.preset); fd.append('folder', 'provn/proof');
-      const x = new XMLHttpRequest(); x.open('POST', `https://api.cloudinary.com/v1_1/${CLOUDINARY.cloud}/video/upload`);
-      x.upload.onprogress = e => e.lengthComputable && onProgress && onProgress(e.loaded / e.total);
-      x.onload = () => { try { const j = JSON.parse(x.responseText); j.secure_url ? res(j.secure_url) : rej(new Error(j.error?.message || 'Upload failed')); } catch (e) { rej(e); } };
-      x.onerror = () => rej(new Error('Network error'));
-      x.send(fd);
-    });
-  },
   /* photo or video for a post: Cloudinary picks the type */
   uploadMedia(file, onProgress) {
     return new Promise((res, rej) => {
