@@ -98,7 +98,8 @@ service cloud.firestore {
 
       match /likes/{uid} {
         allow read: if signedIn();
-        allow create: if signedIn() && me() == uid && request.resource.data.keys().hasOnly(['at']) && request.resource.data.at == request.time;
+        allow create: if signedIn() && me() == uid && request.resource.data.keys().hasOnly(['at','e']) && request.resource.data.at == request.time
+          && (!('e' in request.resource.data) || request.resource.data.e in ['❤️','🔥','💪','👏','😂','😍']);
         allow delete: if signedIn() && (me() == uid || isAdmin());
       }
       match /legit/{uid} {
@@ -145,7 +146,8 @@ service cloud.firestore {
 
       match /likes/{uid} {
         allow read: if signedIn();
-        allow create: if signedIn() && me() == uid && request.resource.data.keys().hasOnly(['at']) && request.resource.data.at == request.time;
+        allow create: if signedIn() && me() == uid && request.resource.data.keys().hasOnly(['at','e']) && request.resource.data.at == request.time
+          && (!('e' in request.resource.data) || request.resource.data.e in ['❤️','🔥','💪','👏','😂','😍']);
         allow delete: if signedIn() && (me() == uid || isAdmin());
       }
       match /flags/{uid} {
@@ -183,7 +185,7 @@ service cloud.firestore {
       allow create: if signedIn() && notBanned()
         && request.resource.data.keys().hasOnly(['to','from','fromName','fromPhoto','kind','ref','col','text','at','read'])
         && request.resource.data.from == me() && request.resource.data.to != me()
-        && request.resource.data.kind in ['like', 'legit', 'comment', 'mention', 'repost', 'follow', 'result', 'payment', 'booking']
+        && request.resource.data.kind in ['like', 'legit', 'comment', 'mention', 'repost', 'follow', 'result', 'payment', 'booking', 'join', 'meetup']
         && str(request.resource.data.to, 64) && str(request.resource.data.fromName, 40) && str(request.resource.data.fromPhoto, 400)
         && str(request.resource.data.ref, 64) && str(request.resource.data.col, 10) && str(request.resource.data.text, 140)
         && request.resource.data.at == request.time && request.resource.data.read == false;
@@ -217,6 +219,37 @@ service cloud.firestore {
           && request.resource.data.at == request.time;
         allow delete: if signedIn() && resource.data.uid == me();
       }
+    }
+
+    // ---------- meetups: hosted by anyone; people join or leave by adding or removing only themselves ----------
+    match /meetups/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn() && notBanned()
+        && request.resource.data.keys().hasOnly(['uid','name','photo','hobby','title','place','city','when','spots','note','members','names','cancelled','at'])
+        && request.resource.data.uid == me()
+        && str(request.resource.data.name, 40) && str(request.resource.data.photo, 400)
+        && str(request.resource.data.hobby, 40) && request.resource.data.hobby.size() > 0
+        && str(request.resource.data.title, 80) && request.resource.data.title.size() > 0
+        && str(request.resource.data.place, 100) && str(request.resource.data.city, 40) && str(request.resource.data.note, 300)
+        && request.resource.data.when is int && request.resource.data.when > request.time.toMillis() - 3600000
+        && request.resource.data.spots is int && request.resource.data.spots >= 0 && request.resource.data.spots <= 500
+        && request.resource.data.members == [me()] && request.resource.data.names.keys().hasOnly([me()])
+        && request.resource.data.cancelled == false && request.resource.data.at == request.time;
+      allow update: if signedIn() && (
+        (resource.data.uid == me()
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['title','place','when','spots','note','cancelled']))
+        || (notBanned() && resource.data.cancelled == false
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['members','names'])
+          && !(me() in resource.data.members)
+          && request.resource.data.members.size() == resource.data.members.size() + 1
+          && request.resource.data.members.toSet() == resource.data.members.toSet().union([me()].toSet())
+          && (resource.data.spots == 0 || request.resource.data.members.size() <= resource.data.spots)
+          && request.resource.data.names.diff(resource.data.names).affectedKeys().hasOnly([me()]))
+        || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['members'])
+          && me() in resource.data.members && me() != resource.data.uid
+          && request.resource.data.members.size() == resource.data.members.size() - 1
+          && request.resource.data.members.toSet() == resource.data.members.toSet().difference([me()].toSet())));
+      allow delete: if signedIn() && (resource.data.uid == me() || isAdmin());
     }
 
     // ---------- best result per player per skill (Arena rankings) ----------

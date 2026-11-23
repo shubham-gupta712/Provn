@@ -2,7 +2,7 @@
    If this module fails to load (offline, blocked), the app keeps working on-device. */
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut as fbSignOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-import { getFirestore, doc, getDoc, setDoc, collection, query, where, orderBy, limit, getDocs, serverTimestamp, increment, writeBatch, addDoc, deleteDoc, updateDoc, getCountFromServer, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+import { getFirestore, doc, getDoc, setDoc, collection, query, where, orderBy, limit, getDocs, serverTimestamp, increment, writeBatch, addDoc, deleteDoc, updateDoc, getCountFromServer, onSnapshot, arrayUnion, arrayRemove } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyD0RInNbKgLZiGDfL20KH9L6RVlYMI806g',
@@ -81,7 +81,7 @@ const Cloud = {
     if (Cloud.user) await Promise.all(list.map(async x => {
       const kinds = x.col === 'results' ? ['likes', 'legit', 'flags'] : ['likes', 'flags'];
       const got = await Promise.all(kinds.map(k => getDoc(doc(db, x.col, x.id, k, Cloud.user.uid))));
-      x.mine = Object.fromEntries(kinds.map((k, i) => [k, got[i].exists()]));
+      x.mine = Object.fromEntries(kinds.map((k, i) => [k, got[i].exists()])); x.mine.e = got[0].exists() ? (got[0].data().e || '❤️') : '';
     }));
     return list;
   },
@@ -148,11 +148,25 @@ const Cloud = {
   seen(cid) { return updateDoc(doc(db, 'chats', cid), { ['seen.' + Cloud.user.uid]: serverTimestamp() }).catch(() => {}); },
   deleteMsg(cid, id) { return deleteDoc(doc(db, 'chats', cid, 'msgs', id)); },
 
+  /* ---------- meetups: anyone can host; people join by adding themselves ---------- */
+  async meetups() {
+    const s = await getDocs(query(collection(db, 'meetups'), where('when', '>=', Date.now() - 3 * 36e5), orderBy('when', 'asc'), limit(200)));
+    return s.docs.map(d => ({ id: d.id, ...d.data() })).filter(m => !m.cancelled);
+  },
+  async myMeetups() { const s = await getDocs(query(collection(db, 'meetups'), where('members', 'array-contains', Cloud.user.uid), limit(300))); return s.docs.map(d => ({ id: d.id, ...d.data() })).filter(m => !m.cancelled); },
+  createMeetup(m) {
+    const u = Cloud.user, name = (u.name || 'Player').slice(0, 40);
+    return addDoc(collection(db, 'meetups'), { uid: u.uid, name, photo: (u.photo || '').slice(0, 400), hobby: m.hobby.slice(0, 40), title: m.title.slice(0, 80), place: m.place.slice(0, 100), city: (m.city || '').slice(0, 40),
+      when: Math.round(m.when), spots: Math.max(0, Math.min(500, Math.round(m.spots) || 0)), note: (m.note || '').slice(0, 300), members: [u.uid], names: { [u.uid]: name }, cancelled: false, at: serverTimestamp() });
+  },
+  joinMeetup(id, on) { const u = Cloud.user; return updateDoc(doc(db, 'meetups', id), on ? { members: arrayUnion(u.uid), ['names.' + u.uid]: (u.name || 'Player').slice(0, 40) } : { members: arrayRemove(u.uid) }); },
+  cancelMeetup(id) { return updateDoc(doc(db, 'meetups', id), { cancelled: true }); },
+
   async people() { const s = await getDocs(query(collection(db, 'users'), limit(500))); return s.docs.map(d => ({ uid: d.id, name: d.data().name || '', city: d.data().city || '', photo: d.data().photo || '', interests: d.data().interests || [] })).filter(x => x.name); },
   /* like / legit / flag: the mark and the counter change together, and the rules check they match */
-  async toggle(kind, id, on, col = 'results') {
+  async toggle(kind, id, on, col = 'results', e = '') {
     const b = writeBatch(db), mark = doc(db, col, id, kind, Cloud.user.uid);
-    if (on) b.set(mark, { at: serverTimestamp() }); else b.delete(mark);
+    if (on) b.set(mark, e && kind === 'likes' ? { at: serverTimestamp(), e } : { at: serverTimestamp() }); else b.delete(mark);
     b.update(doc(db, col, id), { [kind]: increment(on ? 1 : -1) });
     return b.commit();
   },
