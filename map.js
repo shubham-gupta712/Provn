@@ -352,7 +352,7 @@
           ...(MT ? { dem: { type: 'raster-dem', url: `https://api.maptiler.com/tiles/terrain-rgb-v2/tiles.json?key=${MT}`, tileSize: 256 } } : {}),
           roads: { type: 'raster', tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}'], tileSize: 256, maxzoom: 19 },
           lbl: { type: 'raster', tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'], tileSize: 256, maxzoom: 19 },
-          street: MT ? { type: 'raster', tiles: [`https://api.maptiler.com/maps/streets-v2/256/{z}/{x}/{y}@2x.png?key=${MT}`], tileSize: 256, maxzoom: 20, attribution: '© MapTiler © OpenStreetMap contributors' } : { type: 'raster', tiles: ['a', 'b', 'c', 'd'].map(s => `https://${s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png`), tileSize: 256, maxzoom: 20, attribution: '© OpenStreetMap contributors © CARTO' },
+          street: MT ? { type: 'raster', tiles: [`https://api.maptiler.com/maps/streets-v2/256/{z}/{x}/{y}@2x.png?key=${MT}`], tileSize: 256, maxzoom: 20, attribution: '© MapTiler © OpenStreetMap contributors' } : { type: 'raster', tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}'], tileSize: 256, maxzoom: 19, attribution: 'Esri, HERE, Garmin, © OpenStreetMap contributors' },
           v: { type: 'geojson', data: { type: 'FeatureCollection', features: [] } }
         },
         layers: [
