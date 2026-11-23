@@ -207,10 +207,36 @@ const Cloud = {
     const list = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (a.date || '').localeCompare(b.date || ''));
     await Promise.all(list.map(async e => {
       const [c, m] = await Promise.all([getCountFromServer(collection(db, 'events', e.id, 'going')), getDoc(doc(db, 'events', e.id, 'going', Cloud.user.uid))]);
-      e.going = c.data().count; e.mine = m.exists(); e.past = (e.date || '') < today;
+      e.going = c.data().count; e.mine = m.exists(); e.pay = m.exists() ? (m.data().pay || '') : ''; e.past = (e.date || '') < today;
     }));
     return list;
   },
+  /* paid events: the player pays by UPI and sends the reference; the admin confirms it (a payment gateway can replace this later) */
+  payEvent(id, name, ref, amt) { return setDoc(doc(db, 'events', id, 'going', Cloud.user.uid), { at: serverTimestamp(), name: (name || 'Player').slice(0, 40), pay: 'pending', ref: String(ref).slice(0, 40), amt: Math.round(amt) }); },
+
+  /* ---------- venues: owners apply, players request bookings, taps are counted as leads ---------- */
+  applyVenue(a) {
+    const d = { uid: Cloud.user.uid, by: (Cloud.user.name || '').slice(0, 40), name: String(a.name).slice(0, 60), contact: String(a.contact || '').slice(0, 40), phone: String(a.phone || '').slice(0, 20),
+      addr: String(a.addr || '').slice(0, 120), city: String(a.city || '').slice(0, 40), acts: (a.acts || []).slice(0, 12), plan: a.plan === 'partner' ? 'partner' : 'free', info: String(a.info || '').slice(0, 300), status: 'new', at: serverTimestamp() };
+    if (typeof a.lat === 'number') { d.lat = a.lat; d.lng = a.lng; }
+    return addDoc(collection(db, 'venueApps'), d);
+  },
+  async myVenueApps() { const s = await getDocs(query(collection(db, 'venueApps'), where('uid', '==', Cloud.user.uid), limit(20))); return s.docs.map(d => ({ id: d.id, ...d.data(), t: tsMs(d.data().at) })); },
+  async myVenues() { const s = await getDocs(query(collection(db, 'venues'), where('owner', '==', Cloud.user.uid), limit(20))); return s.docs.map(d => ({ id: d.id, ...d.data() })); },
+  lead(v, kind) { if (!Cloud.user || !v) return; return addDoc(collection(db, 'venueLeads'), { venue: v.id, owner: v.owner || '', kind, uid: Cloud.user.uid, at: serverTimestamp() }).catch(() => {}); },
+  async venueLeads(vid) { const s = await getDocs(query(collection(db, 'venueLeads'), where('venue', '==', vid), where('owner', '==', Cloud.user.uid), limit(5000))); return s.docs.map(d => ({ ...d.data(), t: tsMs(d.data().at) })); },
+  requestBooking(v, b) {
+    return addDoc(collection(db, 'bookings'), { venue: v.id, venueName: String(v.name).slice(0, 60), owner: v.owner || '', uid: Cloud.user.uid, name: (b.name || Cloud.user.name || 'Player').slice(0, 40), phone: String(b.phone || '').slice(0, 20),
+      date: b.date, time: String(b.time || '').slice(0, 20), people: Math.max(1, Math.min(50, Math.round(b.people) || 1)), act: String(b.act || '').slice(0, 30), note: String(b.note || '').slice(0, 200), status: 'new', at: serverTimestamp() });
+  },
+  async myBookings() { const s = await getDocs(query(collection(db, 'bookings'), where('uid', '==', Cloud.user.uid), limit(50))); return s.docs.map(d => ({ id: d.id, ...d.data(), t: tsMs(d.data().at) })).sort((a, b) => b.t - a.t); },
+  async venueBookings(vid) { const s = await getDocs(query(collection(db, 'bookings'), where('venue', '==', vid), where('owner', '==', Cloud.user.uid), limit(200))); return s.docs.map(d => ({ id: d.id, ...d.data(), t: tsMs(d.data().at) })).sort((a, b) => b.t - a.t); },
+  setBooking(id, status) { return updateDoc(doc(db, 'bookings', id), { status }); },
+
+  /* ---------- store: products from vendors, opened on the vendor's own site ---------- */
+  async products(all) { const s = await getDocs(query(collection(db, 'products'), limit(300))); return s.docs.map(d => ({ id: d.id, ...d.data() })).filter(p => all || p.active !== false); },
+  click(p) { if (Cloud.user) addDoc(collection(db, 'productClicks'), { product: p.id, vendor: (p.vendor || '').slice(0, 60), uid: Cloud.user.uid, at: serverTimestamp() }).catch(() => {}); },
+
   setGoing(id, on, name) { const r = doc(db, 'events', id, 'going', Cloud.user.uid); return on ? setDoc(r, { at: serverTimestamp(), name: (name || 'Player').slice(0, 40) }) : deleteDoc(r); },
   async venues() { const s = await getDocs(query(collection(db, 'venues'), limit(1000))); return s.docs.map(d => ({ id: d.id, ...d.data() })); },
   async records(skill) { const s = await getDocs(query(collection(db, 'records'), where('skill', '==', skill), limit(60))); return s.docs.map(d => ({ id: d.id, ...d.data() })); },
@@ -289,13 +315,14 @@ const Cloud = {
     },
     ban(uid, on) { const r = doc(adb, 'bans', uid); return on ? setDoc(r, { at: serverTimestamp(), by: Cloud.user.email }) : deleteDoc(r); },
     saveEvent(e, id) {
-      const data = { title: e.title, skill: e.skill || '', date: e.date, time: e.time || '', place: e.place || '', city: e.city || '', spots: e.spots || 0, info: e.info || '', updatedAt: serverTimestamp() };
+      const data = { title: e.title, skill: e.skill || '', date: e.date, time: e.time || '', place: e.place || '', city: e.city || '', spots: e.spots || 0, fee: Math.max(0, Math.round(e.fee) || 0), info: e.info || '', updatedAt: serverTimestamp() };
       if (typeof e.lat === 'number' && typeof e.lng === 'number') { data.lat = e.lat; data.lng = e.lng; }
       return id ? setDoc(doc(adb, 'events', id), data) : addDoc(collection(adb, 'events'), data);
     },
     saveVenue(v, id) {
       const data = { name: v.name, kind: v.kind, acts: v.acts.slice(0, 12), addr: v.addr || '', phone: v.phone || '', web: v.web || '', info: v.info || '', lat: v.lat, lng: v.lng, city: v.city || '', updatedAt: serverTimestamp() };
-      return id ? setDoc(doc(adb, 'venues', id), data) : addDoc(collection(adb, 'venues'), data);
+      if (v.tier !== undefined) data.tier = v.tier; if (v.owner !== undefined) data.owner = v.owner; if (v.hours !== undefined) data.hours = v.hours;
+      return id ? setDoc(doc(adb, 'venues', id), data, { merge: true }) : addDoc(collection(adb, 'venues'), data);
     },
     async allRecords() { const s = await getDocs(query(collection(adb, 'records'), limit(1000))); return s.docs.map(d => ({ id: d.id, ...d.data() })); },
     saveRecord(r) {
@@ -313,11 +340,26 @@ const Cloud = {
         sex: ['m', 'f'].includes(p.sex) ? p.sex : '', age: Math.round(p.age || 0), skill: ev.skill, v, pts: Math.max(0, Math.min(1400, Math.round(pts))), at: serverTimestamp() });
     },
     deleteEventResult(id) { return deleteDoc(doc(adb, 'eventResults', id)); },
+    setPay(eid, uid, pay) { return updateDoc(doc(adb, 'events', eid, 'going', uid), { pay }); },
+    async venueApps() { const s = await getDocs(query(collection(adb, 'venueApps'), limit(300))); return s.docs.map(d => ({ id: d.id, ...d.data(), t: tsMs(d.data().at) })).sort((a, b) => b.t - a.t); },
+    setApp(id, status) { return updateDoc(doc(adb, 'venueApps', id), { status }); },
+    setVenueTier(id, d) { const u = {}; if ('tier' in d) u.tier = d.tier; if ('owner' in d) u.owner = d.owner; if ('hours' in d) u.hours = d.hours; return updateDoc(doc(adb, 'venues', id), u); },
+    async leads() { const s = await getDocs(query(collection(adb, 'venueLeads'), limit(10000))); return s.docs.map(d => ({ ...d.data(), t: tsMs(d.data().at) })); },
+    async bookings() { const s = await getDocs(query(collection(adb, 'bookings'), limit(500))); return s.docs.map(d => ({ id: d.id, ...d.data(), t: tsMs(d.data().at) })).sort((a, b) => b.t - a.t); },
+    setBooking(id, status) { return updateDoc(doc(adb, 'bookings', id), { status }); },
+    saveProduct(p, id) {
+      const d = { name: p.name, price: Math.round(p.price) || 0, mrp: Math.round(p.mrp) || 0, img: p.img || '', url: p.url, vendor: p.vendor || '', skills: (p.skills || []).slice(0, 10), info: p.info || '', active: p.active !== false, updatedAt: serverTimestamp() };
+      return id ? setDoc(doc(adb, 'products', id), d) : addDoc(collection(adb, 'products'), d);
+    },
+    deleteProduct(id) { return deleteDoc(doc(adb, 'products', id)); },
+    async clicks() { const s = await getDocs(query(collection(adb, 'productClicks'), limit(10000))); return s.docs.map(d => ({ ...d.data(), t: tsMs(d.data().at) })); },
     async going(id) { const s = await getDocs(collection(adb, 'events', id, 'going')); return s.docs.map(d => ({ uid: d.id, ...d.data() })); },
     setConfig(c) {
       const d = { updatedAt: serverTimestamp() };
       if ('announce' in c) d.announce = (c.announce || '').slice(0, 280);
       if ('maptiler' in c) d.maptiler = (c.maptiler || '').replace(/[^A-Za-z0-9]/g, '').slice(0, 64);
+      if ('upi' in c) d.upi = (c.upi || '').trim().slice(0, 60);
+      if ('payee' in c) d.payee = (c.payee || '').trim().slice(0, 60);
       return setDoc(doc(adb, 'config', 'app'), d, { merge: true });
     }
   },

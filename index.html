@@ -645,6 +645,7 @@ svg{display:block}
 .mx-here div+div{margin-top:8px}.mx-here b{display:block;font-size:14px}.mx-here small{font-size:12px;font-weight:700;color:var(--text3)}
 .mx-row{display:flex;gap:8px;margin-top:14px}.mx-row .btn{flex:1;height:46px;text-decoration:none;display:grid;place-items:center}
 .mx-log{width:100%;height:44px;margin-top:8px}
+.mx-claim{display:block;margin:10px auto 0;font-size:13px;font-weight:800;color:var(--accent)}
 .mx-src{margin:10px 0 0;font-size:11px;font-weight:600;color:var(--text3)}
 .mx-pick{margin:0 12px;padding:14px;border-radius:22px;background:var(--bg2);border:var(--card-bd)}
 .mx-pick p{margin:0;font-size:14px;font-weight:700;text-align:center;color:var(--text2)}
@@ -744,6 +745,33 @@ svg{display:block}
 .adm-as>div{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:4px;border-radius:16px;background:var(--bg2);border:var(--card-bd)}
 .adm-as button{height:38px;border-radius:12px;font-size:13.5px;font-weight:800;color:var(--text2)}.adm-as button.on{background:var(--accent);color:var(--on-accent)}
 
+/* ===== money: paid events, venues, shop ===== */
+.seg.four{grid-template-columns:repeat(4,1fr)}.seg.four .si{width:calc((100% - 8px)/4)}
+.fee{display:inline-block;padding:2px 8px;border-radius:9px;background:var(--accent);color:var(--on-accent);font-size:11.5px;font-weight:900;margin-left:4px}
+.pay-amt{font-size:44px;line-height:1;margin:6px 0 2px}.pay-box{margin-top:14px;padding:14px;border-radius:18px;background:var(--bg3)}
+.pay-box small{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text3)}.pay-box b{font-size:16px;word-break:break-all}
+.pay-steps{margin:14px 0 0;padding-left:20px;font-size:14px;line-height:1.55;color:var(--text2)}
+.fi{display:block;margin-top:12px;font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--text3)}
+.fi input,.fi select,.fi textarea{display:block;width:100%;margin-top:6px;padding:12px 14px;border-radius:14px;background:var(--bg3);border:var(--card-bd);font:inherit;font-size:15px;font-weight:600;color:var(--text);outline:0;text-transform:none;letter-spacing:0}
+.fi textarea{min-height:70px;resize:vertical}.two-c{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chips-sel{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.chips-sel button{padding:8px 12px;border-radius:16px;background:var(--bg3);font-size:13px;font-weight:800;color:var(--text2)}.chips-sel button.on{background:var(--accent);color:var(--on-accent)}
+.plan{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.plan button{text-align:left;padding:12px;border-radius:16px;background:var(--bg3);border:2px solid transparent}.plan button.on{border-color:var(--accent)}
+.plan b{display:block;font-size:15px}.plan small{display:block;font-size:12px;color:var(--text2);line-height:1.35;margin-top:3px;font-weight:600}
+.vcard{padding:16px}.vcard h4{margin:0;font-size:16px}
+a.btn{text-decoration:none}
+.adm-ck{display:flex!important;align-items:center;gap:10px;margin-top:12px;text-transform:none!important;letter-spacing:0!important;font-size:14px!important}.adm-ck input{width:20px!important;height:20px;margin:0!important}.vcard p{margin:4px 0 10px;font-size:13.5px;color:var(--text2)}.vcard .row{display:flex;gap:8px;flex-wrap:wrap}.vcard .btn{height:40px;font-size:13.5px}
+.vcard .st{display:block;font-size:12.5px;color:var(--text3);font-weight:700;margin-top:6px}
+.own-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.own-stats div{padding:10px;border-radius:14px;background:var(--bg3);text-align:center}.own-stats b{display:block;font-size:22px}.own-stats small{font-size:11px;font-weight:800;color:var(--text3);text-transform:uppercase}
+.bk{padding:12px;border-radius:16px;background:var(--bg3);margin-top:8px}.bk b{display:block}.bk small{display:block;color:var(--text2);font-size:12.5px;margin-top:2px}.bk .row{margin-top:8px}.bk .btn{height:36px;font-size:13px}
+.bk em{font-style:normal;font-size:11px;font-weight:900;text-transform:uppercase;color:var(--accent)}
+.shop-chips{display:flex;gap:6px;overflow-x:auto;margin:10px -16px 4px;padding:0 16px;scrollbar-width:none}.shop-chips::-webkit-scrollbar{display:none}
+.shop-chips button{flex:none;height:34px;padding:0 14px;border-radius:17px;background:var(--bg2);border:var(--card-bd);font-size:13px;font-weight:800;color:var(--text2)}.shop-chips button.on{background:var(--accent);color:var(--on-accent);border-color:transparent}
+.shop-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.pd{display:flex;flex-direction:column;border-radius:var(--r-card);background:var(--bg2);border:var(--card-bd);overflow:hidden;text-align:left;color:inherit;text-decoration:none}
+.pd-i{aspect-ratio:1;background:#fff center/contain no-repeat}.pd-t{padding:10px 12px 12px;display:flex;flex-direction:column;gap:3px;flex:1}
+.pd-t b{font-size:14px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.pd-t small{font-size:11.5px;color:var(--text3);font-weight:700}
+.pd-p{margin-top:auto;font-size:16px;font-weight:900}.pd-p s{font-size:12px;color:var(--text3);font-weight:700;margin-left:6px}.pd-p em{font-style:normal;font-size:11px;color:#22C55E;margin-left:4px}
+.hb-gear{display:flex;gap:10px;overflow-x:auto;margin:0 -16px;padding:0 16px 4px;scrollbar-width:none}.hb-gear .pd{flex:none;width:42%}
 /* ===== Orbit hub (one page per activity) ===== */
 .hb-bic{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.35)}.hb-bic svg{width:26px;height:26px}
 .hb-nav{position:sticky;top:76px;z-index:5;display:flex;gap:6px;overflow-x:auto;padding:6px 2px 10px;margin:0 -16px;padding-left:16px;padding-right:16px;background:linear-gradient(var(--bg) 80%,transparent);scrollbar-width:none}
@@ -1129,7 +1157,7 @@ svg{display:block}
     </section>
 
     <section class="screen" id="s-arena" data-tab="arena">
-      <div class="seg" id="seg"><span class="si"></span><button class="on" data-p="events">Events</button><button data-p="ranks">Rankings</button><button data-p="map">Map</button></div>
+      <div class="seg four" id="seg"><span class="si"></span><button class="on" data-p="events">Events</button><button data-p="ranks">Rankings</button><button data-p="map">Map</button><button data-p="shop">Shop</button></div>
       <div class="pane on" id="p-events">
         <div id="evHero"></div>
         <div class="sec-h" id="evHead" hidden><h3 class="display">Also coming up</h3></div>
@@ -1152,11 +1180,18 @@ svg{display:block}
         <div class="sec-h"><h3 class="display">Find a place to play</h3></div>
         <div class="mc-acts" id="mcActs"></div>
       </div>
+      <div class="pane" id="p-shop">
+        <label class="up-act" style="margin-top:14px"><span data-i="search"></span><input id="shopQ" placeholder="Search gear, e.g. pickleball paddle" autocomplete="off"></label>
+        <div class="shop-chips" id="shopChips"></div>
+        <div class="shop-grid" id="shopGrid"></div>
+        <p class="note">Products are sold and shipped by the listed vendor. Provn may earn a fee when you buy.</p>
+      </div>
     </section>
 
     <section class="screen" id="s-you" data-tab="you">
       <div class="prof"><div class="pm" id="youM"></div><div class="pn2"><input class="nameIn" id="nameIn" maxlength="18" aria-label="Your player name" readonly><p id="youSub"></p><button class="btn ghost chg" id="chgPlayer"><span>Change player</span></button></div></div>
       <div class="card social" id="social"></div>
+      <div class="card vcard" id="venueCard"></div>
       <div class="card pinfo" id="youInfo"></div>
       <div class="wgrid" id="wgrid"></div>
       <div class="sec-h"><h3 class="display">Your interests</h3><a id="intEdit">Edit</a></div>
@@ -1241,6 +1276,21 @@ svg{display:block}
     <div class="ch-in"><textarea id="chIn" rows="1" maxlength="1000" placeholder="Message…" aria-label="Message"></textarea><button class="btn primary" id="chSend" aria-label="Send"><span data-i="send"></span></button></div>
   </section>
 
+  <section class="sheet" id="sh-pay" aria-label="Pay for an event">
+    <div class="handle"></div>
+    <div id="payBody"></div>
+  </section>
+
+  <section class="sheet" id="sh-venue" aria-label="List your venue">
+    <div class="handle"></div>
+    <div id="vaBody"></div>
+  </section>
+
+  <section class="sheet" id="sh-own" aria-label="Your venue">
+    <div class="handle"></div>
+    <div id="ownBody"></div>
+  </section>
+
   <section class="sheet" id="sh-int" aria-label="Your interests">
     <div class="handle"></div>
     <h2 class="display">Your interests</h2>
@@ -1313,7 +1363,7 @@ svg{display:block}
   <div class="adm" id="adm" hidden>
     <header class="adm-hd"><div><b class="display">Admin</b><small id="admWho"></small></div><button class="btn ghost" id="admPlayer"><span>Close</span></button></header>
     <div class="adm-as" id="admAs"><small>Use the app as</small><div><button data-as="admin">👑 You</button><button data-as="bot1">🤖 Aarav</button><button data-as="bot2">🤖 Meera</button></div></div>
-    <nav class="adm-tabs" id="admTabs"><button data-t="overview" class="on">Overview</button><button data-t="mod">Moderation</button><button data-t="users">Players</button><button data-t="events">Events</button><button data-t="records">Records</button><button data-t="test">Test</button></nav>
+    <nav class="adm-tabs" id="admTabs"><button data-t="overview" class="on">Overview</button><button data-t="mod">Moderation</button><button data-t="users">Players</button><button data-t="events">Events</button><button data-t="records">Records</button><button data-t="venues">Venues</button><button data-t="store">Store</button><button data-t="test">Test</button></nav>
     <div class="adm-body" id="admBody"></div>
   </div>
   <div class="viewer" id="viewer" hidden><img alt=""><button aria-label="Close">×</button></div>
@@ -1944,7 +1994,7 @@ function renderMapPane(){const P=window.ProvnMap;if(!P)return;
  const n=P.cached();$('#mcStats').innerHTML=n?`<span><b>${n}</b>places mapped</span><span><b>1</b>city</span>`:'';}
 let segI=0;
 function moveSeg(anim){const si=$('#seg .si');if(!si)return;const w=si.offsetWidth;if(!anim)si.style.transition='none';si.style.transform=`translateX(${segI*(w)}px)${document.documentElement.dataset.theme==='volt'?' skewX(-10deg)':''}`;if(!anim){si.offsetWidth;si.style.transition='';}}
-$$('#seg button').forEach((b,k)=>b.onclick=()=>{if(b.dataset.p==='map')renderMapPane();if(segI===k)return;segI=k;buzz(6);$$('#seg button').forEach((x,j)=>x.classList.toggle('on',j===k));$$('.pane').forEach(p=>p.classList.toggle('on',p.id==='p-'+b.dataset.p));if(b.dataset.p==='ranks')renderRanks();moveSeg(true);});
+$$('#seg button').forEach((b,k)=>b.onclick=()=>{if(b.dataset.p==='map')renderMapPane();if(b.dataset.p==='shop')renderShop();if(segI===k)return;segI=k;buzz(6);$$('#seg button').forEach((x,j)=>x.classList.toggle('on',j===k));$$('.pane').forEach(p=>p.classList.toggle('on',p.id==='p-'+b.dataset.p));if(b.dataset.p==='ranks')renderRanks();moveSeg(true);});
 
 /* ================= YOU ================= */
 const You={render(){const ae=document.activeElement;if(!(ae&&ae.closest&&ae.closest('[data-pf] input')))renderPF();if(!$('#youM .av3d'))$('#youM').innerHTML=`<div class="av3d" data-mode="you">${mascot()}</div>`;const ni=$('#nameIn');if(document.activeElement!==ni)ni.value=store.get('name','');ni.placeholder='Your name';
@@ -1953,7 +2003,7 @@ const You={render(){const ae=document.activeElement;if(!(ae&&ae.closest&&ae.clos
   return `<div class="card wcard ${u?'open':''}"><small>${label} world</small><b>${sc}</b><span class="lv">${LEVELS[l][0]}</span><div class="bar"><i style="width:${Math.min(100,sc/req*100)}%"></i></div><div class="unl"><span data-i="${u?'unlock':'lock'}"></span>${u?`${THEMES[t].name} unlocked`:`${THEMES[t].name} at ${req}`}</div></div>`;}).join('');
  $('#slist').innerHTML=ms.length?ms.map(({s,b})=>{const c=CATS[s.cat];return `<button class="card srow press" data-n="${esc(s.name)}" style="width:100%;text-align:left;--cv:${c.col};--cvi:${c.ink}"><span class="si">${iconSvg(s.ic)}</span><span class="sn"><b>${esc(s.name)}</b><small>${LEVELS[lvOf(b.p)][0]} · best ${fmtPerf(s,b.v,store.get('bw',0))}${unitShort(s)}${(()=>{const r=resultsOf(s.name).find(x=>x.v===b.v);return r&&r.ev?' · '+esc(r.ev):'';})()}</small></span><span class="sp"><b>${b.p}</b><small>pts</small></span></button>`}).join(''):
   `<div class="card empty">No scores yet. Scores come from <b>Provn events</b>: take part in one and your result is added here.<br><button class="btn primary" id="firstProve"><span>See upcoming events</span></button></div>`;
- renderInterests();renderSocial();paintIcons($('#s-you'));$$('#slist .srow').forEach(b=>b.onclick=()=>{go('orbit');setTimeout(()=>Orbit.openSkill(b.dataset.n),280)});
+ renderInterests();renderSocial();renderVenueCard();paintIcons($('#s-you'));$$('#slist .srow').forEach(b=>b.onclick=()=>{go('orbit');setTimeout(()=>Orbit.openSkill(b.dataset.n),280)});
  const fp=$('#firstProve');if(fp)fp.onclick=()=>goEvents();}};
 function goEvents(){go('arena');const b=$('#seg button[data-p="events"]');if(b)b.click();}
 $('#nameIn').addEventListener('click',()=>openPEdit());
@@ -2049,6 +2099,7 @@ const Path=(()=>{let skill=null,tok=0;const el=$('#path'),body=$('#pBody');
    ${sec('news','📰','Latest news',`<div id="hbNews">${sk(76,3)}</div>`)}
    ${sec('records','🏆','Records',`<div id="hbRecs">${sk(90,2)}</div>`)}
    ${sec('events','📅','Events & places',`<div id="hbEvents">${sk(64,2)}</div>${act&&window.ProvnMap?`<button class="btn ghost hb-map" id="hbMap"><span data-i="pin"></span><span>Find places to play</span></button>`:''}`)}
+   <section class="hb-sec" id="hb-gear" hidden><h3 class="hb-h"><span class="hb-hi">🛍️</span>Gear</h3><div class="hb-gear" id="hbGear"></div></section>
    ${sec('history','📜','History',`<div id="hbHist">${sk(120)}</div>`)}
    <div class="hb-more"><small>Learn more</small><div>
     <a class="hb-ln" id="hbWikiL" href="https://en.wikipedia.org/wiki/${encodeURIComponent(wikiTitle(s))}" target="_blank" rel="noopener">Wikipedia</a>
@@ -2090,9 +2141,11 @@ const Path=(()=>{let skill=null,tok=0;const el=$('#path'),body=$('#pBody');
    $('#hbPlaces b').textContent=act?(places?places+'+':'—'):'—';
    $('#hbEvents').innerHTML=list.length?list.map(x=>{const d=new Date(x.date+'T00:00');return `<div class="hb-ev"><span class="hb-ed"><b>${d.getDate()}</b><small>${d.toLocaleDateString(undefined,{month:'short'})}</small></span><div><b>${esc(x.title)}</b><small>${esc([x.time,x.place,x.city].filter(Boolean).join(' · '))}</small>${x.provn?'<em>Provn event · scores count</em>':''}</div></div>`;}).join('')
     :`<p class="note">No upcoming ${esc(s.name)} events yet.${places?` There are ${places} places to play in Ahmedabad.`:''}</p>`;});
+  if(CU())products().then(l=>{if(!live())return;const m=l.filter(p=>(p.skills||[]).includes(s.name));if(!m.length)return;$('#hb-gear').hidden=false;$('#hbGear').innerHTML=m.map(prodHTML).join('');wireProds($('#hbGear'));
+   $('#hbNav [data-k="history"]').insertAdjacentHTML('beforebegin','<button data-k="gear">Gear</button>');const nb=$('#hbNav [data-k="gear"]');nb.onclick=()=>{buzz(6);el.scrollTo({top:$('#hb-gear').offsetTop-118,behavior:'smooth'});};});
   if(CU())people().then(l=>{if(!live())return;const n=l.filter(p=>(p.interests||[]).includes(s.name)).length+(myInterests().includes(s.name)?1:0);$('#hbFans b').textContent=n?`${n} player${n>1?'s':''}`:'Be the first';}).catch(()=>{});
   else $('#hbFans b').textContent='—';}
- el.addEventListener('scroll',()=>{const n=$('#hbNav');if(!n)return;let on='about';$$('.hb-sec',body).forEach(x=>{if(x.offsetTop-140<=el.scrollTop)on=x.id.slice(3);});if(el.scrollTop>40&&el.scrollTop+el.clientHeight>=el.scrollHeight-4)on='history';
+ el.addEventListener('scroll',()=>{const n=$('#hbNav');if(!n)return;let on='about';$$('.hb-sec',body).forEach(x=>{if(!x.hidden&&x.offsetTop-140<=el.scrollTop)on=x.id.slice(3);});if(el.scrollTop>40&&el.scrollTop+el.clientHeight>=el.scrollHeight-4)on='history';
   $$('#hbNav button').forEach(b=>{const a=b.dataset.k===on;if(a&&!b.classList.contains('on'))n.scrollTo({left:b.offsetLeft-n.clientWidth/2+b.offsetWidth/2,behavior:'smooth'});b.classList.toggle('on',a);});},{passive:true});
  $('#pBack').onclick=e=>{e.stopPropagation();Orbit.close()};
  return{show(n){skill=n;setColors(SKILLS[n]);render();el.scrollTop=0;el.classList.add('on');},
@@ -2543,18 +2596,37 @@ document.addEventListener('scroll',()=>{if(!cityDrop.hidden&&cityDrop._owner){ci
 /* ================= EVENTS (real, created by admin) ================= */
 const fmtDate=d=>{const x=new Date(d+'T00:00');return isNaN(x)?{d:'?',m:'',w:''}:{d:x.getDate(),m:x.toLocaleString('en',{month:'short'}),w:x.toLocaleString('en',{weekday:'short'})};};
 let evBusy=false;
+/* paid events: pay by UPI, send the reference, the Provn team confirms */
+let payCfg=null;async function cfgGet(){if(payCfg)return payCfg;try{payCfg=await Cloud.config();}catch(e){payCfg={};}return payCfg;}
+async function openPay(e){const c=await cfgGet(),B=$('#payBody');
+ if(!c.upi){B.innerHTML=`<h2 class="display">${esc(e.title)}</h2><p class="lead">Entry ₹${e.fee}. Online payment isn’t set up yet. Please check back soon.</p>`;showSheet('sh-pay');return;}
+ const link=`upi://pay?pa=${encodeURIComponent(c.upi)}&pn=${encodeURIComponent(c.payee||'Provn')}&am=${e.fee}&cu=INR&tn=${encodeURIComponent(('Provn '+e.title).slice(0,40))}`;
+ B.innerHTML=`<small class="si-cat">Entry fee</small><h2 class="display">${esc(e.title)}</h2><b class="display pay-amt">₹${e.fee}</b>
+  <a class="btn primary" style="width:100%;margin-top:12px" href="${link}"><span>Pay ₹${e.fee} with a UPI app</span></a>
+  <div class="pay-box"><small>Or pay to this UPI ID</small><b>${esc(c.upi)}</b>${c.payee?`<small style="margin-top:4px;text-transform:none;letter-spacing:0">${esc(c.payee)}</small>`:''}<button class="btn ghost" id="payCopy" style="margin-top:10px;height:38px"><span>Copy UPI ID</span></button></div>
+  <ol class="pay-steps"><li>Pay ₹${e.fee} in any UPI app.</li><li>Copy the <b>UPI transaction ID</b> (UTR, usually 12 digits) from the receipt.</li><li>Paste it below. We confirm it, usually within a few hours.</li></ol>
+  <label class="fi">UPI transaction ID<input id="payRef" inputmode="numeric" maxlength="40" placeholder="e.g. 431256789012" autocomplete="off"></label>
+  <button class="btn primary" style="width:100%;margin-top:14px" id="paySend"><span>I’ve paid · register me</span></button>`;
+ $('#payCopy').onclick=async()=>{try{await navigator.clipboard.writeText(c.upi);toast('UPI ID copied');}catch(er){prompt('Copy this UPI ID',c.upi);}};
+ $('#paySend').onclick=async()=>{const ref=$('#payRef').value.replace(/\s/g,'');if(ref.length<6){toast('Paste the UPI transaction ID from your payment receipt');return;}
+  try{await Cloud.payEvent(e.id,store.get('name',''),ref,e.fee);hideSheet();buzz([10,40,10]);toast('Registered! We’ll confirm your payment soon.');evBusy=false;renderEvents();}catch(er){toast('Could not register: '+(er.code||er.message));}};
+ showSheet('sh-pay');}
 async function renderEvents(){if(!CU()||evBusy)return;evBusy=true;
  if(!$('#events').children.length)$('#events').innerHTML='<div class="skel" style="height:80px;margin-top:12px"></div>';
  try{const all=await Cloud.events(),up=all.filter(e=>!e.past);
   const where=e=>[e.place,e.city].filter(Boolean).join(', ');
-  const left=e=>e.spots?Math.max(0,e.spots-e.going)+' spots left':e.going+' going';
-  const btn=e=>`<button class="btn ${e.mine?'primary':'ghost'} reg" data-id="${e.id}"><span>${e.mine?'Going ✓':'Register'}</span></button>`;
+  const left=e=>(e.spots?Math.max(0,e.spots-e.going)+' spots left':e.going+' going')+(e.fee?` · ₹${e.fee} entry`:' · Free');
+  const btn=e=>`<button class="btn ${e.mine&&e.pay!=='pending'?'primary':'ghost'} reg" data-id="${e.id}"><span>${e.mine?(e.pay==='pending'?'Payment pending':e.pay==='rejected'?'Payment issue':'Going ✓'):e.fee?`Register · ₹${e.fee}`:'Register'}</span></button>`;
   if(!up.length){$('#evHero').innerHTML='';$('#evHead').hidden=true;$('#events').innerHTML='<div class="card empty">No events yet. New meets and challenges will show up here.</div>';}
   else{const h=up[0],f=fmtDate(h.date);
    $('#evHero').innerHTML=`<div class="card hero"><span class="blob" style="background:${h.skill&&SKILLS[h.skill]?CATS[SKILLS[h.skill].cat].col:'#9BE15D'}"></span><span class="chip hot" style="align-self:flex-start;position:relative">Next event</span><h2 class="display">${esc(h.title)}</h2><p>${f.w} ${f.d} ${f.m}${h.time?' · '+esc(h.time):''}${where(h)?' · '+esc(where(h)):''}</p>${h.info?`<p class="ev-info">${esc(h.info)}</p>`:''}<div class="hero-f"><small>${left(h)}</small>${btn(h)}</div></div>`;
    $('#evHead').hidden=up.length<2;
    $('#events').innerHTML=up.slice(1).map(e=>{const f=fmtDate(e.date);return`<div class="card ev"><div class="date"><b class="display">${f.d}</b><small>${f.m}</small></div><div class="info"><b>${esc(e.title)}</b><small>${esc(where(e)||e.skill||'')} · ${left(e)}</small></div>${btn(e)}</div>`;}).join('');}
-  $$('#p-events .reg').forEach(b=>b.onclick=async()=>{const e=all.find(x=>x.id===b.dataset.id);buzz(10);b.disabled=true;
+  $$('#p-events .reg').forEach(b=>b.onclick=async()=>{const e=all.find(x=>x.id===b.dataset.id);buzz(10);
+   if(e.fee&&!e.mine){openPay(e);return;}
+   if(e.mine&&e.pay==='paid'){toast('You’re confirmed. To cancel or get a refund, message the Provn team.');return;}
+   if(e.mine&&e.pay==='pending'&&!b.dataset.armed){b.dataset.armed=1;toast('We’re checking your payment. Tap again to cancel your registration.');setTimeout(()=>delete b.dataset.armed,3000);return;}
+   b.disabled=true;
    try{await Cloud.setGoing(e.id,!e.mine,store.get('name',''));toast(e.mine?'Registration cancelled':`You're going to ${e.title}!`);}catch(err){toast('Could not register: '+(err.code||err.message));}
    evBusy=false;renderEvents();});}
  catch(e){$('#events').innerHTML=`<div class="card empty">Could not load events (${esc(e.code||e.message)})</div>`;}
@@ -2589,11 +2661,15 @@ const Admin={tab:'overview',
    <h3 class="adm-h3">Announcement</h3><p class="adm-p">Shown at the top of everyone's Pulse feed.</p>
    <textarea id="admAnn" maxlength="280" placeholder="e.g. Sunday 5k time trial at Marine Drive, register in Arena!">${esc(cfg.announce||'')}</textarea>
    <div class="adm-row"><button class="btn primary" id="admAnnSave"><span>Publish</span></button><button class="btn ghost" id="admAnnClr"><span>Clear</span></button></div>
+   <h3 class="adm-h3">Payments</h3><p class="adm-p">Players pay event fees to this UPI ID, then send you the transaction ID to confirm in Events → Going.</p>
+   <div class="adm-form"><div class="two"><label>UPI ID<input id="admUpi" maxlength="60" value="${esc(cfg.upi||'')}" placeholder="provn@okaxis" autocomplete="off" spellcheck="false"></label><label>Payee name<input id="admPayee" maxlength="60" value="${esc(cfg.payee||'')}" placeholder="Provn Sports"></label></div>
+   <div class="adm-row"><button class="btn primary" id="admUpiSave"><span>Save payment details</span></button></div></div>
    <h3 class="adm-h3">Map imagery</h3><p class="adm-p">Paste your MapTiler API key to switch the globe to MapTiler satellite imagery with 3D terrain.</p>
    <div class="adm-row tight"><input class="adm-in" id="admMT" style="margin:0" maxlength="64" placeholder="MapTiler key" value="${esc(cfg.maptiler||'')}" autocomplete="off" spellcheck="false"><button class="adm-b on" id="admMTSave">Save</button></div>
    <h3 class="adm-h3">Latest posts</h3><div id="admFeed">${feed.length?feed.map(r=>this.res(r,`<button class="adm-b" data-a="cmt">Comments</button><button class="adm-b red" data-a="del">Remove</button>`)).join(''):'<p class="adm-p">No posts yet.</p>'}</div>`;
   const save=async t=>{try{await Cloud.admin.setConfig({announce:t});annCache=null;toast(t?'Announcement published':'Announcement cleared');Pulse.refresh(true);}catch(e){this.err(e)}};
   $('#admMTSave').onclick=async()=>{try{await Cloud.admin.setConfig({maptiler:$('#admMT').value.trim()});toast('Saved · reload the app to see the new imagery');}catch(e){this.err(e)}};
+  $('#admUpiSave').onclick=async()=>{const u=$('#admUpi').value.trim();if(u&&!/^[\w.\-]{2,}@[a-zA-Z]{2,}$/.test(u)){toast('That doesn’t look like a UPI ID (name@bank)');return;}try{await Cloud.admin.setConfig({upi:u,payee:$('#admPayee').value.trim()});payCfg=null;toast('Payment details saved');}catch(e){this.err(e)}};
   $('#admAnnSave').onclick=()=>save($('#admAnn').value.trim());$('#admAnnClr').onclick=()=>{$('#admAnn').value='';save('');};
   this.wireRes(feed,B,()=>this.render());},
  async t_mod(B){const list=await Cloud.admin.flagged();
@@ -2620,16 +2696,17 @@ const Admin={tab:'overview',
     <div class="two"><label>Date<input id="evD" type="date" value="${esc(e.date||'')}"></label><label>Time<input id="evTm" maxlength="12" value="${esc(e.time||'')}" placeholder="7:00 am"></label></div>
     <label>Venue<input id="evP" maxlength="60" value="${esc(e.place||'')}" placeholder="Marine Drive"></label>
     <div class="two"><label>City<input id="evC" maxlength="30" value="${esc(e.city||'')}" placeholder="Mumbai"></label><label>Spots<input id="evN" inputmode="numeric" maxlength="5" value="${e.spots||''}" placeholder="No limit"></label></div>
+    <label>Entry fee (₹)<input id="evF" inputmode="numeric" maxlength="6" value="${e.fee||''}" placeholder="Free"></label>
     <label>Location on map</label><div class="adm-loc"><span id="evLoc">${e.lat!=null?`📍 ${(+e.lat).toFixed(5)}, ${(+e.lng).toFixed(5)}`:'Not set · the event won\'t show on the map'}</span><button class="adm-b" id="evPick">Pick on map</button></div>
     <label>Details<textarea id="evI" maxlength="300" placeholder="What to bring, how results are measured…">${esc(e.info||'')}</textarea></label>
     <datalist id="evSkills">${SKILL_LIST.map(s=>`<option value="${esc(s.name)}">`).join('')}</datalist>
     <div class="adm-row"><button class="btn primary" id="evSave"><span>${edit?'Save changes':'Create event'}</span></button>${edit?'<button class="btn ghost" id="evCancel"><span>Cancel</span></button>':''}</div>
    </div>
-   <h3 class="adm-h3">All events</h3>`+(list.length?list.map(x=>{const f=fmtDate(x.date);return`<div class="adm-r" data-e="${x.id}"><div class="adm-rt"><b>${esc(x.title)}${x.past?' <em class="ban">Past</em>':''}</b><span>${f.w} ${f.d} ${f.m}${x.time?' · '+esc(x.time):''} · ${esc([x.place,x.city].filter(Boolean).join(', '))}</span><small>${x.going} going${x.spots?' of '+x.spots:''}</small></div>${x.skill?'<button class="adm-b" data-a="res">Results</button>':''}<button class="adm-b" data-a="who">Going</button><button class="adm-b" data-a="edit">Edit</button><button class="adm-b red" data-a="del">Delete</button></div>`;}).join(''):'<p class="adm-p">No events yet.</p>');
+   <h3 class="adm-h3">All events</h3>`+(list.length?list.map(x=>{const f=fmtDate(x.date);return`<div class="adm-r" data-e="${x.id}"><div class="adm-rt"><b>${esc(x.title)}${x.past?' <em class="ban">Past</em>':''}</b><span>${f.w} ${f.d} ${f.m}${x.time?' · '+esc(x.time):''} · ${esc([x.place,x.city].filter(Boolean).join(', '))}</span><small>${x.going} going${x.spots?' of '+x.spots:''}${x.fee?` · ₹${x.fee} entry`:' · free'}</small></div>${x.skill?'<button class="adm-b" data-a="res">Results</button>':''}<button class="adm-b" data-a="who">Going</button><button class="adm-b" data-a="edit">Edit</button><button class="adm-b red" data-a="del">Delete</button></div>`;}).join(''):'<p class="adm-p">No events yet.</p>');
   cityAuto($('#evC'),()=>{});
   let evLat=e.lat??null,evLng=e.lng??null;
   $('#evPick').onclick=()=>{Admin.player();openMap({pick:r=>{Admin.open(true);setTimeout(()=>{if(r){evLat=r.lat;evLng=r.lng;const l=$('#evLoc');if(l)l.textContent=`📍 ${r.lat.toFixed(5)}, ${r.lng.toFixed(5)}`;toast('Location set');}},0);}});};
-  $('#evSave').onclick=async()=>{const ev={title:$('#evT').value.trim(),skill:$('#evS').value.trim(),date:$('#evD').value,time:$('#evTm').value.trim(),place:$('#evP').value.trim(),city:$('#evC').value.trim(),spots:parseInt($('#evN').value)||0,info:$('#evI').value.trim()};if(evLat!=null){ev.lat=evLat;ev.lng=evLng;}
+  $('#evSave').onclick=async()=>{const ev={title:$('#evT').value.trim(),skill:$('#evS').value.trim(),date:$('#evD').value,time:$('#evTm').value.trim(),place:$('#evP').value.trim(),city:$('#evC').value.trim(),spots:parseInt($('#evN').value)||0,fee:parseInt($('#evF').value)||0,info:$('#evI').value.trim()};if(evLat!=null){ev.lat=evLat;ev.lng=evLng;}
    if(!ev.title||!ev.date){toast('Title and date are needed');return;}if(ev.skill&&!SKILLS[ev.skill]){toast('Pick a skill from the list, or leave it empty');return;}
    try{await Cloud.admin.saveEvent(ev,edit&&edit.id);toast(edit?'Event updated':'Event created · players see it in Arena');this.t_events(B);renderEvents();}catch(er){this.err(er)}};
   if(edit)$('#evCancel').onclick=()=>this.t_events(B);
@@ -2637,7 +2714,16 @@ const Admin={tab:'overview',
    if(b.dataset.a==='edit'){this.t_events(B,x);}
    if(b.dataset.a==='del')this.confirm(b,async()=>{try{await Cloud.admin.deleteEvent(x.id);toast('Event deleted');this.t_events(B);renderEvents();}catch(er){this.err(er)}});
    if(b.dataset.a==='res'){const o=el.querySelector('.adm-er');if(o){o.remove();return;}el.insertAdjacentHTML('beforeend','<div class="adm-er"><div class="skel" style="height:40px"></div></div>');this.evResults(el.querySelector('.adm-er'),x);return;}
-   if(b.dataset.a==='who'){const o=el.querySelector('.adm-c');if(o){o.remove();return;}const g=await Cloud.admin.going(x.id);el.insertAdjacentHTML('beforeend',`<div class="adm-c">${g.length?g.map(p=>esc(p.name||'Player')).join(', '):'Nobody yet.'}</div>`);}});});},
+   if(b.dataset.a==='who'){const o=el.querySelector('.adm-c');if(o){o.remove();return;}el.insertAdjacentHTML('beforeend','<div class="adm-c"></div>');this.goingList(el.querySelector('.adm-c'),x);}});});},
+ /* who's registered; for paid events confirm or reject each UPI reference */
+ async goingList(box,ev){const g=await Cloud.admin.going(ev.id),PL={pending:'⏳ Pending',paid:'✅ Paid',rejected:'❌ Rejected',refunded:'↩ Refunded'};
+  if(!g.length){box.textContent='Nobody yet.';return;}
+  const paid=g.filter(p=>p.pay==='paid').length;
+  box.innerHTML=(ev.fee?`<p class="adm-p">${paid} paid · ₹${paid*ev.fee} collected · ${g.filter(p=>p.pay==='pending').length} to check</p>`:'')+g.map(p=>`<div class="adm-r sm"><div class="adm-rt"><b>${esc(p.name||'Player')}</b>${p.pay?`<span>${PL[p.pay]||p.pay} · UTR ${esc(p.ref||'')} · ₹${p.amt||0}</span>`:'<span>Free registration</span>'}</div>${p.pay==='pending'?`<button class="adm-b on" data-ok="${p.uid}">Confirm</button><button class="adm-b red" data-no="${p.uid}">Reject</button>`:p.pay==='paid'?`<button class="adm-b" data-rf="${p.uid}">Refunded</button>`:''}</div>`).join('');
+  const set=async(uid,pay,msg)=>{try{await Cloud.admin.setPay(ev.id,uid,pay);Cloud.notify(uid,'payment',{ref:ev.id,col:'events',text:msg});toast('Updated');this.goingList(box,ev);}catch(e){this.err(e);}};
+  box.querySelectorAll('[data-ok]').forEach(b=>b.onclick=()=>set(b.dataset.ok,'paid',`Payment confirmed for ${ev.title}. See you there!`));
+  box.querySelectorAll('[data-no]').forEach(b=>b.onclick=()=>this.confirm(b,()=>set(b.dataset.no,'rejected',`We couldn’t match your payment for ${ev.title}. Check the UPI ID and message us.`)));
+  box.querySelectorAll('[data-rf]').forEach(b=>b.onclick=()=>this.confirm(b,()=>set(b.dataset.rf,'refunded',`Your ₹${ev.fee} for ${ev.title} has been refunded.`)));},
  /* enter scores for a Provn event: pick a player, type their result; points use their gender and age */
  async evResults(box,ev){const s=SKILLS[ev.skill],q=x=>box.querySelector(x);if(!s){box.innerHTML='<p class="adm-p">Set a valid skill on this event first.</p>';return;}
   const [rows,users,going]=await Promise.all([Cloud.admin.eventResults(ev.id),Cloud.admin.users(),Cloud.admin.going(ev.id).catch(()=>[])]);
@@ -2660,6 +2746,50 @@ const Admin={tab:'overview',
     Cloud.notify(r.u.uid,'result',{ref:ev.id,col:'events',text:`${fmtPerf(s,r.x,0)}${unitShort(s)} at ${ev.title} · ${r.pts} pts`});
     toast(`Saved ${r.u.name}: ${r.pts} pts`);this.evResults(box,ev);}catch(e){this.err(e);}};
   box.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>this.confirm(b,async()=>{try{await Cloud.admin.deleteEventResult(b.dataset.del);toast('Removed');this.evResults(box,ev);}catch(e){this.err(e);}}));},
+ async t_venues(B){const [apps,vens,leads,bks,users]=await Promise.all([Cloud.admin.venueApps(),Cloud.venues(),Cloud.admin.leads(),Cloud.admin.bookings(),Cloud.admin.users()]);
+  const since=Date.now()-30*864e5,lc=id=>leads.filter(l=>l.venue===id&&l.t>=since).length,uname=u=>(users.find(x=>x.uid===u)||{}).name||'';
+  const newA=apps.filter(a=>a.status==='new');
+  B.innerHTML=`<h3 class="adm-h3" style="margin-top:0">Applications</h3><p class="adm-p">Call the owner to verify, then approve. Approving adds the venue to the map with the owner linked.</p>
+   ${newA.length?newA.map(a=>`<div class="adm-r" data-a="${a.id}"><div class="adm-rt"><b>${esc(a.name)} ${a.plan==='partner'?'<em class="ban" style="background:var(--accent);color:var(--on-accent)">Partner</em>':''}</b><span>${esc([a.addr,a.city].filter(Boolean).join(', '))} · ${esc((a.acts||[]).join(', '))}</span><small>${esc(a.contact||a.by||'')} · 📞 ${esc(a.phone)}${a.lat!=null?' · 📍 pinned':' · no map pin'}${a.info?' · '+esc(a.info):''}</small></div>
+     <a class="adm-b" href="tel:${esc(a.phone)}">Call</a><button class="adm-b on" data-x="ok">Approve</button><button class="adm-b red" data-x="no">Reject</button></div>`).join(''):'<p class="adm-p">No new applications.</p>'}
+   <h3 class="adm-h3">Provn venues</h3><p class="adm-p">Partners are featured, take bookings and see their lead report. Leads = views and taps in the last 30 days.</p>
+   ${vens.length?vens.map(v=>`<div class="adm-r" data-v="${v.id}"><div class="adm-rt"><b>${esc(v.name)}${v.tier==='partner'?' ⭐':''}</b><span>${lc(v.id)} leads · ${bks.filter(b=>b.venue===v.id).length} bookings${v.owner?' · owner '+esc(uname(v.owner)||'linked'):''}</span></div>
+     <button class="adm-b ${v.tier==='partner'?'on':''}" data-x="tier">${v.tier==='partner'?'Partner':'Make partner'}</button><button class="adm-b" data-x="own">Owner</button></div>`).join(''):'<p class="adm-p">No Provn venues yet. Approve an application or long-press the map to add one.</p>'}
+   <h3 class="adm-h3">Booking requests</h3>${bks.length?bks.slice(0,40).map(b=>`<div class="adm-r sm"><div class="adm-rt"><b>${esc(b.venueName)} · ${esc(b.name)}</b><span>${esc(b.date)} ${esc(b.time||'')} · ${b.people} · ${b.status}${b.owner?'':' · no owner linked'}</span></div>${b.status==='new'?`<button class="adm-b on" data-bk="${b.id}" data-s="accepted" data-u="${b.uid}">Accept</button><button class="adm-b red" data-bk="${b.id}" data-s="declined" data-u="${b.uid}">Decline</button>`:''}</div>`).join(''):'<p class="adm-p">None yet.</p>'}`;
+  $$('[data-a]',B).forEach(r=>{const a=apps.find(x=>x.id===r.dataset.a);
+   r.querySelector('[data-x="ok"]').onclick=async()=>{if(a.lat==null){toast('No map pin: add the venue by long-pressing the map, then link the owner here');return;}
+    try{await Cloud.admin.saveVenue({name:a.name,kind:'pitch',acts:a.acts||[],addr:a.addr||'',phone:a.phone||'',web:'',info:a.info||'',lat:a.lat,lng:a.lng,city:a.city||'',tier:a.plan==='partner'?'partner':'',owner:a.uid});
+     await Cloud.admin.setApp(a.id,'approved');toast('Approved · now on the map');this.t_venues(B);}catch(e){this.err(e);}};
+   r.querySelector('[data-x="no"]').onclick=()=>this.confirm(r.querySelector('[data-x="no"]'),async()=>{try{await Cloud.admin.setApp(a.id,'rejected');this.t_venues(B);}catch(e){this.err(e);}});});
+  $$('[data-v]',B).forEach(r=>{const v=vens.find(x=>x.id===r.dataset.v);
+   r.querySelector('[data-x="tier"]').onclick=async()=>{try{await Cloud.admin.setVenueTier(v.id,{tier:v.tier==='partner'?'':'partner'});toast('Updated');this.t_venues(B);}catch(e){this.err(e);}};
+   r.querySelector('[data-x="own"]').onclick=()=>{const o=r.querySelector('.adm-c');if(o){o.remove();return;}
+    r.insertAdjacentHTML('beforeend',`<div class="adm-c"><select class="adm-in" style="margin:0">${['<option value="">No owner</option>',...users.filter(u=>u.name).map(u=>`<option value="${u.uid}" ${u.uid===v.owner?'selected':''}>${esc(u.name)}${u.city?' · '+esc(u.city):''}</option>`)].join('')}</select><button class="adm-b on" style="margin-top:6px">Save owner</button></div>`);
+    r.querySelector('.adm-c button').onclick=async()=>{try{await Cloud.admin.setVenueTier(v.id,{owner:r.querySelector('.adm-c select').value});toast('Owner saved');this.t_venues(B);}catch(e){this.err(e);}};};});
+  $$('[data-bk]',B).forEach(b=>b.onclick=async()=>{try{await Cloud.admin.setBooking(b.dataset.bk,b.dataset.s);Cloud.notify(b.dataset.u,'booking',{ref:b.dataset.bk,col:'bookings',text:b.dataset.s==='accepted'?'Your booking is accepted.':'Your booking couldn’t be accepted.'});this.t_venues(B);}catch(e){this.err(e);}});},
+ async t_store(B,edit){const [list,clicks]=await Promise.all([Cloud.products(true).catch(()=>[]),Cloud.admin.clicks().catch(()=>[])]),e=edit||{},since=Date.now()-30*864e5;
+  B.innerHTML=`<h3 class="adm-h3" style="margin-top:0">${edit?'Edit product':'Add a product'}</h3><p class="adm-p">Players tap through to the vendor’s page. Use your affiliate or partner link to earn a fee.</p>
+   <div class="adm-form">
+    <label>Name<input id="prN" maxlength="80" value="${esc(e.name||'')}" placeholder="Joola Ben Johns Hyperion paddle"></label>
+    <div class="two"><label>Price (₹)<input id="prP" inputmode="numeric" maxlength="7" value="${e.price||''}"></label><label>MRP (₹)<input id="prM" inputmode="numeric" maxlength="7" value="${e.mrp||''}" placeholder="Optional"></label></div>
+    <label>Vendor<input id="prV" maxlength="60" value="${esc(e.vendor||'')}" placeholder="Decathlon, Amazon, a local shop"></label>
+    <label>Product link<input id="prU" maxlength="500" value="${esc(e.url||'')}" placeholder="https://…" spellcheck="false"></label>
+    <label>Image</label><div class="adm-loc"><span id="prImgT">${e.img?'Image set':'No image'}</span><button class="adm-b" id="prImgB">Upload</button></div><input type="file" id="prImgF" accept="image/*" hidden>
+    <label>Image link<input id="prI" maxlength="500" value="${esc(e.img||'')}" placeholder="or paste an image URL" spellcheck="false"></label>
+    <label>Activities (comma separated)<input id="prS" list="evSkills" value="${esc((e.skills||[]).join(', '))}" placeholder="Pickleball, Tennis"></label>
+    <datalist id="evSkills">${SKILL_LIST.map(x=>`<option value="${esc(x.name)}">`).join('')}</datalist>
+    <label class="adm-ck"><input type="checkbox" id="prA" ${e.active===false?'':'checked'}> Show in the shop</label>
+    <div class="adm-row"><button class="btn primary" id="prSave"><span>${edit?'Save changes':'Add product'}</span></button>${edit?'<button class="btn ghost" id="prCancel"><span>Cancel</span></button>':''}</div></div>
+   <h3 class="adm-h3">Products</h3>${list.length?list.map(p=>`<div class="adm-r" data-p="${p.id}"><div class="adm-rt"><b>${esc(p.name)}${p.active===false?' <em class="ban">Hidden</em>':''}</b><span>₹${p.price||0} · ${esc(p.vendor||'')} · ${clicks.filter(c=>c.product===p.id&&c.t>=since).length} clicks (30 days)</span><small>${esc((p.skills||[]).join(', '))}</small></div><button class="adm-b" data-x="edit">Edit</button><button class="adm-b red" data-x="del">Delete</button></div>`).join(''):'<p class="adm-p">No products yet.</p>'}`;
+  $('#prImgB').onclick=()=>$('#prImgF').click();
+  $('#prImgF').onchange=async ev=>{const f=ev.target.files[0];if(!f)return;$('#prImgT').textContent='Uploading…';try{const m=await Cloud.uploadMedia(f,x=>$('#prImgT').textContent=`Uploading ${Math.round(x*100)}%`);$('#prI').value=m.url.replace('/upload/','/upload/w_600,c_limit,q_auto,f_auto/');$('#prImgT').textContent='Image set';}catch(er){$('#prImgT').textContent='Upload failed';this.err(er);}};
+  $('#prSave').onclick=async()=>{const p={name:$('#prN').value.trim(),price:parseInt($('#prP').value)||0,mrp:parseInt($('#prM').value)||0,vendor:$('#prV').value.trim(),url:$('#prU').value.trim(),img:$('#prI').value.trim(),
+    skills:$('#prS').value.split(',').map(x=>x.trim()).filter(x=>SKILLS[x]),active:$('#prA').checked};
+   if(!p.name||!/^https:\/\//.test(p.url)){toast('Add a name and an https:// link');return;}
+   try{await Cloud.admin.saveProduct(p,edit&&edit.id);prodCache=null;toast(edit?'Saved':'Added to the shop');this.t_store(B);}catch(er){this.err(er);}};
+  if(edit)$('#prCancel').onclick=()=>this.t_store(B);
+  $$('[data-p]',B).forEach(r=>{const p=list.find(x=>x.id===r.dataset.p);r.querySelector('[data-x="edit"]').onclick=()=>{this.t_store(B,p);B.scrollTop=0;};
+   r.querySelector('[data-x="del"]').onclick=()=>this.confirm(r.querySelector('[data-x="del"]'),async()=>{try{await Cloud.admin.deleteProduct(p.id);prodCache=null;this.t_store(B);}catch(er){this.err(er);}});});},
  async t_records(B){const list=(await Cloud.admin.allRecords()).sort((a,b)=>(a.region+a.skill).localeCompare(b.region+b.skill));
   B.innerHTML=`<h3 class="adm-h3" style="margin-top:0">Add a state or national record</h3><p class="adm-p">Shown at the top of the State and National rankings. India's national athletics records are already built in; anything you add here replaces them.</p>
    <div class="adm-form">
@@ -2847,7 +2977,7 @@ $('#intSave').onclick=()=>{store.set('interests',[...intSel]);hideSheet();buzz(1
 $('#intEdit').onclick=openInterests;
 
 /* auto-update: GitHub Pages lets phones keep an old copy for ~10 min; check the live version and reload if it's newer */
-const APP_V='20261123u';
+const APP_V='20261123v';
 async function checkUpdate(){try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});const j=await r.json();
  if(j.v&&j.v!==APP_V&&sessionStorage.getItem('provn_upd')!==j.v){sessionStorage.setItem('provn_upd',j.v);toast('Updating Provn…');setTimeout(()=>location.replace(location.pathname+'?v='+j.v+location.hash),600);}}catch(e){}}
 checkUpdate();document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkUpdate();});
@@ -2897,10 +3027,10 @@ async function openPeople(kind,uid,name,g){const dm=kind==='dm';$('#pplT').textC
 /* ================= NOTIFICATIONS + DIRECT MESSAGES (live) ================= */
 const snip=p=>(p.text||(p.skill?p.skill:'')||'').replace(/\s+/g,' ').slice(0,80);
 let ntfs=[],chats=[],ntfUn=null,chatUn=null,ntfNew=new Set();
-const NTF={like:['❤️','liked your post'],legit:['✅','vouched your result is legit'],comment:['💬','commented'],mention:['@','mentioned you'],repost:['↻','reposted your post'],follow:['👤','started following you'],result:['🏅','added your event result']};
+const NTF={like:['❤️','liked your post'],legit:['✅','vouched your result is legit'],comment:['💬','commented'],mention:['@','mentioned you'],repost:['↻','reposted your post'],follow:['👤','started following you'],result:['🏅','added your event result'],payment:['💳','updated your event payment'],booking:['📅','replied to your booking']};
 function ntfLine(n){const k=NTF[n.kind]||['•',''];return n.kind==='follow'&&n.text==='back'?'followed you back':k[1];}
 function startLive(){ntfUn&&ntfUn();chatUn&&chatUn();ntfUn=chatUn=null;ntfs=[];chats=[];paintBadges();if(!CU())return;
- let f1=true;ntfUn=Cloud.listenNotifs(l=>{if(!f1&&!(openSheet&&openSheet.id==='sh-ntf')){const n=l.find(x=>!x.read&&!ntfs.some(o=>o.id===x.id));if(n){toast(`${NTF[n.kind]?NTF[n.kind][0]:''} ${n.kind==='result'?'Provn':n.fromName} ${ntfLine(n)}${n.kind==='result'&&n.text?': '+n.text:''}`);buzz(12);}}
+ let f1=true;ntfUn=Cloud.listenNotifs(l=>{if(!f1&&!(openSheet&&openSheet.id==='sh-ntf')){const n=l.find(x=>!x.read&&!ntfs.some(o=>o.id===x.id));if(n){toast(`${NTF[n.kind]?NTF[n.kind][0]:''} ${n.kind==='result'||n.kind==='payment'?'Provn':n.fromName} ${ntfLine(n)}${['result','payment','booking'].includes(n.kind)&&n.text?': '+n.text:''}`);buzz(12);}}
   f1=false;ntfs=l;paintBadges();if(openSheet&&openSheet.id==='sh-ntf')paintNotifs();});
  let f2=true;chatUn=Cloud.listenChats(l=>{const me=Cloud.user.uid;
   if(!f2)l.forEach(c=>{const o=chats.find(x=>x.id===c.id);if(c.lastFrom!==me&&(!o||o.t<c.t)&&!(chatWith&&Cloud.chatId(me,chatWith.uid)===c.id&&openSheet&&openSheet.id==='sh-chat')){toast(`💬 ${(c.names||{})[c.lastFrom]||'New message'}: ${c.last}`);buzz(12);}});
@@ -2911,10 +3041,10 @@ function paintBadges(){const a=ntfs.filter(n=>!n.read).length,b=unreadChats();
  [['#btnBell',a],['#btnChat',b]].forEach(([s,n])=>{const el=$(s+' .bdg');el.hidden=!n;el.textContent=n>9?'9+':n;});}
 function openNotifs(){ntfNew=new Set(ntfs.filter(n=>!n.read).map(n=>n.id));showSheet('sh-ntf');paintNotifs();if(ntfNew.size)setTimeout(()=>Cloud.markRead([...ntfNew]),900);}
 function paintNotifs(){const el=$('#ntfList');
- el.innerHTML=ntfs.length?ntfs.map(n=>`<button class="ntf ${ntfNew.has(n.id)?'new':''}" data-id="${n.id}"><span class="na">${avHTML(n.fromName,n.fromPhoto,'pp-av')}<i>${(NTF[n.kind]||['•'])[0]}</i></span><div><b>${esc(n.kind==='result'?'Provn':n.fromName)}</b> ${esc(ntfLine(n))}${n.text&&n.kind!=='follow'?`<q>${esc(n.text)}</q>`:''}<small>${ago(n.t)}</small></div></button>`).join('')
+ el.innerHTML=ntfs.length?ntfs.map(n=>`<button class="ntf ${ntfNew.has(n.id)?'new':''}" data-id="${n.id}"><span class="na">${avHTML(n.fromName,n.fromPhoto,'pp-av')}<i>${(NTF[n.kind]||['•'])[0]}</i></span><div><b>${esc(n.kind==='result'||n.kind==='payment'?'Provn':n.fromName)}</b> ${esc(ntfLine(n))}${n.text&&n.kind!=='follow'?`<q>${esc(n.text)}</q>`:''}<small>${ago(n.t)}</small></div></button>`).join('')
   :'<p class="note">Nothing yet. You’ll hear here when players like, vouch, comment on or repost your posts, tag you or follow you.</p>';
  $$('#ntfList .ntf').forEach(b=>b.onclick=()=>{const n=ntfs.find(x=>x.id===b.dataset.id);if(!n)return;buzz(6);
-  if(n.kind==='follow'){openUser(n.from,n.fromName);return;}if(n.kind==='result'){hideSheet();go('you');return;}hideSheet();setTimeout(()=>focusPost(n.ref),60);});}
+  if(n.kind==='follow'){openUser(n.from,n.fromName);return;}if(n.kind==='result'){hideSheet();go('you');return;}if(n.kind==='payment'){hideSheet();goEvents();return;}if(n.kind==='booking'){hideSheet();go('you');return;}hideSheet();setTimeout(()=>focusPost(n.ref),60);});}
 /* messages */
 let chatWith=null,msgUn=null;
 function chatOther(c){const me=Cloud.user.uid,o=c.members.find(x=>x!==me)||me;return {uid:o,name:(c.names||{})[o]||'Player',photo:(c.photos||{})[o]||''};}
@@ -2944,6 +3074,80 @@ $('#chIn').addEventListener('input',e=>{const t=e.target;t.style.height='auto';t
 $('#chSend').onclick=async()=>{const t=$('#chIn').value.trim();if(!t||!chatWith)return;$('#chIn').value='';$('#chIn').style.height='';$('#chIn').focus({preventScroll:true});buzz(6);
  try{await Cloud.sendMsg(chatWith,t);}catch(e){toast('Could not send: '+(e.code||e.message));$('#chIn').value=t;}};
 
+/* ================= VENUES: owners list their place; partners get bookings and a lead report ================= */
+const VACTS=()=>(window.ProvnMap?ProvnMap.ACTS.filter(a=>a.k!=='multi'):[]);
+let myVen=null;
+async function renderVenueCard(){const el=$('#venueCard');if(!el)return;if(!CU()){el.innerHTML='';return;}
+ try{if(!myVen){const [v,a,b]=await Promise.all([Cloud.myVenues(),Cloud.myVenueApps(),Cloud.myBookings()]);myVen={v,a,b};}}catch(e){myVen={v:[],a:[],b:[]};}
+ const {v,a,b}=myVen,pend=a.filter(x=>x.status==='new'),open=b.filter(x=>['new','accepted'].includes(x.status));
+ el.innerHTML=v.length?`<h4>Your venue${v.length>1?'s':''}</h4><p>${v.map(x=>esc(x.name)+(x.tier==='partner'?' · ⭐ Partner':'')).join(', ')}</p><div class="row"><button class="btn primary" id="vcOwn"><span>Open dashboard</span></button></div>`
+  :`<h4>Own a court, ground or academy?</h4><p>List it on Provn so players can find you. Partners get featured, take booking requests and see how many players we send.</p><div class="row"><button class="btn primary" id="vcApply"><span>List your venue</span></button></div>${pend.length?`<span class="st">⏳ ${esc(pend[0].name)}: application under review</span>`:''}`;
+ if(open.length)el.insertAdjacentHTML('beforeend',`<span class="st">📅 Your bookings: ${open.map(x=>`${esc(x.venueName)} ${fmtDate(x.date).d} ${fmtDate(x.date).m} (${x.status==='new'?'waiting':'accepted'})`).join(' · ')}</span>`);
+ const o=$('#vcOwn');if(o)o.onclick=()=>openOwner();const ap=$('#vcApply');if(ap)ap.onclick=()=>openApply();}
+addEventListener('cloud-auth',()=>{myVen=null;});
+function openApply(pre){if(!CU()){toast('Sign in first');return;}const st={acts:new Set(),plan:'partner',lat:null,lng:null},B=$('#vaBody');
+ B.innerHTML=`<h2 class="display">List your venue</h2><p class="lead">Tell us about your place. We check every venue before it goes on the map.</p>
+  <label class="fi">Venue name<input id="vaN" maxlength="60" value="${esc(pre&&pre.name||'')}" placeholder="e.g. Smash Point Pickleball"></label>
+  <div class="two-c"><label class="fi">Your name<input id="vaC" maxlength="40" value="${esc(store.get('name',''))}"></label><label class="fi">Phone<input id="vaP" inputmode="tel" maxlength="20" placeholder="98xxxxxxxx"></label></div>
+  <label class="fi">Address<input id="vaA" maxlength="120" value="${esc(pre&&pre.addr||'')}" placeholder="Street, area"></label>
+  <label class="fi">City<input id="vaCity" maxlength="40" value="${esc(store.get('city',''))}"></label>
+  <span class="fi">Activities</span><div class="chips-sel" id="vaActs">${VACTS().map(x=>`<button data-k="${x.k}">${x.svg?'🏓':x.e} ${esc(x.n)}</button>`).join('')||'<small class="note">Open the map once to load activities.</small>'}</div>
+  <span class="fi">Location</span><div class="pay-box" style="margin-top:6px"><b id="vaLoc" style="font-size:14px">Not set</b><button class="btn ghost" id="vaPick" style="margin-top:8px;height:38px"><span>Pick on map</span></button></div>
+  <span class="fi">Plan</span><div class="plan" id="vaPlan"><button data-p="free"><b>Free listing</b><small>On the map with your details.</small></button><button data-p="partner" class="on"><b>Provn Partner</b><small>Featured, booking requests, player report, host Provn events.</small></button></div>
+  <label class="fi">Anything else?<textarea id="vaI" maxlength="300" placeholder="Courts, timings, prices, coaching"></textarea></label>
+  <button class="btn primary" style="width:100%;margin-top:16px" id="vaSend"><span>Send application</span></button>
+  <p class="note">Partner pricing is shared after we review your venue. Listing is free.</p>`;
+ cityAuto($('#vaCity'),()=>{});
+ $$('#vaActs button').forEach(b=>b.onclick=()=>{b.classList.toggle('on');b.classList.contains('on')?st.acts.add(b.dataset.k):st.acts.delete(b.dataset.k);});
+ $$('#vaPlan button').forEach(b=>b.onclick=()=>{st.plan=b.dataset.p;$$('#vaPlan button').forEach(x=>x.classList.toggle('on',x===b));});
+ $('#vaPick').onclick=()=>{hideSheet();openMap({pick:r=>{setTimeout(()=>{showSheet('sh-venue');if(r){st.lat=r.lat;st.lng=r.lng;$('#vaLoc').textContent=`📍 ${r.lat.toFixed(5)}, ${r.lng.toFixed(5)}`;}},250);}});};
+ $('#vaSend').onclick=async()=>{const d={name:$('#vaN').value.trim(),contact:$('#vaC').value.trim(),phone:$('#vaP').value.trim(),addr:$('#vaA').value.trim(),city:$('#vaCity').value.trim(),acts:[...st.acts],plan:st.plan,info:$('#vaI').value.trim()};
+  if(st.lat!=null){d.lat=st.lat;d.lng=st.lng;}
+  if(!d.name||!d.phone){toast('Add the venue name and a phone number');return;}if(!d.acts.length){toast('Pick at least one activity');return;}
+  try{await Cloud.applyVenue(d);hideSheet();myVen=null;renderVenueCard();buzz([10,40,10]);toast('Application sent! We’ll call you to verify.');}catch(e){toast('Could not send: '+(e.code||e.message));}};
+ showSheet('sh-venue');}
+async function openOwner(){const B=$('#ownBody');B.innerHTML='<div class="skel" style="height:140px"></div>';showSheet('sh-own');
+ const vs=myVen&&myVen.v||[];if(!vs.length){B.innerHTML='<p class="note">No venues yet.</p>';return;}
+ const parts=await Promise.all(vs.map(async v=>{const [ld,bk]=await Promise.all([Cloud.venueLeads(v.id).catch(()=>[]),Cloud.venueBookings(v.id).catch(()=>[])]);return {v,ld,bk};}));
+ const since=Date.now()-30*864e5;
+ B.innerHTML=parts.map(({v,ld,bk})=>{const l=ld.filter(x=>x.t>=since),c=k=>l.filter(x=>x.kind===k).length;
+  return `<h2 class="display">${esc(v.name)}</h2><small class="si-cat">${v.tier==='partner'?'⭐ Provn Partner':'Free listing'} · last 30 days</small>
+   <div class="own-stats"><div><b>${c('view')}</b><small>Views</small></div><div><b>${c('dir')+c('call')+c('web')}</b><small>Taps</small></div><div><b>${bk.filter(x=>x.t>=since).length}</b><small>Bookings</small></div></div>
+   <p class="note" style="text-align:left">Taps = directions ${c('dir')} · calls ${c('call')} · website ${c('web')}</p>
+   <h4 class="u-sec">Booking requests</h4>${bk.length?bk.map(x=>`<div class="bk" data-b="${x.id}" data-u="${x.uid}"><em>${x.status}</em><b>${esc(x.name)} · ${x.people} ${x.people>1?'people':'person'}${x.act?' · '+esc(x.act):''}</b><small>${fmtDate(x.date).w} ${fmtDate(x.date).d} ${fmtDate(x.date).m}${x.time?' · '+esc(x.time):''}${x.phone?' · 📞 '+esc(x.phone):''}</small>${x.note?`<small>“${esc(x.note)}”</small>`:''}
+     ${x.status==='new'?`<div class="row"><button class="btn primary" data-s="accepted"><span>Accept</span></button><button class="btn ghost" data-s="declined"><span>Decline</span></button>${x.phone?`<a class="btn ghost" href="tel:${esc(x.phone)}"><span>Call</span></a>`:''}</div>`:''}</div>`).join(''):'<p class="note" style="text-align:left">No requests yet.</p>'}`;}).join('<hr style="border:0;height:2px;background:var(--bg3);margin:20px 0">');
+ $$('#ownBody .bk [data-s]').forEach(b=>b.onclick=async()=>{const r=b.closest('.bk'),st=b.dataset.s;
+  try{await Cloud.setBooking(r.dataset.b,st);Cloud.notify(r.dataset.u,'booking',{ref:r.dataset.b,col:'bookings',text:st==='accepted'?'Your booking is accepted. See you there!':'Your booking couldn’t be accepted. Try another time.'});toast(st==='accepted'?'Accepted · the player is notified':'Declined');openOwner();}catch(e){toast(e.code||e.message);}});}
+/* from the map: a booking request to a partner venue */
+function openBooking(v){const B=$('#ownBody'),t=new Date().toISOString().slice(0,10);
+ B.innerHTML=`<small class="si-cat">⭐ Provn Partner</small><h2 class="display">Book ${esc(v.name)}</h2><p class="lead">Send a request. The venue confirms it and you’ll get a notification.</p>
+  <div class="two-c"><label class="fi">Date<input id="bkD" type="date" min="${t}" value="${t}"></label><label class="fi">Time<input id="bkT" maxlength="20" placeholder="7 am"></label></div>
+  <div class="two-c"><label class="fi">People<input id="bkN" inputmode="numeric" maxlength="2" value="2"></label><label class="fi">Activity<select id="bkA">${(v.acts||[]).map(k=>{const a=VACTS().find(x=>x.k===k);return a?`<option>${esc(a.n)}</option>`:'';}).join('')}</select></label></div>
+  <label class="fi">Phone<input id="bkP" inputmode="tel" maxlength="20" placeholder="So the venue can confirm"></label>
+  <label class="fi">Note<input id="bkO" maxlength="200" placeholder="Court preference, coaching, equipment"></label>
+  <button class="btn primary" style="width:100%;margin-top:16px" id="bkSend"><span>Send booking request</span></button>`;
+ $('#bkSend').onclick=async()=>{const b={date:$('#bkD').value,time:$('#bkT').value.trim(),people:parseInt($('#bkN').value)||1,act:$('#bkA').value||'',phone:$('#bkP').value.trim(),note:$('#bkO').value.trim(),name:store.get('name','')};
+  if(!b.date){toast('Pick a date');return;}
+  try{await Cloud.requestBooking(v,b);Cloud.lead(v,'book');hideSheet();myVen=null;buzz([10,40,10]);toast('Request sent! You’ll be notified when they reply.');}catch(e){toast('Could not send: '+(e.code||e.message));}};
+ showSheet('sh-own');}
+window.provnVenueHooks={lead:(v,k)=>Cloud.lead({id:v.docId,owner:v.owner||''},k),book:v=>openBooking({id:v.docId,name:v.name,owner:v.owner||'',acts:v.acts}),claim:v=>openApply({name:v.name,addr:v.addr})};
+
+/* ================= SHOP: gear from vendors ================= */
+let prodCache=null,shopCat='';
+async function products(){if(prodCache)return prodCache;try{prodCache=await Cloud.products();}catch(e){prodCache=[];}return prodCache;}
+function prodHTML(p){const off=p.mrp>p.price&&p.price?Math.round((1-p.price/p.mrp)*100):0;
+ return `<a class="pd press" data-p="${p.id}" href="${esc(p.url)}" target="_blank" rel="noopener sponsored"><span class="pd-i" style="background-image:url('${esc(p.img)}')"></span><span class="pd-t"><b>${esc(p.name)}</b><small>${esc(p.vendor||'')}</small><span class="pd-p">${p.price?'₹'+p.price.toLocaleString('en-IN'):'See price'}${off?`<s>₹${p.mrp.toLocaleString('en-IN')}</s><em>${off}% off</em>`:''}</span></span></a>`;}
+function wireProds(root){$$('.pd',root).forEach(a=>a.onclick=()=>{const p=(prodCache||[]).find(x=>x.id===a.dataset.p);if(p)Cloud.click(p);buzz(6);});}
+async function renderShop(){const g=$('#shopGrid');if(!CU())return;if(!prodCache)g.innerHTML='<div class="skel" style="height:200px"></div><div class="skel" style="height:200px"></div>';
+ const list=await products(),mine=new Set(myInterests());
+ const cats=[...new Set(list.flatMap(p=>(p.skills||[]).map(n=>SKILLS[n]?SKILLS[n].cat:'')).filter(Boolean))];
+ $('#shopChips').innerHTML=[['','All'],...(mine.size?[['mine','For you']]:[]),...cats.map(c=>[c,CATS[c].n])].map(([k,n])=>`<button data-c="${k}" class="${shopCat===k?'on':''}">${esc(n)}</button>`).join('');
+ $$('#shopChips button').forEach(b=>b.onclick=()=>{shopCat=b.dataset.c;buzz(6);renderShop();});
+ const q=$('#shopQ').value.trim().toLowerCase();
+ const l=list.filter(p=>(!shopCat||(shopCat==='mine'?(p.skills||[]).some(n=>mine.has(n)):(p.skills||[]).some(n=>SKILLS[n]&&SKILLS[n].cat===shopCat)))&&(!q||(p.name+' '+(p.vendor||'')+' '+(p.skills||[]).join(' ')).toLowerCase().includes(q)));
+ g.innerHTML=l.length?l.map(prodHTML).join(''):`<div class="card empty" style="grid-column:1/-1">${list.length?'Nothing matches that.':'The shop opens soon. Gear from trusted vendors will show up here.'}</div>`;wireProds(g);}
+$('#shopQ').addEventListener('input',()=>renderShop());
+
 /* ================= BOOT ================= */
 paintIcons();
 applyTheme(theme);
@@ -2953,8 +3157,8 @@ setTimeout(()=>$('#splash').classList.add('out'),matchMedia('(prefers-reduced-mo
 setTimeout(()=>$('#splash').remove(),1700);
 setTimeout(()=>$('#orbitHint').style.opacity=0,6000);
 </script>
-<script type="module" src="avatar3d.js?v=20261123u"></script>
-<script type="module" src="cloud.js?v=20261123u"></script>
-<script src="map.js?v=20261123u" defer></script>
+<script type="module" src="avatar3d.js?v=20261123v"></script>
+<script type="module" src="cloud.js?v=20261123v"></script>
+<script src="map.js?v=20261123v" defer></script>
 </body>
 </html>

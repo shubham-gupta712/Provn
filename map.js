@@ -161,7 +161,7 @@
   function list() {
     const r = ref(), s = shown();
     let l = query ? s : (() => { const b = map.getBounds(); return s.filter(v => b.contains([v.lng, v.lat])); })();
-    const rank = v => v.src === 'provn' ? 2 : v.src === 'guide' ? 1 : 0;
+    const rank = v => v.src === 'provn' ? (v.tier === 'partner' ? 3 : 2) : v.src === 'guide' ? 1 : 0;
     l = l.map(v => ({ ...v, d: dist(r, [v.lng, v.lat]) })).sort((a, b) => rank(b) - rank(a) || (b.named - a.named) || a.d - b.d);
     return l;
   }
@@ -206,7 +206,7 @@
     const sk = v.acts.map(k => A[k].skill).filter(n => n && SKILLS[n]);
     const D = $m('#mxDetail');
     D.innerHTML = `<button class="mx-x press" id="mxDx" aria-label="Back to list">×</button>
-      <div class="mx-dt"><span class="mx-ic big" style="background:${a.col}">${ico(a)}</span><div><b class="display">${esc(v.name)}</b><small>${esc(v.type)} · ${fmtKm(d)} away${v.src === 'provn' ? ' · <i class="mx-ver">✓ Verified by Provn</i>' : ''}</small></div></div>${v.approx ? `<p class="mx-approx">${v.area ? `Pin shows the ${esc(v.area)} area.` : 'Pin position is approximate.'} Directions search for the exact place.</p>` : ''}
+      <div class="mx-dt"><span class="mx-ic big" style="background:${a.col}">${ico(a)}</span><div><b class="display">${esc(v.name)}</b><small>${esc(v.type)} · ${fmtKm(d)} away${v.src === 'provn' ? (v.tier === 'partner' ? ' · <i class="mx-ver">⭐ Provn Partner</i>' : ' · <i class="mx-ver">✓ Verified by Provn</i>') : ''}</small></div></div>${v.approx ? `<p class="mx-approx">${v.area ? `Pin shows the ${esc(v.area)} area.` : 'Pin position is approximate.'} Directions search for the exact place.</p>` : ''}
       <div class="mx-tags big">${v.acts.map(k => `<em>${ico(A[k])} ${A[k].n}</em>`).join('')}</div>
       ${v.addr ? `<p class="mx-p">📍 ${esc(v.addr)}</p>` : ''}${v.hours ? `<p class="mx-p">🕒 ${esc(v.hours)}</p>` : ''}${v.access && v.access !== 'yes' ? `<p class="mx-p">🔒 Access: ${esc(v.access)}</p>` : ''}${v.info ? `<p class="mx-p">${esc(v.info)}</p>` : ''}
       ${here.length ? `<div class="mx-here">${here.map(e => `<div><b>🏆 ${esc(e.title)}</b><small>${e.live ? '<i class="mx-live">LIVE TODAY</i>' : fdate(e.date)}${e.time ? ' · ' + esc(e.time) : ''}</small></div>`).join('')}</div>` : ''}
@@ -215,13 +215,20 @@
         ${v.phone ? `<a class="btn ghost" href="tel:${esc(v.phone.replace(/\s/g, ''))}"><span>Call</span></a>` : ''}
         ${v.web ? `<a class="btn ghost" target="_blank" rel="noopener" href="${esc(/^https?:/.test(v.web) ? v.web : 'https://' + v.web)}"><span>${v.src === 'guide' ? 'More info' : 'Website'}</span></a>` : ''}
       </div>
-      ${sk.length ? `<button class="btn ghost mx-log" id="mxLog"><span>Log a ${esc(sk[0])} result</span></button>` : ''}
+      ${v.src === 'provn' && v.tier === 'partner' ? `<button class="btn primary mx-log" id="mxBook"><span>Request a booking</span></button>` : ''}
+      ${v.src !== 'provn' ? `<button class="mx-claim" id="mxClaim">Own this place? List it on Provn →</button>` : ''}
       <p class="mx-src">${v.src === 'osm' ? 'Place data © OpenStreetMap contributors' : v.src === 'guide' ? 'From public listings, checked Nov 2026. Details can change, so confirm before you go.' : 'Added by the Provn team'}</p>
       ${typeof Admin !== 'undefined' && Admin.on() && v.src === 'provn' ? `<div class="mx-row"><button class="btn ghost" id="mxEdit"><span>Edit venue</span></button><button class="btn ghost" id="mxDel"><span>Delete</span></button></div>` : ''}`;
     D.hidden = false; $m('#mxCards').hidden = true; $m('#mxDrawer').classList.add('det');
     $m('#mxCount').textContent = ''; $m('#mxSub').textContent = '';
     $m('#mxDx').onclick = () => deselect(true);
-    const lg = $m('#mxLog'); if (lg) lg.onclick = () => { close(); setTimeout(() => openProve(sk[0], false), 350); };
+    const H = window.provnVenueHooks;
+    if (H && v.src === 'provn') {
+      H.lead(v, 'view');
+      D.querySelectorAll('.mx-row a').forEach(a => a.addEventListener('click', () => H.lead(v, /^tel:/.test(a.href) ? 'call' : /google\.com\/maps/.test(a.href) ? 'dir' : 'web')));
+    }
+    const bk = $m('#mxBook'); if (bk && H) bk.onclick = () => { close(); setTimeout(() => H.book(v), 350); };
+    const cl = $m('#mxClaim'); if (cl && H) cl.onclick = () => { close(); setTimeout(() => H.claim(v), 350); };
     const ed = $m('#mxEdit'); if (ed) ed.onclick = () => venueForm(v);
     const dl = $m('#mxDel'); if (dl) dl.onclick = () => Admin.confirm(dl, async () => { try { await Cloud.admin.deleteVenue(v.docId); toast('Venue deleted'); venues = venues.filter(x => x !== v); deselect(); data(); refresh(); } catch (e) { toast('Could not delete: ' + (e.code || e.message)); } });
   }

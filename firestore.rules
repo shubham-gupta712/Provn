@@ -183,7 +183,7 @@ service cloud.firestore {
       allow create: if signedIn() && notBanned()
         && request.resource.data.keys().hasOnly(['to','from','fromName','fromPhoto','kind','ref','col','text','at','read'])
         && request.resource.data.from == me() && request.resource.data.to != me()
-        && request.resource.data.kind in ['like', 'legit', 'comment', 'mention', 'repost', 'follow', 'result']
+        && request.resource.data.kind in ['like', 'legit', 'comment', 'mention', 'repost', 'follow', 'result', 'payment', 'booking']
         && str(request.resource.data.to, 64) && str(request.resource.data.fromName, 40) && str(request.resource.data.fromPhoto, 400)
         && str(request.resource.data.ref, 64) && str(request.resource.data.col, 10) && str(request.resource.data.text, 140)
         && request.resource.data.at == request.time && request.resource.data.read == false;
@@ -243,16 +243,22 @@ service cloud.firestore {
       allow read: if signedIn();
       allow write: if isAdmin()
         && (request.resource == null || (
-          request.resource.data.keys().hasOnly(['title','skill','date','time','place','city','spots','info','lat','lng','updatedAt'])
+          request.resource.data.keys().hasOnly(['title','skill','date','time','place','city','spots','fee','info','lat','lng','updatedAt'])
           && str(request.resource.data.title, 60) && request.resource.data.title.size() > 0
           && request.resource.data.date is string && request.resource.data.date.matches('[0-9]{4}-[0-9]{2}-[0-9]{2}')
           && request.resource.data.spots is int));
+      // registrations; for paid events the player sends a UPI reference and only the admin can mark it paid
       match /going/{uid} {
         allow read: if signedIn();
         allow create: if signedIn() && me() == uid
-          && request.resource.data.keys().hasOnly(['at','name'])
-          && request.resource.data.at == request.time && str(request.resource.data.name, 40);
-        allow delete: if signedIn() && (me() == uid || isAdmin());
+          && request.resource.data.keys().hasOnly(['at','name','pay','ref','amt'])
+          && request.resource.data.at == request.time && str(request.resource.data.name, 40)
+          && (!('pay' in request.resource.data) || (request.resource.data.pay == 'pending'
+              && str(request.resource.data.ref, 40) && request.resource.data.ref.size() >= 6
+              && request.resource.data.amt is int));
+        allow update: if isAdmin() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['pay'])
+          && request.resource.data.pay in ['pending', 'paid', 'rejected', 'refunded'];
+        allow delete: if signedIn() && ((me() == uid && resource.data.get('pay', '') != 'paid') || isAdmin());
       }
     }
 
@@ -276,10 +282,66 @@ service cloud.firestore {
       allow read: if signedIn();
       allow write: if isAdmin()
         && (request.resource == null || (
-          request.resource.data.keys().hasOnly(['name','kind','acts','addr','phone','web','info','lat','lng','city','updatedAt'])
+          request.resource.data.keys().hasOnly(['name','kind','acts','addr','phone','web','info','lat','lng','city','tier','owner','hours','updatedAt'])
           && str(request.resource.data.name, 60) && request.resource.data.name.size() > 0
           && request.resource.data.acts is list && request.resource.data.acts.size() <= 12
           && request.resource.data.lat is number && request.resource.data.lng is number));
+    }
+
+    // ---------- venue owners apply to be listed (free or partner) ----------
+    match /venueApps/{id} {
+      allow read: if signedIn() && (resource.data.uid == me() || isAdmin());
+      allow create: if signedIn() && notBanned()
+        && request.resource.data.keys().hasOnly(['uid','by','name','contact','phone','addr','city','acts','plan','info','lat','lng','status','at'])
+        && request.resource.data.uid == me() && request.resource.data.status == 'new'
+        && str(request.resource.data.name, 60) && request.resource.data.name.size() > 0
+        && str(request.resource.data.phone, 20) && str(request.resource.data.info, 300)
+        && request.resource.data.plan in ['free', 'partner'] && request.resource.data.acts is list && request.resource.data.acts.size() <= 12
+        && request.resource.data.at == request.time;
+      allow update: if isAdmin();
+      allow delete: if signedIn() && (resource.data.uid == me() || isAdmin());
+    }
+
+    // ---------- leads: players tapping call / directions / website / booking on a Provn venue ----------
+    match /venueLeads/{id} {
+      allow read: if signedIn() && (isAdmin() || resource.data.owner == me());
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly(['venue','owner','kind','uid','at'])
+        && request.resource.data.uid == me()
+        && request.resource.data.kind in ['view', 'call', 'dir', 'web', 'book']
+        && exists(/databases/$(database)/documents/venues/$(request.resource.data.venue))
+        && request.resource.data.owner == get(/databases/$(database)/documents/venues/$(request.resource.data.venue)).data.get('owner', '')
+        && request.resource.data.at == request.time;
+    }
+
+    // ---------- booking requests to partner venues ----------
+    match /bookings/{id} {
+      allow read: if signedIn() && (resource.data.uid == me() || resource.data.owner == me() || isAdmin());
+      allow create: if signedIn() && notBanned()
+        && request.resource.data.keys().hasOnly(['venue','venueName','owner','uid','name','phone','date','time','people','act','note','status','at'])
+        && request.resource.data.uid == me() && request.resource.data.status == 'new'
+        && exists(/databases/$(database)/documents/venues/$(request.resource.data.venue))
+        && request.resource.data.owner == get(/databases/$(database)/documents/venues/$(request.resource.data.venue)).data.get('owner', '')
+        && str(request.resource.data.name, 40) && str(request.resource.data.phone, 20) && str(request.resource.data.note, 200)
+        && request.resource.data.date is string && request.resource.data.date.matches('[0-9]{4}-[0-9]{2}-[0-9]{2}')
+        && request.resource.data.people is int
+        && request.resource.data.at == request.time;
+      allow update: if signedIn() && (isAdmin() || resource.data.owner == me() || resource.data.uid == me())
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
+        && (request.resource.data.status in ['accepted', 'declined', 'done'] && (isAdmin() || resource.data.owner == me())
+            || (request.resource.data.status == 'cancelled' && resource.data.uid == me()));
+    }
+
+    // ---------- store: products listed by the admin for vendors; clicks are counted ----------
+    match /products/{id} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+    match /productClicks/{id} {
+      allow read: if isAdmin();
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly(['product','vendor','uid','at'])
+        && request.resource.data.uid == me() && request.resource.data.at == request.time;
     }
 
     // ---------- state / national records added by the admin ----------
