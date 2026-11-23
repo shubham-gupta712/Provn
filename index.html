@@ -716,6 +716,10 @@ svg{display:block}
 .up-x{position:absolute;right:4px;top:4px;width:24px;height:24px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;font-weight:800}
 .up-add{grid-column:span 2;aspect-ratio:2/1;border-radius:14px;border:2px dashed var(--text3);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--text2)}
 .up-media:has(.up-th) .up-add{grid-column:span 1;aspect-ratio:1}
+.up-src{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.up-src button{aspect-ratio:1;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#171A25;font-size:13.5px}
+.up-src button span{font-size:30px}.up-src button:nth-child(1){background:#FFC23D}.up-src button:nth-child(2){background:#FF8A5B}.up-src button:nth-child(3){background:#5CC8FF}
+.up-add span:not([data-i]){font-size:24px}
 .up-add svg{width:26px;height:26px}.up-add small{font-size:12px;font-weight:800}
 .up-box{position:relative;margin-top:12px}
 .up-box textarea{width:100%;padding:12px 14px;border-radius:16px;background:var(--bg3);border:var(--card-bd);font:inherit;font-size:15.5px;line-height:1.45;color:var(--text);outline:0;resize:none}
@@ -1239,6 +1243,8 @@ a.btn{text-decoration:none}
     <h2 class="display" id="upT">Upload</h2>
     <div class="up-media" id="upMedia"></div>
     <input type="file" id="upFile" accept="image/*,video/*" multiple hidden>
+    <input type="file" id="upCamP" accept="image/*" capture="environment" hidden>
+    <input type="file" id="upCamV" accept="video/*" capture="environment" hidden>
     <div class="up-box"><textarea id="upText" maxlength="1000" rows="4" placeholder="What's this about? Add #hashtags and @mention players"></textarea><div class="up-sugg" id="upSugg" hidden></div></div>
     <div id="upQuote"></div>
     <div class="up-box" id="upActBox"><label class="up-act"><span data-i="search"></span><input id="upAct" maxlength="60" placeholder="Activity (optional), e.g. Pickleball" autocomplete="off"></label><div class="up-sugg" id="upActS" hidden></div></div>
@@ -2893,9 +2899,13 @@ function openRepost(p){if(!CU()){toast('Sign in to repost');return;}
 function openUpload(rp){if(!CU()){toast('Sign in to upload');return;}upMode(rp&&rp.uid?rp:null);upFiles=[];upMentions=[];$('#upText').value='';$('#upAct').value='';paintUpMedia();$('#upSugg').hidden=$('#upActS').hidden=true;$('#upPost').disabled=false;$('#upPost').firstChild.textContent=upRepost?'Repost':'Post';showSheet('sh-up');people();}
 function paintUpMedia(){const box=$('#upMedia');
  box.innerHTML=upFiles.map((f,i)=>`<div class="up-th">${f.type.startsWith('video')?`<video src="${f.url}" muted playsinline></video><span class="up-vb">▶</span>`:`<img src="${f.url}" alt="">`}<button class="up-x" data-i="${i}" aria-label="Remove">×</button></div>`).join('')+
-  (upFiles.length<4&&!upFiles.some(f=>f.type.startsWith('video'))?`<button class="up-add press" id="upAdd"><span data-i="plus"></span><small>${upFiles.length?'Add more':'Photo or video'}</small></button>`:'');
- paintIcons(box);const a=$('#upAdd');if(a)a.onclick=()=>$('#upFile').click();
+  (upFiles.length<4&&!upFiles.some(f=>f.type.startsWith('video'))?(upFiles.length?`<button class="up-add press" id="upAdd"><span data-i="plus"></span><small>Add more</small></button><button class="up-add press" id="upSnap"><span>📷</span><small>Camera</small></button>`
+   :`<div class="up-src"><button class="press" id="upSnap"><span>📷</span><b>Take photo</b></button><button class="press" id="upRec"><span>🎥</span><b>Record video</b></button><button class="press" id="upAdd"><span>🖼️</span><b>Gallery</b></button></div>`):'');
+ paintIcons(box);const a=$('#upAdd');if(a)a.onclick=()=>$('#upFile').click();const sn=$('#upSnap');if(sn)sn.onclick=()=>$('#upCamP').click();const rc=$('#upRec');if(rc)rc.onclick=()=>$('#upCamV').click();
  $$('#upMedia .up-x').forEach(b=>b.onclick=()=>{URL.revokeObjectURL(upFiles[+b.dataset.i].url);upFiles.splice(+b.dataset.i,1);paintUpMedia();});}
+['#upCamP','#upCamV'].forEach(id=>$(id).addEventListener('change',e=>{const f=e.target.files[0];e.target.value='';if(!f)return;const vid=f.type.startsWith('video');
+ if(vid&&upFiles.length){toast('A video goes on its own. Remove the photos first.');return;}if(f.size>(vid?95:20)*1048576){toast(vid?'Video is too big (max ~95 MB)':'Photo is too big (max 20 MB)');return;}
+ if(upFiles.length>=4)return;upFiles.push({file:f,type:f.type||(vid?'video/mp4':'image/jpeg'),url:URL.createObjectURL(f)});paintUpMedia();}));
 $('#upFile').addEventListener('change',e=>{const fs=[...e.target.files];e.target.value='';
  for(const f of fs){if(upFiles.length>=4)break;const vid=f.type.startsWith('video');
   if(vid&&upFiles.length){toast('A video goes on its own. Remove the photos first.');continue;}
@@ -2977,7 +2987,7 @@ $('#intSave').onclick=()=>{store.set('interests',[...intSel]);hideSheet();buzz(1
 $('#intEdit').onclick=openInterests;
 
 /* auto-update: GitHub Pages lets phones keep an old copy for ~10 min; check the live version and reload if it's newer */
-const APP_V='20261123v';
+const APP_V='20261123w';
 async function checkUpdate(){try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});const j=await r.json();
  if(j.v&&j.v!==APP_V&&sessionStorage.getItem('provn_upd')!==j.v){sessionStorage.setItem('provn_upd',j.v);toast('Updating Provn…');setTimeout(()=>location.replace(location.pathname+'?v='+j.v+location.hash),600);}}catch(e){}}
 checkUpdate();document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkUpdate();});
@@ -3157,8 +3167,8 @@ setTimeout(()=>$('#splash').classList.add('out'),matchMedia('(prefers-reduced-mo
 setTimeout(()=>$('#splash').remove(),1700);
 setTimeout(()=>$('#orbitHint').style.opacity=0,6000);
 </script>
-<script type="module" src="avatar3d.js?v=20261123v"></script>
-<script type="module" src="cloud.js?v=20261123v"></script>
-<script src="map.js?v=20261123v" defer></script>
+<script type="module" src="avatar3d.js?v=20261123w"></script>
+<script type="module" src="cloud.js?v=20261123w"></script>
+<script src="map.js?v=20261123w" defer></script>
 </body>
 </html>
