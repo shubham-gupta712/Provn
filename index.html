@@ -587,6 +587,8 @@ svg{display:block}
 .mc-stats{display:flex;gap:16px;margin-top:10px;position:relative}.mc-stats:empty{display:none}
 .mc-stats span{font-size:12px;font-weight:700;color:#ffffffb0}.mc-stats b{font-family:var(--f-display);font-size:20px;color:#fff;margin-right:5px}
 .mc-acts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.mc-acts.row{display:flex;overflow-x:auto;margin:10px -16px 0;padding:0 16px 4px;scrollbar-width:none}.mc-acts.row::-webkit-scrollbar{display:none}.mc-acts.row .mc-a{flex:none;width:84px}
+#hbList .mapcard{min-height:250px;margin-top:14px}#hbList .mapcard .mg{opacity:.6}
 .mc-a{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 4px;border-radius:16px;background:var(--bg2);border:var(--card-bd);font-size:11.5px;font-weight:800;color:var(--text2);text-align:center;line-height:1.15}
 .mc-a span{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:20px;border:2px solid var(--ink)}
 .adm-loc{display:flex;align-items:center;gap:10px;margin-top:5px;padding:10px 12px;border-radius:14px;background:var(--bg2);border:var(--card-bd);font-size:13.5px;font-weight:700;color:var(--text2)}.adm-loc span{flex:1}
@@ -1256,6 +1258,15 @@ a.btn{text-decoration:none}
       <div class="hl" id="hbList">
         <label class="search hsearch"><span data-i="search"></span><input id="hq" placeholder="Search interests, e.g. cafes, trekking" aria-label="Search interests" autocomplete="off"></label>
         <p class="hl-sub">Find people who love what you love.</p>
+        <div class="card mapcard" id="openMap">
+          <div class="mg"><div class="mg-earth"><i></i><i></i><i></i></div><span class="mg-pin" style="left:58%;top:44%"></span><span class="mg-pin" style="left:63%;top:52%;animation-delay:.5s"></span><span class="mg-pin" style="left:54%;top:55%;animation-delay:1s"></span></div>
+          <span class="chip hot" style="position:relative">Now live in Ahmedabad</span>
+          <h2 class="display">Explore the map</h2>
+          <p>Courts, cafés, clubs and events around you. Spin the globe and dive down to street level.</p>
+          <div class="mc-stats" id="mcStats"></div>
+          <button class="btn primary"><span>Open the map</span></button>
+        </div>
+        <div class="mc-acts row" id="mcActs"></div>
         <div id="hbGroups"></div>
       </div>
       <div class="path" id="path">
@@ -1265,7 +1276,7 @@ a.btn{text-decoration:none}
     </section>
 
     <section class="screen" id="s-arena" data-tab="arena">
-      <div class="seg four" id="seg"><span class="si"></span><button class="on" data-p="events">Events</button><button data-p="ranks">Rankings</button><button data-p="map">Map</button><button data-p="shop">Shop</button></div>
+      <div class="seg" id="seg"><span class="si"></span><button class="on" data-p="events">Events</button><button data-p="ranks">Rankings</button><button data-p="shop">Shop</button></div>
       <div class="pane on" id="p-events">
         <div id="evHero"></div>
         <div class="sec-h" id="evHead" hidden><h3 class="display">Also coming up</h3></div>
@@ -1275,18 +1286,6 @@ a.btn{text-decoration:none}
         <div class="rk-ctl"><select id="rkSkill" aria-label="Skill"></select></div>
         <div class="rk-sum" id="rkSum"></div>
         <div id="rkTiers"></div>
-      </div>
-      <div class="pane" id="p-map">
-        <div class="card mapcard" id="openMap">
-          <div class="mg"><div class="mg-earth"><i></i><i></i><i></i></div><span class="mg-pin" style="left:58%;top:44%"></span><span class="mg-pin" style="left:63%;top:52%;animation-delay:.5s"></span><span class="mg-pin" style="left:54%;top:55%;animation-delay:1s"></span></div>
-          <span class="chip hot" style="position:relative">Now live in Ahmedabad</span>
-          <h2 class="display">Explore the map</h2>
-          <p>Courts, grounds, clubs and tournaments around you. Spin the globe and dive down to street level.</p>
-          <div class="mc-stats" id="mcStats"></div>
-          <button class="btn primary"><span>Open the map</span></button>
-        </div>
-        <div class="sec-h"><h3 class="display">Find a place to play</h3></div>
-        <div class="mc-acts" id="mcActs"></div>
       </div>
       <div class="pane" id="p-shop">
         <label class="up-act" style="margin-top:14px"><span data-i="search"></span><input id="shopQ" placeholder="Search gear, e.g. pickleball paddle" autocomplete="off"></label>
@@ -2067,14 +2066,14 @@ async function renderRanks(){const sel=$('#rkSkill');
 $('#rkSkill').onchange=()=>renderRanks();
 /* ---- explore map (lazy) ---- */
 function openMap(o){if(!window.ProvnMap){toast('Map is loading…');return;}buzz(10);ProvnMap.open(o||{});}
-$('#openMap').onclick=()=>openMap();
+$('#openMap').onclick=()=>openMap();addEventListener('load',()=>{if(cur==='orbit')renderMapPane();});
 function renderMapPane(){const P=window.ProvnMap;if(!P)return;
  $('#mcActs').innerHTML=[{k:'events',n:'Tournaments',e:'🏆',col:'#FFC23D'},...P.ACTS.filter(a=>a.k!=='multi')].map(a=>`<button class="mc-a press" data-k="${a.k}"><span style="background:${a.col}">${a.e||P.ico(a)}</span>${a.n}</button>`).join('');
  $$('#mcActs .mc-a').forEach(b=>b.onclick=()=>openMap({filter:b.dataset.k}));
  const n=P.cached();$('#mcStats').innerHTML=n?`<span><b>${n}</b>places mapped</span><span><b>1</b>city</span>`:'';}
 let segI=0;
 function moveSeg(anim){const si=$('#seg .si');if(!si)return;const w=si.offsetWidth;if(!anim)si.style.transition='none';si.style.transform=`translateX(${segI*(w)}px)${document.documentElement.dataset.theme==='volt'?' skewX(-10deg)':''}`;if(!anim){si.offsetWidth;si.style.transition='';}}
-$$('#seg button').forEach((b,k)=>b.onclick=()=>{if(b.dataset.p==='map')renderMapPane();if(b.dataset.p==='shop')renderShop();if(segI===k)return;segI=k;buzz(6);$$('#seg button').forEach((x,j)=>x.classList.toggle('on',j===k));$$('.pane').forEach(p=>p.classList.toggle('on',p.id==='p-'+b.dataset.p));if(b.dataset.p==='ranks')renderRanks();moveSeg(true);});
+$$('#seg button').forEach((b,k)=>b.onclick=()=>{if(b.dataset.p==='shop')renderShop();if(segI===k)return;segI=k;buzz(6);$$('#seg button').forEach((x,j)=>x.classList.toggle('on',j===k));$$('.pane').forEach(p=>p.classList.toggle('on',p.id==='p-'+b.dataset.p));if(b.dataset.p==='ranks')renderRanks();moveSeg(true);});
 
 /* ================= YOU ================= */
 const You={render(){const ae=document.activeElement;if(!(ae&&ae.closest&&ae.closest('[data-pf] input')))renderPF();if(!$('#youM .av3d'))$('#youM').innerHTML=`<div class="av3d" data-mode="you">${mascot()}</div>`;const ni=$('#nameIn');if(document.activeElement!==ni)ni.value=store.get('name','');ni.placeholder='Your name';
@@ -2231,7 +2230,7 @@ const Orbit=(()=>{let open=null,counts={};const list=$('#hbList');
  function close(fromPop){if(!open)return;$('#s-orbit').classList.remove('hp-open');Path.hide();open=null;if(!fromPop&&history.state&&history.state.skill){skipPop++;history.back();}}
  $('#hq').addEventListener('input',render);
  addEventListener('cloud-auth',()=>{peopleCache=null;loadCounts();});
- return{active(on){if(on){if(!$('#hbGroups').children.length)render();loadCounts();}},resize(){},recolor(){},close,openSkill,isOpen:()=>!!open,refresh:render};})();
+ return{active(on){if(on){if(!$('#hbGroups').children.length)render();loadCounts();renderMapPane();}},resize(){},recolor(){},close,openSkill,isOpen:()=>!!open,refresh:render};})();
 
 
 /* ================= CLOUD: accounts, sync, real feed ================= */
@@ -2763,7 +2762,7 @@ $('#intSave').onclick=()=>{store.set('interests',[...intSel]);hideSheet();buzz(1
 $('#intEdit').onclick=openInterests;
 
 /* auto-update: GitHub Pages lets phones keep an old copy for ~10 min; check the live version and reload if it's newer */
-const APP_V='20261126a';$('#verTxt').textContent=APP_V;$('#ntfRow').onclick=()=>{hideSheet();setTimeout(()=>{if(CU())openNotifs();},300);};
+const APP_V='20261126b';$('#verTxt').textContent=APP_V;$('#ntfRow').onclick=()=>{hideSheet();setTimeout(()=>{if(CU())openNotifs();},300);};
 async function checkUpdate(){try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});const j=await r.json();
  if(j.v&&j.v!==APP_V&&sessionStorage.getItem('provn_upd')!==j.v){sessionStorage.setItem('provn_upd',j.v);toast('Updating AroundMe…');setTimeout(()=>location.replace(location.pathname+'?v='+j.v+location.hash),600);}}catch(e){}}
 checkUpdate();document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkUpdate();});
@@ -3024,8 +3023,8 @@ setTimeout(()=>$('#splash').classList.add('out'),matchMedia('(prefers-reduced-mo
 setTimeout(()=>$('#splash').remove(),1700);
 
 </script>
-<script type="module" src="avatar3d.js?v=20261126a"></script>
-<script type="module" src="cloud.js?v=20261126a"></script>
-<script src="map.js?v=20261126a" defer></script>
+<script type="module" src="avatar3d.js?v=20261126b"></script>
+<script type="module" src="cloud.js?v=20261126b"></script>
+<script src="map.js?v=20261126b" defer></script>
 </body>
 </html>
