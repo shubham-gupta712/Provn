@@ -1,4 +1,4 @@
-/* Provn Explore map: a 3D globe (MapLibre, globe projection) that zooms from space down to
+/* AroundMe Explore map: a 3D globe (MapLibre, globe projection) that zooms from space down to
    the courts, grounds, clubs and tournaments in a city. Ahmedabad first.
    Places come from OpenStreetMap (live, cached for 3 days) plus venues the admin adds in Firestore.
    Loaded lazily by index.html; uses the app's globals (store, esc, toast, buzz, SKILLS, Cloud…). */
@@ -206,7 +206,7 @@
     const sk = v.acts.map(k => A[k].skill).filter(n => n && SKILLS[n]);
     const D = $m('#mxDetail');
     D.innerHTML = `<button class="mx-x press" id="mxDx" aria-label="Back to list">×</button>
-      <div class="mx-dt"><span class="mx-ic big" style="background:${a.col}">${ico(a)}</span><div><b class="display">${esc(v.name)}</b><small>${esc(v.type)} · ${fmtKm(d)} away${v.src === 'provn' ? (v.tier === 'partner' ? ' · <i class="mx-ver">⭐ Provn Partner</i>' : ' · <i class="mx-ver">✓ Verified by Provn</i>') : ''}</small></div></div>${v.approx ? `<p class="mx-approx">${v.area ? `Pin shows the ${esc(v.area)} area.` : 'Pin position is approximate.'} Directions search for the exact place.</p>` : ''}
+      <div class="mx-dt"><span class="mx-ic big" style="background:${a.col}">${ico(a)}</span><div><b class="display">${esc(v.name)}</b><small>${esc(v.type)} · ${fmtKm(d)} away${v.src === 'provn' ? (v.tier === 'partner' ? ' · <i class="mx-ver">⭐ AroundMe Partner</i>' : ' · <i class="mx-ver">✓ Verified by AroundMe</i>') : ''}</small></div></div>${v.approx ? `<p class="mx-approx">${v.area ? `Pin shows the ${esc(v.area)} area.` : 'Pin position is approximate.'} Directions search for the exact place.</p>` : ''}
       <div class="mx-tags big">${v.acts.map(k => `<em>${ico(A[k])} ${A[k].n}</em>`).join('')}</div>
       ${v.addr ? `<p class="mx-p">📍 ${esc(v.addr)}</p>` : ''}${v.hours ? `<p class="mx-p">🕒 ${esc(v.hours)}</p>` : ''}${v.access && v.access !== 'yes' ? `<p class="mx-p">🔒 Access: ${esc(v.access)}</p>` : ''}${v.info ? `<p class="mx-p">${esc(v.info)}</p>` : ''}
       ${here.length ? `<div class="mx-here">${here.map(e => `<div><b>🏆 ${esc(e.title)}</b><small>${e.live ? '<i class="mx-live">LIVE TODAY</i>' : fdate(e.date)}${e.time ? ' · ' + esc(e.time) : ''}</small></div>`).join('')}</div>` : ''}
@@ -216,8 +216,8 @@
         ${v.web ? `<a class="btn ghost" target="_blank" rel="noopener" href="${esc(/^https?:/.test(v.web) ? v.web : 'https://' + v.web)}"><span>${v.src === 'guide' ? 'More info' : 'Website'}</span></a>` : ''}
       </div>
       ${v.src === 'provn' && v.tier === 'partner' ? `<button class="btn primary mx-log" id="mxBook"><span>Request a booking</span></button>` : ''}
-      ${v.src !== 'provn' ? `<button class="mx-claim" id="mxClaim">Own this place? List it on Provn →</button>` : ''}
-      <p class="mx-src">${v.src === 'osm' ? 'Place data © OpenStreetMap contributors' : v.src === 'guide' ? 'From public listings, checked Nov 2026. Details can change, so confirm before you go.' : 'Added by the Provn team'}</p>
+      ${v.src !== 'provn' ? `<button class="mx-claim" id="mxClaim">Own this place? List it on AroundMe →</button>` : ''}
+      <p class="mx-src">${v.src === 'osm' ? 'Place data © OpenStreetMap contributors' : v.src === 'guide' ? 'From public listings, checked Nov 2026. Details can change, so confirm before you go.' : 'Added by the AroundMe team'}</p>
       ${typeof Admin !== 'undefined' && Admin.on() && v.src === 'provn' ? `<div class="mx-row"><button class="btn ghost" id="mxEdit"><span>Edit venue</span></button><button class="btn ghost" id="mxDel"><span>Delete</span></button></div>` : ''}`;
     D.hidden = false; $m('#mxCards').hidden = true; $m('#mxDrawer').classList.add('det');
     $m('#mxCount').textContent = ''; $m('#mxSub').textContent = '';
@@ -303,7 +303,7 @@
     navigator.geolocation.getCurrentPosition(p => {
       $m('#mxMe').classList.remove('busy'); me = [p.coords.longitude, p.coords.latitude];
       if (!meMarker) { const el = document.createElement('div'); el.className = 'mx-me'; meMarker = new maplibregl.Marker({ element: el }).setLngLat(me).addTo(map); } else meMarker.setLngLat(me);
-      if (dist(me, CITY.center) > 60) { toast(`Provn's map covers ${CITY.name} for now. More cities soon!`); flyCity(2000); }
+      if (dist(me, CITY.center) > 60) { toast(`The AroundMe map covers ${CITY.name} for now. More cities soon!`); flyCity(2000); }
       else map.flyTo({ center: me, zoom: 14, pitch: is3d ? 50 : 0, duration: 1800 });
       refresh();
     }, () => { $m('#mxMe').classList.remove('busy'); toast('Allow location access to see places near you'); }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 });
@@ -383,7 +383,7 @@
       guide = g; venues = merge(cur, g.venues, []); events = [...evs, ...g.events]; drawEvents(); data(); refresh();
       const osm = await loadOsm();
       venues = merge(cur, g.venues, osm); data(); refresh();
-      if (osmFailed) toast('OpenStreetMap places did not load. Showing the Provn list.');
+      if (osmFailed) toast('OpenStreetMap places did not load. Showing the AroundMe list.');
     });
     map.on('moveend', () => { if (!sel && !pickCb) refresh(); });
     map.on('click', 'vp', e => select(e.features[0].properties.id, true));

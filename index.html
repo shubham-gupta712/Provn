@@ -4,7 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <meta name="theme-color" content="#2A2E3F">
-<title>Provn</title>
+<title>AroundMe</title>
+<meta name="description" content="AroundMe: find people who love what you love, places to explore and things to do near you.">
+<meta name="apple-mobile-web-app-title" content="AroundMe">
 <script type="importmap">{"imports":{"three":"./lib/three.module.js"}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -750,6 +752,29 @@ svg{display:block}
 .adm-as button{height:38px;border-radius:12px;font-size:13.5px;font-weight:800;color:var(--text2)}.adm-as button.on{background:var(--accent);color:var(--on-accent)}
 
 
+
+/* ===== AroundMe sign-in: globe with activities orbiting ===== */
+.wm-me{color:var(--accent);font-weight:inherit;margin-left:-4px}
+.g-hero{position:relative;flex:1;min-height:0;display:grid;place-items:center;margin:4px 0}
+.g-glow{position:absolute;width:86vw;max-width:420px;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(92,200,255,.35),rgba(167,139,250,.15) 45%,transparent 70%);filter:blur(6px)}
+.g-globe{position:relative;width:min(52vw,220px);aspect-ratio:1;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 35% 30%,#7DD3FC,#3B82F6 45%,#1E3A8A 100%);box-shadow:0 0 0 4px rgba(255,255,255,.08),0 20px 60px rgba(59,130,246,.45)}
+.g-land{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Cg fill='%2334D399'%3E%3Cpath d='M30 40c20-18 60-14 70 4s-6 30-26 34-40 10-48-6 0-22 4-32z'/%3E%3Cpath d='M70 110c16-10 40-6 44 12s-10 44-26 50-30-14-30-30 0-26 12-32z'/%3E%3Cpath d='M170 30c30-12 80-6 96 12s-8 26-30 30-30 22-52 18-34-20-30-34 4-20 16-26z'/%3E%3Cpath d='M200 100c18-6 36 4 34 22s-16 34-32 30-18-22-16-34 4-14 14-18z'/%3E%3Cpath d='M290 60c26-10 66-4 74 16s-10 30-34 34-46-2-50-18 0-26 10-32z'/%3E%3Cpath d='M330 140c14-6 34 0 34 14s-18 20-32 16-14-24-2-30z'/%3E%3C/g%3E%3C/svg%3E");background-size:200% 100%;background-repeat:repeat-x;opacity:.9;animation:gSpin 22s linear infinite}
+@keyframes gSpin{to{background-position:-200% 0}}
+.g-shade{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.35),transparent 35%),radial-gradient(circle at 70% 80%,rgba(0,0,0,.45),transparent 60%)}
+.g-arcs{position:absolute;inset:0;width:100%;height:100%}.g-arcs path{fill:none;stroke:#FFC23D;stroke-width:2.2;stroke-linecap:round;stroke-dasharray:4 6;animation:gDash 2.4s linear infinite;opacity:.9}
+@keyframes gDash{to{stroke-dashoffset:-40}}
+.g-pin{position:absolute;transform:translate(-50%,-100%);width:34px;height:34px;border-radius:50% 50% 50% 4px;rotate:-45deg;background:#fff;display:grid;place-items:center;box-shadow:0 4px 10px rgba(0,0,0,.3);animation:gPop 3.6s var(--d) ease-in-out infinite}
+.g-pin{font-size:17px}
+@keyframes gPop{0%,100%{scale:1}10%{scale:1.18}20%{scale:1}}
+.g-orbit{position:absolute;width:min(80vw,330px);aspect-ratio:1;animation:gRot 40s linear infinite}
+.g-o{position:absolute;left:50%;top:50%;width:var(--r);height:0;transform-origin:0 0;transform:rotate(var(--a))}
+.g-o b{position:absolute;right:-19px;top:-19px;width:38px;height:38px;transform:rotate(calc(-1 * var(--a)))}
+.g-o i{position:absolute;left:0;top:0;width:38px;height:38px;border-radius:50%;background:var(--c);display:grid;place-items:center;font-size:19px;font-style:normal;box-shadow:0 4px 0 rgba(0,0,0,.25);animation:gRot 40s linear infinite reverse}
+.g-o i .pb-ic{width:24px;height:24px}
+@keyframes gRot{to{transform:rotate(360deg)}}
+.g-hl{text-shadow:none;background:linear-gradient(90deg,#FFC23D,#FF8A5B,#F472B6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.g-chips{display:flex;flex-wrap:wrap;gap:6px}.g-chips span{padding:8px 12px;border-radius:16px;background:color-mix(in srgb,var(--bg2) 85%,transparent);border:var(--card-bd);font-size:13px;font-weight:800}
+.gate .gate-mid{flex:none}
 /* ===== lively refresh: hobbies, circles, meetups, badges, reactions ===== */
 #app::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;background:radial-gradient(60% 40% at 0% 0%,rgba(255,138,91,.16),transparent 70%),radial-gradient(50% 35% at 100% 18%,rgba(92,200,255,.13),transparent 70%),radial-gradient(60% 40% at 30% 100%,rgba(167,139,250,.14),transparent 70%)}
 .tb-title.display{background:linear-gradient(90deg,var(--text) 0%,var(--text) 55%,#FFC23D 80%,#FF8A5B 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -1267,7 +1292,7 @@ a.btn{text-decoration:none}
         <label class="up-act" style="margin-top:14px"><span data-i="search"></span><input id="shopQ" placeholder="Search gear, e.g. pickleball paddle" autocomplete="off"></label>
         <div class="shop-chips" id="shopChips"></div>
         <div class="shop-grid" id="shopGrid"></div>
-        <p class="note">Products are sold and shipped by the listed vendor. Provn may earn a fee when you buy.</p>
+        <p class="note">Products are sold and shipped by the listed vendor. AroundMe may earn a fee when you buy.</p>
       </div>
     </section>
 
@@ -1414,20 +1439,23 @@ a.btn{text-decoration:none}
   <div class="toast" id="toast"></div>
   <div class="gate" id="gate">
     <button class="gate-x press" id="gateX" hidden aria-label="Close preview">×</button>
-    <div class="gate-bg" id="gateBg" aria-hidden="true"></div>
-    <div class="gate-top"><div class="wordmark gate-wm">provn<i></i></div></div>
+    <div class="gate-top"><div class="wordmark gate-wm">around<b class="wm-me">me</b><i></i></div></div>
+    <div class="g-hero" aria-hidden="true">
+      <div class="g-glow"></div>
+      <div class="g-orbit" id="gOrbit"></div>
+      <div class="g-globe"><div class="g-land"></div><div class="g-shade"></div>
+        <svg class="g-arcs" viewBox="0 0 200 200"><path d="M58 92 Q90 40 128 70"/><path d="M128 70 Q160 110 120 140"/><path d="M58 92 Q70 150 120 140"/></svg>
+        <span class="g-pin" style="left:29%;top:46%;--d:0s">☕</span><span class="g-pin" style="left:64%;top:35%;--d:.6s">🏸</span><span class="g-pin" style="left:60%;top:70%;--d:1.2s">🥾</span>
+      </div>
+    </div>
     <div class="gate-mid">
-      <h1 class="display gate-h">Find your<br>people.</h1>
-      <p class="gate-sub">Meet people who love what you love, from pickleball to cafés to treks.</p>
-      <ul class="gate-list">
-        <li><span>👋</span><div><b>Meet people like you</b><small>See who's into the same things in your city, and join their meetups.</small></div></li>
-        <li><span>🏆</span><div><b>Join events</b><small>Games, tournaments and get-togethers near you.</small></div></li>
-        <li><span>📍</span><div><b>Find places to play</b><small>Courts, grounds, clubs and tournaments near you.</small></div></li>
-      </ul>
+      <h1 class="display gate-h">Find your people,<br><span class="g-hl">around you.</span></h1>
+      <p class="gate-sub">Meet people who love what you love, discover places to explore and join things happening near you.</p>
+      <div class="g-chips"><span>👋 People like you</span><span>📍 Places to explore</span><span>🎉 Meetups & events</span></div>
     </div>
     <div class="gate-bot">
       <button class="btn primary gate-btn" id="gIn" disabled><span class="g-ic"><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5a5.6 5.6 0 0 1-2.4 3.6v3h3.9c2.3-2.1 3.5-5.2 3.5-8.8z"/><path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-2.9l-3.9-3c-1.1.7-2.5 1.2-4.1 1.2-3.1 0-5.8-2.1-6.7-5H1.3v3.1A12 12 0 0 0 12 24z"/><path fill="#FBBC05" d="M5.3 14.3a7.2 7.2 0 0 1 0-4.6V6.6h-4a12 12 0 0 0 0 10.8l4-3.1z"/><path fill="#EA4335" d="M12 4.8c1.8 0 3.3.6 4.6 1.8l3.4-3.4A12 12 0 0 0 1.3 6.6l4 3.1c.9-2.9 3.6-4.9 6.7-4.9z"/></svg></span><span id="gInTxt">Connecting…</span></button>
-      <p class="gate-fine">By continuing you agree to play fair and post only your own results.</p>
+      <p class="gate-fine">By continuing you agree to be kind and to meet people safely in public places.</p>
     </div>
   </div>
 
@@ -1446,7 +1474,7 @@ a.btn{text-decoration:none}
     <div class="onb-f"><button class="btn ghost-btn" id="onbSkip" hidden><span>Skip</span></button><button class="btn primary" id="onbNext"><span>Continue</span></button></div>
   </div>
 
-  <div class="splash" id="splash"><div class="orb"></div><div class="wm wordmark">provn<i></i></div></div>
+  <div class="splash" id="splash"><div class="orb"></div><div class="wm wordmark">around<b class="wm-me">me</b><i></i></div></div>
 </div>
 
 <script>
@@ -1582,19 +1610,19 @@ const SKILL_ROWS=[
  ['Shot put','pow','n','m (7.26 kg)',23.56,9,'bull',{wa:[51.39,1.5,1.05,'f']}],['Vertical jump','pow','n','cm',115,45,'jump'],['Standing broad jump','pow','n','cm',370,200,'jump'],
  ['Skipping','pow','n','skips in 1 min',300,90,'rope',{size:38}],['Burpees','pow','n','reps in 1 min',40,15,'jump'],['Beep test','pow','n','level',16,7,'bolt'],
  ['Speed climbing','pow','t','sec (15 m wall)',4.54,18,'mountain'],
- ['Pickleball','rak','r','DUPR',8,3,'paddle',{bp:DUPR,size:44}],['Tennis','rak','r','UTR',16.5,4,'tennis',{bp:UTR,size:40}],['Badminton','rak','r','Provn rating',2700,1200,'shuttle',{bp:PROVN,size:40}],
- ['Table tennis','rak','r','Provn rating',2700,1200,'tt',{bp:PROVN}],['Squash','rak','r','Provn rating',2700,1200,'squash',{bp:PROVN}],['Padel','rak','r','Provn rating',2700,1200,'padel',{bp:PROVN}],
+ ['Pickleball','rak','r','DUPR',8,3,'paddle',{bp:DUPR,size:44}],['Tennis','rak','r','UTR',16.5,4,'tennis',{bp:UTR,size:40}],['Badminton','rak','r','Rating',2700,1200,'shuttle',{bp:PROVN,size:40}],
+ ['Table tennis','rak','r','Rating',2700,1200,'tt',{bp:PROVN}],['Squash','rak','r','Rating',2700,1200,'squash',{bp:PROVN}],['Padel','rak','r','Rating',2700,1200,'padel',{bp:PROVN}],
  ['50m freestyle','wat','t','sec',20.91,45,'swim',{size:40}],['100m freestyle','wat','t','min:sec',46.40,100,'swim'],['100m breaststroke','wat','t','min:sec',56.88,130,'breast'],
  ['100m butterfly','wat','t','min:sec',49.45,125,'fly'],['100m backstroke','wat','t','min:sec',51.60,120,'swim'],['Open water 1.5k','wat','t','min:sec',870,1800,'swim'],
- ['Boxing','cmb','r','Provn rating',2700,1200,'glove',{bp:PROVN,size:38}],['Wrestling','cmb','r','Provn rating',2700,1200,'glove',{bp:PROVN}],['Judo','cmb','r','Provn rating',2700,1200,'glove',{bp:PROVN}],
- ['Karate','cmb','r','Provn rating',2700,1200,'glove',{bp:PROVN}],['MMA','cmb','r','Provn rating',2700,1200,'glove',{bp:PROVN}],['Fencing','cmb','r','Provn rating',2700,1200,'bolt',{bp:PROVN}],
+ ['Boxing','cmb','r','Rating',2700,1200,'glove',{bp:PROVN,size:38}],['Wrestling','cmb','r','Rating',2700,1200,'glove',{bp:PROVN}],['Judo','cmb','r','Rating',2700,1200,'glove',{bp:PROVN}],
+ ['Karate','cmb','r','Rating',2700,1200,'glove',{bp:PROVN}],['MMA','cmb','r','Rating',2700,1200,'glove',{bp:PROVN}],['Fencing','cmb','r','Rating',2700,1200,'bolt',{bp:PROVN}],
  ['Free throws','bal','n','made of 100',97,60,'ball',{size:38,x0:30}],['Football juggling','bal','n','touches',500,20,'ball',{size:38}],['Bowling speed','bal','n','km/h',161.3,100,'ball',{x0:50}],['Tennis serve speed','bal','n','km/h',263.4,140,'tennis',{x0:60}],
  ['Handstand hold','flx','th','min:sec',120,10,'hand'],['L-sit hold','flx','th','sec',60,8,'hand'],['Sit and reach','flx','n','cm',45,25,'hand'],['One-leg balance','flx','th','sec eyes closed',120,15,'hand'],
  ['Bouldering','prc','n','V grade',17,3,'mountain',{x0:-1,size:38}],['Archery','prc','n','pts of 720',702,450,'bull',{x0:200}],['10m air rifle','prc','n','pts of 654',637.9,570,'bull',{x0:500}],
  ['Darts','prc','n','3-dart average',123.4,45,'bull'],['Ten-pin bowling','prc','n','average',240,140,'bull',{x0:60}],
  ['Sport stacking 3-6-3','prc','t','sec',1.751,4.0,'cards'],['Sport stacking cycle','prc','t','sec',4.739,12,'cards'],
- ['Chess','stg','r','Elo',2823,1200,'pawn',{bp:ELO,size:46}],['Go','stg','r','Elo',3850,1600,'grid',{x0:800}],['Carrom','stg','r','Provn rating',2700,1200,'carrom',{bp:PROVN,size:38}],
- ['Scrabble','stg','r','rating',2200,1100,'grid',{x0:600}],['Checkers','stg','r','Provn rating',2700,1200,'grid',{bp:PROVN}],
+ ['Chess','stg','r','Elo',2823,1200,'pawn',{bp:ELO,size:46}],['Go','stg','r','Elo',3850,1600,'grid',{x0:800}],['Carrom','stg','r','Rating',2700,1200,'carrom',{bp:PROVN,size:38}],
+ ['Scrabble','stg','r','rating',2200,1100,'grid',{x0:600}],['Checkers','stg','r','Rating',2700,1200,'grid',{bp:PROVN}],
  ["Rubik's cube",'cub','t','sec',2.41,90,'cube',{size:44}],['2x2 cube','cub','t','sec',0.29,15,'cube'],['4x4 cube','cub','t','min:sec',15.08,180,'cube'],
  ['One-handed cube','cub','t','sec',5.62,120,'cube'],['Pyraminx','cub','t','sec',0.73,15,'cube'],['Blindfolded cube','cub','t','min:sec',11.56,300,'cube'],
  ['Sudoku','puz','t','min:sec',90,900,'sudoku',{size:40}],['Crossword','puz','t','min:sec',120,900,'grid'],['Jigsaw 500','puz','t','h:mm:ss',1700,10800,'puzzle'],
@@ -1677,7 +1705,7 @@ SKILL_ROWS.forEach(r=>{const o=r[7]||{},s={name:r[0],cat:r[1],ty:r[2],unit:r[3],
    1. Official World Athletics combined-events formulas where they exist: P = a·(b−T)^c for times, P = a·(M−b)^c for jumps and throws.
    2. Everything else measured: P = 1200 · r^k, where r compares the result with the world record and k is fitted
       per skill so a typical recreational result scores 250 (same family as World Aquatics' 1000 · (base/time)³).
-   3. Ratings (DUPR, UTR, Elo, Provn rating): mapped through bands so e.g. DUPR 4.0 (Advanced) = 500 pts. */
+   3. Ratings (DUPR, UTR, Elo, Rating): mapped through bands so e.g. DUPR 4.0 (Advanced) = 500 pts. */
 function ratioOf(s,x){if(s.ty==='t'||s.ty==='tl')return x>0?s.ref/x:0;return (x-s.x0)/(s.ref-s.x0);}
 function interp(bp,x,inv){const a=inv?1:0,b=inv?0:1;if(x<=bp[0][a])return bp[0][b];for(let i=1;i<bp.length;i++)if(x<=bp[i][a]){const p=bp[i-1],q=bp[i];return p[b]+(q[b]-p[b])*(x-p[a])/(q[a]-p[a]);}
  const p=bp[bp.length-2],q=bp[bp.length-1];return q[b]+(q[b]-p[b])*(x-q[a])/(q[a]-p[a]);}
@@ -1830,7 +1858,7 @@ dragClose($('.cele-in'),closeCele,()=>$('#cele').classList.contains('on'));
 
 /* ================= TABS ================= */
 const TABS=['pulse','orbit','arena','you'];
-const TITLES={pulse:'<span class="wordmark">provn<i></i></span>',orbit:'Orbit',arena:'Arena',you:'You'};
+const TITLES={pulse:'<span class="wordmark">around<b class="wm-me">me</b><i></i></span>',orbit:'Orbit',arena:'Arena',you:'You'};
 let cur=null;
 function go(tab,instant){if(tab===cur){const s=$('#s-'+tab);if(tab==='orbit')Orbit.close();else s.scrollTo({top:0,behavior:'smooth'});return;}
  const from=TABS.indexOf(cur),to=TABS.indexOf(tab);
@@ -1932,7 +1960,7 @@ const Pulse={ready:false,last:0,
    if(kind==='likes'){const ic=b.querySelector('.rx');if(ic)ic.textContent=on?e0:'';b.classList.toggle('rxd',on&&e0!=='❤️');}
    try{await Cloud.toggle(kind,p.id,on,p.col,kind==='likes'&&on?e0:'');p.mine=p.mine||{};p.mine[kind]=on;if(kind==='likes')p.mine.e=on?e0:'';if(kind!=='flags')p[kind]=(p[kind]||0)+(on?1:-1);
     if(kind!=='flags'){const nk=kind==='likes'?'like':'legit';if(on)Cloud.notify(p.uid,nk,{ref:p.id,col:p.col,text:(kind==='likes'&&e0!=='❤️'?e0+' ':'')+snip(p)});else Cloud.unnotify(nk,p.id);}
-    if(kind==='flags'&&on)toast('Reported. The Provn team will review it.');if(kind==='legit'&&on)toast('You vouched this result is legit ✓');}
+    if(kind==='flags'&&on)toast('Reported. The AroundMe team will review it.');if(kind==='legit'&&on)toast('You vouched this result is legit ✓');}
    catch(e){b.classList.toggle(cls,!on);if(cnt&&kind!=='flags')cnt.textContent=+cnt.textContent+(on?-1:1);toast('Could not save: '+(e.code||e.message));}};
   $$('#feed .like').forEach(b=>{let t,lp=false;b.onpointerdown=()=>{lp=false;t=setTimeout(()=>{lp=true;reactPick(b,e=>{reactE=e;if(b.classList.contains('liked')){act(b,'likes').then(()=>act(b,'likes'));}else act(b,'likes');});},450);};
    b.onpointerup=b.onpointerleave=b.onpointercancel=()=>clearTimeout(t);b.onclick=e=>{if(lp){e.preventDefault();return;}reactE='❤️';act(b,'likes');};});
@@ -1954,8 +1982,8 @@ const Pulse={ready:false,last:0,
   const vids=$$('#feed video');vids.forEach(v=>{v.onplay=()=>vids.forEach(o=>{if(o!==v)o.pause();});v.onloadedmetadata=()=>{if(v.videoWidth>v.videoHeight){const w=v.closest('.pm-wrap');if(w)w.style.setProperty('--ar',(16/9).toFixed(3));}};});
   if(!this.io){this.io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting&&!e.target.paused)e.target.pause();}),{threshold:.25});}
   vids.forEach(v=>this.io.observe(v));}};
-async function sharePost(p){const url=location.origin+location.pathname+'#post-'+p.col+'-'+p.id,text=p.text||(p.skill?`${p.n} · ${p.skill}${p.v!=null&&SKILLS[p.skill]?' · '+fmtPerf(SKILLS[p.skill],p.v,0):''}`:`${p.n} on Provn`);
- buzz(8);try{if(navigator.share){await navigator.share({title:'Provn',text,url});return;}}catch(e){if(e.name==='AbortError')return;}
+async function sharePost(p){const url=location.origin+location.pathname+'#post-'+p.col+'-'+p.id,text=p.text||(p.skill?`${p.n} · ${p.skill}${p.v!=null&&SKILLS[p.skill]?' · '+fmtPerf(SKILLS[p.skill],p.v,0):''}`:`${p.n} on AroundMe`);
+ buzz(8);try{if(navigator.share){await navigator.share({title:'AroundMe',text,url});return;}}catch(e){if(e.name==='AbortError')return;}
  try{await navigator.clipboard.writeText(url);toast('Link copied');}catch(e){prompt('Copy this link',url);}}
 
 /* ================= ARENA ================= */
@@ -1996,7 +2024,7 @@ async function renderRanks(){const sel=$('#rkSkill');
  if(sel.value!==name)return;
  all=all.map(r=>({...r,...placeOf(r.city)})).sort((a,b)=>b.pts-a.pts);
  const mine=all.find(r=>r.uid===me)||(bestOf(name)?{uid:me,name:pname(),v:bestOf(name).v,pts:bestOf(name).p,city}:null);
- /* latest Provn event for this skill */
+ /* latest AroundMe event for this skill */
  const evs={};raw.forEach(r=>{(evs[r.event]=evs[r.event]||{id:r.event,title:r.eventTitle,date:r.date,place:r.place,rows:[]}).rows.push(r);});
  const lastEv=Object.values(evs).sort((a,b)=>(b.date||'').localeCompare(a.date||''))[0]||null,local=lastEv?lastEv.rows.slice().sort((a,b)=>b.pts-a.pts):null;
  const sx=profile().sex==='f'?'f':'m',sxL=sx==='f'?'Women':'Men';
@@ -2007,13 +2035,13 @@ async function renderRanks(){const sel=$('#rkSkill');
   const rp=rawPoints(eff(s,{sex:sx}),rec.v),you=mine?`<div class="you">You: ${fp(mine.v)} · ${mine.pts} pts${mine.pts>=rp?' · <b>you beat it!</b>':` · ${rp-mine.pts} pts to go`}</div>`:'';
   return `<div class="tr-rec"><small>🏆 ${label}</small><div class="rm"><b>${fp(rec.v)}</b><span>≈ ${rp} pts</span></div>${rec.holder?`<p>${esc(rec.holder)} <span>· ${esc([rec.date,rec.meet,rec.place].filter(Boolean).join(' · '))}</span></p>`:''}${you}</div>`;};
  const tiers=[
-  {k:'local',ic:'pin',t:'Latest event',sub:lastEv?[lastEv.title,lastEv.date].filter(Boolean).join(' · '):'Provn events',rows:local,empty:`No Provn event for ${esc(name)} has results yet.`},
-  {k:'city',ic:'city',t:city?esc(city):'City',sub:'Every Provn player in your city',rows:city?all.filter(r=>(r.city||'').toLowerCase()===city.toLowerCase()):null,empty:city?`No one in ${esc(city)} has an event result in ${esc(name)} yet.`:'Add your city on the You tab to see city rankings.'},
-  {k:'state',ic:'state',t:pl.state||'State',sub:'State record and top Provn players',rows:pl.state?all.filter(r=>r.state===pl.state):null,empty:pl.state?`No Provn player in ${esc(pl.state)} has an event result in ${esc(name)} yet.`:city?`We couldn't match ${esc(city)} to a state yet.`:'Add your city to see state rankings.',
+  {k:'local',ic:'pin',t:'Latest event',sub:lastEv?[lastEv.title,lastEv.date].filter(Boolean).join(' · '):'AroundMe events',rows:local,empty:`No AroundMe event for ${esc(name)} has results yet.`},
+  {k:'city',ic:'city',t:city?esc(city):'City',sub:'Every AroundMe player in your city',rows:city?all.filter(r=>(r.city||'').toLowerCase()===city.toLowerCase()):null,empty:city?`No one in ${esc(city)} has an event result in ${esc(name)} yet.`:'Add your city on the You tab to see city rankings.'},
+  {k:'state',ic:'state',t:pl.state||'State',sub:'State record and top AroundMe players',rows:pl.state?all.filter(r=>r.state===pl.state):null,empty:pl.state?`No AroundMe player in ${esc(pl.state)} has an event result in ${esc(name)} yet.`:city?`We couldn't match ${esc(city)} to a state yet.`:'Add your city to see state rankings.',
    rec:pl.state?recCard(`${esc(pl.state)} record · ${sxL}`,pickRec('state',pl.state),`No official ${esc(pl.state)} record for ${esc(name)} on file yet.`):''},
-  {k:'nat',ic:'flag',t:pl.country||'National',sub:'National record and top Provn players',rows:pl.country?all.filter(r=>r.country===pl.country):null,empty:pl.country?`No Provn player in ${esc(pl.country)} has an event result in ${esc(name)} yet.`:'Add your city to see national rankings.',
+  {k:'nat',ic:'flag',t:pl.country||'National',sub:'National record and top AroundMe players',rows:pl.country?all.filter(r=>r.country===pl.country):null,empty:pl.country?`No AroundMe player in ${esc(pl.country)} has an event result in ${esc(name)} yet.`:'Add your city to see national rankings.',
    rec:pl.country?recCard(`${esc(pl.country)} national record · ${sxL}`,pickRec('national',pl.country),`No ${esc(pl.country)} national record for ${esc(name)} on file yet.`):''},
-  {k:'glob',ic:'globe',t:'Global',sub:'World record and every Provn player',rows:all,empty:`No Provn player has an event result in ${esc(name)} yet. Join a Provn event to be the first!`,
+  {k:'glob',ic:'globe',t:'Global',sub:'World record and every AroundMe player',rows:all,empty:`No AroundMe player has an event result in ${esc(name)} yet. Join a AroundMe event to be the first!`,
    rec:recCard(`${wr.bench?'Elite benchmark':'World record'} · ${sxL}`,wr,'')}];
  const IC={pin:'<path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>',city:'<path d="M3.5 20.5h17M5.5 20.5V9l5-3v14.5M10.5 20.5V4.5l8 3.5v12.5M13.5 10h2M13.5 13h2M13.5 16h2M7.5 12h1M7.5 15h1"/>',state:'<path d="M4 6.5 9 4l6 2.5 5-2.5v13.5L15 20l-6-2.5L4 20z"/><path d="M9 4v13.5M15 6.5V20"/>',flag:'<path d="M5 21V4M5 4.5h11l-2 4 2 4H5"/>',globe:'<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.8 2.6 2.8 14.4 0 17M12 3.5c-2.8 2.6-2.8 14.4 0 17"/>'};
  const icon=k=>`<svg viewBox="0 0 24 24" ${P}>${IC[k]}</svg>`;
@@ -2026,11 +2054,11 @@ async function renderRanks(){const sel=$('#rkSkill');
   let cmp='';
   if(has&&you){const top=rows[0],next=pos>0?rows[pos-1]:null,pct=Math.max(4,Math.round(you.pts/Math.max(1,top.pts)*100));
    cmp=`<div class="tr-cmp"><div class="tr-bar"><i style="width:${pct}%"></i><b style="left:${pct}%"></b></div><p>${pos===0?`<b>You're #1</b>${rows[1]?` · ${you.pts-rows[1].pts} pts ahead of ${esc(rows[1].name)}`:''}`:`<b>#${pos+1} of ${rows.length}</b> · ${next.pts-you.pts+1} pts to pass ${esc(next.name)} · ${top.pts-you.pts} pts behind #1`}</p></div>`;}
-  else if(has&&!mine)cmp=`<div class="tr-cmp"><p>Take part in a Provn event to see where you stand.</p></div>`;
+  else if(has&&!mine)cmp=`<div class="tr-cmp"><p>Take part in a AroundMe event to see where you stand.</p></div>`;
   else if(has&&mine&&!you)cmp=`<div class="tr-cmp"><p>Your best isn't ranked here${T.k==='local'?' (you weren\'t at this event)':''}.</p></div>`;
   const picker='';
   return `<section class="card tier t-${T.k}"><header><span class="tr-ic">${icon(T.ic)}</span><div><b>${T.t}</b><small>${esc(T.sub)}</small></div><span class="tr-pos">${pos>=0?`#${pos+1}<small>of ${rows.length}</small>`:has?`<small>${rows.length} ranked</small>`:''}</span></header>
-   ${picker}${T.rec||''}${T.rec?'<div class="tr-sub">Top Provn players</div>':''}${has?rows.slice(0,5).map(row).join('')+(pos>=5?`<div class="tr-gap">···</div>${row(you,pos)}`:''):`<p class="tr-empty">${T.empty}</p>`}${cmp}
+   ${picker}${T.rec||''}${T.rec?'<div class="tr-sub">Top AroundMe players</div>':''}${has?rows.slice(0,5).map(row).join('')+(pos>=5?`<div class="tr-gap">···</div>${row(you,pos)}`:''):`<p class="tr-empty">${T.empty}</p>`}${cmp}
    ${!mine&&T.k==='glob'?`<button class="btn primary tr-go" id="rkLog"><span>See upcoming events</span></button>`:''}</section>`;}).join('');
  $('#rkSum').innerHTML=sum.map(x=>`<button class="rs ${x.r!=='–'?'on':''}" data-k="${x.k}"><span>${icon(x.ic)}</span><b>${x.r}</b><small>${x.t}</small></button>`).join('');
  $$('#rkSum .rs').forEach(b=>b.onclick=()=>{buzz(6);const el=$('#rkTiers .t-'+b.dataset.k);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});});
@@ -2099,18 +2127,18 @@ const Path=(()=>{let hob=null,tok=0,cityF='';const el=$('#path'),body=$('#pBody'
    paintIcons($('#hpPeople'));loadMyGraph().then(()=>{if(!live())return;wireFollow($('#hpPeople'),render);});
    $$('#hpPeople .pp').forEach(r=>r.onclick=e=>{if(e.target.closest('.fbtn,.pp-msg'))return;openUser(r.dataset.u,r.dataset.n);});
    $$('#hpPeople .pp-msg').forEach(b=>b.onclick=e=>{e.stopPropagation();const r=b.closest('.pp'),p=show.find(x=>x.uid===r.dataset.u);openChat({uid:p.uid,name:p.name,photo:p.photo||''});});
-   const inv=$('#hpInvite');if(inv)inv.onclick=()=>shareApp(`Join me on Provn for ${h.name}!`);});
+   const inv=$('#hpInvite');if(inv)inv.onclick=()=>shareApp(`Join me on AroundMe for ${h.name}!`);});
   /* meetups + events */
   Promise.all([CU()?Cloud.meetups().catch(()=>[]):[],CU()?Cloud.events().catch(()=>[]):[]]).then(([ms,evs])=>{if(!live())return;
    const m=ms.filter(x=>x.hobby===h.name),e=evs.filter(x=>!x.past&&tagMatches(x.skill,h));
    $('#hpMeet').innerHTML=(m.length?`<div class="mu-row">${m.map(meetupCard).join('')}</div>`:`<div class="card empty hp-empty">${mascot()}<b>No meetups planned</b>Host one: pick a place and time, and people into ${esc(h.name)} can join.</div>`)+
-    (e.length?`<h4 class="u-sec">Provn events</h4>`+e.map(x=>{const d=new Date(x.date+'T00:00');return `<div class="hb-ev"><span class="hb-ed"><b>${d.getDate()}</b><small>${d.toLocaleDateString(undefined,{month:'short'})}</small></span><div><b>${esc(x.title)}</b><small>${esc([x.time,x.place,x.city].filter(Boolean).join(' · '))}${x.fee?` · ₹${x.fee}`:' · free'}</small></div></div>`;}).join('')+`<button class="btn ghost hb-map" id="hpEv"><span>See all events</span></button>`:'');
+    (e.length?`<h4 class="u-sec">AroundMe events</h4>`+e.map(x=>{const d=new Date(x.date+'T00:00');return `<div class="hb-ev"><span class="hb-ed"><b>${d.getDate()}</b><small>${d.toLocaleDateString(undefined,{month:'short'})}</small></span><div><b>${esc(x.title)}</b><small>${esc([x.time,x.place,x.city].filter(Boolean).join(' · '))}${x.fee?` · ₹${x.fee}`:' · free'}</small></div></div>`;}).join('')+`<button class="btn ghost hb-map" id="hpEv"><span>See all events</span></button>`:'');
    wireMeetups($('#hpMeet'),ms,()=>render());const b=$('#hpEv');if(b)b.onclick=()=>{Orbit.close();goEvents();};});
   /* shop + places */
   (CU()?products():Promise.resolve([])).then(l=>{if(!live())return;const p=l.filter(x=>(x.skills||[]).some(t=>tagMatches(t,h)));
    $('#hpShop').innerHTML=p.length?`<div class="hb-gear">${p.map(prodHTML).join('')}</div>`:'';wireProds($('#hpShop'));});
   $('#hpPlaces').innerHTML=`<div class="pl-card"><span class="pl-e">📍</span><div><b>Places for ${esc(h.name)}</b><small>${city?'Around '+esc(city):'Near you'}</small></div></div>
-   <div class="row-b">${h.act&&window.ProvnMap?`<button class="btn primary" id="hpMap"><span>Open the Provn map</span></button>`:''}<a class="btn ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/search/${encodeURIComponent(h.q+(city?' in '+city:' near me'))}"><span>Search Google Maps</span></a></div>`;
+   <div class="row-b">${h.act&&window.ProvnMap?`<button class="btn primary" id="hpMap"><span>Open the AroundMe map</span></button>`:''}<a class="btn ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/search/${encodeURIComponent(h.q+(city?' in '+city:' near me'))}"><span>Search Google Maps</span></a></div>`;
   const mb=$('#hpMap');if(mb)mb.onclick=()=>openMap({filter:h.act});
   paintIcons(body);}
  el.addEventListener('scroll',()=>{const n=$('#hbNav');if(!n)return;let on='people';$$('.hb-sec',body).forEach(x=>{if(x.offsetTop-140<=el.scrollTop)on=x.id.slice(3);});
@@ -2118,7 +2146,7 @@ const Path=(()=>{let hob=null,tok=0,cityF='';const el=$('#path'),body=$('#pBody'
   $$('#hbNav button').forEach(b=>{const a=b.dataset.k===on;if(a&&!b.classList.contains('on'))n.scrollTo({left:b.offsetLeft-n.clientWidth/2+b.offsetWidth/2,behavior:'smooth'});b.classList.toggle('on',a);});},{passive:true});
  $('#pBack').onclick=e=>{e.stopPropagation();Orbit.close()};
  return{show(n){hob=n;cityF='';render();el.scrollTop=0;el.classList.add('on');},hide(){el.classList.remove('on');hob=null;tok++;},skill:()=>hob,refresh(){if(hob)render();}};})();
-async function shareApp(text){const url=location.origin+location.pathname;try{if(navigator.share){await navigator.share({title:'Provn',text,url});return;}}catch(e){if(e.name==='AbortError')return;}try{await navigator.clipboard.writeText(text+' '+url);toast('Invite link copied');}catch(e){prompt('Copy this link',url);}}
+async function shareApp(text){const url=location.origin+location.pathname;try{if(navigator.share){await navigator.share({title:'AroundMe',text,url});return;}}catch(e){if(e.name==='AbortError')return;}try{await navigator.clipboard.writeText(text+' '+url);toast('Invite link copied');}catch(e){prompt('Copy this link',url);}}
 
 
 /* ================= WORLD RECORDS (shown in Rankings) ================= */
@@ -2180,7 +2208,7 @@ const REC={
  'Bowling speed':['Shoaib Akhtar','PAK','22 Feb 2003','ICC Cricket World Cup v England','Newlands, Cape Town','161.3 km/h'],
  'Tennis serve speed':['Sam Groth','AUS','9 May 2012','Busan Open Challenger','Busan, South Korea','263.4 km/h (ATP-recognised tour record: John Isner, 253 km/h)'],
  'Darts':['Michael van Gerwen','NED','25 Feb 2016','Premier League Darts','Aberdeen, UK','123.40 (televised)'],
- 'Deadlift':['Colton Engelbrecht','RSA','Jul 2026','Nikolai Kagansky Memorial Cup','','492.5 kg heaviest raw deadlift — Provn scores deadlift per kg of body weight'],
+ 'Deadlift':['Colton Engelbrecht','RSA','Jul 2026','Nikolai Kagansky Memorial Cup','','492.5 kg heaviest raw deadlift — AroundMe scores deadlift per kg of body weight'],
  'Cycling hour':['Filippo Ganna','ITA','8 Oct 2022','UCI Hour Record','Grenchen, Switzerland','56.792 km'],
  '25m rapid fire pistol':['','','','ISSF qualification world record','','593/600']
 };
@@ -2220,7 +2248,7 @@ const Sync={busy:false,
    else{store.set('name',p.name);['sex','city'].forEach(k=>{if(typeof p[k]==='string')store.set(k,p[k])});store.set('age',p.age);store.set('bw',p.bw||0);store.set('sexAt',p.sexAt||0);store.set('interests',Array.isArray(p.interests)?p.interests:[]);store.set('city',p.city||'');
     if(p.char&&window.Avatar3D&&p.char!==Avatar3D.getChar())Avatar3D.setChar(p.char);}
    store.set('acct',true);
-   /* your scores = your results at Provn events (entered by the Provn team) */
+   /* your scores = your results at AroundMe events (entered by the AroundMe team) */
    const mine=await Cloud.myEventResults().catch(()=>[]),by={};mine.forEach(r=>{(by[r.skill]=by[r.skill]||[]).push({v:r.v,t:r.t,ev:r.eventTitle||'',date:r.date||''})});
    SKILL_LIST.forEach(s=>{if(by[s.name])store.set('res_'+s.name,by[s.name]);else if(store.get('res_'+s.name,null))store.set('res_'+s.name,[]);});
    if(!need)toast(`Welcome back, ${store.get('name','')}`);}
@@ -2350,11 +2378,11 @@ document.addEventListener('scroll',()=>{if(!cityDrop.hidden&&cityDrop._owner){ci
 /* ================= EVENTS (real, created by admin) ================= */
 const fmtDate=d=>{const x=new Date(d+'T00:00');return isNaN(x)?{d:'?',m:'',w:''}:{d:x.getDate(),m:x.toLocaleString('en',{month:'short'}),w:x.toLocaleString('en',{weekday:'short'})};};
 let evBusy=false;
-/* paid events: pay by UPI, send the reference, the Provn team confirms */
+/* paid events: pay by UPI, send the reference, the AroundMe team confirms */
 let payCfg=null;async function cfgGet(){if(payCfg)return payCfg;try{payCfg=await Cloud.config();}catch(e){payCfg={};}return payCfg;}
 async function openPay(e){const c=await cfgGet(),B=$('#payBody');
  if(!c.upi){B.innerHTML=`<h2 class="display">${esc(e.title)}</h2><p class="lead">Entry ₹${e.fee}. Online payment isn’t set up yet. Please check back soon.</p>`;showSheet('sh-pay');return;}
- const link=`upi://pay?pa=${encodeURIComponent(c.upi)}&pn=${encodeURIComponent(c.payee||'Provn')}&am=${e.fee}&cu=INR&tn=${encodeURIComponent(('Provn '+e.title).slice(0,40))}`;
+ const link=`upi://pay?pa=${encodeURIComponent(c.upi)}&pn=${encodeURIComponent(c.payee||'AroundMe')}&am=${e.fee}&cu=INR&tn=${encodeURIComponent(('AroundMe '+e.title).slice(0,40))}`;
  B.innerHTML=`<small class="si-cat">Entry fee</small><h2 class="display">${esc(e.title)}</h2><b class="display pay-amt">₹${e.fee}</b>
   <a class="btn primary" style="width:100%;margin-top:12px" href="${link}"><span>Pay ₹${e.fee} with a UPI app</span></a>
   <div class="pay-box"><small>Or pay to this UPI ID</small><b>${esc(c.upi)}</b>${c.payee?`<small style="margin-top:4px;text-transform:none;letter-spacing:0">${esc(c.payee)}</small>`:''}<button class="btn ghost" id="payCopy" style="margin-top:10px;height:38px"><span>Copy UPI ID</span></button></div>
@@ -2378,7 +2406,7 @@ async function renderEvents(){if(!CU()||evBusy)return;evBusy=true;
    $('#events').innerHTML=up.slice(1).map(e=>{const f=fmtDate(e.date);return`<div class="card ev"><div class="date"><b class="display">${f.d}</b><small>${f.m}</small></div><div class="info"><b>${esc(e.title)}</b><small>${esc(where(e)||e.skill||'')} · ${left(e)}</small></div>${btn(e)}</div>`;}).join('');}
   $$('#p-events .reg').forEach(b=>b.onclick=async()=>{const e=all.find(x=>x.id===b.dataset.id);buzz(10);
    if(e.fee&&!e.mine){openPay(e);return;}
-   if(e.mine&&e.pay==='paid'){toast('You’re confirmed. To cancel or get a refund, message the Provn team.');return;}
+   if(e.mine&&e.pay==='paid'){toast('You’re confirmed. To cancel or get a refund, message the AroundMe team.');return;}
    if(e.mine&&e.pay==='pending'&&!b.dataset.armed){b.dataset.armed=1;toast('We’re checking your payment. Tap again to cancel your registration.');setTimeout(()=>delete b.dataset.armed,3000);return;}
    b.disabled=true;
    try{await Cloud.setGoing(e.id,!e.mine,store.get('name',''));toast(e.mine?'Registration cancelled':`You're going to ${e.title}!`);}catch(err){toast('Could not register: '+(err.code||err.message));}
@@ -2416,7 +2444,7 @@ const Admin={tab:'overview',
    <textarea id="admAnn" maxlength="280" placeholder="e.g. Sunday 5k time trial at Marine Drive, register in Arena!">${esc(cfg.announce||'')}</textarea>
    <div class="adm-row"><button class="btn primary" id="admAnnSave"><span>Publish</span></button><button class="btn ghost" id="admAnnClr"><span>Clear</span></button></div>
    <h3 class="adm-h3">Payments</h3><p class="adm-p">Players pay event fees to this UPI ID, then send you the transaction ID to confirm in Events → Going.</p>
-   <div class="adm-form"><div class="two"><label>UPI ID<input id="admUpi" maxlength="60" value="${esc(cfg.upi||'')}" placeholder="provn@okaxis" autocomplete="off" spellcheck="false"></label><label>Payee name<input id="admPayee" maxlength="60" value="${esc(cfg.payee||'')}" placeholder="Provn Sports"></label></div>
+   <div class="adm-form"><div class="two"><label>UPI ID<input id="admUpi" maxlength="60" value="${esc(cfg.upi||'')}" placeholder="provn@okaxis" autocomplete="off" spellcheck="false"></label><label>Payee name<input id="admPayee" maxlength="60" value="${esc(cfg.payee||'')}" placeholder="AroundMe Sports"></label></div>
    <div class="adm-row"><button class="btn primary" id="admUpiSave"><span>Save payment details</span></button></div></div>
    <h3 class="adm-h3">Map imagery</h3><p class="adm-p">Paste your MapTiler API key to switch the globe to MapTiler satellite imagery with 3D terrain.</p>
    <div class="adm-row tight"><input class="adm-in" id="admMT" style="margin:0" maxlength="64" placeholder="MapTiler key" value="${esc(cfg.maptiler||'')}" autocomplete="off" spellcheck="false"><button class="adm-b on" id="admMTSave">Save</button></div>
@@ -2478,7 +2506,7 @@ const Admin={tab:'overview',
   box.querySelectorAll('[data-ok]').forEach(b=>b.onclick=()=>set(b.dataset.ok,'paid',`Payment confirmed for ${ev.title}. See you there!`));
   box.querySelectorAll('[data-no]').forEach(b=>b.onclick=()=>this.confirm(b,()=>set(b.dataset.no,'rejected',`We couldn’t match your payment for ${ev.title}. Check the UPI ID and message us.`)));
   box.querySelectorAll('[data-rf]').forEach(b=>b.onclick=()=>this.confirm(b,()=>set(b.dataset.rf,'refunded',`Your ₹${ev.fee} for ${ev.title} has been refunded.`)));},
- /* enter scores for a Provn event: pick a player, type their result; points use their gender and age */
+ /* enter scores for a AroundMe event: pick a player, type their result; points use their gender and age */
  async evResults(box,ev){const s=SKILLS[ev.skill],q=x=>box.querySelector(x);if(!s){box.innerHTML='<p class="adm-p">Set a valid skill on this event first.</p>';return;}
   const [rows,users,going]=await Promise.all([Cloud.admin.eventResults(ev.id),Cloud.admin.users(),Cloud.admin.going(ev.id).catch(()=>[])]);
   const gs=new Set(going.map(g=>g.uid)),pool=users.filter(u=>u.name).sort((a,b)=>(gs.has(b.uid)-gs.has(a.uid))||a.name.localeCompare(b.name));
@@ -2506,9 +2534,9 @@ const Admin={tab:'overview',
   B.innerHTML=`<h3 class="adm-h3" style="margin-top:0">Applications</h3><p class="adm-p">Call the owner to verify, then approve. Approving adds the venue to the map with the owner linked.</p>
    ${newA.length?newA.map(a=>`<div class="adm-r" data-a="${a.id}"><div class="adm-rt"><b>${esc(a.name)} ${a.plan==='partner'?'<em class="ban" style="background:var(--accent);color:var(--on-accent)">Partner</em>':''}</b><span>${esc([a.addr,a.city].filter(Boolean).join(', '))} · ${esc((a.acts||[]).join(', '))}</span><small>${esc(a.contact||a.by||'')} · 📞 ${esc(a.phone)}${a.lat!=null?' · 📍 pinned':' · no map pin'}${a.info?' · '+esc(a.info):''}</small></div>
      <a class="adm-b" href="tel:${esc(a.phone)}">Call</a><button class="adm-b on" data-x="ok">Approve</button><button class="adm-b red" data-x="no">Reject</button></div>`).join(''):'<p class="adm-p">No new applications.</p>'}
-   <h3 class="adm-h3">Provn venues</h3><p class="adm-p">Partners are featured, take bookings and see their lead report. Leads = views and taps in the last 30 days.</p>
+   <h3 class="adm-h3">AroundMe venues</h3><p class="adm-p">Partners are featured, take bookings and see their lead report. Leads = views and taps in the last 30 days.</p>
    ${vens.length?vens.map(v=>`<div class="adm-r" data-v="${v.id}"><div class="adm-rt"><b>${esc(v.name)}${v.tier==='partner'?' ⭐':''}</b><span>${lc(v.id)} leads · ${bks.filter(b=>b.venue===v.id).length} bookings${v.owner?' · owner '+esc(uname(v.owner)||'linked'):''}</span></div>
-     <button class="adm-b ${v.tier==='partner'?'on':''}" data-x="tier">${v.tier==='partner'?'Partner':'Make partner'}</button><button class="adm-b" data-x="own">Owner</button></div>`).join(''):'<p class="adm-p">No Provn venues yet. Approve an application or long-press the map to add one.</p>'}
+     <button class="adm-b ${v.tier==='partner'?'on':''}" data-x="tier">${v.tier==='partner'?'Partner':'Make partner'}</button><button class="adm-b" data-x="own">Owner</button></div>`).join(''):'<p class="adm-p">No AroundMe venues yet. Approve an application or long-press the map to add one.</p>'}
    <h3 class="adm-h3">Booking requests</h3>${bks.length?bks.slice(0,40).map(b=>`<div class="adm-r sm"><div class="adm-rt"><b>${esc(b.venueName)} · ${esc(b.name)}</b><span>${esc(b.date)} ${esc(b.time||'')} · ${b.people} · ${b.status}${b.owner?'':' · no owner linked'}</span></div>${b.status==='new'?`<button class="adm-b on" data-bk="${b.id}" data-s="accepted" data-u="${b.uid}">Accept</button><button class="adm-b red" data-bk="${b.id}" data-s="declined" data-u="${b.uid}">Decline</button>`:''}</div>`).join(''):'<p class="adm-p">None yet.</p>'}`;
   $$('[data-a]',B).forEach(r=>{const a=apps.find(x=>x.id===r.dataset.a);
    r.querySelector('[data-x="ok"]').onclick=async()=>{if(a.lat==null){toast('No map pin: add the venue by long-pressing the map, then link the owner here');return;}
@@ -2569,7 +2597,7 @@ const Admin={tab:'overview',
   B.innerHTML=`<p class="adm-p" style="margin-top:0">Tools for trying the app as a player. They only change this phone, not other players.</p>
    <div class="adm-tool"><div><b>Look</b><small>Switch theme instantly</small></div><div class="adm-row tight">${Object.keys(THEMES).map(t=>`<button class="adm-b ${theme===t?'on':''}" data-th="${t}">${THEMES[t].name}</button>`).join('')}</div></div>
    <h3 class="adm-h3">Clean-up</h3>
-   <div class="adm-tool"><div><b>Old self-logged results</b><small>Results players logged before scores moved to Provn events, plus their ranking entries</small></div><button class="adm-b red" id="tOld">Delete</button></div>
+   <div class="adm-tool"><div><b>Old self-logged results</b><small>Results players logged before scores moved to AroundMe events, plus their ranking entries</small></div><button class="adm-b red" id="tOld">Delete</button></div>
    <div class="adm-tool"><div><b>Test bot content</b><small>Every post, result, meetup and follow made by Aarav and Meera (the bot accounts stay)</small></div><button class="adm-b red" id="tBots">Delete</button></div>
    <div class="adm-tool"><div><b>Player setup</b><small>Go through the first-time questions again</small></div><button class="adm-b" id="tOnb">Replay</button></div>
    <div class="adm-tool"><div><b>Sign-in screen</b><small>See what new players see first</small></div><button class="adm-b" id="tGate">Preview</button></div>
@@ -2695,9 +2723,8 @@ function openPostLink(){const m=(location.hash||'').match(/^#post-(results|posts
 function focusPost(id){go('pulse');Pulse.refresh(true);
  const tryIt=(n)=>{const el=$(`#feed .post[data-id="${id}"]`);if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.add('hl');setTimeout(()=>el.classList.remove('hl'),2500);}else if(n<16)setTimeout(()=>tryIt(n+1),500);else toast('That post isn’t in the recent feed any more');};tryIt(0);}
 addEventListener('cloud-auth',e=>{if(e.detail)setTimeout(openPostLink,800);});
-(()=>{const pick=HOBBY_LIST.filter((h,i)=>i%3===0).slice(0,26);let seed=7;const r=()=>(seed=(seed*16807)%2147483647)/2147483647;
- const spots=[[60,2,66],[84,12,44],[4,8,50],[34,14,58],[70,26,56],[16,30,46],[48,34,42],[88,38,40],[2,48,38],[28,50,36],[62,52,40],[82,60,34],[44,2,32],[14,64,30],[50,66,30],[74,76,28],[30,78,26],[92,82,26],[6,84,24],[58,88,22],[22,16,28],[40,26,24],[94,24,30],[72,44,26],[36,42,22],[10,22,22]];
- $('#gateBg').innerHTML=pick.map((h,i)=>{const [x,y,sz]=spots[i%spots.length];return `<span class="gb emo" style="left:${x}%;top:${y}%;width:${sz+6}px;height:${sz+6}px;background:${h.col};--c:${h.col};--d:${(4+r()*4).toFixed(1)}s;--x:${(r()*16-8).toFixed(0)}px;--y:${(r()*16-8).toFixed(0)}px;animation-delay:-${(r()*4).toFixed(1)}s;font-size:${Math.round(sz*.5)}px">${hEmo(h)}</span>`;}).join('');})();
+(()=>{const pick=['Exploring cafes','Trekking','Pickleball','Painting','Concerts & gigs','Board games','Travelling','Yoga','Photography','Football'].map(n=>HOBBIES[n]).filter(Boolean);
+ $('#gOrbit').innerHTML=pick.map((h,i)=>{const a=i/pick.length*360,r=i%2?47:52;return `<span class="g-o" style="--a:${a}deg;--r:${r}%;--c:${h.col}"><b><i>${hEmo(h)}</i></b></span>`;}).join('');})();
 /* swipe left/right to move between tabs, with the screens following your finger */
 (()=>{const main=$('#s-pulse').parentNode;let sx=0,sy=0,dx=0,mode=null,cur0=null,nb=null,dir=0,W=0;
  const blocked=t=>t.closest('input,textarea,select,video,.pmc,.tr-pick,.mx-chips,.onb-chips,.rk-ctl,.sugg,.csugg,.path:not([hidden])')||(()=>{for(let e=t;e&&e!==main;e=e.parentElement){const cs=getComputedStyle(e);if((cs.overflowX==='auto'||cs.overflowX==='scroll')&&e.scrollWidth>e.clientWidth+4)return true;}return false;})();
@@ -2736,9 +2763,9 @@ $('#intSave').onclick=()=>{store.set('interests',[...intSel]);hideSheet();buzz(1
 $('#intEdit').onclick=openInterests;
 
 /* auto-update: GitHub Pages lets phones keep an old copy for ~10 min; check the live version and reload if it's newer */
-const APP_V='20261124a';$('#verTxt').textContent=APP_V;$('#ntfRow').onclick=()=>{hideSheet();setTimeout(()=>{if(CU())openNotifs();},300);};
+const APP_V='20261126a';$('#verTxt').textContent=APP_V;$('#ntfRow').onclick=()=>{hideSheet();setTimeout(()=>{if(CU())openNotifs();},300);};
 async function checkUpdate(){try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});const j=await r.json();
- if(j.v&&j.v!==APP_V&&sessionStorage.getItem('provn_upd')!==j.v){sessionStorage.setItem('provn_upd',j.v);toast('Updating Provn…');setTimeout(()=>location.replace(location.pathname+'?v='+j.v+location.hash),600);}}catch(e){}}
+ if(j.v&&j.v!==APP_V&&sessionStorage.getItem('provn_upd')!==j.v){sessionStorage.setItem('provn_upd',j.v);toast('Updating AroundMe…');setTimeout(()=>location.replace(location.pathname+'?v='+j.v+location.hash),600);}}catch(e){}}
 checkUpdate();document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkUpdate();});
 /* ================= PEOPLE: profiles, follows, friends ================= */
 let myGraph=null;
@@ -2762,7 +2789,7 @@ async function openUser(uid,name){if(!uid)return;if(CU()&&uid===Cloud.user.uid){
   const tiles=posts.slice(0,12).map(x=>{const m=(x.media||(x.video?[{type:'video',url:x.video}]:[]))[0],s=SKILLS[x.skill];
    if(m)return `<button class="ug-i" data-src="${esc(m.type==='image'?m.url:'')}" style="background-image:url('${esc(m.type==='video'?Cloud.thumb(m.url):m.url.replace('/upload/','/upload/w_300,h_300,c_fill,q_auto,f_auto/'))}')">${m.type==='video'?'<i>▶</i>':''}${x.col==='results'&&s?`<em>${x.pts}</em>`:''}</button>`;
    return `<div class="ug-i txt">${x.col==='results'&&s?`<b>${fmtPerf(s,x.v,0)}</b><small>${esc(x.skill)}</small>`:`<small>${esc((x.text||'').slice(0,60))}</small>`}</div>`;}).join('');
-  $('#uBody').innerHTML=`<div class="u-h">${avHTML(nm,p.photo,'u-av')}<div><b class="display">${esc(nm)}</b><small>${[p.city,pl.state].filter(Boolean).map(esc).join(', ')||'Provn player'}${followsMe(uid)?' · <i class="u-fy">Follows you</i>':''}</small></div></div>
+  $('#uBody').innerHTML=`<div class="u-h">${avHTML(nm,p.photo,'u-av')}<div><b class="display">${esc(nm)}</b><small>${[p.city,pl.state].filter(Boolean).map(esc).join(', ')||'AroundMe player'}${followsMe(uid)?' · <i class="u-fy">Follows you</i>':''}</small></div></div>
    <div class="u-st"><div><b>${posts.length}</b><small>Posts</small></div><button data-l="followers"><b>${g.followers.length}</b><small>Followers</small></button><button data-l="following"><b>${g.following.length}</b><small>Following</small></button><button data-l="friends"><b>${g.friends.length}</b><small>Friends</small></button></div>
    <div class="u-act">${followBtn(uid,nm)}<button class="btn ghost msg-b" id="uMsg"><span data-i="chat"></span><span>Message</span></button></div>
    ${ints.length?`<h4 class="u-sec">Interests</h4><div class="int-chips">${ints.map(n=>{const h=HOBBIES[n];return `<span class="int-c" style="--hc:${h.col}"><span class="ic emo">${hEmo(h)}</span>${esc(n)}</span>`;}).join('')}</div>`:''}
@@ -2789,7 +2816,7 @@ let ntfs=[],chats=[],ntfUn=null,chatUn=null,ntfNew=new Set();
 const NTF={like:['❤️','liked your post'],legit:['✅','vouched your result is legit'],comment:['💬','commented'],mention:['@','mentioned you'],repost:['↻','reposted your post'],follow:['👤','started following you'],result:['🏅','added your event result'],payment:['💳','updated your event payment'],booking:['📅','replied to your booking'],join:['🙌','joined your meetup'],meetup:['📅','invited you to a meetup']};
 function ntfLine(n){const k=NTF[n.kind]||['•',''];return n.kind==='follow'&&n.text==='back'?'followed you back':k[1];}
 function startLive(){ntfUn&&ntfUn();chatUn&&chatUn();ntfUn=chatUn=null;ntfs=[];chats=[];paintBadges();if(!CU())return;
- let f1=true;ntfUn=Cloud.listenNotifs(l=>{if(!f1&&!(openSheet&&openSheet.id==='sh-ntf')){const n=l.find(x=>!x.read&&!ntfs.some(o=>o.id===x.id));if(n){toast(`${NTF[n.kind]?NTF[n.kind][0]:''} ${n.kind==='result'||n.kind==='payment'?'Provn':n.fromName} ${ntfLine(n)}${['result','payment','booking'].includes(n.kind)&&n.text?': '+n.text:''}`);buzz(12);}}
+ let f1=true;ntfUn=Cloud.listenNotifs(l=>{if(!f1&&!(openSheet&&openSheet.id==='sh-ntf')){const n=l.find(x=>!x.read&&!ntfs.some(o=>o.id===x.id));if(n){toast(`${NTF[n.kind]?NTF[n.kind][0]:''} ${n.kind==='result'||n.kind==='payment'?'AroundMe':n.fromName} ${ntfLine(n)}${['result','payment','booking'].includes(n.kind)&&n.text?': '+n.text:''}`);buzz(12);}}
   f1=false;ntfs=l;paintBadges();if(openSheet&&openSheet.id==='sh-ntf')paintNotifs();});
  let f2=true;chatUn=Cloud.listenChats(l=>{const me=Cloud.user.uid;
   if(!f2)l.forEach(c=>{const o=chats.find(x=>x.id===c.id);if(c.lastFrom!==me&&(!o||o.t<c.t)&&!(chatWith&&Cloud.chatId(me,chatWith.uid)===c.id&&openSheet&&openSheet.id==='sh-chat')){toast(`💬 ${(c.names||{})[c.lastFrom]||'New message'}: ${c.last}`);buzz(12);}});
@@ -2800,7 +2827,7 @@ function paintBadges(){const a=ntfs.filter(n=>!n.read).length,b=unreadChats();
  [['#btnBell',a],['#btnChat',b]].forEach(([s,n])=>{const el=$(s+' .bdg');el.hidden=!n;el.textContent=n>9?'9+':n;});}
 function openNotifs(){ntfNew=new Set(ntfs.filter(n=>!n.read).map(n=>n.id));showSheet('sh-ntf');paintNotifs();if(ntfNew.size)setTimeout(()=>Cloud.markRead([...ntfNew]),900);}
 function paintNotifs(){const el=$('#ntfList');
- el.innerHTML=ntfs.length?ntfs.map(n=>`<button class="ntf ${ntfNew.has(n.id)?'new':''}" data-id="${n.id}"><span class="na">${avHTML(n.fromName,n.fromPhoto,'pp-av')}<i>${(NTF[n.kind]||['•'])[0]}</i></span><div><b>${esc(n.kind==='result'||n.kind==='payment'?'Provn':n.fromName)}</b> ${esc(ntfLine(n))}${n.text&&n.kind!=='follow'?`<q>${esc(n.text)}</q>`:''}<small>${ago(n.t)}</small></div></button>`).join('')
+ el.innerHTML=ntfs.length?ntfs.map(n=>`<button class="ntf ${ntfNew.has(n.id)?'new':''}" data-id="${n.id}"><span class="na">${avHTML(n.fromName,n.fromPhoto,'pp-av')}<i>${(NTF[n.kind]||['•'])[0]}</i></span><div><b>${esc(n.kind==='result'||n.kind==='payment'?'AroundMe':n.fromName)}</b> ${esc(ntfLine(n))}${n.text&&n.kind!=='follow'?`<q>${esc(n.text)}</q>`:''}<small>${ago(n.t)}</small></div></button>`).join('')
   :'<p class="note">Nothing yet. You’ll hear here when players like, vouch, comment on or repost your posts, tag you or follow you.</p>';
  $$('#ntfList .ntf').forEach(b=>b.onclick=()=>{const n=ntfs.find(x=>x.id===b.dataset.id);if(!n)return;buzz(6);
   if(n.kind==='follow'){openUser(n.from,n.fromName);return;}if(n.kind==='result'){hideSheet();go('you');return;}if(n.kind==='payment'){hideSheet();goEvents();return;}if(n.kind==='booking'){hideSheet();go('you');return;}if(n.kind==='join'){hideSheet();go('you');return;}hideSheet();setTimeout(()=>focusPost(n.ref),60);});}
@@ -2840,7 +2867,7 @@ async function renderVenueCard(){const el=$('#venueCard');if(!el)return;if(!CU()
  try{if(!myVen){const [v,a,b]=await Promise.all([Cloud.myVenues(),Cloud.myVenueApps(),Cloud.myBookings()]);myVen={v,a,b};}}catch(e){myVen={v:[],a:[],b:[]};}
  const {v,a,b}=myVen,pend=a.filter(x=>x.status==='new'),open=b.filter(x=>['new','accepted'].includes(x.status));
  el.innerHTML=v.length?`<h4>Your venue${v.length>1?'s':''}</h4><p>${v.map(x=>esc(x.name)+(x.tier==='partner'?' · ⭐ Partner':'')).join(', ')}</p><div class="row"><button class="btn primary" id="vcOwn"><span>Open dashboard</span></button></div>`
-  :`<h4>Own a court, ground or academy?</h4><p>List it on Provn so players can find you. Partners get featured, take booking requests and see how many players we send.</p><div class="row"><button class="btn primary" id="vcApply"><span>List your venue</span></button></div>${pend.length?`<span class="st">⏳ ${esc(pend[0].name)}: application under review</span>`:''}`;
+  :`<h4>Own a court, ground or academy?</h4><p>List it on AroundMe so players can find you. Partners get featured, take booking requests and see how many players we send.</p><div class="row"><button class="btn primary" id="vcApply"><span>List your venue</span></button></div>${pend.length?`<span class="st">⏳ ${esc(pend[0].name)}: application under review</span>`:''}`;
  if(open.length)el.insertAdjacentHTML('beforeend',`<span class="st">📅 Your bookings: ${open.map(x=>`${esc(x.venueName)} ${fmtDate(x.date).d} ${fmtDate(x.date).m} (${x.status==='new'?'waiting':'accepted'})`).join(' · ')}</span>`);
  const o=$('#vcOwn');if(o)o.onclick=()=>openOwner();const ap=$('#vcApply');if(ap)ap.onclick=()=>openApply();}
 addEventListener('cloud-auth',()=>{myVen=null;});
@@ -2852,7 +2879,7 @@ function openApply(pre){if(!CU()){toast('Sign in first');return;}const st={acts:
   <label class="fi">City<input id="vaCity" maxlength="40" value="${esc(store.get('city',''))}"></label>
   <span class="fi">Activities</span><div class="chips-sel" id="vaActs">${VACTS().map(x=>`<button data-k="${x.k}">${x.svg?'🏓':x.e} ${esc(x.n)}</button>`).join('')||'<small class="note">Open the map once to load activities.</small>'}</div>
   <span class="fi">Location</span><div class="pay-box" style="margin-top:6px"><b id="vaLoc" style="font-size:14px">Not set</b><button class="btn ghost" id="vaPick" style="margin-top:8px;height:38px"><span>Pick on map</span></button></div>
-  <span class="fi">Plan</span><div class="plan" id="vaPlan"><button data-p="free"><b>Free listing</b><small>On the map with your details.</small></button><button data-p="partner" class="on"><b>Provn Partner</b><small>Featured, booking requests, player report, host Provn events.</small></button></div>
+  <span class="fi">Plan</span><div class="plan" id="vaPlan"><button data-p="free"><b>Free listing</b><small>On the map with your details.</small></button><button data-p="partner" class="on"><b>AroundMe Partner</b><small>Featured, booking requests, player report, host AroundMe events.</small></button></div>
   <label class="fi">Anything else?<textarea id="vaI" maxlength="300" placeholder="Courts, timings, prices, coaching"></textarea></label>
   <button class="btn primary" style="width:100%;margin-top:16px" id="vaSend"><span>Send application</span></button>
   <p class="note">Partner pricing is shared after we review your venue. Listing is free.</p>`;
@@ -2870,7 +2897,7 @@ async function openOwner(){const B=$('#ownBody');B.innerHTML='<div class="skel" 
  const parts=await Promise.all(vs.map(async v=>{const [ld,bk]=await Promise.all([Cloud.venueLeads(v.id).catch(()=>[]),Cloud.venueBookings(v.id).catch(()=>[])]);return {v,ld,bk};}));
  const since=Date.now()-30*864e5;
  B.innerHTML=parts.map(({v,ld,bk})=>{const l=ld.filter(x=>x.t>=since),c=k=>l.filter(x=>x.kind===k).length;
-  return `<h2 class="display">${esc(v.name)}</h2><small class="si-cat">${v.tier==='partner'?'⭐ Provn Partner':'Free listing'} · last 30 days</small>
+  return `<h2 class="display">${esc(v.name)}</h2><small class="si-cat">${v.tier==='partner'?'⭐ AroundMe Partner':'Free listing'} · last 30 days</small>
    <div class="own-stats"><div><b>${c('view')}</b><small>Views</small></div><div><b>${c('dir')+c('call')+c('web')}</b><small>Taps</small></div><div><b>${bk.filter(x=>x.t>=since).length}</b><small>Bookings</small></div></div>
    <p class="note" style="text-align:left">Taps = directions ${c('dir')} · calls ${c('call')} · website ${c('web')}</p>
    <h4 class="u-sec">Booking requests</h4>${bk.length?bk.map(x=>`<div class="bk" data-b="${x.id}" data-u="${x.uid}"><em>${x.status}</em><b>${esc(x.name)} · ${x.people} ${x.people>1?'people':'person'}${x.act?' · '+esc(x.act):''}</b><small>${fmtDate(x.date).w} ${fmtDate(x.date).d} ${fmtDate(x.date).m}${x.time?' · '+esc(x.time):''}${x.phone?' · 📞 '+esc(x.phone):''}</small>${x.note?`<small>“${esc(x.note)}”</small>`:''}
@@ -2879,7 +2906,7 @@ async function openOwner(){const B=$('#ownBody');B.innerHTML='<div class="skel" 
   try{await Cloud.setBooking(r.dataset.b,st);Cloud.notify(r.dataset.u,'booking',{ref:r.dataset.b,col:'bookings',text:st==='accepted'?'Your booking is accepted. See you there!':'Your booking couldn’t be accepted. Try another time.'});toast(st==='accepted'?'Accepted · the player is notified':'Declined');openOwner();}catch(e){toast(e.code||e.message);}});}
 /* from the map: a booking request to a partner venue */
 function openBooking(v){const B=$('#ownBody'),t=new Date().toISOString().slice(0,10);
- B.innerHTML=`<small class="si-cat">⭐ Provn Partner</small><h2 class="display">Book ${esc(v.name)}</h2><p class="lead">Send a request. The venue confirms it and you’ll get a notification.</p>
+ B.innerHTML=`<small class="si-cat">⭐ AroundMe Partner</small><h2 class="display">Book ${esc(v.name)}</h2><p class="lead">Send a request. The venue confirms it and you’ll get a notification.</p>
   <div class="two-c"><label class="fi">Date<input id="bkD" type="date" min="${t}" value="${t}"></label><label class="fi">Time<input id="bkT" maxlength="20" placeholder="7 am"></label></div>
   <div class="two-c"><label class="fi">People<input id="bkN" inputmode="numeric" maxlength="2" value="2"></label><label class="fi">Activity<select id="bkA">${(v.acts||[]).map(k=>{const a=VACTS().find(x=>x.k===k);return a?`<option>${esc(a.n)}</option>`:'';}).join('')}</select></label></div>
   <label class="fi">Phone<input id="bkP" inputmode="tel" maxlength="20" placeholder="So the venue can confirm"></label>
@@ -2970,7 +2997,7 @@ addEventListener('cloud-auth',()=>{muCache=null;setTimeout(renderCircles,300);})
 /* ================= YOU: badges for showing up, weekly streak, your plans ================= */
 const BADGES=[['👋','Hello world','Share your first post',s=>s.posts>=1],['📸','Storyteller','Share 10 posts',s=>s.posts>=10],['🧭','Explorer','Add 5 interests',s=>s.ints>=5],
  ['🌈','All-rounder','Interests in 4 different groups',s=>s.groups>=4],['🤝','First meetup','Join or host a meetup',s=>s.meets>=1],['🎉','Host','Host 3 meetups',s=>s.hosted>=3],
- ['👯','Squad','Have 5 friends',s=>s.friends>=5],['🏟️','Event goer','Register for a Provn event',s=>s.events>=1],['🔥','On a roll','4-week streak',s=>s.streak>=4]];
+ ['👯','Squad','Have 5 friends',s=>s.friends>=5],['🏟️','Event goer','Register for a AroundMe event',s=>s.events>=1],['🔥','On a roll','4-week streak',s=>s.streak>=4]];
 async function renderBadges(){const el=$('#badges');if(!el||!CU())return;const me=Cloud.user.uid;
  const [info,mm,evs,g]=await Promise.all([Cloud.userInfo(me).catch(()=>({items:[]})),Cloud.myMeetups().catch(()=>[]),Cloud.events().catch(()=>[]),loadMyGraph()]);
  const ints=myInterests(),act=[...info.items.map(x=>x.t),...mm.map(m=>m.when).filter(t=>t<=Date.now())],wk=t=>Math.floor((t+3*864e5)/(7*864e5)),weeks=new Set(act.map(wk));
@@ -2997,8 +3024,8 @@ setTimeout(()=>$('#splash').classList.add('out'),matchMedia('(prefers-reduced-mo
 setTimeout(()=>$('#splash').remove(),1700);
 
 </script>
-<script type="module" src="avatar3d.js?v=20261124a"></script>
-<script type="module" src="cloud.js?v=20261124a"></script>
-<script src="map.js?v=20261124a" defer></script>
+<script type="module" src="avatar3d.js?v=20261126a"></script>
+<script type="module" src="cloud.js?v=20261126a"></script>
+<script src="map.js?v=20261126a" defer></script>
 </body>
 </html>
